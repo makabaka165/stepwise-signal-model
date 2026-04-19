@@ -22,6 +22,7 @@ rng(cfg.sim.seed);
 [echoCube, truth] = echo_elem_cube(cfg);
 [pcCube, ~] = pc_range_cube(echoCube, sTx, cfg, true);
 jointOut = bf_joint_2d(pcCube, cfg, truth);
+[elMesh, azMesh] = meshgrid(jointOut.elBeam, jointOut.azBeam);
 
 % 多脉冲链路里用整段 CPI 上目标距离的平均值作为参考真值，更贴近当前 RD 结果。
 rTruthRef = mean(truth.RpSeq);
@@ -51,8 +52,11 @@ nexttile;
 % 左上: 二维波束热图。
 % jointOut.beamPeakMetricGridDb 表示“每个二维波束对应的 RD 图里最大幅值是多少”。
 % 白圈是真值角度，红叉是未加 CFAR 时按峰值挑出的最强二维波束。
-imagesc(jointOut.elBeam, jointOut.azBeam, jointOut.beamPeakMetricGridDb);
-axis xy;
+surf(elMesh, azMesh, zeros(size(jointOut.beamPeakMetricGridDb)), ...
+    jointOut.beamPeakMetricGridDb, 'EdgeColor', 'none');
+view(2);
+axis tight;
+set(gca, 'YDir', 'normal');
 colorbar;
 clim([-20 0]);
 hold on;
@@ -110,8 +114,11 @@ nexttile;
 % 左上: 仍用同一张二维波束热图做背景，但叠加 CFAR 检测结果。
 % 青色圆圈表示至少出现过一次 CFAR 检测的二维波束中心。
 % 红叉表示 metric 最高的最优检测所在二维波束。
-imagesc(jointOut.elBeam, jointOut.azBeam, jointOut.beamPeakMetricGridDb);
-axis xy;
+surf(elMesh, azMesh, zeros(size(jointOut.beamPeakMetricGridDb)), ...
+    jointOut.beamPeakMetricGridDb, 'EdgeColor', 'none');
+view(2);
+axis tight;
+set(gca, 'YDir', 'normal');
 colorbar;
 clim([-20 0]);
 hold on;
