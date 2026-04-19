@@ -1,0 +1,23 @@
+# Default to tracking only the curated project folder for the first upload.
+/*
+!/.gitignore
+!/stepwise_signal_model/
+!/stepwise_signal_model/**
+
+matlab_mcp_logs/
+
+# MATLAB autosave and generated artifacts
+*.asv
+*.autosave
+slprj/
+codegen/
+resources/project/
+
+# Compiled MATLAB binaries
+*.mexw64
+*.mexw32
+*.mexa64
+*.mexmaci64
+
+# Simulink cache files
+*.slxc
