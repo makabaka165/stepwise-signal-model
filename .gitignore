@@ -1,6 +1,7 @@
 # Default to tracking only the curated project folder for the first upload.
 /*
 !/.gitignore
+!/README.md
 !/stepwise_signal_model/
 !/stepwise_signal_model/**
 
