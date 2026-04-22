@@ -22,7 +22,7 @@ switch lower(mtd.winType)
         error('不支持的慢时间窗类型: %s', mtd.winType);
 end
 
-slowWin = slowWin(:);
+slowWin = cast(slowWin(:), 'like', dataCube);
 
 % 归一化窗函数，避免不同窗型只因整体增益不同而影响后续幅度对比。
 slowWin = slowWin / norm(slowWin);

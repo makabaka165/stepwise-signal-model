@@ -1,121 +1,690 @@
-function out = bf_joint_2d(pcCube, cfg, truth)
-%BF_JOINT_2D Joint 2D beamforming, then MTD and CFAR on the beam-domain cube.
+function out = bf_joint_2d(pcCube, cfg)
+%BF_JOINT_2D 第 5 步局部链路：五个唯一波束、中心波束 CFAR、最强目标三波束比幅测角。
 
 arr = cfg.arr;
 wf = cfg.wf;
 beam = cfg.beam;
 
-[nAzUse, nElUse] = size(truth.xMat);
-xUse = truth.xMat(:);
-yUse = truth.yMat(:);
-zUse = truth.zMat(:);
-[nElem, ~, nPulse] = size(pcCube);
+[geom, arrInfo] = build_geometry_local(cfg);
+[nAzUse, nElUse] = size(geom.xMat);
+xUse = geom.xMat(:);
+yUse = geom.yMat(:);
+zUse = geom.zMat(:);
+nElem = numel(xUse);
 
-if nElem ~= numel(xUse)
-    error('pcCube element count does not match the active subarray geometry.');
+[nElemIn, ~, ~] = size(pcCube);
+if nElemIn ~= nElem
+    error('bf_joint_2d:ElementMismatch', ...
+        'pcCube 的第 1 维大小为 %d，与当前工作子阵阵元数 %d 不一致。', ...
+        nElemIn, nElem);
 end
 
-phaseFactor = beam.spatialPhaseFactor;
+azGrid = build_sector_beam_grid('azimuth', cfg, geom, beam.azSectorCenter, beam.elSectorCenter);
+elGrid = build_sector_beam_grid('elevation', cfg, geom, beam.azSectorCenter, beam.elSectorCenter);
 
+azBeamAxis = azGrid.beam(:).';
+elBeamAxis = elGrid.beam(:).';
+uBeamAxis = elGrid.uBeam(:).';
+
+% 仿真阶段直接用目标真值附近的最近波束中心来定义局部处理中心。
+centerAzIdx = nearest_center_index_local(azBeamAxis, cfg.tgt.az, 'azimuth');
+centerElIdx = nearest_center_index_local(elBeamAxis, cfg.tgt.el, 'elevation');
+
+azTripletIdx = centerAzIdx + (-1:1);
+elTripletIdx = centerElIdx + (-1:1);
+azTriplet = azBeamAxis(azTripletIdx);
+elTriplet = elBeamAxis(elTripletIdx);
+uTriplet = uBeamAxis(elTripletIdx);
+
+centerAz = azBeamAxis(centerAzIdx);
+centerEl = elBeamAxis(centerElIdx);
+centerU = uBeamAxis(centerElIdx);
+
+localBeamAz = [azTriplet(1), centerAz, azTriplet(3), centerAz, centerAz];
+localBeamEl = [centerEl, centerEl, centerEl, elTriplet(1), elTriplet(3)];
+localLabels = {'方位左束', '中心束', '方位右束', '俯仰下束', '俯仰上束'};
+
+% 五个唯一波束统一做波束形成和 MTD。
+ampVec = build_amplitude_template_local(nAzUse, nElUse, beam);
+[beamCube, beamWeights] = form_local_beams_local(pcCube, localBeamAz, localBeamEl, ...
+    xUse, yUse, zUse, arr.lambda, beam.spatialPhaseFactor, ampVec);
+[rdCube, mtdInfo] = mtd_process(beamCube, cfg);
+rdMag = abs(rdCube);
+
+rAxis = arr.c * (wf.tFast + wf.Tp / 2) / 2;
+vAxis = mtdInfo.vAxis;
+
+% 只在中心波束 RD 图上做检测，再从检测点中提取目标代表点。
+centerLocalIdx = 2;
+cfarRaw = detect_rd_cfar_1d(rdCube(centerLocalIdx, :, :), cfg.cfar);
+cfarRaw = decorate_detection_output_local(cfarRaw, centerLocalIdx, localLabels{centerLocalIdx}, ...
+    centerAz, centerEl, rAxis, vAxis);
+
+peakDetections = decorate_detection_output_local(make_empty_detection_list_local(), ...
+    centerLocalIdx, localLabels{centerLocalIdx}, ...
+    centerAz, centerEl, rAxis, vAxis);
+
+clustersRaw = cluster_rd_detections_local(cfarRaw, ...
+    cfg.cfar.clusterRangeTol, cfg.cfar.clusterDoppTol);
+candidateRaw = detections_from_clusters_local(cfarRaw, clustersRaw);
+candidateTargets = decorate_detection_output_local(candidateRaw, centerLocalIdx, localLabels{centerLocalIdx}, ...
+    centerAz, centerEl, rAxis, vAxis);
+
+clusters = filter_clusters_local(clustersRaw, cfarRaw, cfg.cfar);
+targetRaw = detections_from_clusters_local(cfarRaw, clusters);
+targets = decorate_detection_output_local(targetRaw, centerLocalIdx, localLabels{centerLocalIdx}, ...
+    centerAz, centerEl, rAxis, vAxis);
+
+if targets.count > 0
+    finalDetection = targets.best;
+elseif candidateTargets.count > 0
+    finalDetection = candidateTargets.best;
+elseif cfarRaw.count > 0
+    finalDetection = cfarRaw.best;
+else
+    finalDetection = make_empty_best_detection_local(centerLocalIdx, localLabels{centerLocalIdx}, centerAz, centerEl);
+end
+
+% 三波束比幅测角只对最终选中的那个目标点执行。
+if finalDetection.metric == finalDetection.metric
+    fine = estimate_fine_angles_local(rdCube, beamWeights, xUse, yUse, zUse, ...
+        azTriplet, elTriplet, uTriplet, centerAz, centerEl, ...
+        finalDetection.rangeIdx, finalDetection.dopplerIdx, cfg);
+else
+    fine = empty_fine_result_local('中心波束 CFAR 未检出目标');
+end
+
+out = struct();
+out.rAxis = rAxis;
+out.vAxis = vAxis;
+out.nAzUse = nAzUse;
+out.nElUse = nElUse;
+out.azCenter = beam.azSectorCenter;
+out.elCenter = beam.elSectorCenter;
+out.dAz = azGrid.spacing;
+out.dEl = elGrid.ref.bw3dB;
+out.dU = elGrid.spacing;
+out.azGrid = azBeamAxis;
+out.elGrid = elBeamAxis;
+out.uGrid = uBeamAxis;
+out.arrInfo = arrInfo;
+
+out.selection = struct();
+out.selection.method = '仿真阶段按 cfg.tgt.az/el 选择最近波束中心';
+out.selection.centerAzIdx = centerAzIdx;
+out.selection.centerElIdx = centerElIdx;
+out.selection.centerAz = centerAz;
+out.selection.centerEl = centerEl;
+out.selection.centerU = centerU;
+out.selection.azTripletIdx = azTripletIdx;
+out.selection.elTripletIdx = elTripletIdx;
+out.selection.azTriplet = azTriplet;
+out.selection.elTriplet = elTriplet;
+out.selection.uTriplet = uTriplet;
+
+out.local = struct();
+out.local.labels = localLabels;
+out.local.beamAz = localBeamAz;
+out.local.beamEl = localBeamEl;
+out.local.beamCube = beamCube;
+out.local.rdCube = rdCube;
+out.local.rdMag = rdMag;
+out.local.weights = beamWeights;
+
+out.azGroup = struct();
+out.azGroup.localIdx = [1, 2, 3];
+out.azGroup.labels = localLabels(out.azGroup.localIdx);
+out.azGroup.beamAz = localBeamAz(out.azGroup.localIdx);
+out.azGroup.beamEl = localBeamEl(out.azGroup.localIdx);
+out.azGroup.rdCube = rdCube(out.azGroup.localIdx, :, :);
+
+out.elGroup = struct();
+out.elGroup.localIdx = [4, 2, 5];
+out.elGroup.labels = localLabels(out.elGroup.localIdx);
+out.elGroup.beamAz = localBeamAz(out.elGroup.localIdx);
+out.elGroup.beamEl = localBeamEl(out.elGroup.localIdx);
+out.elGroup.beamU = [uTriplet(1), centerU, uTriplet(3)];
+out.elGroup.rdCube = rdCube(out.elGroup.localIdx, :, :);
+
+out.cfar = cfarRaw;
+out.cfarRaw = cfarRaw;
+out.peakDetections = peakDetections;
+out.clustersRaw = clustersRaw;
+out.candidateTargets = candidateTargets;
+out.clusters = clusters;
+out.targets = targets;
+out.finalDetection = finalDetection;
+out.fine = fine;
+out.bestAz = fine.az;
+out.bestEl = fine.el;
+out.bestRange = fine.range;
+out.bestVel = fine.velocity;
+end
+
+function [geom, arrInfo] = build_geometry_local(cfg)
+arrInfo = arr_cyl(cfg, cfg.beam.azSectorCenter);
+if cfg.sim.useSector
+    geom = struct();
+    geom.xMat = arrInfo.XAct;
+    geom.yMat = arrInfo.YAct;
+    geom.zMat = arrInfo.ZAct;
+    geom.phiUseRel = arrInfo.phiActRel;
+    return;
+end
+
+geom = struct();
+geom.xMat = arrInfo.X;
+geom.yMat = arrInfo.Y;
+geom.zMat = arrInfo.Z;
+geom.phiUseRel = wrap180_local(arrInfo.phiCol - cfg.beam.azSectorCenter);
+end
+
+function idx = nearest_center_index_local(axisVals, targetVal, dimName)
+[~, idx] = min(abs(axisVals - targetVal));
+if idx == 1 || idx == numel(axisVals)
+    errId = sprintf('bf_joint_2d:%sCenterAtBoundary', dimName);
+    error(errId, ...
+        '与目标最近的 %s 波束中心落在扫描边界，无法构成三波束。', ...
+        dimName);
+end
+end
+
+function ampVec = build_amplitude_template_local(nAzUse, nElUse, beam)
 azWin = make_window_local(nAzUse, beam, 'az');
 elWin = make_window_local(nElUse, beam, 'el');
 ampMat = azWin(:) * elWin(:).';
 ampVec = ampMat(:);
 ampVec = ampVec / norm(ampVec);
-
-[azBeam, elBeam, gridInfo] = build_joint_beam_grid(cfg, truth);
-nAzBeam = numel(azBeam);
-nElBeam = numel(elBeam);
-nBeam = nAzBeam * nElBeam;
-
-azGrid = repelem(azBeam(:), nElBeam, 1);
-elGrid = repmat(elBeam(:), nAzBeam, 1);
-
-rAxisFull = arr.c * (wf.tFast + wf.Tp / 2) / 2;
-rangeTrack = cfg.tgt.R0 + cfg.tgt.v * wf.tSlow;
-rMinProc = min(rangeTrack) - cfg.proc.rangeMargin;
-rMaxProc = max(rangeTrack) + cfg.proc.rangeMargin;
-rangeMask = (rAxisFull >= rMinProc) & (rAxisFull <= rMaxProc);
-if ~any(rangeMask)
-    error('No sample falls inside the configured processing range window.');
 end
 
-pcCube = pcCube(:, rangeMask, :);
-rAxis = rAxisFull(rangeMask);
-nRange = size(pcCube, 2);
+function [beamCube, beamWeights] = form_local_beams_local(pcCube, beamAz, beamEl, ...
+    xUse, yUse, zUse, lambda, phaseFactor, ampVec)
+nBeam = numel(beamAz);
+[nElem, nRange, nPulse] = size(pcCube);
+pcFlat = reshape(pcCube, nElem, nRange * nPulse);
 
-wFull = build_weight_matrix_local( ...
-    azGrid, elGrid, xUse, yUse, zUse, arr.lambda, phaseFactor, ampVec);
-
-beamCube = reshape( ...
-    wFull' * reshape(pcCube, nElem, nRange * nPulse), ...
-    nBeam, nRange, nPulse);
-
-[rdCube, mtdInfo] = mtd_process(beamCube, cfg);
-rdMag = abs(rdCube);
-
-beamPeakMetric = squeeze(max(max(rdMag, [], 2), [], 3));
-[~, peakLinIdx] = max(rdMag(:));
-[idxBeamPeak, idxRangePeak, idxDoppPeak] = ind2sub(size(rdMag), peakLinIdx);
-
-peakRdMap = squeeze(rdMag(idxBeamPeak, :, :)).';
-peakRangeCut = squeeze(rdMag(idxBeamPeak, :, idxDoppPeak)).';
-peakDoppCut = squeeze(rdMag(idxBeamPeak, idxRangePeak, :));
-
-cfarRaw = detect_rd_cfar_1d(rdCube, cfg.cfar);
-cfarBest = cfarRaw.best;
-cfarBestRdMap = squeeze(rdMag(cfarBest.beamIdx, :, :)).';
-cfarBestRangeCut = squeeze(rdMag(cfarBest.beamIdx, :, cfarBest.dopplerIdx)).';
-cfarBestDoppCut = squeeze(rdMag(cfarBest.beamIdx, cfarBest.rangeIdx, :));
-
-beamPeakMetricGrid = reshape(beamPeakMetric, nElBeam, nAzBeam).';
-beamPeakMetricGridDb = 20 * log10(beamPeakMetricGrid / max(beamPeakMetricGrid(:)) + eps);
-peakRdMapDb = 20 * log10(peakRdMap / max(peakRdMap(:)) + eps);
-peakRangeCutDb = 20 * log10(peakRangeCut / max(peakRangeCut) + eps);
-peakDoppCutDb = 20 * log10(peakDoppCut / max(peakDoppCut) + eps);
-
-idxElPeak = mod(idxBeamPeak - 1, nElBeam) + 1;
-idxAzPeak = floor((idxBeamPeak - 1) / nElBeam) + 1;
-
-out = struct();
-out.rAxis = rAxis;
-out.vAxis = mtdInfo.vAxis;
-out.nAzUse = nAzUse;
-out.nElUse = nElUse;
-out.modeName = truth.modeName;
-
-out.azBeam = azBeam;
-out.elBeam = elBeam;
-out.azGrid = azGrid;
-out.elGrid = elGrid;
-out.dAz = gridInfo.dAz;
-out.dU = gridInfo.dU;
-out.gridInfo = gridInfo;
-out.gridRuleName = gridInfo.ruleName;
-out.beamPeakMetricGridDb = beamPeakMetricGridDb;
-
-out.peakAz = azBeam(idxAzPeak);
-out.peakEl = elBeam(idxElPeak);
-out.peakRange = rAxis(idxRangePeak);
-out.peakVel = mtdInfo.vAxis(idxDoppPeak);
-out.peakRdMapDb = peakRdMapDb;
-out.peakRangeCutDb = peakRangeCutDb;
-out.peakDoppCutDb = peakDoppCutDb;
-
-out.cfar = build_cfar_output_local( ...
-    cfarRaw, cfarBestRdMap, cfarBestRangeCut, cfarBestDoppCut, ...
-    azGrid, elGrid, rAxis, mtdInfo.vAxis);
-end
-
-function wFull = build_weight_matrix_local(azVec, elVec, x, y, z, lambda, phaseFactor, ampVec)
-nElem = numel(x);
-nBeam = numel(azVec);
-wFull = complex(zeros(nElem, nBeam));
+beamWeights = complex(zeros(nElem, nBeam));
 for iBeam = 1:nBeam
-    aNow = steer_vec_local(azVec(iBeam), elVec(iBeam), x, y, z, lambda, phaseFactor);
-    wNow = ampVec .* aNow;
-    wFull(:, iBeam) = wNow / norm(wNow);
+    aNow = steer_vec_local(beamAz(iBeam), beamEl(iBeam), xUse, yUse, zUse, lambda, phaseFactor);
+    beamWeights(:, iBeam) = normalize_weight_local(ampVec .* aNow);
 end
+
+beamMat = beamWeights' * pcFlat;
+beamCube = reshape(beamMat, nBeam, nRange, nPulse);
+end
+
+function fine = estimate_fine_angles_local(rdCube, beamWeights, xUse, yUse, zUse, ...
+    azTriplet, elTriplet, uTriplet, centerAz, centerEl, rangeIdx, dopplerIdx, cfg)
+azResp = squeeze(rdCube([1, 2, 3], rangeIdx, dopplerIdx));
+elResp = squeeze(rdCube([4, 2, 5], rangeIdx, dopplerIdx));
+
+[azVal, azInfo] = estimate_ratio_dimension_local( ...
+    azResp(:), beamWeights(:, [1, 2, 3]), xUse, yUse, zUse, ...
+    'azimuth', azTriplet, centerEl, cfg, azTriplet(2));
+[uVal, elInfo] = estimate_ratio_dimension_local( ...
+    elResp(:), beamWeights(:, [4, 2, 5]), xUse, yUse, zUse, ...
+    'elevation', uTriplet, centerAz, cfg, uTriplet(2));
+
+fine = struct();
+fine.rangeIdx = rangeIdx;
+fine.dopplerIdx = dopplerIdx;
+fine.range = cfg.arr.c * (cfg.wf.tFast(rangeIdx) + cfg.wf.Tp / 2) / 2;
+fine.velocity = cfg.mtd.vAxis(dopplerIdx);
+fine.az = azVal;
+fine.el = asind(uVal);
+fine.u = uVal;
+fine.azMethod = azInfo.method;
+fine.elMethod = elInfo.method;
+fine.azFallbackReason = azInfo.fallbackReason;
+fine.elFallbackReason = elInfo.fallbackReason;
+fine.azTripletAngles = azTriplet;
+fine.elTripletAngles = elTriplet;
+fine.elTripletU = uTriplet;
+fine.azTripletAmps = azInfo.tripletAmps;
+fine.elTripletAmps = elInfo.tripletAmps;
+fine.azRatio = azInfo.rhoMeas;
+fine.elRatio = elInfo.rhoMeas;
+fine.azRatioLut = azInfo.rhoLut;
+fine.elRatioLut = elInfo.rhoLut;
+fine.azRatioAngleAxis = azInfo.axisScan;
+fine.elRatioAxis = elInfo.axisScan;
+fine.azRatioBranch = azInfo.rhoBranch;
+fine.elRatioBranch = elInfo.rhoBranch;
+fine.azRatioBranchAxis = azInfo.axisBranch;
+fine.elRatioBranchAxis = elInfo.axisBranch;
+fine.azRatioClamped = azInfo.rhoClamped;
+fine.elRatioClamped = elInfo.rhoClamped;
+fine.azRatioSide = azInfo.sideName;
+fine.elRatioSide = elInfo.sideName;
+fine.azTripletResponse = azResp(:).';
+fine.elTripletResponse = elResp(:).';
+fine.centerAz = centerAz;
+fine.centerEl = centerEl;
+end
+
+function [valueEst, info] = estimate_ratio_dimension_local(zTriplet, wTriplet, xUse, yUse, zUse, ...
+    modeName, axisTriplet, fixedVal, cfg, fallbackVal)
+ratioEps = cfg.beam.fineRatioEps;
+nLut = cfg.beam.fineRatioLutPoints;
+
+tripletAmps = abs(zTriplet(:)).';
+rhoMeas = (tripletAmps(3) - tripletAmps(1)) / (tripletAmps(3) + tripletAmps(1) + ratioEps);
+
+if strcmpi(modeName, 'azimuth')
+    axisScan = linspace(axisTriplet(1), axisTriplet(3), nLut);
+    rhoLut = zeros(size(axisScan));
+    for k = 1:numel(axisScan)
+        aNow = steer_vec_local(axisScan(k), fixedVal, xUse, yUse, zUse, ...
+            cfg.arr.lambda, cfg.beam.spatialPhaseFactor);
+        aLeft = abs(wTriplet(:, 1)' * aNow);
+        aRight = abs(wTriplet(:, 3)' * aNow);
+        rhoLut(k) = (aRight - aLeft) / (aRight + aLeft + ratioEps);
+    end
+else
+    axisScan = linspace(axisTriplet(1), axisTriplet(3), nLut);
+    rhoLut = zeros(size(axisScan));
+    for k = 1:numel(axisScan)
+        aNow = steer_vec_local(fixedVal, asind(axisScan(k)), xUse, yUse, zUse, ...
+            cfg.arr.lambda, cfg.beam.spatialPhaseFactor);
+        aLeft = abs(wTriplet(:, 1)' * aNow);
+        aRight = abs(wTriplet(:, 3)' * aNow);
+        rhoLut(k) = (aRight - aLeft) / (aRight + aLeft + ratioEps);
+    end
+end
+
+[valueEst, methodName, fallbackReason, invertInfo] = invert_ratio_lut_local( ...
+    rhoMeas, axisScan, rhoLut, tripletAmps, fallbackVal, ratioEps);
+
+info = struct();
+info.axisScan = axisScan;
+info.rhoLut = rhoLut;
+info.rhoMeas = rhoMeas;
+info.tripletAmps = tripletAmps;
+info.method = methodName;
+info.fallbackReason = fallbackReason;
+info.axisBranch = invertInfo.axisBranch;
+info.rhoBranch = invertInfo.rhoBranch;
+info.rhoClamped = invertInfo.rhoClamped;
+info.sideName = invertInfo.sideName;
+end
+
+function [valueEst, methodName, fallbackReason, invertInfo] = invert_ratio_lut_local( ...
+    rhoMeas, axisScan, rhoLut, tripletAmps, fallbackVal, ratioEps)
+methodName = '三波束比幅查表';
+fallbackReason = '';
+invertInfo = make_empty_ratio_invert_info_local(rhoMeas);
+
+if (tripletAmps(1) + tripletAmps(3)) <= ratioEps
+    valueEst = fallbackVal;
+    fallbackReason = '左右波束幅度和过小';
+    return;
+end
+
+validMask = isfinite(axisScan) & isfinite(rhoLut);
+axisScan = axisScan(validMask);
+rhoLut = rhoLut(validMask);
+if numel(axisScan) < 2
+    valueEst = fallbackVal;
+    fallbackReason = '比幅查找表有效点不足';
+    return;
+end
+
+% 三波束比幅先由左右幅度大小判定目标位于中心束左侧还是右侧，
+% 再只在中心束附近的主单调分支上做反演，避免多值 LUT 跳到错误分支。
+[axisBranch, rhoBranch, sideName] = select_main_ratio_branch_local(axisScan, rhoLut, tripletAmps, fallbackVal);
+invertInfo.axisBranch = axisBranch;
+invertInfo.rhoBranch = rhoBranch;
+invertInfo.sideName = sideName;
+if numel(axisBranch) < 2
+    valueEst = fallbackVal;
+    fallbackReason = '中心附近缺少可用单调分支';
+    return;
+end
+
+[rhoUnique, idxUnique] = unique(rhoBranch, 'stable');
+axisUnique = axisBranch(idxUnique);
+if numel(rhoUnique) < 2
+    valueEst = fallbackVal;
+    fallbackReason = '比幅查找表不可反演';
+    return;
+end
+
+rhoClamped = min(max(rhoMeas, min(rhoUnique)), max(rhoUnique));
+invertInfo.rhoClamped = rhoClamped;
+valueEst = interp1(rhoUnique, axisUnique, rhoClamped, 'linear');
+if ~isfinite(valueEst)
+    valueEst = fallbackVal;
+    fallbackReason = '比幅插值失败';
+end
+end
+
+function [axisBranch, rhoBranch, sideName] = select_main_ratio_branch_local(axisScan, rhoLut, tripletAmps, fallbackVal)
+axisScan = axisScan(:);
+rhoLut = rhoLut(:);
+[~, idxCenter] = min(abs(axisScan - fallbackVal));
+sideName = 'full';
+
+if idxCenter <= 1 || idxCenter >= numel(axisScan)
+    axisBranch = axisScan;
+    rhoBranch = rhoLut;
+    return;
+end
+
+if tripletAmps(3) > tripletAmps(1)
+    sideName = 'right';
+elseif tripletAmps(1) > tripletAmps(3)
+    sideName = 'left';
+else
+    sideName = 'center';
+end
+
+if strcmp(sideName, 'center')
+    sideName = select_stronger_slope_side_local(rhoLut, idxCenter);
+end
+
+if strcmp(sideName, 'left')
+    idxStart = walk_monotonic_local(rhoLut, idxCenter - 1, -1);
+    idxBranch = idxStart:idxCenter;
+else
+    idxEnd = walk_monotonic_local(rhoLut, idxCenter, +1);
+    idxBranch = idxCenter:idxEnd;
+end
+
+axisBranch = axisScan(idxBranch);
+rhoBranch = rhoLut(idxBranch);
+if numel(rhoBranch) >= 2 && rhoBranch(1) > rhoBranch(end)
+    rhoBranch = flipud(rhoBranch);
+    axisBranch = flipud(axisBranch);
+end
+end
+
+function info = make_empty_ratio_invert_info_local(rhoMeas)
+info = struct();
+info.axisBranch = [];
+info.rhoBranch = [];
+info.rhoClamped = rhoMeas;
+info.sideName = '';
+end
+
+function sideName = select_stronger_slope_side_local(rhoLut, idxCenter)
+leftSlope = abs(rhoLut(idxCenter) - rhoLut(idxCenter - 1));
+rightSlope = abs(rhoLut(idxCenter + 1) - rhoLut(idxCenter));
+if leftSlope >= rightSlope
+    sideName = 'left';
+else
+    sideName = 'right';
+end
+end
+
+function idxOut = walk_monotonic_local(rhoLut, idxStart, stepDir)
+dRho = diff(rhoLut(:));
+refSign = sign_with_fallback_local(dRho(idxStart), stepDir);
+idxOut = idxStart;
+
+if stepDir < 0
+    kVals = idxStart:-1:1;
+else
+    kVals = idxStart:numel(dRho);
+end
+
+for k = kVals
+    nowSign = sign_with_fallback_local(dRho(k), refSign);
+    if nowSign ~= refSign
+        break;
+    end
+    if stepDir < 0
+        idxOut = k;
+    else
+        idxOut = k + 1;
+    end
+end
+end
+
+function s = sign_with_fallback_local(val, fallbackSign)
+s = sign(val);
+if s == 0
+    s = sign(fallbackSign);
+end
+if s == 0
+    s = 1;
+end
+end
+
+function out = decorate_detection_output_local(detIn, localBeamIdx, localLabel, beamAz, beamEl, rAxis, vAxis)
+out = detIn;
+out.localBeamIdx = localBeamIdx;
+out.localBeamLabel = localLabel;
+out.beamAz = beamAz;
+out.beamEl = beamEl;
+out.range = index_to_axis_local(rAxis, out.rangeIdx);
+out.velocity = index_to_axis_local(vAxis, out.dopplerIdx);
+
+if out.count == 0
+    out.best = make_empty_best_detection_local(localBeamIdx, localLabel, beamAz, beamEl);
+    return;
+end
+
+out.best = decorate_best_detection_local(out.best, localBeamIdx, localLabel, beamAz, beamEl, rAxis, vAxis);
+end
+
+function out = empty_fine_result_local(reason)
+out = struct();
+out.rangeIdx = NaN;
+out.dopplerIdx = NaN;
+out.range = NaN;
+out.velocity = NaN;
+out.az = NaN;
+out.el = NaN;
+out.u = NaN;
+out.azMethod = '三波束比幅查表';
+out.elMethod = '三波束比幅查表';
+out.azFallbackReason = reason;
+out.elFallbackReason = reason;
+out.azTripletAngles = [];
+out.elTripletAngles = [];
+out.elTripletU = [];
+out.azTripletAmps = [];
+out.elTripletAmps = [];
+out.azRatio = NaN;
+out.elRatio = NaN;
+out.azRatioLut = [];
+out.elRatioLut = [];
+out.azRatioAngleAxis = [];
+out.elRatioAxis = [];
+out.azRatioBranch = [];
+out.elRatioBranch = [];
+out.azRatioBranchAxis = [];
+out.elRatioBranchAxis = [];
+out.azRatioClamped = NaN;
+out.elRatioClamped = NaN;
+out.azRatioSide = '';
+out.elRatioSide = '';
+out.azTripletResponse = [];
+out.elTripletResponse = [];
+out.centerAz = NaN;
+out.centerEl = NaN;
+end
+
+function vals = index_to_axis_local(axisVals, idx)
+if isempty(idx)
+    vals = zeros(0, 1);
+    return;
+end
+vals = axisVals(idx);
+vals = vals(:);
+end
+
+function clusters = cluster_rd_detections_local(detIn, rangeTol, doppTol)
+if detIn.count == 0
+    clusters = struct([]);
+    return;
+end
+
+nDet = detIn.count;
+visited = false(nDet, 1);
+clusters = repmat(struct( ...
+    'memberIndices', [], ...
+    'count', 0, ...
+    'bestDetectionIdx', NaN, ...
+    'bestMetric', NaN, ...
+    'metricSum', NaN, ...
+    'rangeIdxMin', NaN, ...
+    'rangeIdxMax', NaN, ...
+    'doppIdxMin', NaN, ...
+    'doppIdxMax', NaN), 0, 1);
+
+for iDet = 1:nDet
+    if visited(iDet)
+        continue;
+    end
+
+    queue = iDet;
+    visited(iDet) = true;
+    members = zeros(nDet, 1);
+    nMember = 0;
+
+    while ~isempty(queue)
+        idxNow = queue(1);
+        queue(1) = [];
+        nMember = nMember + 1;
+        members(nMember) = idxNow;
+
+        neighborMask = ~visited ...
+            & abs(detIn.rangeIdx - detIn.rangeIdx(idxNow)) <= rangeTol ...
+            & abs(detIn.dopplerIdx - detIn.dopplerIdx(idxNow)) <= doppTol;
+        neighbors = find(neighborMask);
+        if ~isempty(neighbors)
+            visited(neighbors) = true;
+            queue = [queue; neighbors]; %#ok<AGROW>
+        end
+    end
+
+    memberIdx = members(1:nMember);
+    [bestMetric, idxBestLocal] = max(detIn.metric(memberIdx));
+    metricSum = sum(detIn.metric(memberIdx));
+
+    cluster = struct();
+    cluster.memberIndices = memberIdx(:);
+    cluster.count = nMember;
+    cluster.bestDetectionIdx = memberIdx(idxBestLocal);
+    cluster.bestMetric = bestMetric;
+    cluster.metricSum = metricSum;
+    cluster.rangeIdxMin = min(detIn.rangeIdx(memberIdx));
+    cluster.rangeIdxMax = max(detIn.rangeIdx(memberIdx));
+    cluster.doppIdxMin = min(detIn.dopplerIdx(memberIdx));
+    cluster.doppIdxMax = max(detIn.dopplerIdx(memberIdx));
+    clusters(end + 1, 1) = cluster; %#ok<AGROW>
+end
+end
+
+function out = detections_from_clusters_local(detIn, clusters)
+if isempty(clusters)
+    out = make_empty_detection_list_local();
+    return;
+end
+
+pickIdx = zeros(numel(clusters), 1);
+for iCluster = 1:numel(clusters)
+    pickIdx(iCluster) = clusters(iCluster).bestDetectionIdx;
+end
+out = slice_detection_local(detIn, pickIdx);
+end
+
+function clustersOut = filter_clusters_local(clustersIn, ~, cfarCfg)
+if isempty(clustersIn)
+    clustersOut = clustersIn;
+    return;
+end
+
+clusterCount = numel(clustersIn);
+bestMetric = zeros(clusterCount, 1);
+memberCount = zeros(clusterCount, 1);
+metricSum = zeros(clusterCount, 1);
+for iCluster = 1:clusterCount
+    bestMetric(iCluster) = clustersIn(iCluster).bestMetric;
+    memberCount(iCluster) = clustersIn(iCluster).count;
+    metricSum(iCluster) = clustersIn(iCluster).metricSum;
+end
+
+metricRef = max(bestMetric);
+metricSumRef = max(metricSum);
+
+keepByPeak = bestMetric >= metricRef * cfarCfg.targetExtractMinRelMetric;
+keepBySupportedEnergy = memberCount >= cfarCfg.targetExtractMinClusterSize ...
+    & metricSum >= metricSumRef * cfarCfg.targetExtractMinRelMetricSum;
+keepMask = keepByPeak | keepBySupportedEnergy;
+
+if ~any(keepMask)
+    [~, idxStrongest] = max(bestMetric);
+    keepMask(idxStrongest) = true;
+end
+
+clustersOut = clustersIn(keepMask);
+if isempty(clustersOut)
+    return;
+end
+
+[~, order] = sortrows([[clustersOut.bestMetric].', [clustersOut.count].', [clustersOut.metricSum].'], ...
+    [-1, -2, -3]);
+clustersOut = clustersOut(order);
+end
+
+function out = slice_detection_local(detIn, pickIdx)
+if isempty(pickIdx)
+    out = make_empty_detection_list_local();
+    return;
+end
+
+pickIdx = pickIdx(:);
+out = struct();
+out.beamIdx = detIn.beamIdx(pickIdx);
+out.rangeIdx = detIn.rangeIdx(pickIdx);
+out.dopplerIdx = detIn.dopplerIdx(pickIdx);
+out.metric = detIn.metric(pickIdx);
+out.count = numel(pickIdx);
+
+[out.metric, order] = sort(out.metric, 'descend');
+out.beamIdx = out.beamIdx(order);
+out.rangeIdx = out.rangeIdx(order);
+out.dopplerIdx = out.dopplerIdx(order);
+
+out.best = struct();
+out.best.beamIdx = out.beamIdx(1);
+out.best.rangeIdx = out.rangeIdx(1);
+out.best.dopplerIdx = out.dopplerIdx(1);
+out.best.metric = out.metric(1);
+end
+
+function out = make_empty_detection_list_local()
+out = struct();
+out.beamIdx = zeros(0, 1);
+out.rangeIdx = zeros(0, 1);
+out.dopplerIdx = zeros(0, 1);
+out.metric = zeros(0, 1);
+out.count = 0;
+out.best = struct();
+end
+
+function best = decorate_best_detection_local(best, localBeamIdx, localLabel, beamAz, beamEl, rAxis, vAxis)
+best.localBeamIdx = localBeamIdx;
+best.localBeamLabel = localLabel;
+best.range = rAxis(best.rangeIdx);
+best.velocity = vAxis(best.dopplerIdx);
+best.beamAz = beamAz;
+best.beamEl = beamEl;
+end
+
+function best = make_empty_best_detection_local(localBeamIdx, localLabel, beamAz, beamEl)
+best = struct();
+best.localBeamIdx = localBeamIdx;
+best.localBeamLabel = localLabel;
+best.rangeIdx = NaN;
+best.dopplerIdx = NaN;
+best.metric = NaN;
+best.range = NaN;
+best.velocity = NaN;
+best.beamAz = beamAz;
+best.beamEl = beamEl;
 end
 
 function win = make_window_local(n, beam, dimName)
@@ -137,7 +706,7 @@ switch lower(type)
     case 'hann'
         win = hann(n);
     otherwise
-        error('Unsupported window type: %s', type);
+        error('不支持的窗函数类型: %s', type);
 end
 
 win = win(:);
@@ -152,172 +721,10 @@ phase = phaseFactor * 2 * pi / lambda * ...
 a = exp(1j * phase);
 end
 
-function out = build_cfar_output_local(cfarRaw, bestRdMap, bestRangeCut, bestDoppCut, azGrid, elGrid, rAxis, vAxis)
-% Keep raw hits for diagnostics, but collapse the default output to one target:
-% 1) strongest hit in each beam
-% 2) cluster around the global strongest candidate
-% 3) keep only the strongest detection in that cluster
-
-out = struct();
-
-rawOut = make_detection_output_local(cfarRaw, azGrid, elGrid, rAxis, vAxis);
-perBeamRaw = keep_strongest_per_beam_local(cfarRaw);
-perBeamOut = make_detection_output_local(perBeamRaw, azGrid, elGrid, rAxis, vAxis);
-
-clusterRaw = cluster_around_global_best_local(perBeamRaw, elGrid);
-clusterOut = make_detection_output_local(clusterRaw, azGrid, elGrid, rAxis, vAxis);
-
-finalRaw = keep_global_best_local(clusterRaw);
-finalOut = make_detection_output_local(finalRaw, azGrid, elGrid, rAxis, vAxis);
-
-out.raw = rawOut;
-out.perBeam = perBeamOut;
-out.cluster = clusterOut;
-out.rawCount = rawOut.count;
-out.perBeamCount = perBeamOut.count;
-out.clusterCount = clusterOut.count;
-
-out.count = finalOut.count;
-out.beamIdx = finalOut.beamIdx;
-out.rangeIdx = finalOut.rangeIdx;
-out.dopplerIdx = finalOut.dopplerIdx;
-out.metric = finalOut.metric;
-out.az = finalOut.az;
-out.el = finalOut.el;
-out.range = finalOut.range;
-out.velocity = finalOut.velocity;
-
-best = finalOut.best;
-best.rdMapDb = 20 * log10(bestRdMap / max(bestRdMap(:)) + eps);
-best.rangeCutDb = 20 * log10(bestRangeCut / max(bestRangeCut) + eps);
-best.doppCutDb = 20 * log10(bestDoppCut / max(bestDoppCut) + eps);
-out.best = best;
+function w = normalize_weight_local(w)
+w = w / norm(w);
 end
 
-function out = make_detection_output_local(detIn, azGrid, elGrid, rAxis, vAxis)
-out = struct();
-
-if detIn.count == 0
-    out.count = 0;
-    out.beamIdx = zeros(0, 1);
-    out.rangeIdx = zeros(0, 1);
-    out.dopplerIdx = zeros(0, 1);
-    out.metric = zeros(0, 1);
-    out.az = zeros(0, 1);
-    out.el = zeros(0, 1);
-    out.range = zeros(0, 1);
-    out.velocity = zeros(0, 1);
-    out.best = struct();
-    return;
-end
-
-out.count = detIn.count;
-out.beamIdx = detIn.beamIdx;
-out.rangeIdx = detIn.rangeIdx;
-out.dopplerIdx = detIn.dopplerIdx;
-out.metric = detIn.metric;
-out.az = azGrid(detIn.beamIdx);
-out.el = elGrid(detIn.beamIdx);
-out.range = rAxis(detIn.rangeIdx).';
-out.velocity = vAxis(detIn.dopplerIdx).';
-
-best = detIn.best;
-best.az = azGrid(best.beamIdx);
-best.el = elGrid(best.beamIdx);
-best.range = rAxis(best.rangeIdx);
-best.velocity = vAxis(best.dopplerIdx);
-out.best = best;
-end
-
-function out = keep_strongest_per_beam_local(detIn)
-if detIn.count == 0
-    out = make_empty_detection_local();
-    return;
-end
-
-[beamUnique, ~, groupIdx] = unique(detIn.beamIdx, 'stable');
-nGroup = numel(beamUnique);
-pickIdx = zeros(nGroup, 1);
-
-for iGroup = 1:nGroup
-    idxNow = find(groupIdx == iGroup);
-    [~, idxBestLocal] = max(detIn.metric(idxNow));
-    pickIdx(iGroup) = idxNow(idxBestLocal);
-end
-
-out = slice_detection_local(detIn, pickIdx);
-end
-
-function out = cluster_around_global_best_local(detIn, elGrid)
-if detIn.count == 0
-    out = make_empty_detection_local();
-    return;
-end
-
-nElBeam = numel(unique(elGrid));
-[azIdxAll, elIdxAll] = beam_subscripts_local(detIn.beamIdx, nElBeam);
-[azIdxBest, elIdxBest] = beam_subscripts_local(detIn.best.beamIdx, nElBeam);
-
-azTol = 1;
-elTol = 1;
-rangeTol = 1;
-doppTol = 1;
-
-keepMask = abs(azIdxAll - azIdxBest) <= azTol ...
-    & abs(elIdxAll - elIdxBest) <= elTol ...
-    & abs(detIn.rangeIdx - detIn.best.rangeIdx) <= rangeTol ...
-    & abs(detIn.dopplerIdx - detIn.best.dopplerIdx) <= doppTol;
-
-out = slice_detection_local(detIn, find(keepMask));
-end
-
-function out = keep_global_best_local(detIn)
-if detIn.count == 0
-    out = make_empty_detection_local();
-    return;
-end
-
-out = slice_detection_local(detIn, 1);
-end
-
-function out = slice_detection_local(detIn, pickIdx)
-if isempty(pickIdx)
-    out = make_empty_detection_local();
-    return;
-end
-
-pickIdx = pickIdx(:);
-out = struct();
-out.beamIdx = detIn.beamIdx(pickIdx);
-out.rangeIdx = detIn.rangeIdx(pickIdx);
-out.dopplerIdx = detIn.dopplerIdx(pickIdx);
-out.metric = detIn.metric(pickIdx);
-out.count = numel(pickIdx);
-
-[metricSorted, order] = sort(out.metric, 'descend');
-out.metric = metricSorted;
-out.beamIdx = out.beamIdx(order);
-out.rangeIdx = out.rangeIdx(order);
-out.dopplerIdx = out.dopplerIdx(order);
-
-out.best = struct();
-out.best.beamIdx = out.beamIdx(1);
-out.best.rangeIdx = out.rangeIdx(1);
-out.best.dopplerIdx = out.dopplerIdx(1);
-out.best.metric = out.metric(1);
-end
-
-function out = make_empty_detection_local()
-out = struct();
-out.beamIdx = zeros(0, 1);
-out.rangeIdx = zeros(0, 1);
-out.dopplerIdx = zeros(0, 1);
-out.metric = zeros(0, 1);
-out.count = 0;
-out.best = struct();
-end
-
-function [azIdx, elIdx] = beam_subscripts_local(beamIdx, nElBeam)
-azIdx = floor((beamIdx - 1) / nElBeam) + 1;
-elIdx = mod(beamIdx - 1, nElBeam) + 1;
+function ang = wrap180_local(ang)
+ang = mod(ang + 180, 360) - 180;
 end

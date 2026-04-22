@@ -47,6 +47,9 @@ cfg.beam.elTaylorNbar = 4;
 cfg.beam.elTaylorSLL = -30;
 % phaseFactor = 2 表示导向相位按双程传播模型构造。
 cfg.beam.spatialPhaseFactor = 2;
+cfg.beam.nBeamPerDim = 3;
+cfg.beam.fineRatioLutPoints = 201;
+cfg.beam.fineRatioEps = 1e-12;
 
 % 单目标参数。
 cfg.tgt = struct();
@@ -56,11 +59,13 @@ cfg.tgt.az = 8;
 cfg.tgt.el = 10;
 cfg.tgt.amp = 1.0;
 
-% 验证阶段默认将目标真值作为当前扇区中心。
-% 工程阶段可在选取工作子阵/排布波束前，将这两个量替换为
-% 粗扫或扇区调度模块给出的结果。
-cfg.beam.azSectorCenter = cfg.tgt.az;
-cfg.beam.elSectorCenter = cfg.tgt.el;
+% 工作扇区中心 —— 仅用于从圆柱阵选"当前指向对应的工作子阵"。
+% 它来自扫描调度/跟踪模块，是"雷达现在朝哪儿看"的系统参数，
+% 和目标真值无关。验证阶段手动设为目标附近只是为了让目标落在
+% 子阵视场内；工程阶段由外部模块赋值。
+% 波束的实际位置不再由它决定，而是由全网格粗扫峰值决定。
+cfg.beam.azSectorCenter = 8;
+cfg.beam.elSectorCenter = 10;
 
 % 一维验证脚本中，另一维先固定指向扇区中心。
 cfg.beam.azSteer = cfg.beam.azSectorCenter;
@@ -74,17 +79,22 @@ cfg.sim.sigmaN = 0.0;
 cfg.sim.pElem = 1;
 cfg.sim.useSector = true;
 
-% 当前二维联合链路只在目标邻近距离窗内验证，避免数据立方体过大。
-cfg.proc = struct();
-cfg.proc.rangeMargin = 40;
-
 % CFAR 参数。
 cfg.cfar = struct();
 cfg.cfar.method = 'CA';
 cfg.cfar.detectorType = 'Square';
 cfg.cfar.protectCell = 2;
 cfg.cfar.referenceCell = 8;
-cfg.cfar.thresholdScale = 10;
+cfg.cfar.thresholdScale = 20;
+cfg.cfar.localPeakRangeHalfWidth = 1;
+cfg.cfar.localPeakDoppHalfWidth = 1;
+cfg.cfar.clusterAzTol = 1;
+cfg.cfar.clusterElTol = 1;
+cfg.cfar.clusterRangeTol = 1;
+cfg.cfar.clusterDoppTol = 1;
+cfg.cfar.targetExtractMinClusterSize = 2;
+cfg.cfar.targetExtractMinRelMetric = 0.2;
+cfg.cfar.targetExtractMinRelMetricSum = 1e-4;
 
 % MTD 参数。
 cfg.mtd = struct();
