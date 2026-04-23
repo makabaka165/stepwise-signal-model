@@ -1,5 +1,5 @@
-function out = bf_joint_2d(pcCube, cfg)
-%BF_JOINT_2D 第 5 步局部链路：五个唯一波束、中心波束 CFAR、最强目标三波束比幅测角。
+﻿function out = bf_joint_2d(pcCube, cfg)
+%BF_JOINT_2D 绗?5 姝ュ眬閮ㄩ摼璺細浜斾釜鍞竴娉㈡潫銆佷腑蹇冩尝鏉?CFAR銆佹渶寮虹洰鏍囦笁娉㈡潫姣斿箙娴嬭銆?
 
 arr = cfg.arr;
 wf = cfg.wf;
@@ -26,9 +26,15 @@ azBeamAxis = azGrid.beam(:).';
 elBeamAxis = elGrid.beam(:).';
 uBeamAxis = elGrid.uBeam(:).';
 
-% 仿真阶段直接用目标真值附近的最近波束中心来定义局部处理中心。
-centerAzIdx = nearest_center_index_local(azBeamAxis, cfg.tgt.az, 'azimuth');
-centerElIdx = nearest_center_index_local(elBeamAxis, cfg.tgt.el, 'elevation');
+% 上一 CPI 传来的角度只作为本 CPI 的外部先验。
+[priorAzRef, priorElRef, priorMethod] = get_prior_reference_local(cfg);
+priorAzIdx = nearest_center_index_local(azBeamAxis, priorAzRef, 'azimuth');
+priorElIdx = nearest_center_index_local(elBeamAxis, priorElRef, 'elevation');
+ampVec = build_amplitude_template_local(nAzUse, nElUse, beam);
+% 仅在先验附近的小窗口里比较当前 CPI 响应，选出真正的粗中心束。
+[centerAzIdx, centerElIdx, coarseSelection] = select_coarse_center_local( ...
+    pcCube, xUse, yUse, zUse, ampVec, azBeamAxis, elBeamAxis, uBeamAxis, ...
+    priorAzRef, priorElRef, priorAzIdx, priorElIdx, cfg);
 
 azTripletIdx = centerAzIdx + (-1:1);
 elTripletIdx = centerElIdx + (-1:1);
@@ -44,8 +50,7 @@ localBeamAz = [azTriplet(1), centerAz, azTriplet(3), centerAz, centerAz];
 localBeamEl = [centerEl, centerEl, centerEl, elTriplet(1), elTriplet(3)];
 localLabels = {'方位左束', '中心束', '方位右束', '俯仰下束', '俯仰上束'};
 
-% 五个唯一波束统一做波束形成和 MTD。
-ampVec = build_amplitude_template_local(nAzUse, nElUse, beam);
+% 浜斾釜鍞竴娉㈡潫缁熶竴鍋氭尝鏉熷舰鎴愬拰 MTD銆?
 [beamCube, beamWeights] = form_local_beams_local(pcCube, localBeamAz, localBeamEl, ...
     xUse, yUse, zUse, arr.lambda, beam.spatialPhaseFactor, ampVec);
 [rdCube, mtdInfo] = mtd_process(beamCube, cfg);
@@ -54,7 +59,7 @@ rdMag = abs(rdCube);
 rAxis = arr.c * (wf.tFast + wf.Tp / 2) / 2;
 vAxis = mtdInfo.vAxis;
 
-% 只在中心波束 RD 图上做检测，再从检测点中提取目标代表点。
+% 鍙湪涓績娉㈡潫 RD 鍥句笂鍋氭娴嬶紝鍐嶄粠妫€娴嬬偣涓彁鍙栫洰鏍囦唬琛ㄧ偣銆?
 centerLocalIdx = 2;
 cfarRaw = detect_rd_cfar_1d(rdCube(centerLocalIdx, :, :), cfg.cfar);
 cfarRaw = decorate_detection_output_local(cfarRaw, centerLocalIdx, localLabels{centerLocalIdx}, ...
@@ -70,28 +75,25 @@ candidateRaw = detections_from_clusters_local(cfarRaw, clustersRaw);
 candidateTargets = decorate_detection_output_local(candidateRaw, centerLocalIdx, localLabels{centerLocalIdx}, ...
     centerAz, centerEl, rAxis, vAxis);
 
-clusters = filter_clusters_local(clustersRaw, cfarRaw, cfg.cfar);
+% 聚类后按显式的 count + metricSum 规则筛掉杂散簇。
+[clusters, targetExtractInfo] = filter_clusters_local(clustersRaw, cfarRaw, cfg.cfar);
 targetRaw = detections_from_clusters_local(cfarRaw, clusters);
 targets = decorate_detection_output_local(targetRaw, centerLocalIdx, localLabels{centerLocalIdx}, ...
     centerAz, centerEl, rAxis, vAxis);
 
 if targets.count > 0
     finalDetection = targets.best;
-elseif candidateTargets.count > 0
-    finalDetection = candidateTargets.best;
-elseif cfarRaw.count > 0
-    finalDetection = cfarRaw.best;
 else
     finalDetection = make_empty_best_detection_local(centerLocalIdx, localLabels{centerLocalIdx}, centerAz, centerEl);
 end
 
-% 三波束比幅测角只对最终选中的那个目标点执行。
-if finalDetection.metric == finalDetection.metric
+% 涓夋尝鏉熸瘮骞呮祴瑙掑彧瀵规渶缁堥€変腑鐨勯偅涓洰鏍囩偣鎵ц銆?
+if isfinite(finalDetection.metric)
     fine = estimate_fine_angles_local(rdCube, beamWeights, xUse, yUse, zUse, ...
         azTriplet, elTriplet, uTriplet, centerAz, centerEl, ...
         finalDetection.rangeIdx, finalDetection.dopplerIdx, cfg);
 else
-    fine = empty_fine_result_local('中心波束 CFAR 未检出目标');
+    fine = empty_fine_result_local('中心束 CFAR 未检出有效目标');
 end
 
 out = struct();
@@ -110,17 +112,20 @@ out.uGrid = uBeamAxis;
 out.arrInfo = arrInfo;
 
 out.selection = struct();
-out.selection.method = '仿真阶段按 cfg.tgt.az/el 选择最近波束中心';
-out.selection.centerAzIdx = centerAzIdx;
-out.selection.centerElIdx = centerElIdx;
-out.selection.centerAz = centerAz;
-out.selection.centerEl = centerEl;
-out.selection.centerU = centerU;
+out.selection.priorMethod = priorMethod;
+out.selection.priorAz = priorAzRef;
+out.selection.priorEl = priorElRef;
+out.selection.priorAzIdx = priorAzIdx;
+out.selection.priorElIdx = priorElIdx;
+out.selection.coarseCenterAz = centerAz;
+out.selection.coarseCenterEl = centerEl;
 out.selection.azTripletIdx = azTripletIdx;
 out.selection.elTripletIdx = elTripletIdx;
 out.selection.azTriplet = azTriplet;
 out.selection.elTriplet = elTriplet;
 out.selection.uTriplet = uTriplet;
+out.selection.coarseSearch = coarseSelection.search;
+out.selection.coarseCenter = coarseSelection.center;
 
 out.local = struct();
 out.local.labels = localLabels;
@@ -130,6 +135,9 @@ out.local.beamCube = beamCube;
 out.local.rdCube = rdCube;
 out.local.rdMag = rdMag;
 out.local.weights = beamWeights;
+out.local.xUse = xUse;
+out.local.yUse = yUse;
+out.local.zUse = zUse;
 
 out.azGroup = struct();
 out.azGroup.localIdx = [1, 2, 3];
@@ -153,6 +161,7 @@ out.clustersRaw = clustersRaw;
 out.candidateTargets = candidateTargets;
 out.clusters = clusters;
 out.targets = targets;
+out.targetExtractInfo = targetExtractInfo;
 out.finalDetection = finalDetection;
 out.fine = fine;
 out.bestAz = fine.az;
@@ -180,13 +189,13 @@ geom.phiUseRel = wrap180_local(arrInfo.phiCol - cfg.beam.azSectorCenter);
 end
 
 function idx = nearest_center_index_local(axisVals, targetVal, dimName)
-[~, idx] = min(abs(axisVals - targetVal));
-if idx == 1 || idx == numel(axisVals)
-    errId = sprintf('bf_joint_2d:%sCenterAtBoundary', dimName);
+if numel(axisVals) < 3
+    errId = sprintf('bf_joint_2d:%sAxisTooShort', dimName);
     error(errId, ...
-        '与目标最近的 %s 波束中心落在扫描边界，无法构成三波束。', ...
-        dimName);
+        '%s 波束轴至少需要 3 个点，才能构成三波束。', dimName);
 end
+[~, idx] = min(abs(axisVals - targetVal));
+idx = min(max(idx, 2), numel(axisVals) - 1);
 end
 
 function ampVec = build_amplitude_template_local(nAzUse, nElUse, beam)
@@ -258,8 +267,8 @@ fine.azRatioSide = azInfo.sideName;
 fine.elRatioSide = elInfo.sideName;
 fine.azTripletResponse = azResp(:).';
 fine.elTripletResponse = elResp(:).';
-fine.centerAz = centerAz;
-fine.centerEl = centerEl;
+fine.coarseCenterAz = centerAz;
+fine.coarseCenterEl = centerEl;
 end
 
 function [valueEst, info] = estimate_ratio_dimension_local(zTriplet, wTriplet, xUse, yUse, zUse, ...
@@ -316,7 +325,7 @@ invertInfo = make_empty_ratio_invert_info_local(rhoMeas);
 
 if (tripletAmps(1) + tripletAmps(3)) <= ratioEps
     valueEst = fallbackVal;
-    fallbackReason = '左右波束幅度和过小';
+    fallbackReason = '旁瓣幅度和过小';
     return;
 end
 
@@ -325,19 +334,19 @@ axisScan = axisScan(validMask);
 rhoLut = rhoLut(validMask);
 if numel(axisScan) < 2
     valueEst = fallbackVal;
-    fallbackReason = '比幅查找表有效点不足';
+    fallbackReason = '姣斿箙鏌ユ壘琛ㄦ湁鏁堢偣涓嶈冻';
     return;
 end
 
-% 三波束比幅先由左右幅度大小判定目标位于中心束左侧还是右侧，
-% 再只在中心束附近的主单调分支上做反演，避免多值 LUT 跳到错误分支。
+% 涓夋尝鏉熸瘮骞呭厛鐢卞乏鍙冲箙搴﹀ぇ灏忓垽瀹氱洰鏍囦綅浜庝腑蹇冩潫宸︿晶杩樻槸鍙充晶锛?
+% 鍐嶅彧鍦ㄤ腑蹇冩潫闄勮繎鐨勪富鍗曡皟鍒嗘敮涓婂仛鍙嶆紨锛岄伩鍏嶅鍊?LUT 璺冲埌閿欒鍒嗘敮銆?
 [axisBranch, rhoBranch, sideName] = select_main_ratio_branch_local(axisScan, rhoLut, tripletAmps, fallbackVal);
 invertInfo.axisBranch = axisBranch;
 invertInfo.rhoBranch = rhoBranch;
 invertInfo.sideName = sideName;
 if numel(axisBranch) < 2
     valueEst = fallbackVal;
-    fallbackReason = '中心附近缺少可用单调分支';
+    fallbackReason = '涓績闄勮繎缂哄皯鍙敤鍗曡皟鍒嗘敮';
     return;
 end
 
@@ -345,7 +354,7 @@ end
 axisUnique = axisBranch(idxUnique);
 if numel(rhoUnique) < 2
     valueEst = fallbackVal;
-    fallbackReason = '比幅查找表不可反演';
+    fallbackReason = '比幅查表分支不可反演';
     return;
 end
 
@@ -354,7 +363,7 @@ invertInfo.rhoClamped = rhoClamped;
 valueEst = interp1(rhoUnique, axisUnique, rhoClamped, 'linear');
 if ~isfinite(valueEst)
     valueEst = fallbackVal;
-    fallbackReason = '比幅插值失败';
+    fallbackReason = '比幅查表插值失败';
 end
 end
 
@@ -501,8 +510,8 @@ out.azRatioSide = '';
 out.elRatioSide = '';
 out.azTripletResponse = [];
 out.elTripletResponse = [];
-out.centerAz = NaN;
-out.centerEl = NaN;
+out.coarseCenterAz = NaN;
+out.coarseCenterEl = NaN;
 end
 
 function vals = index_to_axis_local(axisVals, idx)
@@ -521,7 +530,7 @@ if detIn.count == 0
 end
 
 nDet = detIn.count;
-visited = false(nDet, 1);
+assigned = false(nDet, 1);
 clusters = repmat(struct( ...
     'memberIndices', [], ...
     'count', 0, ...
@@ -531,35 +540,24 @@ clusters = repmat(struct( ...
     'rangeIdxMin', NaN, ...
     'rangeIdxMax', NaN, ...
     'doppIdxMin', NaN, ...
-    'doppIdxMax', NaN), 0, 1);
+    'doppIdxMax', NaN, ...
+    'seedRangeIdx', NaN, ...
+    'seedDoppIdx', NaN), 0, 1);
 
 for iDet = 1:nDet
-    if visited(iDet)
+    if assigned(iDet)
         continue;
     end
 
-    queue = iDet;
-    visited(iDet) = true;
-    members = zeros(nDet, 1);
-    nMember = 0;
+    seedRangeIdx = detIn.rangeIdx(iDet);
+    seedDoppIdx = detIn.dopplerIdx(iDet);
+    memberMask = ~assigned ...
+        & abs(detIn.rangeIdx - seedRangeIdx) <= rangeTol ...
+        & abs(detIn.dopplerIdx - seedDoppIdx) <= doppTol;
+    memberIdx = find(memberMask);
+    assigned(memberIdx) = true;
 
-    while ~isempty(queue)
-        idxNow = queue(1);
-        queue(1) = [];
-        nMember = nMember + 1;
-        members(nMember) = idxNow;
-
-        neighborMask = ~visited ...
-            & abs(detIn.rangeIdx - detIn.rangeIdx(idxNow)) <= rangeTol ...
-            & abs(detIn.dopplerIdx - detIn.dopplerIdx(idxNow)) <= doppTol;
-        neighbors = find(neighborMask);
-        if ~isempty(neighbors)
-            visited(neighbors) = true;
-            queue = [queue; neighbors]; %#ok<AGROW>
-        end
-    end
-
-    memberIdx = members(1:nMember);
+    nMember = numel(memberIdx);
     [bestMetric, idxBestLocal] = max(detIn.metric(memberIdx));
     metricSum = sum(detIn.metric(memberIdx));
 
@@ -573,8 +571,163 @@ for iDet = 1:nDet
     cluster.rangeIdxMax = max(detIn.rangeIdx(memberIdx));
     cluster.doppIdxMin = min(detIn.dopplerIdx(memberIdx));
     cluster.doppIdxMax = max(detIn.dopplerIdx(memberIdx));
+    cluster.seedRangeIdx = seedRangeIdx;
+    cluster.seedDoppIdx = seedDoppIdx;
     clusters(end + 1, 1) = cluster; %#ok<AGROW>
 end
+end
+
+function [azRef, elRef, methodName] = get_prior_reference_local(cfg)
+azRef = cfg.beam.azSectorCenter;
+elRef = cfg.beam.elSectorCenter;
+methodName = '扇区中心先验';
+if isfield(cfg.beam, 'priorSource') && ~isempty(cfg.beam.priorSource)
+    methodName = sprintf('扇区中心先验：%s', cfg.beam.priorSource);
+end
+end
+
+
+function [centerAzIdx, centerElIdx, coarseSelection] = select_coarse_center_local( ...
+    pcCube, xUse, yUse, zUse, ampVec, azBeamAxis, elBeamAxis, uBeamAxis, ...
+    priorAzRef, priorElRef, priorAzIdx, priorElIdx, cfg)
+% 在先验附近的局部窗口内比较响应强度，选出当前 CPI 的粗中心束。
+azHalfWidth = 1;
+elHalfWidth = 1;
+if isfield(cfg, 'track') && isfield(cfg.track, 'coarseSearchHalfWidthAz') ...
+        && ~isempty(cfg.track.coarseSearchHalfWidthAz)
+    azHalfWidth = cfg.track.coarseSearchHalfWidthAz;
+end
+if isfield(cfg, 'track') && isfield(cfg.track, 'coarseSearchHalfWidthEl') ...
+        && ~isempty(cfg.track.coarseSearchHalfWidthEl)
+    elHalfWidth = cfg.track.coarseSearchHalfWidthEl;
+end
+
+azSearchIdx = build_local_search_index_set_local( ...
+    priorAzIdx, azHalfWidth, numel(azBeamAxis));
+elSearchIdx = build_local_search_index_set_local( ...
+    priorElIdx, elHalfWidth, numel(elBeamAxis));
+
+[azIdxGrid, elIdxGrid] = ndgrid(azSearchIdx, elSearchIdx);
+candidateAzIdx = azIdxGrid(:);
+candidateElIdx = elIdxGrid(:);
+candidateAz = azBeamAxis(candidateAzIdx);
+candidateEl = elBeamAxis(candidateElIdx);
+candidateU = uBeamAxis(candidateElIdx);
+
+[beamCube, ~] = form_local_beams_local( ...
+    pcCube, candidateAz, candidateEl, xUse, yUse, zUse, ...
+    cfg.arr.lambda, cfg.beam.spatialPhaseFactor, ampVec);
+[rdCube, mtdInfo] = mtd_process(beamCube, cfg);
+rdMag = abs(rdCube);
+
+rAxis = cfg.arr.c * (cfg.wf.tFast + cfg.wf.Tp / 2) / 2;
+vAxis = mtdInfo.vAxis;
+[rangeGateIdx, dopplerGateIdx, gateInfo] = get_coarse_search_gate_local(rAxis, vAxis, cfg);
+
+candidateCount = numel(candidateAzIdx);
+candidateScore = zeros(candidateCount, 1);
+candidatePeakRangeIdx = zeros(candidateCount, 1);
+candidatePeakDopplerIdx = zeros(candidateCount, 1);
+for iCandidate = 1:candidateCount
+    rdNow = squeeze(rdMag(iCandidate, rangeGateIdx, dopplerGateIdx));
+    rdNow = reshape(rdNow, numel(rangeGateIdx), numel(dopplerGateIdx));
+    [candidateScore(iCandidate), linIdx] = max(rdNow(:));
+    [idxRangeLocal, idxDoppLocal] = ind2sub(size(rdNow), linIdx);
+    candidatePeakRangeIdx(iCandidate) = rangeGateIdx(idxRangeLocal);
+    candidatePeakDopplerIdx(iCandidate) = dopplerGateIdx(idxDoppLocal);
+end
+
+azSpacing = max(median(abs(diff(azBeamAxis))), eps);
+elSpacing = max(median(abs(diff(elBeamAxis))), eps);
+candidateOffset = ((candidateAz - priorAzRef) / azSpacing) .^ 2 ...
+    + ((candidateEl - priorElRef) / elSpacing) .^ 2;
+[~, order] = sortrows([-candidateScore(:), candidateOffset(:)], [1, 2]);
+pickIdx = order(1);
+
+centerAzIdx = candidateAzIdx(pickIdx);
+centerElIdx = candidateElIdx(pickIdx);
+
+coarseSelection = struct();
+coarseSelection.center = struct( ...
+    'azIdx', centerAzIdx, ...
+    'elIdx', centerElIdx, ...
+    'az', candidateAz(pickIdx), ...
+    'el', candidateEl(pickIdx), ...
+    'u', candidateU(pickIdx), ...
+    'score', candidateScore(pickIdx), ...
+    'peakRangeIdx', candidatePeakRangeIdx(pickIdx), ...
+    'peakDopplerIdx', candidatePeakDopplerIdx(pickIdx));
+coarseSelection.search = struct( ...
+    'azIdx', azSearchIdx(:).', ...
+    'elIdx', elSearchIdx(:).', ...
+    'azAxis', azBeamAxis(azSearchIdx), ...
+    'elAxis', elBeamAxis(elSearchIdx), ...
+    'uAxis', uBeamAxis(elSearchIdx), ...
+    'scoreGrid', reshape(candidateScore, numel(azSearchIdx), numel(elSearchIdx)), ...
+    'peakRangeIdxGrid', reshape(candidatePeakRangeIdx, numel(azSearchIdx), numel(elSearchIdx)), ...
+    'peakDopplerIdxGrid', reshape(candidatePeakDopplerIdx, numel(azSearchIdx), numel(elSearchIdx)), ...
+    'gate', gateInfo);
+end
+
+function idxVals = build_local_search_index_set_local(centerIdx, halfWidth, axisCount)
+if axisCount < 3
+    error('bf_joint_2d:BeamAxisTooShort', ...
+        '波束轴至少需要 3 个点，才能构成三波束。');
+end
+
+lo = max(2, centerIdx - halfWidth);
+hi = min(axisCount - 1, centerIdx + halfWidth);
+idxVals = lo:hi;
+if isempty(idxVals)
+    idxVals = min(max(centerIdx, 2), axisCount - 1);
+end
+end
+
+function [rangeGateIdx, dopplerGateIdx, gateInfo] = get_coarse_search_gate_local(rAxis, vAxis, cfg)
+rangeGateIdx = 1:numel(rAxis);
+dopplerGateIdx = 1:numel(vAxis);
+gateInfo = struct();
+gateInfo.mode = 'full_rd';
+gateInfo.rangeIdx = rangeGateIdx;
+gateInfo.dopplerIdx = dopplerGateIdx;
+gateInfo.priorRange = NaN;
+gateInfo.priorVelocity = NaN;
+
+hasRangePrior = isfield(cfg, 'track') && isfield(cfg.track, 'priorRange') ...
+    && isfinite(cfg.track.priorRange);
+hasVelocityPrior = isfield(cfg, 'track') && isfield(cfg.track, 'priorVelocity') ...
+    && isfinite(cfg.track.priorVelocity);
+usePredictionGate = isfield(cfg, 'track') && isfield(cfg.track, 'coarseSearchUsePredictionGate') ...
+    && cfg.track.coarseSearchUsePredictionGate;
+if ~(usePredictionGate && hasRangePrior && hasVelocityPrior)
+    return;
+end
+
+rangeGateWidth = inf;
+dopplerGateWidth = inf;
+if isfield(cfg.track, 'associationRangeGate') && isfinite(cfg.track.associationRangeGate)
+    rangeGateWidth = cfg.track.associationRangeGate;
+end
+if isfield(cfg.track, 'associationVelocityGate') && isfinite(cfg.track.associationVelocityGate)
+    dopplerGateWidth = cfg.track.associationVelocityGate;
+end
+
+rangeGateIdx = find(abs(rAxis - cfg.track.priorRange) <= rangeGateWidth);
+dopplerGateIdx = find(abs(vAxis - cfg.track.priorVelocity) <= dopplerGateWidth);
+if isempty(rangeGateIdx)
+    [~, idxRange] = min(abs(rAxis - cfg.track.priorRange));
+    rangeGateIdx = idxRange;
+end
+if isempty(dopplerGateIdx)
+    [~, idxDopp] = min(abs(vAxis - cfg.track.priorVelocity));
+    dopplerGateIdx = idxDopp;
+end
+
+gateInfo.mode = 'predicted_range_velocity_gate';
+gateInfo.rangeIdx = rangeGateIdx;
+gateInfo.dopplerIdx = dopplerGateIdx;
+gateInfo.priorRange = cfg.track.priorRange;
+gateInfo.priorVelocity = cfg.track.priorVelocity;
 end
 
 function out = detections_from_clusters_local(detIn, clusters)
@@ -590,34 +743,64 @@ end
 out = slice_detection_local(detIn, pickIdx);
 end
 
-function clustersOut = filter_clusters_local(clustersIn, ~, cfarCfg)
+function [clustersOut, info] = filter_clusters_local(clustersIn, ~, cfarCfg)
+info = make_empty_target_extract_info_local(cfarCfg);
 if isempty(clustersIn)
     clustersOut = clustersIn;
     return;
 end
 
 clusterCount = numel(clustersIn);
-bestMetric = zeros(clusterCount, 1);
 memberCount = zeros(clusterCount, 1);
 metricSum = zeros(clusterCount, 1);
 for iCluster = 1:clusterCount
-    bestMetric(iCluster) = clustersIn(iCluster).bestMetric;
     memberCount(iCluster) = clustersIn(iCluster).count;
     metricSum(iCluster) = clustersIn(iCluster).metricSum;
 end
 
-metricRef = max(bestMetric);
-metricSumRef = max(metricSum);
+info.clusterCountTotal = clusterCount;
+info.clusterMetricSum = metricSum;
+info.clusterMemberCount = memberCount;
 
-keepByPeak = bestMetric >= metricRef * cfarCfg.targetExtractMinRelMetric;
-keepBySupportedEnergy = memberCount >= cfarCfg.targetExtractMinClusterSize ...
-    & metricSum >= metricSumRef * cfarCfg.targetExtractMinRelMetricSum;
-keepMask = keepByPeak | keepBySupportedEnergy;
+validCountMask = memberCount >= cfarCfg.targetExtractMinClusterSize;
+adaptiveThreshold = cfarCfg.targetExtractMinMetricSum;
+backgroundMetricSum = metricSum(validCountMask);
+info.clusterCountAfterMinCount = sum(validCountMask);
 
-if ~any(keepMask)
-    [~, idxStrongest] = max(bestMetric);
-    keepMask(idxStrongest) = true;
+if ~isempty(backgroundMetricSum)
+    backgroundMetricSum = sort(backgroundMetricSum, 'descend');
+    if numel(backgroundMetricSum) > cfarCfg.targetExtractAdaptiveExcludeTopK
+        backgroundMetricSum = backgroundMetricSum(cfarCfg.targetExtractAdaptiveExcludeTopK + 1:end);
+    else
+        backgroundMetricSum = zeros(0, 1);
+    end
 end
+
+info.backgroundClusterCount = numel(backgroundMetricSum);
+info.backgroundMetricSum = backgroundMetricSum;
+if numel(backgroundMetricSum) >= cfarCfg.targetExtractAdaptiveMinClusterCount
+    bgMedian = median(backgroundMetricSum);
+    bgMad = median(abs(backgroundMetricSum - bgMedian));
+    adaptiveThreshold = bgMedian + cfarCfg.targetExtractAdaptiveMadScale * bgMad;
+
+    info.metricSumAdaptiveThreshold = adaptiveThreshold;
+    info.backgroundMetricMedian = bgMedian;
+    info.backgroundMetricMad = bgMad;
+    info.metricSumRule = 'count >= Nmin 且 metricSum >= max(Tabs, Tbg)';
+    info.metricSumAdaptiveRule = 'Tbg = median(backgroundMetricSum) + Kmad * MAD(backgroundMetricSum)';
+else
+    info.metricSumRule = 'count >= Nmin 且 metricSum >= Tabs';
+    info.metricSumAdaptiveRule = '背景簇样本不足，自适应门限未启用';
+end
+
+info.metricSumFinalThreshold = max(cfarCfg.targetExtractMinMetricSum, adaptiveThreshold);
+
+keepMaskStage1 = memberCount >= cfarCfg.targetExtractMinClusterSize ...
+    & metricSum >= info.metricSumFinalThreshold;
+keepMask = keepMaskStage1;
+
+info.keepMaskStage1 = keepMaskStage1;
+info.keepMaskFinal = keepMask;
 
 clustersOut = clustersIn(keepMask);
 if isempty(clustersOut)
@@ -627,6 +810,29 @@ end
 [~, order] = sortrows([[clustersOut.bestMetric].', [clustersOut.count].', [clustersOut.metricSum].'], ...
     [-1, -2, -3]);
 clustersOut = clustersOut(order);
+end
+
+function info = make_empty_target_extract_info_local(cfarCfg)
+info = struct();
+info.metricSumRule = 'count >= Nmin 且 metricSum >= Tabs';
+info.metricSumAdaptiveRule = '未计算';
+info.minClusterSize = cfarCfg.targetExtractMinClusterSize;
+info.metricSumAbsThreshold = cfarCfg.targetExtractMinMetricSum;
+info.metricSumAdaptiveThreshold = NaN;
+info.metricSumFinalThreshold = cfarCfg.targetExtractMinMetricSum;
+info.adaptiveMinClusterCount = cfarCfg.targetExtractAdaptiveMinClusterCount;
+info.adaptiveExcludeTopK = cfarCfg.targetExtractAdaptiveExcludeTopK;
+info.adaptiveMadScale = cfarCfg.targetExtractAdaptiveMadScale;
+info.clusterCountTotal = 0;
+info.clusterCountAfterMinCount = 0;
+info.clusterMetricSum = zeros(0, 1);
+info.clusterMemberCount = zeros(0, 1);
+info.backgroundClusterCount = 0;
+info.backgroundMetricSum = zeros(0, 1);
+info.backgroundMetricMedian = NaN;
+info.backgroundMetricMad = NaN;
+info.keepMaskStage1 = false(0, 1);
+info.keepMaskFinal = false(0, 1);
 end
 
 function out = slice_detection_local(detIn, pickIdx)
@@ -706,7 +912,7 @@ switch lower(type)
     case 'hann'
         win = hann(n);
     otherwise
-        error('不支持的窗函数类型: %s', type);
+        error('涓嶆敮鎸佺殑绐楀嚱鏁扮被鍨? %s', type);
 end
 
 win = win(:);

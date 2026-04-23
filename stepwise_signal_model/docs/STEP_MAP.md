@@ -7,6 +7,12 @@
 | 3 | 方位粗波束形成验证 | `steps/step_03_az_bf/demo_az_bf.m` | 第 2 步 + `core/beamforming/build_sector_beam_grid.m`、`core/beamforming/bf_azimuth.m` |
 | 4 | 俯仰粗波束形成验证 | `steps/step_04_el_bf/demo_el_bf.m` | 第 2 步 + `core/beamforming/build_sector_beam_grid.m`、`core/beamforming/bf_elevation.m` |
 | 5 | 二维联合波束形成、`MTD` 与 `1D CA-CFAR` | `steps/step_05_joint_2d_mtd/demo_joint_2d_mtd.m` | `core/echo/echo_elem_cube.m`、`core/range/pc_range_cube.m`、`core/beamforming/build_joint_beam_grid.m`、`core/beamforming/build_sector_beam_grid.m`、`core/beamforming/bf_joint_2d.m`、`core/doppler/mtd_process.m`、`core/detect/detect_rd_cfar_1d.m` |
+| 6.5 | 跨 `CPI` 的单目标局部跟踪闭环（偏跟踪扩展） | `steps/step_06_5_cpi_track/demo_cpi_track.m` | 第 5 步 + `core/tracking/run_track_loop_single_target.m` |
+
+说明：
+
+- 编号为 `x.5` 的部分用于记录修改、分析、拓展或工作量补充内容。
+- `x.5` 部分不默认视为当前全息凝视探测主链的必需步骤。
 
 ## 核心模块
 
@@ -18,6 +24,7 @@
 - `core/beamforming/`：方位、俯仰与二维联合波束形成
 - `core/doppler/`：慢时间 `MTD`
 - `core/detect/`：`CFAR` 检测
+- `core/tracking/`：跨 `CPI` 的最小跟踪闭环扩展
 
 ## 角度与波束排布规则
 

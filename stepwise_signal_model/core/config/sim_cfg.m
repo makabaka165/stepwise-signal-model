@@ -58,6 +58,9 @@ cfg.tgt.v = 45;
 cfg.tgt.az = 8;
 cfg.tgt.el = 10;
 cfg.tgt.amp = 1.0;
+cfg.tgt.vRate = 0.0;
+cfg.tgt.azRate = 0.0;
+cfg.tgt.elRate = 0.0;
 
 % 工作扇区中心 —— 仅用于从圆柱阵选"当前指向对应的工作子阵"。
 % 它来自扫描调度/跟踪模块，是"雷达现在朝哪儿看"的系统参数，
@@ -79,6 +82,18 @@ cfg.sim.sigmaN = 0.0;
 cfg.sim.pElem = 1;
 cfg.sim.useSector = true;
 
+% 第 6.5 步跨 CPI 跟踪扩展参数。
+cfg.track = struct();
+cfg.track.nCpi = 5;
+cfg.track.holdPredictionOnMiss = true;
+cfg.track.seedStep = 1;
+cfg.track.storeJointOutHistory = false;
+cfg.track.useAssociation = true;
+cfg.track.associationFallbackToBestOnGateMiss = false;
+cfg.track.coarseSearchHalfWidthAz = 1;
+cfg.track.coarseSearchHalfWidthEl = 1;
+cfg.track.coarseSearchUsePredictionGate = true;
+
 % CFAR 参数。
 cfg.cfar = struct();
 cfg.cfar.method = 'CA';
@@ -91,10 +106,14 @@ cfg.cfar.localPeakDoppHalfWidth = 1;
 cfg.cfar.clusterAzTol = 1;
 cfg.cfar.clusterElTol = 1;
 cfg.cfar.clusterRangeTol = 1;
-cfg.cfar.clusterDoppTol = 1;
+cfg.cfar.clusterDoppTol = 2;
 cfg.cfar.targetExtractMinClusterSize = 2;
-cfg.cfar.targetExtractMinRelMetric = 0.2;
-cfg.cfar.targetExtractMinRelMetricSum = 1e-4;
+% 目标提取先保留“count >= 2 且 metricSum >= Tsum”这条主规则，
+% 但将 Tsum 从单目标手调常数改为“绝对下限 + 背景簇自适应门限”。
+cfg.cfar.targetExtractMinMetricSum = 50;
+cfg.cfar.targetExtractAdaptiveMinClusterCount = 3;
+cfg.cfar.targetExtractAdaptiveExcludeTopK = 1;
+cfg.cfar.targetExtractAdaptiveMadScale = 8;
 
 % MTD 参数。
 cfg.mtd = struct();
@@ -102,5 +121,7 @@ cfg.mtd.nfft = cfg.wf.Np;
 cfg.mtd.winType = 'hamming';
 cfg.mtd.fdAxis = ((0:cfg.mtd.nfft - 1) - floor(cfg.mtd.nfft / 2)) / (cfg.mtd.nfft * cfg.wf.PRI);
 cfg.mtd.vAxis = -cfg.mtd.fdAxis * cfg.arr.lambda / 2;
+cfg.track.associationRangeGate = 2 * cfg.wf.dR;
+cfg.track.associationVelocityGate = 2 * abs(cfg.mtd.vAxis(2) - cfg.mtd.vAxis(1));
 
 end

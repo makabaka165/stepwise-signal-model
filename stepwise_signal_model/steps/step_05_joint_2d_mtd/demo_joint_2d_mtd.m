@@ -37,8 +37,8 @@ fprintf('波束间隔         = dAz %.3f deg, dEl %.3f deg, dU %.5f\n', ...
 
 fprintf('\n--- 局部波束选择 ---\n');
 fprintf('中心波束         = az[%d] %.3f deg, el[%d] %.3f deg\n', ...
-    jointOut.selection.centerAzIdx, jointOut.selection.centerAz, ...
-    jointOut.selection.centerElIdx, jointOut.selection.centerEl);
+    jointOut.selection.coarseCenter.azIdx, jointOut.selection.coarseCenter.az, ...
+    jointOut.selection.coarseCenter.elIdx, jointOut.selection.coarseCenter.el);
 fprintf('方位三波束       = [%.3f, %.3f, %.3f] deg\n', jointOut.selection.azTriplet);
 fprintf('俯仰三波束       = [%.3f, %.3f, %.3f] deg\n', jointOut.selection.elTriplet);
 fprintf('俯仰 u 三点      = [%.5f, %.5f, %.5f]\n', jointOut.selection.uTriplet);
@@ -46,6 +46,20 @@ fprintf('俯仰 u 三点      = [%.5f, %.5f, %.5f]\n', jointOut.selection.uTripl
 fprintf('\n--- 中心波束检测结果 ---\n');
 fprintf('原始 CFAR 点数    = %d\n', jointOut.cfarRaw.count);
 fprintf('NMS 状态          = 未启用，当前直接对 raw CFAR 聚类\n');
+fprintf('后筛选规则        = count >= %d 且 metricSum >= %.3f\n', ...
+    jointOut.targetExtractInfo.minClusterSize, ...
+    jointOut.targetExtractInfo.metricSumFinalThreshold);
+fprintf('绝对门限 Tabs     = %.3f\n', jointOut.targetExtractInfo.metricSumAbsThreshold);
+if isfinite(jointOut.targetExtractInfo.metricSumAdaptiveThreshold)
+    fprintf('自适应门限 Tbg    = %.3f\n', jointOut.targetExtractInfo.metricSumAdaptiveThreshold);
+    fprintf('背景簇统计        = 排除前 %d 个最强簇后，样本数 = %d，median = %.3f，MAD = %.3f\n', ...
+        jointOut.targetExtractInfo.adaptiveExcludeTopK, ...
+        jointOut.targetExtractInfo.backgroundClusterCount, ...
+        jointOut.targetExtractInfo.backgroundMetricMedian, ...
+        jointOut.targetExtractInfo.backgroundMetricMad);
+else
+    fprintf('自适应门限 Tbg    = 未启用（背景簇样本不足）\n');
+end
 fprintf('聚类簇个数        = %d\n', numel(jointOut.clustersRaw));
 fprintf('候选目标个数      = %d\n', jointOut.candidateTargets.count);
 fprintf('后筛选目标个数    = %d\n', jointOut.targets.count);
@@ -84,8 +98,8 @@ else
 end
 
 fprintf('\n--- 最终单目标输出 ---\n');
-if jointOut.cfarRaw.count == 0
-    fprintf('由于中心波束 CFAR 未检出目标，因此没有最终测角结果。\n');
+if jointOut.targets.count == 0
+    fprintf('后筛选后没有保留目标，因此没有最终测角结果。\n');
 else
     fprintf('最强粗测目标      = (az %.3f deg, el %.3f deg, R %.3f m, v %.3f m/s, metric %.4f)\n', ...
         jointOut.finalDetection.beamAz, jointOut.finalDetection.beamEl, ...
@@ -101,7 +115,7 @@ end
 
 plot_selection_figure_local(jointOut, cfg);
 plot_center_rd_figure_local(jointOut, truth, cfg);
-if jointOut.cfarRaw.count > 0
+if jointOut.targets.count > 0
     plot_ratio_figure_local(jointOut);
 end
 
@@ -159,7 +173,7 @@ hold on;
 plot(jointOut.cfarRaw.range, jointOut.cfarRaw.velocity, 'k.', 'MarkerSize', 6);
 plot(jointOut.candidateTargets.range, jointOut.candidateTargets.velocity, 'yd', 'MarkerSize', 7, 'LineWidth', 1.0);
 plot(jointOut.targets.range, jointOut.targets.velocity, 'ms', 'MarkerSize', 7, 'LineWidth', 1.0);
-if jointOut.cfarRaw.count > 0
+if jointOut.targets.count > 0
     plot(jointOut.finalDetection.range, jointOut.finalDetection.velocity, 'rx', 'MarkerSize', 10, 'LineWidth', 1.4);
 end
 xline(mean(truth.RpSeq), ':w', 'LineWidth', 0.8);
@@ -167,15 +181,15 @@ yline(cfg.tgt.v, ':w', 'LineWidth', 0.8);
 xlabel('距离 (m)');
 ylabel('速度 (m/s)');
 title(sprintf('中心波束 RD 图，中心角度为 (%.2f, %.2f) deg', ...
-    jointOut.selection.centerAz, jointOut.selection.centerEl));
+    jointOut.selection.coarseCenterAz, jointOut.selection.coarseCenterEl));
 legend('原始 CFAR', '候选目标', '后筛选目标', '最终目标', '真值距离', '真值速度', ...
     'Location', 'northeastoutside');
 
 % 右上图固定在最终目标速度单元，观察距离切片。
 nexttile;
-if jointOut.cfarRaw.count == 0
+if jointOut.targets.count == 0
     axis off;
-    text(0.0, 0.5, '中心波束上没有 CFAR 检测结果', 'Interpreter', 'none');
+    text(0.0, 0.5, '后筛选后没有最终目标', 'Interpreter', 'none');
 else
     rangeCut = squeeze(abs(jointOut.local.rdCube(2, :, jointOut.finalDetection.dopplerIdx)));
     rangeCutDb = 20 * log10(rangeCut / max(rangeCut) + eps);
@@ -191,9 +205,9 @@ end
 
 % 右下图固定在最终目标距离单元，观察多普勒切片。
 nexttile;
-if jointOut.cfarRaw.count == 0
+if jointOut.targets.count == 0
     axis off;
-    text(0.0, 0.5, '中心波束上没有 CFAR 检测结果', 'Interpreter', 'none');
+    text(0.0, 0.5, '后筛选后没有最终目标', 'Interpreter', 'none');
 else
     doppCut = squeeze(abs(jointOut.local.rdCube(2, jointOut.finalDetection.rangeIdx, :)));
     doppCutDb = 20 * log10(doppCut / max(doppCut) + eps);
