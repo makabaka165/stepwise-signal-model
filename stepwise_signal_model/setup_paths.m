@@ -3,4 +3,5 @@ rootDir = fileparts(mfilename('fullpath'));
 addpath(rootDir);
 addpath(genpath(fullfile(rootDir, 'core')));
 addpath(genpath(fullfile(rootDir, 'steps')));
+rmpath(genpath(fullfile(rootDir, 'steps', 'step_05_5_joint_2d_mtd')));
 clear rootDir;

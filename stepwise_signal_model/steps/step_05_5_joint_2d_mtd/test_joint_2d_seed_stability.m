@@ -66,7 +66,7 @@ for iSeed = 1:nSeed
     [sTx, ~] = tx_lfm(cfg.wf);
     [echoCube, ~] = echo_elem_cube(cfg);
     [pcCube, ~] = pc_range_cube(echoCube, sTx, cfg, true);
-    jointOut = bf_joint_2d(pcCube, cfg);
+    jointOut = bf_joint_2d_step5(pcCube, cfg);
     protoOut = apply_secondary_cluster_suppression_local(jointOut, protoCfg);
 
     results(iSeed).seed = cfg.sim.seed;

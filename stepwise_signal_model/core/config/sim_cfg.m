@@ -100,9 +100,15 @@ cfg.cfar.method = 'CA';
 cfg.cfar.detectorType = 'Square';
 cfg.cfar.protectCell = 2;
 cfg.cfar.referenceCell = 8;
-cfg.cfar.thresholdScale = 20;
+% CA-CFAR 平方律检测门限:
+%   alpha = Nref * (Pfa^(-1/Nref) - 1)
+% thresholdScale 仅作为兼容字段保留；留空时由 falseAlarmRate 自动计算。
+cfg.cfar.falseAlarmRate = 1e-8;
+cfg.cfar.thresholdScale = [];
 cfg.cfar.localPeakRangeHalfWidth = 1;
 cfg.cfar.localPeakDoppHalfWidth = 1;
+% 以下聚类/后筛选参数仅为兼容旧版第 5 步备份和第 6.5 步前端保留；
+% 当前 step_05_joint_2d_mtd 不再使用这些字段。
 cfg.cfar.clusterAzTol = 1;
 cfg.cfar.clusterElTol = 1;
 cfg.cfar.clusterRangeTol = 1;
@@ -118,7 +124,8 @@ cfg.cfar.targetExtractAdaptiveMadScale = 8;
 % MTD 参数。
 cfg.mtd = struct();
 cfg.mtd.nfft = cfg.wf.Np;
-cfg.mtd.winType = 'hamming';
+% 参考 cankao2：慢时间维直接做 FFT，不额外加窗。
+cfg.mtd.winType = 'rect';
 cfg.mtd.fdAxis = ((0:cfg.mtd.nfft - 1) - floor(cfg.mtd.nfft / 2)) / (cfg.mtd.nfft * cfg.wf.PRI);
 cfg.mtd.vAxis = -cfg.mtd.fdAxis * cfg.arr.lambda / 2;
 cfg.track.associationRangeGate = 2 * cfg.wf.dR;

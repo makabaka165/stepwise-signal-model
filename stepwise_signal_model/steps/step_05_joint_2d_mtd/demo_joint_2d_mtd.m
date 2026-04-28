@@ -20,7 +20,7 @@ rng(cfg.sim.seed);
 [pcCube, ~] = pc_range_cube(echoCube, sTx, cfg, true);
 
 % 第 5 步主处理链路。
-jointOut = bf_joint_2d(pcCube, cfg);
+jointOut = bf_joint_2d_step5(pcCube, cfg);
 
 fprintf('=== 第 5 步：局部五波束 MTD + 中心波束 CFAR + 三波束比幅测角 ===\n');
 fprintf('目标真值 = (az %.3f deg, el %.3f deg, R0 %.1f m, v %.1f m/s)\n', ...
@@ -28,6 +28,7 @@ fprintf('目标真值 = (az %.3f deg, el %.3f deg, R0 %.1f m, v %.1f m/s)\n', ..
 fprintf('pcCube 维度      = %s\n', size_string_local(size(pcCube)));
 fprintf('局部 beamCube    = %s\n', size_string_local(size(jointOut.local.beamCube)));
 fprintf('局部 rdCube      = %s\n', size_string_local(size(jointOut.local.rdCube)));
+fprintf('MTD 慢时间窗     = %s\n', jointOut.mtd.winType);
 fprintf('工作子阵规模     = %d x %d = %d 个阵元\n', ...
     jointOut.nAzUse, jointOut.nElUse, jointOut.nAzUse * jointOut.nElUse);
 fprintf('扇区中心         = (az %.3f deg, el %.3f deg)\n', ...
@@ -44,25 +45,21 @@ fprintf('俯仰三波束       = [%.3f, %.3f, %.3f] deg\n', jointOut.selection.e
 fprintf('俯仰 u 三点      = [%.5f, %.5f, %.5f]\n', jointOut.selection.uTriplet);
 
 fprintf('\n--- 中心波束检测结果 ---\n');
-fprintf('原始 CFAR 点数    = %d\n', jointOut.cfarRaw.count);
-fprintf('NMS 状态          = 未启用，当前直接对 raw CFAR 聚类\n');
-fprintf('后筛选规则        = count >= %d 且 metricSum >= %.3f\n', ...
-    jointOut.targetExtractInfo.minClusterSize, ...
-    jointOut.targetExtractInfo.metricSumFinalThreshold);
-fprintf('绝对门限 Tabs     = %.3f\n', jointOut.targetExtractInfo.metricSumAbsThreshold);
-if isfinite(jointOut.targetExtractInfo.metricSumAdaptiveThreshold)
-    fprintf('自适应门限 Tbg    = %.3f\n', jointOut.targetExtractInfo.metricSumAdaptiveThreshold);
-    fprintf('背景簇统计        = 排除前 %d 个最强簇后，样本数 = %d，median = %.3f，MAD = %.3f\n', ...
-        jointOut.targetExtractInfo.adaptiveExcludeTopK, ...
-        jointOut.targetExtractInfo.backgroundClusterCount, ...
-        jointOut.targetExtractInfo.backgroundMetricMedian, ...
-        jointOut.targetExtractInfo.backgroundMetricMad);
+fprintf('raw 过门限点数     = %d\n', jointOut.singleTargetSelectInfo.rawThresholdCrossingCount);
+fprintf('最终检测单元数     = %d\n', jointOut.singleTargetSelectInfo.singleDetectionCellCount);
+fprintf('CFAR 后处理       = 不做目标聚类，直接取 raw CFAR 最强单点作为单目标检测单元\n');
+fprintf('门限公式          = %s\n', jointOut.cfarRaw.thresholdInfo.formula);
+if strcmp(jointOut.cfarRaw.thresholdInfo.mode, 'pfa_formula')
+    fprintf('虚警概率 Pfa      = %.3e\n', jointOut.cfarRaw.thresholdInfo.falseAlarmRate);
+    fprintf('参考单元 Nref     = 单侧 %d，双侧 %d\n', ...
+        jointOut.cfarRaw.thresholdInfo.referenceCellOneSided, ...
+        jointOut.cfarRaw.thresholdInfo.referenceCellTwoSided);
+    fprintf('门限系数 alpha    = 单侧 %.4f，双侧 %.4f\n', ...
+        jointOut.cfarRaw.thresholdInfo.scaleOneSided, ...
+        jointOut.cfarRaw.thresholdInfo.scaleTwoSided);
 else
-    fprintf('自适应门限 Tbg    = 未启用（背景簇样本不足）\n');
+    fprintf('门限系数 alpha    = %.4f\n', jointOut.cfarRaw.thresholdInfo.scaleTwoSided);
 end
-fprintf('聚类簇个数        = %d\n', numel(jointOut.clustersRaw));
-fprintf('候选目标个数      = %d\n', jointOut.candidateTargets.count);
-fprintf('后筛选目标个数    = %d\n', jointOut.targets.count);
 if jointOut.cfarRaw.count == 0
     fprintf('中心波束 RD 图上未检出目标。\n');
 else
@@ -77,19 +74,10 @@ else
     if jointOut.cfarRaw.count > nPrint
         fprintf('  ... 其余 %d 个原始检测点省略\n', jointOut.cfarRaw.count - nPrint);
     end
-    if jointOut.candidateTargets.count > 0
-        fprintf('聚类得到的候选目标代表点：\n');
-        for iDet = 1:jointOut.candidateTargets.count
-            fprintf(['  Tgt %d: rangeIdx = %d, doppIdx = %d, ' ...
-                'R = %.3f m, v = %.3f m/s, metric = %.4f\n'], ...
-                iDet, jointOut.candidateTargets.rangeIdx(iDet), jointOut.candidateTargets.dopplerIdx(iDet), ...
-                jointOut.candidateTargets.range(iDet), jointOut.candidateTargets.velocity(iDet), jointOut.candidateTargets.metric(iDet));
-        end
-    end
     if jointOut.targets.count > 0
-        fprintf('后筛选保留的目标：\n');
+        fprintf('最终选中的 1 个检测单元：\n');
         for iDet = 1:jointOut.targets.count
-            fprintf(['  Keep %d: rangeIdx = %d, doppIdx = %d, ' ...
+            fprintf(['  Pick %d: rangeIdx = %d, doppIdx = %d, ' ...
                 'R = %.3f m, v = %.3f m/s, metric = %.4f\n'], ...
                 iDet, jointOut.targets.rangeIdx(iDet), jointOut.targets.dopplerIdx(iDet), ...
                 jointOut.targets.range(iDet), jointOut.targets.velocity(iDet), jointOut.targets.metric(iDet));
@@ -99,7 +87,7 @@ end
 
 fprintf('\n--- 最终单目标输出 ---\n');
 if jointOut.targets.count == 0
-    fprintf('后筛选后没有保留目标，因此没有最终测角结果。\n');
+    fprintf('中心束 CFAR 未检出目标，因此没有最终测角结果。\n');
 else
     fprintf('最强粗测目标      = (az %.3f deg, el %.3f deg, R %.3f m, v %.3f m/s, metric %.4f)\n', ...
         jointOut.finalDetection.beamAz, jointOut.finalDetection.beamEl, ...
@@ -114,7 +102,9 @@ else
 end
 
 plot_selection_figure_local(jointOut, cfg);
+plot_signal_chain_figure_local(sTx, echoCube, pcCube, jointOut, truth, cfg);
 plot_center_rd_figure_local(jointOut, truth, cfg);
+plot_cfar_window_teaching_local(jointOut, cfg);
 if jointOut.targets.count > 0
     plot_ratio_figure_local(jointOut);
 end
@@ -163,51 +153,74 @@ rdMapDb = 20 * log10(rdMap / max(rdMap(:)) + eps);
 figure('Name', '第 5 步 中心波束 RD 图', 'Position', fit_figure_position_local([110, 80, 860, 540]));
 tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
 
-% 左侧大图叠加原始检测点、局部峰值、提取目标和最终目标。
+% 左侧大图叠加 raw CFAR 检测点和最终选中的单目标点。
 nexttile([2 1]);
 imagesc(jointOut.rAxis, jointOut.vAxis, rdMapDb);
 axis xy;
 colorbar;
 clim([-40 0]);
 hold on;
-plot(jointOut.cfarRaw.range, jointOut.cfarRaw.velocity, 'k.', 'MarkerSize', 6);
-plot(jointOut.candidateTargets.range, jointOut.candidateTargets.velocity, 'yd', 'MarkerSize', 7, 'LineWidth', 1.0);
-plot(jointOut.targets.range, jointOut.targets.velocity, 'ms', 'MarkerSize', 7, 'LineWidth', 1.0);
-if jointOut.targets.count > 0
-    plot(jointOut.finalDetection.range, jointOut.finalDetection.velocity, 'rx', 'MarkerSize', 10, 'LineWidth', 1.4);
+hLegend = gobjects(0);
+legendText = {};
+if jointOut.cfarRaw.count > 0
+    hRaw = plot(jointOut.cfarRaw.range, jointOut.cfarRaw.velocity, 'k.', 'MarkerSize', 6);
+    hLegend(end + 1) = hRaw;
+    legendText{end + 1} = '原始 CFAR';
 end
-xline(mean(truth.RpSeq), ':w', 'LineWidth', 0.8);
-yline(cfg.tgt.v, ':w', 'LineWidth', 0.8);
+if jointOut.targets.count > 0
+    hFinal = plot(jointOut.finalDetection.range, jointOut.finalDetection.velocity, 'rx', 'MarkerSize', 10, 'LineWidth', 1.4);
+    hLegend(end + 1) = hFinal;
+    legendText{end + 1} = '最终目标';
+end
+hTruthRange = xline(mean(truth.RpSeq), ':w', 'LineWidth', 0.8);
+hLegend(end + 1) = hTruthRange;
+legendText{end + 1} = '真值距离';
+hTruthVelocity = yline(cfg.tgt.v, ':w', 'LineWidth', 0.8);
+hLegend(end + 1) = hTruthVelocity;
+legendText{end + 1} = '真值速度';
 xlabel('距离 (m)');
 ylabel('速度 (m/s)');
 title(sprintf('中心波束 RD 图，中心角度为 (%.2f, %.2f) deg', ...
     jointOut.selection.coarseCenterAz, jointOut.selection.coarseCenterEl));
-legend('原始 CFAR', '候选目标', '后筛选目标', '最终目标', '真值距离', '真值速度', ...
-    'Location', 'northeastoutside');
+legend(hLegend, legendText, 'Location', 'northeastoutside');
 
-% 右上图固定在最终目标速度单元，观察距离切片。
+% 右上图固定在最终目标速度单元，观察距离切片及 CFAR 门限。
 nexttile;
 if jointOut.targets.count == 0
     axis off;
-    text(0.0, 0.5, '后筛选后没有最终目标', 'Interpreter', 'none');
+    text(0.0, 0.5, '中心束 CFAR 未检出最终目标', 'Interpreter', 'none');
 else
-    rangeCut = squeeze(abs(jointOut.local.rdCube(2, :, jointOut.finalDetection.dopplerIdx)));
-    rangeCutDb = 20 * log10(rangeCut / max(rangeCut) + eps);
+    rangeCutAmp = squeeze(abs(jointOut.local.rdCube(2, :, jointOut.finalDetection.dopplerIdx)));
+    if strcmpi(cfg.cfar.detectorType, 'Square')
+        rangeCut = rangeCutAmp .^ 2;
+        dbScale = 10;
+        yText = '相对功率 (dB)';
+    else
+        rangeCut = rangeCutAmp;
+        dbScale = 20;
+        yText = '相对幅度 (dB)';
+    end
+    rangeRef = max(rangeCut);
+    thresholdCut = jointOut.cfarRaw.thresholdMap(jointOut.finalDetection.dopplerIdx, :);
+    rangeCutDb = dbScale * log10(rangeCut / rangeRef + eps);
+    thresholdCutDb = dbScale * log10(thresholdCut / rangeRef + eps);
     plot(jointOut.rAxis, rangeCutDb, 'LineWidth', 1.2);
     hold on;
+    plot(jointOut.rAxis, thresholdCutDb, '--', 'LineWidth', 1.1);
     xline(cfg.tgt.R0, ':k', 'LineWidth', 0.8);
     xline(jointOut.finalDetection.range, '--r', 'LineWidth', 1.0);
     grid on;
     xlabel('距离 (m)');
-    ylabel('相对响应 (dB)');
-    title(sprintf('速度 %.2f m/s 处的距离切片', jointOut.finalDetection.velocity));
+    ylabel(yText);
+    title(sprintf('速度 %.2f m/s 处的距离切片与门限', jointOut.finalDetection.velocity));
+    legend('检测量', 'CFAR 门限', '真值距离', '最终距离', 'Location', 'best');
 end
 
 % 右下图固定在最终目标距离单元，观察多普勒切片。
 nexttile;
 if jointOut.targets.count == 0
     axis off;
-    text(0.0, 0.5, '后筛选后没有最终目标', 'Interpreter', 'none');
+    text(0.0, 0.5, '中心束 CFAR 未检出最终目标', 'Interpreter', 'none');
 else
     doppCut = squeeze(abs(jointOut.local.rdCube(2, jointOut.finalDetection.rangeIdx, :)));
     doppCutDb = 20 * log10(doppCut / max(doppCut) + eps);
@@ -219,6 +232,245 @@ else
     xlabel('速度 (m/s)');
     ylabel('相对响应 (dB)');
     title(sprintf('距离 %.2f m 处的多普勒切片', jointOut.finalDetection.range));
+end
+end
+
+function plot_signal_chain_figure_local(sTx, echoCube, pcCube, jointOut, truth, cfg)
+txMag = abs(sTx);
+txRef = max(txMag);
+if txRef <= 0
+    txRef = 1;
+end
+txMagDb = 20 * log10(txMag / txRef + eps);
+
+echoAxis = truth.rAxis;
+pcAxis = jointOut.rAxis;
+echoRaw = abs(squeeze(echoCube(1, :, 1)));
+pcRaw = abs(squeeze(pcCube(1, :, 1)));
+
+if jointOut.targets.count > 0
+    rangeIdxFocus = jointOut.finalDetection.rangeIdx;
+else
+    [~, rangeIdxFocus] = min(abs(jointOut.rAxis - cfg.tgt.R0));
+end
+
+slowTimeMs = cfg.wf.tSlow * 1e3;
+slowSeq = squeeze(jointOut.local.beamCube(2, rangeIdxFocus, :));
+slowMag = abs(slowSeq);
+slowPhase = unwrap(angle(slowSeq));
+slowPhaseDeg = slowPhase * 180 / pi;
+
+rdAtRange = squeeze(abs(jointOut.local.rdCube(2, rangeIdxFocus, :)));
+rdAtRangeDb = 20 * log10(rdAtRange / max(rdAtRange) + eps);
+
+figure('Name', '第 5 步信号链教学图', 'Position', fit_figure_position_local([80, 40, 1180, 760]));
+tiledlayout(3, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+
+nexttile;
+plot(cfg.wf.tTx * 1e6, real(sTx), 'LineWidth', 1.0);
+hold on;
+plot(cfg.wf.tTx * 1e6, txMagDb, '--', 'LineWidth', 1.1);
+grid on;
+xlabel('发射快时间 (\mus)');
+ylabel('实部 / 包络(dB)');
+title('发射 LFM 波形');
+legend('real(sTx)', '|sTx| (dB)', 'Location', 'best');
+
+nexttile;
+plot(echoAxis, echoRaw, 'LineWidth', 1.1);
+hold on;
+xline(cfg.tgt.R0 - cfg.arr.c * cfg.wf.Tp / 4, ':', 'LineWidth', 0.8);
+xline(cfg.tgt.R0 + cfg.arr.c * cfg.wf.Tp / 4, ':', 'LineWidth', 0.8);
+xline(cfg.tgt.R0, '--r', 'LineWidth', 1.0);
+grid on;
+xlabel('回波快时间对应距离 (m)');
+ylabel('|echo(阵元1, 脉冲1)|');
+title('脉压前单阵元单脉冲回波包络');
+legend('原始回波', '脉冲包络边界', '', '目标真值', 'Location', 'best');
+
+nexttile;
+plot(pcAxis, pcRaw / max(pcRaw + eps), 'LineWidth', 1.1);
+hold on;
+xline(cfg.tgt.R0, '--r', 'LineWidth', 1.0);
+xline(pcAxis(rangeIdxFocus), ':k', 'LineWidth', 0.9);
+grid on;
+xlabel('距离 (m)');
+ylabel('归一化幅度');
+title('脉压后单阵元距离像');
+legend('脉压输出', '目标真值', '当前分析距离单元', 'Location', 'best');
+
+nexttile;
+yyaxis left;
+stem(slowTimeMs, slowMag / max(slowMag + eps), 'filled', 'LineWidth', 0.8, 'MarkerSize', 3);
+ylabel('归一化幅度');
+yyaxis right;
+plot(slowTimeMs, slowPhaseDeg, '-o', 'LineWidth', 0.9, 'MarkerSize', 3);
+ylabel('相位 (deg)');
+grid on;
+xlabel('慢时间 / 脉冲序号对应时刻 (ms)');
+title(sprintf('中心束在距离 %.2f m 处的慢时间序列', pcAxis(rangeIdxFocus)));
+legend('幅度', '相位', 'Location', 'best');
+
+nexttile;
+hMtd = plot(jointOut.vAxis, rdAtRangeDb, 'LineWidth', 1.2);
+hold on;
+hTruthVelocity = xline(cfg.tgt.v, '--r', 'LineWidth', 1.0);
+hLegend = [hMtd, hTruthVelocity];
+legendText = {'MTD 输出', '目标真值速度'};
+if jointOut.targets.count > 0
+    hFinalVelocity = xline(jointOut.finalDetection.velocity, ':k', 'LineWidth', 0.9);
+    hLegend(end + 1) = hFinalVelocity;
+    legendText{end + 1} = '最终检测速度';
+end
+grid on;
+xlabel('速度 (m/s)');
+ylabel('相对响应 (dB)');
+title(sprintf('距离 %.2f m 处的 MTD 频谱', pcAxis(rangeIdxFocus)));
+legend(hLegend, legendText, 'Location', 'best');
+
+nexttile;
+axis off;
+text(0.0, 0.92, '当前链路关键参数', 'FontWeight', 'bold', 'FontSize', 11);
+text(0.0, 0.76, sprintf('MTD 窗函数: %s', jointOut.mtd.winType), 'Interpreter', 'none');
+text(0.0, 0.62, sprintf('CFAR 类型: %s-%s', cfg.cfar.method, cfg.cfar.detectorType), 'Interpreter', 'none');
+text(0.0, 0.48, sprintf('Protect = %d, Reference(each side) = %d', ...
+    cfg.cfar.protectCell, cfg.cfar.referenceCell), 'Interpreter', 'none');
+text(0.0, 0.34, sprintf('Pfa = %.3e', cfg.cfar.falseAlarmRate), 'Interpreter', 'none');
+text(0.0, 0.20, sprintf('目标真值 = (R %.2f m, v %.2f m/s)', cfg.tgt.R0, cfg.tgt.v), 'Interpreter', 'none');
+if jointOut.targets.count > 0
+    text(0.0, 0.06, sprintf('最终单元 = (rangeIdx %d, dopplerIdx %d)', ...
+        jointOut.finalDetection.rangeIdx, jointOut.finalDetection.dopplerIdx), 'Interpreter', 'none');
+end
+end
+
+function plot_cfar_window_teaching_local(jointOut, cfg)
+if jointOut.targets.count > 0
+    rangeIdxCut = jointOut.finalDetection.rangeIdx;
+    doppIdxCut = jointOut.finalDetection.dopplerIdx;
+else
+    [~, rangeIdxCut] = min(abs(jointOut.rAxis - cfg.tgt.R0));
+    [~, doppIdxCut] = min(abs(jointOut.vAxis - cfg.tgt.v));
+end
+
+protectCell = cfg.cfar.protectCell;
+referenceCell = cfg.cfar.referenceCell;
+detectorType = cfg.cfar.detectorType;
+
+rangeCutAmp = squeeze(abs(jointOut.local.rdCube(2, :, doppIdxCut)));
+if strcmpi(detectorType, 'Square')
+    metricCut = rangeCutAmp .^ 2;
+    dbScale = 10;
+    yLabelText = '检测量 / 门限 (dB)';
+else
+    metricCut = rangeCutAmp;
+    dbScale = 20;
+    yLabelText = '检测量 / 门限 (dB)';
+end
+
+thresholdCut = jointOut.cfarRaw.thresholdMap(doppIdxCut, :).';
+metricRef = max(metricCut);
+if metricRef <= 0
+    metricRef = 1;
+end
+metricCutDb = dbScale * log10(metricCut / metricRef + eps);
+thresholdCutDb = dbScale * log10(thresholdCut / metricRef + eps);
+
+leftTrainIdx = max(1, rangeIdxCut - protectCell - referenceCell):max(0, rangeIdxCut - protectCell - 1);
+leftGuardIdx = max(1, rangeIdxCut - protectCell):max(0, rangeIdxCut - 1);
+rightGuardIdx = min(numel(jointOut.rAxis), rangeIdxCut + 1):min(numel(jointOut.rAxis), rangeIdxCut + protectCell);
+rightTrainIdx = min(numel(jointOut.rAxis), rangeIdxCut + protectCell + 1):min(numel(jointOut.rAxis), rangeIdxCut + protectCell + referenceCell);
+
+figure('Name', '第 5 步 CFAR 滑窗教学图', 'Position', fit_figure_position_local([120, 60, 1120, 760]));
+tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
+
+nexttile([1 2]);
+plot(jointOut.rAxis, metricCutDb, 'LineWidth', 1.2);
+hold on;
+plot(jointOut.rAxis, thresholdCutDb, '--', 'LineWidth', 1.1);
+shade_index_group_local(jointOut.rAxis, metricCutDb, leftTrainIdx, [0.76 0.88 1.00], '参考单元');
+shade_index_group_local(jointOut.rAxis, metricCutDb, leftGuardIdx, [1.00 0.90 0.72], '保护单元');
+shade_index_group_local(jointOut.rAxis, metricCutDb, rangeIdxCut, [1.00 0.74 0.74], 'CUT');
+shade_index_group_local(jointOut.rAxis, metricCutDb, rightGuardIdx, [1.00 0.90 0.72], '');
+shade_index_group_local(jointOut.rAxis, metricCutDb, rightTrainIdx, [0.76 0.88 1.00], '');
+xline(jointOut.rAxis(rangeIdxCut), '--r', 'LineWidth', 1.0);
+grid on;
+xlabel('距离 (m)');
+ylabel(yLabelText);
+title(sprintf('Doppler 行 %d (v = %.2f m/s) 上的 1D CA-CFAR 滑窗', doppIdxCut, jointOut.vAxis(doppIdxCut)));
+legend('检测量', 'CFAR 门限', 'Location', 'best');
+
+nexttile;
+plot(jointOut.rAxis, metricCutDb, 'LineWidth', 1.1);
+hold on;
+plot(jointOut.rAxis, thresholdCutDb, '--', 'LineWidth', 1.0);
+shade_index_group_local(jointOut.rAxis, metricCutDb, [leftTrainIdx, leftGuardIdx, rangeIdxCut, rightGuardIdx, rightTrainIdx], [0.92 0.92 0.92], '');
+windowIdx = unique([leftTrainIdx, leftGuardIdx, rangeIdxCut, rightGuardIdx, rightTrainIdx]);
+if ~isempty(windowIdx)
+    xlim([jointOut.rAxis(windowIdx(1)) - 2 * mean(diff(jointOut.rAxis)), ...
+        jointOut.rAxis(windowIdx(end)) + 2 * mean(diff(jointOut.rAxis))]);
+end
+grid on;
+xlabel('距离 (m)');
+ylabel(yLabelText);
+title('CUT 附近局部放大');
+
+nexttile;
+axis off;
+text(0.0, 0.88, 'CFAR 参数解释', 'FontWeight', 'bold', 'FontSize', 11);
+text(0.0, 0.72, sprintf('CUT = rangeIdx %d, DopplerIdx %d', rangeIdxCut, doppIdxCut), 'Interpreter', 'none');
+text(0.0, 0.58, sprintf('左/右保护单元数 = %d', protectCell), 'Interpreter', 'none');
+text(0.0, 0.44, sprintf('左/右参考单元数 = %d', referenceCell), 'Interpreter', 'none');
+text(0.0, 0.30, sprintf('Pfa = %.3e, detector = %s', cfg.cfar.falseAlarmRate, detectorType), 'Interpreter', 'none');
+text(0.0, 0.16, sprintf('threshold formula: %s', jointOut.cfarRaw.thresholdInfo.formula), 'Interpreter', 'none');
+if strcmp(jointOut.cfarRaw.thresholdInfo.mode, 'pfa_formula')
+    text(0.0, 0.02, sprintf('alpha(one-sided/two-sided) = %.3f / %.3f', ...
+        jointOut.cfarRaw.thresholdInfo.scaleOneSided, ...
+        jointOut.cfarRaw.thresholdInfo.scaleTwoSided), 'Interpreter', 'none');
+end
+end
+
+function shade_index_group_local(axisVals, metricDb, idxGroup, faceColor, labelText)
+if isempty(idxGroup)
+    return;
+end
+
+yMin = min([metricDb(:); -80]);
+yMax = max([metricDb(:); 5]);
+idxGroup = idxGroup(:).';
+segments = split_contiguous_segments_local(idxGroup);
+
+for iSeg = 1:numel(segments)
+    idxNow = segments{iSeg};
+    x0 = axisVals(max(idxNow(1), 1));
+    x1 = axisVals(min(idxNow(end), numel(axisVals)));
+    if numel(axisVals) >= 2
+        dx = mean(diff(axisVals));
+    else
+        dx = 1;
+    end
+    patch([x0 - dx / 2, x1 + dx / 2, x1 + dx / 2, x0 - dx / 2], ...
+        [yMin, yMin, yMax, yMax], faceColor, ...
+        'FaceAlpha', 0.22, 'EdgeColor', 'none');
+    if ~isempty(labelText) && iSeg == 1
+        text((x0 + x1) / 2, yMax - 0.08 * (yMax - yMin), labelText, ...
+            'HorizontalAlignment', 'center', 'VerticalAlignment', 'top', ...
+            'FontSize', 9, 'BackgroundColor', 'w', 'Margin', 1);
+    end
+end
+ylim([yMin, yMax]);
+end
+
+function segments = split_contiguous_segments_local(idxVals)
+idxVals = unique(idxVals(:).');
+if isempty(idxVals)
+    segments = {};
+    return;
+end
+
+splitPos = [0, find(diff(idxVals) > 1), numel(idxVals)];
+segments = cell(1, numel(splitPos) - 1);
+for iSeg = 1:numel(segments)
+    segments{iSeg} = idxVals(splitPos(iSeg) + 1:splitPos(iSeg + 1));
 end
 end
 

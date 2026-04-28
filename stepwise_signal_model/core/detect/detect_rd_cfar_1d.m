@@ -8,11 +8,15 @@ function out = detect_rd_cfar_1d(rdCube, cfarCfg)
 
 funcCfar = FuncCFARBase;
 nBeam = size(rdCube, 1);
+thresholdParam = make_threshold_parameter_local(cfarCfg);
 
 beamIdxCell = cell(nBeam, 1);
 rangeIdxCell = cell(nBeam, 1);
 doppIdxCell = cell(nBeam, 1);
 metricCell = cell(nBeam, 1);
+normMapCell = cell(nBeam, 1);
+thresholdMapCell = cell(nBeam, 1);
+thresholdScaleMapCell = cell(nBeam, 1);
 
 bestMetric = -inf;
 best = struct();
@@ -25,13 +29,16 @@ for iBeam = 1:nBeam
     % 第 1 行: 距离单元索引
     % 第 2 行: 多普勒单元索引
     % 第 3 行: 检测度量值(用于后续选“最佳检测”)
-    [detList, ~] = funcCfar.CFAR01( ...
+    [detList, normMap, thresholdMap, thresholdScaleMap] = funcCfar.CFAR01( ...
         rdMap, ...
-        cfarCfg.thresholdScale, ...
+        thresholdParam, ...
         cfarCfg.protectCell, ...
         cfarCfg.referenceCell, ...
         cfarCfg.method, ...
         cfarCfg.detectorType);
+    normMapCell{iBeam} = normMap;
+    thresholdMapCell{iBeam} = thresholdMap;
+    thresholdScaleMapCell{iBeam} = thresholdScaleMap;
 
     if isempty(detList)
         continue;
@@ -74,6 +81,64 @@ out.beamIdx = out.beamIdx(order);
 out.rangeIdx = out.rangeIdx(order);
 out.dopplerIdx = out.dopplerIdx(order);
 out.best = best;
+out.thresholdInfo = make_threshold_info_local(cfarCfg, thresholdParam);
+out.normalizedMapByBeam = normMapCell;
+out.thresholdMapByBeam = thresholdMapCell;
+out.thresholdScaleMapByBeam = thresholdScaleMapCell;
+if nBeam == 1
+    out.normalizedMap = normMapCell{1};
+    out.thresholdMap = thresholdMapCell{1};
+    out.thresholdScaleMap = thresholdScaleMapCell{1};
+end
+end
+
+function thresholdParam = make_threshold_parameter_local(cfarCfg)
+if isfield(cfarCfg, 'falseAlarmRate') && ~isempty(cfarCfg.falseAlarmRate)
+    thresholdParam = struct('falseAlarmRate', cfarCfg.falseAlarmRate);
+    return;
+end
+
+if isfield(cfarCfg, 'thresholdScale') && ~isempty(cfarCfg.thresholdScale)
+    thresholdParam = cfarCfg.thresholdScale;
+    return;
+end
+
+error('detect_rd_cfar_1d:MissingThreshold', ...
+    'CFAR 配置必须提供 falseAlarmRate 或 thresholdScale。');
+end
+
+function info = make_threshold_info_local(cfarCfg, thresholdParam)
+info = struct();
+info.method = cfarCfg.method;
+info.detectorType = cfarCfg.detectorType;
+info.protectCell = cfarCfg.protectCell;
+info.referenceCellEachSide = cfarCfg.referenceCell;
+
+if isnumeric(thresholdParam)
+    info.mode = 'manual_scale';
+    info.falseAlarmRate = NaN;
+    info.formula = 'manual alpha';
+    info.scaleOneSided = thresholdParam;
+    info.scaleTwoSided = thresholdParam;
+    return;
+end
+
+pfa = thresholdParam.falseAlarmRate;
+info.mode = 'pfa_formula';
+info.falseAlarmRate = pfa;
+info.formula = 'alpha = Nref * (Pfa^(-1/Nref) - 1)';
+info.referenceCellOneSided = cfarCfg.referenceCell;
+if strcmpi(cfarCfg.method, 'CA')
+    info.referenceCellTwoSided = 2 * cfarCfg.referenceCell;
+else
+    info.referenceCellTwoSided = cfarCfg.referenceCell;
+end
+info.scaleOneSided = threshold_scale_from_pfa_local(pfa, info.referenceCellOneSided);
+info.scaleTwoSided = threshold_scale_from_pfa_local(pfa, info.referenceCellTwoSided);
+end
+
+function alpha = threshold_scale_from_pfa_local(pfa, nReferenceCell)
+alpha = nReferenceCell * (pfa^(-1 / nReferenceCell) - 1);
 end
 
 function vec = concat_column_cells_local(cellArray)

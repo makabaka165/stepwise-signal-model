@@ -39,6 +39,7 @@ stepwise_signal_model/
     beamforming/
       bf_azimuth.m
       bf_elevation.m
+      bf_joint_2d_step5.m
       bf_joint_2d.m
       build_sector_beam_grid.m
       build_joint_beam_grid.m
@@ -62,6 +63,8 @@ stepwise_signal_model/
       demo_el_bf.m
     step_05_joint_2d_mtd/
       demo_joint_2d_mtd.m
+    step_05_5_joint_2d_mtd/
+      demo_joint_2d_mtd.m
     step_06_5_cpi_track/
       demo_cpi_track.m
 ```
@@ -84,6 +87,7 @@ demo_joint_2d_mtd
 - `step_03_az_bf`：方位接收波束形成验证
 - `step_04_el_bf`：俯仰接收波束形成验证
 - `step_05_joint_2d_mtd`：二维联合波束形成、`MTD` 与 `1D CA-CFAR` 粗检测
+- `step_05_5_joint_2d_mtd`：本次修改前的第 5 步目录备份，默认不加入 MATLAB 路径
 - `step_06_5_cpi_track`：跨 `CPI` 的单目标局部跟踪与下一 `CPI` 波束调度
   （偏跟踪扩展，当前不作为全息凝视探测主流程的必需步骤）
 
@@ -253,7 +257,7 @@ demo_joint_2d_mtd
 
 - `core/echo/echo_elem_cube.m`
 - `core/range/pc_range_cube.m`
-- `core/beamforming/bf_joint_2d.m`
+- `core/beamforming/bf_joint_2d_step5.m`
 - `core/beamforming/build_joint_beam_grid.m`
 - `core/beamforming/build_sector_beam_grid.m`
 - `core/doppler/mtd_process.m`
@@ -274,18 +278,20 @@ demo_joint_2d_mtd
 - 在一个 `CPI` 内固定工作子阵
 - 把单脉冲空间链路扩展成多脉冲数据立方体
 - 再在波束域输出上做 `MTD` 和检测
-- 当前可读性优先的实现说明：`core/beamforming/bf_joint_2d.m` 一次性计算全部二维波束，没有使用 block 处理。如果后续波束数、脉冲数或处理距离窗变大，可以再引入 block 方案降低峰值内存。
-- 当前验证流程说明：第 5 步 demo 和 `bf_joint_2d` 默认目标能够被 `CFAR` 检出，因此去掉了“检测不到目标”时的回退分支，以便让主路径更短、更直观。
+- 当前第 5 步与第 6.5 步已拆分：`core/beamforming/bf_joint_2d_step5.m` 用于单 `CPI` 独立局部链路，`core/beamforming/bf_joint_2d.m` 用于跨 `CPI` 先验引导前端。
+- 当前可读性优先的实现说明：第 5 步版本 `core/beamforming/bf_joint_2d_step5.m` 一次性计算局部五波束，没有使用 block 处理。如果后续波束数、脉冲数或处理距离窗变大，可以再引入 block 方案降低峰值内存。
+- 当前验证流程说明：第 5 步 demo 和 `bf_joint_2d_step5` 按单目标场景处理，中心束 `CFAR` 后不做检测单元聚类，直接取 raw CFAR 中 `metric` 最大的单点。
+- 当前 `CFAR` 门限系数由 `alpha = Nref * (Pfa^(-1/Nref) - 1)` 计算，默认 `Pfa = 1e-6`。
 
 操作流程概览：
 
 - 先生成原始多脉冲阵元回波立方体 `echoCube(element, fast-time, pulse)`
 - 再逐脉冲做距离压缩，得到 `pcCube(element, range, pulse)`
-- 再构造二维联合波束网格和全部二维接收权
-- 再做二维联合波束形成，得到 `beamCube(beam, range, pulse)`
+- 再围绕中心束构造局部五个唯一二维接收权
+- 再做局部五波束形成，得到 `beamCube(beam, range, pulse)`
 - 再沿脉冲维做 `MTD`，得到 `rdCube(beam, range, doppler)`
-- 再对每个二维波束的 `RD` 图做 `1D CA-CFAR`
-- 最后分别展示未加 `CFAR` 的纯峰值结果和加了 `CFAR` 的最优检测结果
+- 再对中心束 `RD` 图做沿距离维的 `1D CA-CFAR`
+- 最后取 raw CFAR 最强检测点并执行三波束比幅测角
 
 如果把整个第 5 步浓缩成一句话
 
@@ -317,6 +323,7 @@ demo_joint_2d_mtd
 
 - 第 6.5 步的“当前 `CPI` 量测前端”直接复用第 5 步
 - 也就是继续使用 `core/beamforming/bf_joint_2d.m`
+- 与第 5 步不同，这里的 `bf_joint_2d.m` 会显式使用上一 `CPI` 给出的角度/距离速度先验来做局部粗选束
 - 当前 `CPI` 的检测与精测角结果，来自第 5 步输出的 `bestRange / bestVel / bestAz / bestEl` 或目标列表
 - 第 6.5 步新增的部分，不是重新做一遍单 `CPI` 检测，而是在 `core/tracking/run_track_loop_single_target.m` 中做 `CPI` 之间的信息传递与下一 `CPI` 的辅助调度
 

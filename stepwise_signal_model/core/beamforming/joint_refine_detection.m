@@ -7,7 +7,7 @@ end
 
 if ~isfield(jointOut, 'local') || ~isfield(jointOut, 'selection')
     error('joint_refine_detection:MissingContext', ...
-        'jointOut 必须包含 bf_joint_2d 输出的 local 和 selection 字段。');
+        'jointOut 必须包含 bf_joint_2d 或 bf_joint_2d_step5 输出的 local 和 selection 字段。');
 end
 
 if ~is_valid_detection_local(detection)
