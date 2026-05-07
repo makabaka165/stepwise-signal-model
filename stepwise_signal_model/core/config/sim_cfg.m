@@ -82,7 +82,7 @@ cfg.sim.sigmaN = 0.0;
 cfg.sim.pElem = 1;
 cfg.sim.useSector = true;
 
-% 第 6.5 步跨 CPI 跟踪扩展参数。
+% 第 8 步跨 CPI 跟踪扩展参数。
 cfg.track = struct();
 cfg.track.nCpi = 5;
 cfg.track.holdPredictionOnMiss = true;
@@ -107,7 +107,7 @@ cfg.cfar.falseAlarmRate = 1e-8;
 cfg.cfar.thresholdScale = [];
 cfg.cfar.localPeakRangeHalfWidth = 1;
 cfg.cfar.localPeakDoppHalfWidth = 1;
-% 以下聚类/后筛选参数仅为兼容旧版第 5 步备份和第 6.5 步前端保留；
+% 以下聚类/后筛选参数仅为兼容旧版第 5 步备份和第 8 步前端保留；
 % 当前 step_05_joint_2d_mtd 不再使用这些字段。
 cfg.cfar.clusterAzTol = 1;
 cfg.cfar.clusterElTol = 1;

@@ -1,5 +1,5 @@
 function out = run_track_loop_single_target(cfgBase)
-%RUN_TRACK_LOOP_SINGLE_TARGET 第 6.5 步最小跨 CPI 单目标闭环扩展。
+%RUN_TRACK_LOOP_SINGLE_TARGET 第 8 步最小跨 CPI 单目标闭环扩展。
 cfgBase = ensure_track_defaults_local(cfgBase);
 nCpi = cfgBase.track.nCpi;
 tCpi = cfgBase.wf.Np * cfgBase.wf.PRI;

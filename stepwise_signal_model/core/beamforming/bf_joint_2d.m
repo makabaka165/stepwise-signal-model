@@ -1,7 +1,7 @@
 ﻿function out = bf_joint_2d(pcCube, cfg)
 %BF_JOINT_2D 绗?5 姝ュ眬閮ㄩ摼璺細浜斾釜鍞竴娉㈡潫銆佷腑蹇冩尝鏉?CFAR銆佹渶寮虹洰鏍囦笁娉㈡潫姣斿箙娴嬭銆?
 
-%BF_JOINT_2D 第 6.5 步局部量测前端：带跨 CPI 先验的局部五波束链路。
+%BF_JOINT_2D 第 8 步局部量测前端：带跨 CPI 先验的局部五波束链路。
 arr = cfg.arr;
 wf = cfg.wf;
 beam = cfg.beam;
