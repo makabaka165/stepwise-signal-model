@@ -1,9 +1,9 @@
 % 64阵元看超分辨测试
 % 波束级处理
 % 不同目标角度间隔测角误差
-% 以两目标中心为中心点，波束宽度划分16波束分别合成结果
+% 以两目标中心为中心点，波束宽度划分局部波束分别合成结果
 % 以最小覆盖两目标角度和最大覆盖两目标角度为范围
-% 划分16波束进行合并进行超分辨处理
+% 划分局部多波束进行合并后做超分辨处理
 
 clc
 clear all
@@ -44,11 +44,9 @@ for snr_num = 1 : length(snr)
             s11 = A_a.' * s1;
             s21 = A_b.' * s2;
             
-            % 上下文修复：生成复噪声的系数应为 1/sqrt(2)
             y = s11 + s21 + (1/sqrt(2)) * (randn(array_num, T) + ...
-                j * (randn(array_num, T)));  % 构建两相关信号
+                j * (randn(array_num, T)));
                 
-            % 波束级
             subarray_num = 64;
             win = taylorwin(subarray_num, 25, -40)';
             win = win / sqrt(win*win');
@@ -58,11 +56,10 @@ for snr_num = 1 : length(snr)
             RecvbeamC = (theta_b + theta_a)/2;
             RecvbeamS = RecvbeamC - bw_64/2;
             RecvbeamE = RecvbeamC + bw_64/2;
-            M = 16;  % 64阵元波束宽度约为3°
+            M = 32;  % Denser local beam grid to reduce beam-center spacing
             RecvbeamS1 = RecvbeamC + theta_bw(angle_grid_num)/2 - bw_64/2 - 0.1;
             RecvbeamE1 = RecvbeamC - theta_bw(angle_grid_num)/2 + bw_64/2 + 0.1;
             
-            % 上下文修复：angel 统一改为 angle
             angle_recv = linspace(RecvbeamS, RecvbeamE, M+1);
             angle_recv1 = linspace(RecvbeamS1, RecvbeamE1, M+1);
             
@@ -90,7 +87,6 @@ plot(1:length(theta_bw), RMSE, 'r-*', 1:length(theta_bw), RMSE1, 'b-x');
 legend('未覆盖', '完全覆盖')
 title('波束级不同角度间隔测角误差')
 xticks([1 2 3 4 5 6 7 8 9 10])
-% 上下文修复：xtickslabels 改为 xticklabels，ta 改为 bw 以符合逻辑
 xticklabels({'bw/1', 'bw/2', 'bw/3', 'bw/4', 'bw/5', 'bw/6', 'bw/7', 'bw/8', 'bw/9', 'bw/10'})
 xlabel('角度间隔')
 ylabel('RMSE(°)')

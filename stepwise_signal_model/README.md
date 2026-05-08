@@ -7,7 +7,7 @@
 ```text
 LFM 发射 -> 回波建模 -> 距离压缩 -> 阵元级建模 -> 方位接收波束形成 -> 俯仰接收波束形成 -> 二维联合波束形成 + MTD + CFAR
 第 6 步 -> 在第 5 步检测单元上做三波束比幅测角
-第 7 步 -> 预留给新的中间步骤
+第 7 步 -> 空间平滑 MUSIC 超分辨测角
 第 8 步（偏跟踪扩展） -> 跨 CPI 局部跟踪与波束调度
 ```
 
@@ -69,6 +69,11 @@ stepwise_signal_model/
       demo_joint_2d_mtd.m
     step_06_three_beam_angle/
       demo_three_beam_angle_standalone.m
+    step_07_space_smooth_music/
+      space_smooth_music.m
+      mssp.m
+      FindLocalPeak_Fun.m
+      DOA_three_music_hecheng_fangzhen.m
     step_08_cpi_track/
       demo_cpi_track.m
 ```
@@ -93,7 +98,7 @@ demo_joint_2d_mtd
 - `step_05_joint_2d_mtd`：二维联合波束形成、`MTD` 与 `1D CA-CFAR` 粗检测
 - `step_05_5_joint_2d_mtd`：本次修改前的第 5 步目录备份，默认不加入 MATLAB 路径
 - `step_06_three_beam_angle`：在第 5 步最强检测单元上做三波束比幅测角
-- 第 7 步：预留给新的中间步骤
+- `step_07_space_smooth_music`：空间平滑 `MUSIC` 超分辨测角
 - `step_08_cpi_track`：跨 `CPI` 的单目标局部跟踪与下一 `CPI` 波束调度
   （偏跟踪扩展，当前不作为全息凝视探测主流程的必需步骤）
 
@@ -338,9 +343,26 @@ $$
 
 其中 `A_L / A_R` 是方位左/右束幅度，`A_D / A_U` 是俯仰下/上束幅度。
 
-### 5.7 第 7 步：预留给新的中间步骤
+### 5.7 第 7 步：空间平滑 MUSIC 超分辨测角
 
-本节预留给后续插入的新第 7 步；当前原第 7 步内容已整体顺延为第 8 步。
+相关文件：
+
+- `steps/step_07_space_smooth_music/space_smooth_music.m`
+- `steps/step_07_space_smooth_music/mssp.m`
+- `steps/step_07_space_smooth_music/FindLocalPeak_Fun.m`
+- `steps/step_07_space_smooth_music/DOA_three_music_hecheng_fangzhen.m`
+
+本步实现内容：
+
+- 构造双目标仿真场景并评估不同角间隔下的超分辨测角效果
+- 对波束级合成数据执行空间平滑 `MUSIC`
+- 用局部峰值搜索从空间谱中提取主峰方向
+
+核心想法：
+
+- 先通过波束合成把目标限制在局部角域
+- 再用 `MSSP` 空间平滑缓解相干信号导致的协方差矩阵退化
+- 最后在局部搜索区间内用 `MUSIC` 谱峰完成超分辨角度估计
 
 ### 5.8 第 8 步：跨 CPI 的局部跟踪与波束调度
 

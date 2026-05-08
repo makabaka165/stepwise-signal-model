@@ -9,7 +9,7 @@
 | 5 | 局部五波束、`MTD` 与公式门限 `1D CA-CFAR`，输出最强 `metric` 检测单元 | `steps/step_05_joint_2d_mtd/demo_joint_2d_mtd.m` | 独立脚本内 local functions；`CFAR` 逻辑与 `FuncCFARBase.CFAR01` 保持一致 |
 | 5.5 | 本次修改前的第 5 步目录备份（默认不加入 MATLAB 路径） | `steps/step_05_5_joint_2d_mtd/demo_joint_2d_mtd.m` | 当前第 5 步目录修改前的备份 |
 | 6 | 第 5 步检测单元上的三波束比幅测角 | `steps/step_06_three_beam_angle/demo_three_beam_angle_standalone.m` | 第 5 步独立链路 + 鉴角曲线 |
-| 7 | 预留给新的中间步骤 | 待补充 | 待补充 |
+| 7 | 空间平滑 `MUSIC` 超分辨测角 | `steps/step_07_space_smooth_music/space_smooth_music.m` | `steps/step_07_space_smooth_music/mssp.m`、`steps/step_07_space_smooth_music/FindLocalPeak_Fun.m`、`steps/step_07_space_smooth_music/DOA_three_music_hecheng_fangzhen.m` |
 | 8 | 跨 `CPI` 的单目标局部跟踪闭环（偏跟踪扩展） | `steps/step_08_cpi_track/demo_cpi_track.m` | 局部量测前端 + `core/tracking/run_track_loop_single_target.m` |
 
 说明：
