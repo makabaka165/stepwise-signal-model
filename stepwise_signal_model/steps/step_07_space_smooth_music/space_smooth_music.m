@@ -56,7 +56,7 @@ for snr_num = 1 : length(snr)
             RecvbeamC = (theta_b + theta_a)/2;
             RecvbeamS = RecvbeamC - bw_64/2;
             RecvbeamE = RecvbeamC + bw_64/2;
-            M = 32;  % Denser local beam grid to reduce beam-center spacing
+            M = 50;  % 51 local beams; with Q = 10 this gives a 41-dim smoothed subarray
             RecvbeamS1 = RecvbeamC + theta_bw(angle_grid_num)/2 - bw_64/2 - 0.1;
             RecvbeamE1 = RecvbeamC - theta_bw(angle_grid_num)/2 + bw_64/2 + 0.1;
             
