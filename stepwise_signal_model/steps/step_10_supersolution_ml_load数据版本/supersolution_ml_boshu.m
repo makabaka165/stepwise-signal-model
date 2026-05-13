@@ -8,8 +8,10 @@ arrayNum = 256;
 numSnapshots = 130;
 len_data_re0 = 1962;
 
-% Create synthetic element-space echo data for validating the beamspace ML flow.
-datayuanzhu = create_demo_cube(arrayNum, len_data_re0, numSnapshots);
+% Load element-space data from MAT files.
+load datazhenyuan
+load startNum %#ok<NASGU>
+% This version keeps the verified ML implementation but restores MAT-based input.
 
 t1 = 5e-6;
 Bs = 30e6;
@@ -29,7 +31,7 @@ pc_out1 = zeros(len_data_re0 + length(po_coe) - 1, arrayNum, numSnapshots);
 % Band-limit each channel and then perform pulse compression.
 for i = 1 : numSnapshots
     for jj = 1 : arrayNum
-        pc_pre = fftshift(fft(datayuanzhu(:, jj, i)));
+        pc_pre = fftshift(fft(datazhenyuan(:, jj, i)));
         pc_pre_temp(:) = 0;
         pc_pre_temp(len_data_re0 / 2 - 300 + 1 : len_data_re0 / 2 + 300) = ...
             pc_pre(len_data_re0 / 2 - 300 + 1 : len_data_re0 / 2 + 300) .* hamming(600);
@@ -137,45 +139,3 @@ ylabel('RMSE')
 title('Beamspace ML result for 64 elements')
 legend('show')
 grid on
-
-function datayuanzhu = create_demo_cube(arrayNum, lenData, numSnapshots)
-rng(1);
-targetAngles = [12.7, 14.3];
-centerCell = 707;
-freq = 2.7;
-lamda = 0.3 / freq;
-d = 0.047;
-snapshotAmp = [1.0, 0.8];
-fastTime = (0:lenData-1).';
-rangeEnvelope1 = exp(-((fastTime - centerCell) / 18) .^ 2);
-rangeEnvelope2 = exp(-((fastTime - (centerCell + 2)) / 21) .^ 2);
-
-elemAmpError = 1 + 0.08 * randn(1, arrayNum);
-elemPhaseError = exp(1j * deg2rad(6) * randn(1, arrayNum));
-elemMismatch = elemAmpError .* elemPhaseError;
-% Add element mismatch so the synthesized data is no longer perfectly model matched.
-
-datayuanzhu = complex(zeros(lenData, arrayNum, numSnapshots));
-for s = 1 : numSnapshots
-    signalVec = complex(zeros(lenData, arrayNum));
-    phaseDrift1 = exp(1j * 2 * pi * 0.01 * s);
-    phaseDrift2 = exp(1j * 2 * pi * (0.017 * s + 0.0004 * s ^ 2));
-
-    steering1 = exp(-1j * 2 * pi * d / lamda * (0 : arrayNum - 1) * sind(targetAngles(1)));
-    steering2 = exp(-1j * 2 * pi * d / lamda * (0 : arrayNum - 1) * sind(targetAngles(2) + 0.05 * sin(2 * pi * s / numSnapshots)));
-    steering1 = steering1 .* elemMismatch;
-    steering2 = steering2 .* conj(elemMismatch);
-    % The second target is given a slight angle fluctuation across snapshots.
-
-    ampJitter1 = snapshotAmp(1) * (1 + 0.12 * randn());
-    ampJitter2 = snapshotAmp(2) * (1 + 0.18 * randn());
-    waveform1 = ampJitter1 * phaseDrift1 * rangeEnvelope1 * exp(1j * 2 * pi * rand());
-    waveform2 = ampJitter2 * phaseDrift2 * rangeEnvelope2 * exp(1j * 2 * pi * rand());
-    signalVec = signalVec + waveform1 * steering1 + waveform2 * steering2;
-
-    clutter = 0.04 * rangeEnvelope1 * exp(1j * 2 * pi * 0.003 * s) * ones(1, arrayNum);
-    noise = 0.10 * (randn(lenData, arrayNum) + 1j * randn(lenData, arrayNum));
-    % Add weak coherent background plus stronger thermal noise.
-    datayuanzhu(:, :, s) = signalVec + clutter + noise;
-end
-end
