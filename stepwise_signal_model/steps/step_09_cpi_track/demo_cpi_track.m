@@ -5,7 +5,7 @@ clc;
 clear;
 close all;
 
-% 第 8 步演示（偏跟踪扩展）：
+% 第 9 步演示（偏跟踪扩展）：
 % 1. 每个 CPI 的回波仍由当前时刻真值生成；
 % 2. 上一 CPI 的结果只作为下一 CPI 的波束先验；
 % 3. 当前 CPI 会先在先验附近做局部粗选束，再做三波束精测角。
@@ -26,7 +26,7 @@ trackOut = run_track_loop_single_target(cfg);
 summary = trackOut.summary;
 showPlot = should_plot_figures_local();
 
-fprintf('=== 第 8 步：跨 CPI 单目标局部跟踪闭环 ===\n');
+fprintf('=== 第 9 步：跨 CPI 单目标局部跟踪闭环 ===\n');
 fprintf('CPI 个数         = %d\n', cfg.track.nCpi);
 fprintf('单 CPI 时长      = %.6f s\n', trackOut.tCpi);
 fprintf('初始扇区中心     = (az %.3f deg, el %.3f deg)\n', ...
@@ -84,10 +84,10 @@ result.cfg = cfg;
 result.trackOut = trackOut;
 result.summary = summary;
 result.showPlot = showPlot;
-assignin('base', 'step_08_result', result);
+assignin('base', 'step_09_result', result);
 
 function plot_track_summary_local(summary)
-figure('Name', '第 8 步 跨 CPI 跟踪摘要', ...
+figure('Name', '第 9 步 跨 CPI 跟踪摘要', ...
     'Position', fit_figure_position_local([100, 80, 980, 600]));
 tiledlayout(2, 2, 'TileSpacing', 'compact', 'Padding', 'compact');
 

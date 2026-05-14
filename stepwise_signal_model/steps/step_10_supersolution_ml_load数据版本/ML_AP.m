@@ -7,7 +7,7 @@ Len_thetas1 = length(theta1);
 Len_thetas2 = length(theta2);
 Pw = zeros(Len_thetas1, Len_thetas2);
 
-% Perform a 2-D grid search over the left/right local angular sectors.
+% 在左右两个局部角域内执行二维网格搜索。
 for ths1 = 1 : Len_thetas1
     for ths2 = 1 : Len_thetas2
         Th1 = theta1(ths1);
@@ -17,8 +17,8 @@ for ths1 = 1 : Len_thetas1
 end
 
 Pw_abs = abs(Pw) ./ max(max(abs(Pw)));
-[Loc_T1, Loc_T2] = find(Pw_abs == max(max(Pw_abs)), 1);
+[Loc_T1, Loc_T2] = find(Pw_abs == max(max(Pw_abs)));
 
-% Return the angle pair corresponding to the maximum ML score.
+% 输出使 ML 评分函数取最大值的角度对。
 tar_theta = [theta1(Loc_T1), theta2(Loc_T2)];
 end

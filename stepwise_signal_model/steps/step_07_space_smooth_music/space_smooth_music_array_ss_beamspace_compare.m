@@ -22,7 +22,6 @@ j = sqrt(-1);
 snr = 12;
 Metkl = 50;
 subarray_num = 59;
-B = 25;
 search_scale = 4;
 
 win = taylorwin(subarray_num, 25, -40)';
@@ -96,23 +95,6 @@ for angle_grid_num = 1 : length(theta_bw)
     end
 end
 
-fprintf('\n结果汇总（成功次数 / %d）\n', Metkl);
-for angle_grid_num = 1 : length(theta_bw)
-    fprintf('bw/%d：旧路线=%2d，新路线=%2d，旧路线均方根误差=%.4f，新路线均方根误差=%.4f\n', ...
-        angle_grid_num, old_success(angle_grid_num), new_success(angle_grid_num), ...
-        old_rmse(angle_grid_num), new_rmse(angle_grid_num));
-end
-
-figure();
-plot(1:length(theta_bw), old_success / Metkl, 'r-o', ...
-     1:length(theta_bw), new_success / Metkl, 'b-s', 'LineWidth', 1.2);
-grid on;
-xticks(1:length(theta_bw));
-xticklabels({'bw/1', 'bw/2', 'bw/3', 'bw/4', 'bw/5', 'bw/6', 'bw/7', 'bw/8', 'bw/9', 'bw/10'});
-xlabel('目标角间隔');
-ylabel('双峰检测成功率');
-legend('旧路线：波束域近似平滑', '新路线：阵元域先平滑后投影', 'Location', 'best');
-title('旧路线与新路线的双峰检测成功率对比');
 
 figure();
 plot(1:length(theta_bw), old_rmse, 'r-o', ...

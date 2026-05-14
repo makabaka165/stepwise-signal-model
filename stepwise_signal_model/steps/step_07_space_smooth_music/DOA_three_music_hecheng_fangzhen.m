@@ -60,5 +60,6 @@ function doa_value = DOA_three_music_hecheng_fangzhen(estm_data_in, subarray_num
     
     % 第五步：取最强的两个局部峰，并按从左到右排序，
     % 便于和真实角度 [theta_a, theta_b] 一一对应。
+    % doa_value = [较小角度峰值, 较大角度峰值]
     doa_value = sort(angle_search(peak_ind(1:2)));
 end

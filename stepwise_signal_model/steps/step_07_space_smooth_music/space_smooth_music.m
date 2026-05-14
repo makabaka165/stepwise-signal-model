@@ -29,9 +29,16 @@ snr = [12];
 % 蒙特卡洛重复次数。
 Metkl = 100;
 
+success = zeros(1, length(theta_bw));
+success1 = zeros(1, length(theta_bw));
+RMSE = nan(1, length(theta_bw));
+RMSE1 = nan(1, length(theta_bw));
+
 for snr_num = 1 : length(snr)
     for angle_grid_num = 1 : length(theta_bw)
         fprintf('角间隔档位 %d / %d\n', angle_grid_num, length(theta_bw));
+        chazhi_valid = nan(1, Metkl);
+        chazhi1_valid = nan(1, Metkl);
         for metkl_num = 1 : Metkl
             theta_a = theta_c - theta_bw(angle_grid_num) / 2;
             theta_b = theta_c + theta_bw(angle_grid_num) / 2;
@@ -84,11 +91,24 @@ for snr_num = 1 : length(snr)
             est_64boshu1(metkl_num, (angle_grid_num-1) * 2 + 1 : angle_grid_num * 2) = temp1;
             chazhi(angle_grid_num, metkl_num) = sum((temp - target_theta).^2, 2);
             chazhi1(angle_grid_num, metkl_num) = sum((temp1 - target_theta).^2, 2);
+
+            if all(isfinite(temp))
+                success(angle_grid_num) = success(angle_grid_num) + 1;
+                chazhi_valid(metkl_num) = sum((temp - target_theta).^2, 2);
+            end
+            if all(isfinite(temp1))
+                success1(angle_grid_num) = success1(angle_grid_num) + 1;
+                chazhi1_valid(metkl_num) = sum((temp1 - target_theta).^2, 2);
+            end
         end
 
-        % 统计当前角间隔档位下的均方根误差。
-        RMSE(angle_grid_num) = sqrt(sum(chazhi(angle_grid_num, :), 2) / Metkl / length(target_theta));
-        RMSE1(angle_grid_num) = sqrt(sum(chazhi1(angle_grid_num, :), 2) / Metkl / length(target_theta));
+        % 统计当前角间隔档位下的均方根误差，仅对成功检测双峰的样本计入统计。
+        if any(isfinite(chazhi_valid))
+            RMSE(angle_grid_num) = sqrt(nansum(chazhi_valid) / (2 * sum(isfinite(chazhi_valid))));
+        end
+        if any(isfinite(chazhi1_valid))
+            RMSE1(angle_grid_num) = sqrt(nansum(chazhi1_valid) / (2 * sum(isfinite(chazhi1_valid))));
+        end
     end
 end
 

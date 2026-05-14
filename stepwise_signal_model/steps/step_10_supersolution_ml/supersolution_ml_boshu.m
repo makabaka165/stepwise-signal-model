@@ -1,14 +1,14 @@
-% ML algorithm validation: beamspace processing
+% ML 算法验证：波束级处理
 clc
 close all
 clear
 
-%% Data preparation
+%% 数据准备
 arrayNum = 256;
 numSnapshots = 130;
 len_data_re0 = 1962;
 
-% Create synthetic element-space echo data for validating the beamspace ML flow.
+% 生成阵元级回波仿真数据，用于验证波束级 ML 处理流程。
 datayuanzhu = create_demo_cube(arrayNum, len_data_re0, numSnapshots);
 
 t1 = 5e-6;
@@ -26,7 +26,7 @@ pc_pre_temp = zeros(len_data_re0, 1);
 datazhenyuan_PrePC = zeros(len_data_re0, arrayNum, numSnapshots);
 pc_out1 = zeros(len_data_re0 + length(po_coe) - 1, arrayNum, numSnapshots);
 
-% Band-limit each channel and then perform pulse compression.
+% 对每个阵元通道先限带，再进行脉压处理。
 for i = 1 : numSnapshots
     for jj = 1 : arrayNum
         pc_pre = fftshift(fft(datayuanzhu(:, jj, i)));
@@ -45,16 +45,16 @@ lamda = 0.3 / freq;
 d = 0.047;
 Rang_cell = 707;
 theta = [12.7, 14.3];
-% The ML stage uses the compressed data at one selected range cell only.
+% ML 阶段只使用选定距离单元上的脉压数据。
 
-%% 256-array beamspace ML
+%% 256 阵元波束级 ML
 M_lin = 16:32;
 subarray_num = 256;
 win = taylorwin(subarray_num, 25, -40)';
 win = win / sqrt(win * win');
 N2P = subarray_num / 2 - 1;
 position = [d * (-N2P : 0) - d / 2, d * (0 : N2P) + d / 2]';
-Rebeamwidth = 2 / 8;
+Rebeamwidth = 2.8;
 RecvbeamC = 13.5;
 temp256 = zeros(length(M_lin), 2);
 rmse256 = zeros(1, length(M_lin));
@@ -68,7 +68,7 @@ for ii = 1 : length(M_lin)
     sr_DBF = zeros(len_data_re0, M, numSnapshots);
     A = diag(win) * exp(j * 2 * pi * position / lamda * sin(angle_recv * pi / 180));
 
-    % Map the selected element-space aperture into B beamspace channels.
+    % 将选定孔径内的阵元数据映射为 M 个波束域通道。
     for s = 1 : size(pc_out, 3)
         temp = reshape(pc_out(:, :, s), len_data_re0, arrayNum);
         temp1 = temp(:, 1 : subarray_num);
@@ -77,9 +77,9 @@ for ii = 1 : length(M_lin)
 
     estm_data_in_temp = sr_DBF(Rang_cell, :, :);
     estm_data_in = reshape(estm_data_in_temp, M, numSnapshots);
-    % estm_data_in plays the role of the beamspace snapshot matrix Y_B.
+    % estm_data_in 对应波束域快拍矩阵 Y_B。
 
-    % Two-target beamspace ML estimate and RMSE against the reference pair.
+    % 双目标波束级 ML 估计，并与参考角度对计算 RMSE。
     R_value_256_boshu = ML_AP_boshu(estm_data_in, RecvbeamC, d, lamda, 256, A);
     temp256(ii, :) = R_value_256_boshu;
     rmse256(ii) = sqrt(sum((R_value_256_boshu - theta) .^ 2, 2) / 2);
@@ -87,20 +87,20 @@ end
 
 figure()
 plot(M_lin, rmse256, 'r*-')
-xlabel('Beamspace channels')
+xlabel('波束通道数')
 ylabel('RMSE')
-title('Beamspace ML result for 256 elements')
+title('256 阵元波束级 ML 结果')
 grid on
 
-%% 64-array beamspace ML with different beam spans
+%% 64 阵元波束级 ML：不同波束覆盖范围对比
 figure()
 hold on
 M_lin = 4:16;
-temp64 = zeros(5, length(M_lin), 2);
+temp64 = zeros(length(M_lin), 2);
 for gridIdx = 1 : 5
     RecvbeamS = RecvbeamC - Rebeamwidth * 0.2 * gridIdx;
     RecvbeamE = RecvbeamC + Rebeamwidth * 0.2 * gridIdx;
-    % gridIdx changes the covered receive-angle span of the beamspace basis.
+    % gridIdx 用于改变波束域基底覆盖的接收角范围。
 
     subarray_num = 64;
     win = taylorwin(subarray_num, 25, -40)';
@@ -126,15 +126,15 @@ for gridIdx = 1 : 5
         estm_data_in = reshape(estm_data_in_temp, M, numSnapshots);
 
         R_value_ML_boshu = ML_AP_boshu(estm_data_in, RecvbeamC, d, lamda, subarray_num, A);
-        temp64(gridIdx, ii, :) = R_value_ML_boshu;
+        temp64(ii, :) = R_value_ML_boshu;
         rmse64(ii) = sqrt(sum((R_value_ML_boshu - theta) .^ 2, 2) / 2);
     end
 
-    plot(M_lin, rmse64, 'DisplayName', sprintf('grid=%d', gridIdx));
+    plot(M_lin, rmse64, 'DisplayName', sprintf('第%d组', gridIdx));
 end
-xlabel('Beamspace channels')
+xlabel('波束通道数')
 ylabel('RMSE')
-title('Beamspace ML result for 64 elements')
+title('64 阵元波束级 ML 结果')
 legend('show')
 grid on
 
@@ -153,7 +153,7 @@ rangeEnvelope2 = exp(-((fastTime - (centerCell + 2)) / 21) .^ 2);
 elemAmpError = 1 + 0.08 * randn(1, arrayNum);
 elemPhaseError = exp(1j * deg2rad(6) * randn(1, arrayNum));
 elemMismatch = elemAmpError .* elemPhaseError;
-% Add element mismatch so the synthesized data is no longer perfectly model matched.
+% 加入阵元幅相误差，使仿真数据不再与理想模型完全匹配。
 
 datayuanzhu = complex(zeros(lenData, arrayNum, numSnapshots));
 for s = 1 : numSnapshots
@@ -165,7 +165,7 @@ for s = 1 : numSnapshots
     steering2 = exp(-1j * 2 * pi * d / lamda * (0 : arrayNum - 1) * sind(targetAngles(2) + 0.05 * sin(2 * pi * s / numSnapshots)));
     steering1 = steering1 .* elemMismatch;
     steering2 = steering2 .* conj(elemMismatch);
-    % The second target is given a slight angle fluctuation across snapshots.
+    % 令第二个目标在快拍间存在轻微角度起伏。
 
     ampJitter1 = snapshotAmp(1) * (1 + 0.12 * randn());
     ampJitter2 = snapshotAmp(2) * (1 + 0.18 * randn());
@@ -175,7 +175,7 @@ for s = 1 : numSnapshots
 
     clutter = 0.04 * rangeEnvelope1 * exp(1j * 2 * pi * 0.003 * s) * ones(1, arrayNum);
     noise = 0.10 * (randn(lenData, arrayNum) + 1j * randn(lenData, arrayNum));
-    % Add weak coherent background plus stronger thermal noise.
+    % 加入弱相干背景和热噪声。
     datayuanzhu(:, :, s) = signalVec + clutter + noise;
 end
 end

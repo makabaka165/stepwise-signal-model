@@ -1,12 +1,12 @@
 function [Pw] = RSTMLTr(ml_input, thetas1, thetas2, array_num, d, lamda)
-% Build the element-space steering matrix for a 2-target hypothesis.
+% 构造双目标假设下的阵元级导向矢量。
 j = sqrt(-1);
 steering_vector_s = exp(-j * 2 * pi * d / lamda * (0 : array_num - 1).' * sind([thetas1, thetas2]));
 
-% For the direct ML case, the equivalent manifold is the element-space manifold itself.
+% 直接 ML 情形下，等效流形矩阵就是阵元级流形矩阵本身。
 steering_vector_new = steering_vector_s;
 PA = steering_vector_new * inv(steering_vector_new' * steering_vector_new) * steering_vector_new';
 
-% Unnormalized concentrated-ML score: tr(P_A * Y * Y^H).
+% 未归一化的集中似然评分函数：tr(P_A * Y * Y^H)。
 Pw = trace(PA * (ml_input * ml_input'));
 end
