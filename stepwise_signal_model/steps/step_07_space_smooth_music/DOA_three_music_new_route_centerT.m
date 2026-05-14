@@ -1,9 +1,9 @@
-function doa_value = DOA_three_music_array_ss_beamspace(y, subarray_num, T, angle_recv, theta_bw)
-    % 阵元域先做空间平滑，再投影到波束域进行 MUSIC 双目标测角。
+function doa_value = DOA_three_music_new_route_centerT(y, subarray_num, T, angle_recv, theta_bw)
+    % 新路线：阵元域先做空间平滑，再投影到中心截取T波束域进行 MUSIC 双目标测角。
     % 输入：
     %   y             阵元域输入数据，维度为“阵元数 x 快拍数”
     %   subarray_num  当前使用的阵元子阵长度
-    %   T             阵元域到波束域的投影矩阵
+    %   T             阵元域到中心截取T波束域的投影矩阵
     %   angle_recv    当前局部搜索中心角
     %   theta_bw      当前局部搜索宽度
     % 输出：
@@ -23,6 +23,7 @@ function doa_value = DOA_three_music_array_ss_beamspace(y, subarray_num, T, angl
     Rxx = y * y' / n;
     Rx = mssp(Rxx, subarray_num);
     Rb = T' * Rx * T;
+
     % 第二步：围绕局部中心角做细搜索，步长固定为 0.01 度。
     angle_search = angle_recv - theta_bw/2 : 0.01 : angle_recv + theta_bw/2;
 
