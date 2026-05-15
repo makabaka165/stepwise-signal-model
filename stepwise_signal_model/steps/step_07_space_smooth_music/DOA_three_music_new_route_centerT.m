@@ -140,6 +140,16 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT( ...
 
     [~, peak_ind] = FindLocalPeak_NoEdge_Fun(abs(Pmu));
 
+    debug.num_peaks = numel(peak_ind);
+    if isempty(peak_ind)
+        debug.peak_angles = [];
+        debug.peak_values = [];
+    else
+        keep_count = min(numel(peak_ind), 5);
+        debug.peak_angles = angle_search(peak_ind(1:keep_count));
+        debug.peak_values = Pmu(peak_ind(1:keep_count));
+    end
+
     if numel(peak_ind) < Lc
         doa_value = nan(1, Lc);
     else

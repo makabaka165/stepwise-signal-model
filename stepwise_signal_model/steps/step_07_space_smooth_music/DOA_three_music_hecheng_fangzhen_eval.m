@@ -1,10 +1,13 @@
 function [doa_value, debug] = DOA_three_music_hecheng_fangzhen_eval( ...
-    estm_data_in, subarray_num, A, angle_recv, search_width_deg)
+    estm_data_in, subarray_num, A, angle_recv, search_width_deg, varargin)
 
-    % Route A evaluation version:
-    % 1. search width is separated from true target spacing
-    % 2. use no-edge peak detection
-    % 3. return edge-hit diagnostics
+    p = inputParser;
+    addParameter(p, 'Lc', 2);
+    addParameter(p, 'QSmoothRatio', 0.2);
+    parse(p, varargin{:});
+
+    Lc = p.Results.Lc;
+    qSmoothRatio = p.Results.QSmoothRatio;
 
     j = sqrt(-1);
     c = 3e8;
@@ -16,15 +19,20 @@ function [doa_value, debug] = DOA_three_music_hecheng_fangzhen_eval( ...
     position = (d * (0:N2P-1)).';
     Xc = estm_data_in;
     n = size(estm_data_in, 2);
-    Q = 10;
-    celln = size(Xc, 1) - Q;
-    Lc = 2;
+
+    B = size(Xc, 1);
+    Q = round(qSmoothRatio * B);
+    Q = max(Q, 1);
+    Q = min(Q, B - Lc - 1);
+    celln = B - Q;
     QQ = Lc + 1;
 
     if celln <= Lc
         doa_value = nan(1, Lc);
         debug = struct();
         debug.reason = 'celln_too_small';
+        debug.B = B;
+        debug.Q = Q;
         debug.celln = celln;
         return;
     end
@@ -73,6 +81,8 @@ function [doa_value, debug] = DOA_three_music_hecheng_fangzhen_eval( ...
     debug.spectrum = p_SPc;
     debug.peak_ind = peak_ind;
     debug.beam_ind = beam_ind;
-    debug.celln = celln;
+    debug.B = B;
     debug.Q = Q;
+    debug.QSmoothRatio = qSmoothRatio;
+    debug.celln = celln;
 end

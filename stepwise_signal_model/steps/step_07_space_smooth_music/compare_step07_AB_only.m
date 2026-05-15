@@ -21,10 +21,10 @@ Metkl = 50;
 T_snap_list = [130, 260, 520];
 bw_index_list = 1:10;
 
-subarray_num = 59;
-K_fbss = 48;
-M_full = 32;
-center_beam_count = 25;
+subarray_num = array_num;
+K_fbss = 56;
+M_full = 48;
+center_beam_count = 37;
 search_scale_A = 4;
 search_scale_B = 4;
 tol_deg = 0.1;
@@ -67,12 +67,6 @@ angle_recv_old_template = linspace( ...
     theta_c + routeA_beam_span / 2, ...
     M_old + 1);
 
-routeB_beam_span = search_scale_B * bw_64;
-beam_grid_full_deg = linspace( ...
-    theta_c - routeB_beam_span / 2, ...
-    theta_c + routeB_beam_span / 2, ...
-    M_full + 1);
-
 nsnap = numel(T_snap_list);
 nbw = numel(bw_index_list);
 raw_success_count = zeros(nsnap, nbw, route_count);
@@ -101,10 +95,12 @@ log_lines = append_log(log_lines, 'T_snap_list=%s', mat2str(T_snap_list));
 log_lines = append_log(log_lines, 'center_beam_count=%d, M_full=%d, search_scale_A=%.2f, search_scale_B=%.2f, tol_deg=%.3f', ...
     center_beam_count, M_full, search_scale_A, search_scale_B, tol_deg);
 log_lines = append_log(log_lines, 'bw_index_list=%s', mat2str(bw_index_list));
-log_lines = append_log(log_lines, 'Route B uses K_fbss < subarray_num.');
+log_lines = append_log(log_lines, 'Route B uses full array_num elements.');
+log_lines = append_log(log_lines, 'K_fbss = %d.', K_fbss);
 log_lines = append_log(log_lines, 'Rss = mssp_array_fb(Rxx, K_fbss).');
-log_lines = append_log(log_lines, 'Psub = subarray_num - K_fbss + 1 = %d.', subarray_num - K_fbss + 1);
+log_lines = append_log(log_lines, 'Psub = array_num - K_fbss + 1 = %d.', subarray_num - K_fbss + 1);
 log_lines = append_log(log_lines, 'centerT/Tk is built internally from the K-dimensional subarray.');
+log_lines = append_log(log_lines, 'Route B beam grid is adaptive per bw index: routeB_beam_span = 1.5 * theta_search_B.');
 log_lines = append_log(log_lines, '');
 
 for iSnap = 1:nsnap
@@ -121,6 +117,11 @@ for iSnap = 1:nsnap
         RecvbeamC = mean(target_theta);
         theta_search_A = search_scale_A * theta_sep;
         theta_search_B = search_scale_B * theta_sep;
+        routeB_beam_span = 1.5 * theta_search_B;
+        beam_grid_full_deg = linspace( ...
+            RecvbeamC - routeB_beam_span / 2, ...
+            RecvbeamC + routeB_beam_span / 2, ...
+            M_full + 1);
 
         for metkl_num = 1:Metkl
             s1 = sqrt(10^(snr / 10)) * exp(j * 2 * pi * fc * t);
@@ -141,7 +142,7 @@ for iSnap = 1:nsnap
                 edge_hit_count_A(iSnap, ibw) = edge_hit_count_A(iSnap, ibw) + 1;
             end
 
-            y_sub = y(1:subarray_num, :);
+            y_sub = y;
             [doa_center_1d, debug_B] = DOA_three_music_new_route_centerT( ...
                 y_sub, ...
                 K_fbss, ...

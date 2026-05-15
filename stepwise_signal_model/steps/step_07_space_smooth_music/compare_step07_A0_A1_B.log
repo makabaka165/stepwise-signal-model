@@ -1,0 +1,59 @@
+compare_step07_A0_A1_B
+A0_original:
+    原始 Route A，保留旧搜索假定。
+    search_width = theta_sep。
+    用于复现旧结果。
+    该路线带有受限搜索先验，不作为完全公平的一般搜索基线。
+
+A1_eval_improved:
+    搜索宽度与目标间隔解耦。
+    search_width = 4 * theta_sep。
+    使用 no-edge peak detection。
+    beam grid 密度保持与原始 A 一致：M_old_A1 = round(search_scale_A1 * 50)。
+    QSmoothRatio = 0.20。
+
+B_true_FBSS_centerT:
+    true array-domain FBSS -> centerT beamspace -> 1D MUSIC。
+    使用 N=64, K=56, Psub=9。
+
+Parameter summary:
+snr=12.00, Metkl=50, tol_deg=0.100
+T_snap_list=[130 260 520]
+bw_index_list=[1 2 3 4 5 6 7 8 9 10]
+
+=== T_snap = 130 ===
+bw/1 | A0 raw=0 tol=0 RMSE=NaN boundary_like=0.00 | A1 raw=50 tol=0 RMSE=1.5098 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0040 num_peaks_sample=4
+bw/2 | A0 raw=0 tol=0 RMSE=NaN boundary_like=0.00 | A1 raw=50 tol=0 RMSE=0.3045 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0069 num_peaks_sample=2
+bw/3 | A0 raw=50 tol=50 RMSE=0.0382 boundary_like=0.00 | A1 raw=50 tol=0 RMSE=0.3079 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0092 num_peaks_sample=2
+bw/4 | A0 raw=50 tol=50 RMSE=0.0068 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.3703 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0138 num_peaks_sample=2
+bw/5 | A0 raw=50 tol=50 RMSE=0.0017 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4141 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0222 num_peaks_sample=2
+bw/6 | A0 raw=50 tol=50 RMSE=0.0047 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4459 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0277 num_peaks_sample=2
+bw/7 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4706 edge_hit=0.00 | B raw=47 tol=47 RMSE=0.0443 num_peaks_sample=2
+bw/8 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4893 edge_hit=0.00 | B raw=18 tol=17 RMSE=0.0503 num_peaks_sample=1
+bw/9 | A0 raw=50 tol=50 RMSE=0.0008 boundary_like=1.00 | A1 raw=0 tol=0 RMSE=NaN edge_hit=0.00 | B raw=2 tol=2 RMSE=0.0481 num_peaks_sample=1
+bw/10 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=0 tol=0 RMSE=NaN edge_hit=0.00 | B raw=0 tol=0 RMSE=NaN num_peaks_sample=1
+
+=== T_snap = 260 ===
+bw/1 | A0 raw=0 tol=0 RMSE=NaN boundary_like=0.00 | A1 raw=50 tol=0 RMSE=1.5029 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0010 num_peaks_sample=4
+bw/2 | A0 raw=0 tol=0 RMSE=NaN boundary_like=0.00 | A1 raw=50 tol=0 RMSE=0.3051 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0054 num_peaks_sample=2
+bw/3 | A0 raw=50 tol=50 RMSE=0.0369 boundary_like=0.00 | A1 raw=50 tol=0 RMSE=0.3080 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0072 num_peaks_sample=2
+bw/4 | A0 raw=50 tol=50 RMSE=0.0048 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.3723 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0093 num_peaks_sample=2
+bw/5 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4148 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0165 num_peaks_sample=2
+bw/6 | A0 raw=50 tol=50 RMSE=0.0047 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4457 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0197 num_peaks_sample=2
+bw/7 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4704 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0281 num_peaks_sample=2
+bw/8 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4883 edge_hit=0.00 | B raw=45 tol=45 RMSE=0.0444 num_peaks_sample=2
+bw/9 | A0 raw=50 tol=50 RMSE=0.0008 boundary_like=1.00 | A1 raw=0 tol=0 RMSE=NaN edge_hit=0.00 | B raw=22 tol=22 RMSE=0.0461 num_peaks_sample=2
+bw/10 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=0 tol=0 RMSE=NaN edge_hit=0.00 | B raw=0 tol=0 RMSE=NaN num_peaks_sample=1
+
+=== T_snap = 520 ===
+bw/1 | A0 raw=0 tol=0 RMSE=NaN boundary_like=0.00 | A1 raw=50 tol=0 RMSE=1.5013 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0000 num_peaks_sample=4
+bw/2 | A0 raw=0 tol=0 RMSE=NaN boundary_like=0.00 | A1 raw=50 tol=0 RMSE=0.3048 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0033 num_peaks_sample=2
+bw/3 | A0 raw=50 tol=50 RMSE=0.0374 boundary_like=0.00 | A1 raw=50 tol=0 RMSE=0.3083 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0045 num_peaks_sample=2
+bw/4 | A0 raw=50 tol=50 RMSE=0.0050 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.3716 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0073 num_peaks_sample=2
+bw/5 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4142 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0095 num_peaks_sample=2
+bw/6 | A0 raw=50 tol=50 RMSE=0.0047 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4460 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0157 num_peaks_sample=2
+bw/7 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4700 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0170 num_peaks_sample=2
+bw/8 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=50 tol=0 RMSE=0.4893 edge_hit=0.00 | B raw=50 tol=50 RMSE=0.0252 num_peaks_sample=2
+bw/9 | A0 raw=50 tol=50 RMSE=0.0008 boundary_like=1.00 | A1 raw=0 tol=0 RMSE=NaN edge_hit=0.00 | B raw=38 tol=38 RMSE=0.0397 num_peaks_sample=2
+bw/10 | A0 raw=50 tol=50 RMSE=0.0000 boundary_like=1.00 | A1 raw=0 tol=0 RMSE=NaN edge_hit=0.00 | B raw=14 tol=13 RMSE=0.0516 num_peaks_sample=1
+
