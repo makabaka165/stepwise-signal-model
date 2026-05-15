@@ -1,0 +1,44 @@
+Step 07 Route B
+Common experiment settings:
+snr=12.00, Metkl=50, tol_deg=0.100
+T_snap_list=[130 260 520]
+bw_index_list=[1 2 3 4 5 6 7 8 9 10]
+Route B internal settings:
+K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+
+=== T_snap = 130 ===
+bw/1 | raw=50 tol=50 RMSE=0.0041 mean_num_peaks=4.00
+bw/2 | raw=50 tol=50 RMSE=0.0061 mean_num_peaks=2.00
+bw/3 | raw=50 tol=50 RMSE=0.0079 mean_num_peaks=2.00
+bw/4 | raw=50 tol=50 RMSE=0.0145 mean_num_peaks=2.00
+bw/5 | raw=50 tol=50 RMSE=0.0213 mean_num_peaks=2.00
+bw/6 | raw=50 tol=50 RMSE=0.0324 mean_num_peaks=2.00
+bw/7 | raw=48 tol=47 RMSE=0.0517 mean_num_peaks=1.96
+bw/8 | raw=26 tol=23 RMSE=0.0580 mean_num_peaks=1.52
+bw/9 | raw=2 tol=1 RMSE=0.0792 mean_num_peaks=1.04
+bw/10 | raw=1 tol=0 RMSE=0.0962 mean_num_peaks=1.02
+
+=== T_snap = 260 ===
+bw/1 | raw=50 tol=50 RMSE=0.0017 mean_num_peaks=4.00
+bw/2 | raw=50 tol=50 RMSE=0.0046 mean_num_peaks=2.00
+bw/3 | raw=50 tol=50 RMSE=0.0058 mean_num_peaks=2.00
+bw/4 | raw=50 tol=50 RMSE=0.0097 mean_num_peaks=2.00
+bw/5 | raw=50 tol=50 RMSE=0.0134 mean_num_peaks=2.00
+bw/6 | raw=50 tol=50 RMSE=0.0223 mean_num_peaks=2.00
+bw/7 | raw=50 tol=50 RMSE=0.0354 mean_num_peaks=2.00
+bw/8 | raw=39 tol=38 RMSE=0.0430 mean_num_peaks=1.78
+bw/9 | raw=17 tol=16 RMSE=0.0634 mean_num_peaks=1.34
+bw/10 | raw=0 tol=0 RMSE=NaN mean_num_peaks=1.00
+
+=== T_snap = 520 ===
+bw/1 | raw=50 tol=50 RMSE=0.0000 mean_num_peaks=4.00
+bw/2 | raw=50 tol=50 RMSE=0.0030 mean_num_peaks=2.00
+bw/3 | raw=50 tol=50 RMSE=0.0050 mean_num_peaks=2.00
+bw/4 | raw=50 tol=50 RMSE=0.0069 mean_num_peaks=2.00
+bw/5 | raw=50 tol=50 RMSE=0.0096 mean_num_peaks=2.00
+bw/6 | raw=50 tol=50 RMSE=0.0133 mean_num_peaks=2.00
+bw/7 | raw=50 tol=50 RMSE=0.0198 mean_num_peaks=2.00
+bw/8 | raw=50 tol=50 RMSE=0.0290 mean_num_peaks=2.00
+bw/9 | raw=42 tol=42 RMSE=0.0414 mean_num_peaks=1.84
+bw/10 | raw=15 tol=15 RMSE=0.0448 mean_num_peaks=1.30
+

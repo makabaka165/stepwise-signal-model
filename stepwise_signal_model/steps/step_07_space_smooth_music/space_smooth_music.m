@@ -1,122 +1,188 @@
-% 第 7 步：64 阵元条件下的波束域空间平滑 MUSIC 仿真。
-% 目的：
-% 1. 构造双目标相干场景；
-% 2. 比较不同角间隔下的测角均方根误差（RMSE）；
-% 3. 对比“局部波束未完全覆盖目标”和“局部波束完整覆盖目标”两种设置。
 clc
-clear all
+clear
 close all
+
+rng(20260515, 'twister');
 
 c = 3e8;
 array_num = 64;
 fc = 2.7e9;
-lamda = c / fc;
+lambda = c / fc;
 d = 0.047;
-bw_64 = 50.8 * 1.45 * lamda / (array_num - 1) / d;
-bw_64 = roundn(bw_64, -1);
 
-% 双目标角间隔，从 1 倍参考波束宽度递减到 1/10 倍参考波束宽度。
-% 这里的 bw/1、bw/2 ... bw/10 是后续横坐标上的十个测试档位。
+bw_64 = 50.8 * 1.45 * lambda / (array_num - 1) / d;
+bw_64 = roundn(bw_64, -1);
 theta_bw = [bw_64/1, bw_64/2, bw_64/3, bw_64/4, bw_64/5, ...
             bw_64/6, bw_64/7, bw_64/8, bw_64/9, bw_64/10];
 
 theta_c = 13;
-T = 130;
-t = linspace(0, 1, T);
+snr = 12;
+Metkl = 50;
+tol_deg = 0.1;
+T_snap_list = [130, 260, 520];
+bw_index_list = 1:10;
+
 j = sqrt(-1);
-snr = [12];
+position_full = d * (0:array_num-1).';
+win_old = taylorwin(array_num, 25, -40)';
+win_old = win_old / sqrt(win_old * win_old');
 
-% 蒙特卡洛重复次数。
-Metkl = 100;
+routeA0_beam_span = bw_64;
+M_old_A0 = 50;
+angle_recv_A0 = linspace(theta_c - routeA0_beam_span / 2, ...
+                         theta_c + routeA0_beam_span / 2, ...
+                         M_old_A0 + 1);
+A0_beam_matrix = diag(win_old) * exp( ...
+    j * 2 * pi * position_full / lambda * sin(angle_recv_A0 * pi / 180));
 
-success = zeros(1, length(theta_bw));
-success1 = zeros(1, length(theta_bw));
-RMSE = nan(1, length(theta_bw));
-RMSE1 = nan(1, length(theta_bw));
+nsnap = numel(T_snap_list);
+nbw = numel(bw_index_list);
+raw_success_count = zeros(nsnap, nbw);
+tol_success_count = zeros(nsnap, nbw);
+rmse_sum_sqerr = zeros(nsnap, nbw);
+rmse_valid_count = zeros(nsnap, nbw);
+boundary_like_hit_count = zeros(nsnap, nbw);
 
-for snr_num = 1 : length(snr)
-    for angle_grid_num = 1 : length(theta_bw)
-        fprintf('角间隔档位 %d / %d\n', angle_grid_num, length(theta_bw));
-        chazhi_valid = nan(1, Metkl);
-        chazhi1_valid = nan(1, Metkl);
-        for metkl_num = 1 : Metkl
-            theta_a = theta_c - theta_bw(angle_grid_num) / 2;
-            theta_b = theta_c + theta_bw(angle_grid_num) / 2;
-            target_theta = [theta_a, theta_b];
+log_lines = {};
+log_lines = append_log(log_lines, 'Step 07 Route A0');
+log_lines = append_log(log_lines, 'Common experiment settings:');
+log_lines = append_log(log_lines, 'snr=%.2f, Metkl=%d, tol_deg=%.3f', snr, Metkl, tol_deg);
+log_lines = append_log(log_lines, 'T_snap_list=%s', mat2str(T_snap_list));
+log_lines = append_log(log_lines, 'bw_index_list=%s', mat2str(bw_index_list));
+log_lines = append_log(log_lines, 'Route A0 internal settings:');
+log_lines = append_log(log_lines, 'search_width = theta_sep, M_old_A0 = %d', M_old_A0);
+log_lines = append_log(log_lines, '');
 
-            % 生成两个完全相干的目标信号，并叠加到阵列接收数据中。
-            s1 = sqrt(10^(snr(snr_num) / 10)) * exp(j * 2 * pi * fc * t);
-            s2 = sqrt(10^(snr(snr_num) / 10)) * exp(j * 2 * pi * fc * t);
-            A_a = exp(-j * 2 * pi * d * (0:array_num-1) * sind(theta_a) / lamda);
-            A_b = exp(-j * 2 * pi * d * (0:array_num-1) * sind(theta_b) / lamda);
+for iSnap = 1:nsnap
+    T_snap = T_snap_list(iSnap);
+    t = linspace(0, 1, T_snap);
+    log_lines = append_log(log_lines, '=== T_snap = %d ===', T_snap);
+
+    for ibw = 1:nbw
+        angle_grid_num = bw_index_list(ibw);
+        theta_sep = theta_bw(angle_grid_num);
+        theta_a = theta_c - theta_sep / 2;
+        theta_b = theta_c + theta_sep / 2;
+        target_theta = [theta_a, theta_b];
+        RecvbeamC = mean(target_theta);
+        theta_search_A0 = theta_sep;
+
+        for metkl_num = 1:Metkl
+            s1 = sqrt(10^(snr / 10)) * exp(j * 2 * pi * fc * t);
+            s2 = sqrt(10^(snr / 10)) * exp(j * 2 * pi * fc * t);
+            A_a = exp(-j * 2 * pi * d * (0:array_num-1) * sind(theta_a) / lambda);
+            A_b = exp(-j * 2 * pi * d * (0:array_num-1) * sind(theta_b) / lambda);
 
             s11 = A_a.' * s1;
             s21 = A_b.' * s2;
-            y = s11 + s21 + (1 / sqrt(2)) * (randn(array_num, T) + ...
-                j * randn(array_num, T));
+            y = s11 + s21 + (1 / sqrt(2)) * (randn(array_num, T_snap) + ...
+                j * randn(array_num, T_snap));
 
-            subarray_num = 64;
-            win = taylorwin(subarray_num, 25, -40)';
-            win = win / sqrt(win * win');
-            position = [d * (0:subarray_num-1)]';
+            sr_DBF_A0 = A0_beam_matrix.' * y;
+            doa_A0 = DOA_three_music_hecheng_fangzhen( ...
+                sr_DBF_A0, array_num, A0_beam_matrix, RecvbeamC, theta_search_A0);
 
-            % 以双目标中心角为局部波束扇区中心。
-            RecvbeamC = (theta_b + theta_a) / 2;
-            RecvbeamS = RecvbeamC - bw_64 / 2;
-            RecvbeamE = RecvbeamC + bw_64 / 2;
-            M = 50;  % 生成 51 个局部波束，配合 Q = 10 时平滑后维数为 41
-
-            % 第二组局部波束范围做轻微扩展，尽量完整覆盖两个目标。
-            RecvbeamS1 = RecvbeamC + theta_bw(angle_grid_num) / 2 - bw_64 / 2 - 0.1;
-            RecvbeamE1 = RecvbeamC - theta_bw(angle_grid_num) / 2 + bw_64 / 2 + 0.1;
-
-            % 构造两组局部波束中心角：
-            % angle_recv  为标准范围；
-            % angle_recv1 为扩展范围，用于尽量完整覆盖双目标。
-            angle_recv = linspace(RecvbeamS, RecvbeamE, M + 1);
-            angle_recv1 = linspace(RecvbeamS1, RecvbeamE1, M + 1);
-
-            A = diag(win) * exp(j * 2 * pi * position / lamda * sin(angle_recv * pi / 180));
-            A1 = diag(win) * exp(j * 2 * pi * position / lamda * sin(angle_recv1 * pi / 180));
-            sr_DBF_boshu = A.' * y;
-            sr_DBF_boshu1 = A1.' * y;
-
-            % 分别对两组局部波束结果执行波束域空间平滑 MUSIC。
-            temp = DOA_three_music_hecheng_fangzhen( ...
-                sr_DBF_boshu, subarray_num, A, RecvbeamC, theta_bw(angle_grid_num));
-            temp1 = DOA_three_music_hecheng_fangzhen( ...
-                sr_DBF_boshu1, subarray_num, A1, RecvbeamC, theta_bw(angle_grid_num));
-
-            est_64boshu(metkl_num, (angle_grid_num-1) * 2 + 1 : angle_grid_num * 2) = temp;
-            est_64boshu1(metkl_num, (angle_grid_num-1) * 2 + 1 : angle_grid_num * 2) = temp1;
-            chazhi(angle_grid_num, metkl_num) = sum((temp - target_theta).^2, 2);
-            chazhi1(angle_grid_num, metkl_num) = sum((temp1 - target_theta).^2, 2);
-
-            if all(isfinite(temp))
-                success(angle_grid_num) = success(angle_grid_num) + 1;
-                chazhi_valid(metkl_num) = sum((temp - target_theta).^2, 2);
+            A0_left = RecvbeamC - theta_search_A0 / 2;
+            A0_right = RecvbeamC + theta_search_A0 / 2;
+            edge_tol = 1e-9;
+            boundary_like_hit = all(isfinite(doa_A0)) && ...
+                (any(abs(doa_A0 - A0_left) < edge_tol) || ...
+                 any(abs(doa_A0 - A0_right) < edge_tol));
+            if boundary_like_hit
+                boundary_like_hit_count(iSnap, ibw) = boundary_like_hit_count(iSnap, ibw) + 1;
             end
-            if all(isfinite(temp1))
-                success1(angle_grid_num) = success1(angle_grid_num) + 1;
-                chazhi1_valid(metkl_num) = sum((temp1 - target_theta).^2, 2);
+
+            raw_ok = all(isfinite(doa_A0));
+            tol_ok = is_valid_doa_success(doa_A0, target_theta, tol_deg);
+
+            if raw_ok
+                raw_success_count(iSnap, ibw) = raw_success_count(iSnap, ibw) + 1;
+                sqerr = sum((sort(doa_A0(:).') - sort(target_theta(:).')).^2);
+                rmse_sum_sqerr(iSnap, ibw) = rmse_sum_sqerr(iSnap, ibw) + sqerr;
+                rmse_valid_count(iSnap, ibw) = rmse_valid_count(iSnap, ibw) + 1;
+            end
+
+            if tol_ok
+                tol_success_count(iSnap, ibw) = tol_success_count(iSnap, ibw) + 1;
             end
         end
 
-        % 统计当前角间隔档位下的均方根误差，仅对成功检测双峰的样本计入统计。
-        if any(isfinite(chazhi_valid))
-            RMSE(angle_grid_num) = sqrt(nansum(chazhi_valid) / (2 * sum(isfinite(chazhi_valid))));
+        current_rmse = NaN;
+        if rmse_valid_count(iSnap, ibw) > 0
+            current_rmse = sqrt(rmse_sum_sqerr(iSnap, ibw) / (2 * rmse_valid_count(iSnap, ibw)));
         end
-        if any(isfinite(chazhi1_valid))
-            RMSE1(angle_grid_num) = sqrt(nansum(chazhi1_valid) / (2 * sum(isfinite(chazhi1_valid))));
-        end
+
+        boundary_like_rate = boundary_like_hit_count(iSnap, ibw) / Metkl;
+        log_lines = append_log(log_lines, ...
+            'bw/%d | raw=%d tol=%d RMSE=%.4f boundary_like=%.2f', ...
+            angle_grid_num, raw_success_count(iSnap, ibw), ...
+            tol_success_count(iSnap, ibw), current_rmse, boundary_like_rate);
     end
+    log_lines = append_log(log_lines, '');
 end
 
-figure();
-plot(1:length(theta_bw), RMSE, 'r-*', 1:length(theta_bw), RMSE1, 'b-x');
-legend('局部波束未完全覆盖目标', '局部波束完整覆盖目标')
-title('不同角间隔下的波束域空间平滑 MUSIC 测角均方根误差')
-xticks(1:length(theta_bw))
-xticklabels({'bw/1', 'bw/2', 'bw/3', 'bw/4', 'bw/5', 'bw/6', 'bw/7', 'bw/8', 'bw/9', 'bw/10'})
-xlabel('目标角间隔')
-ylabel('均方根误差（度）')
+raw_success_rate = raw_success_count / Metkl;
+tol_success_rate = tol_success_count / Metkl;
+rmse = nan(nsnap, nbw);
+valid_mask = rmse_valid_count > 0;
+rmse(valid_mask) = sqrt(rmse_sum_sqerr(valid_mask) ./ (2 * rmse_valid_count(valid_mask)));
+boundary_like_hit_rate = boundary_like_hit_count / Metkl;
+
+output_dir = fileparts(mfilename('fullpath'));
+fid = fopen(fullfile(output_dir, [mfilename, '.log']), 'w');
+if fid < 0
+    error('Failed to open log file.');
+end
+for ii = 1:numel(log_lines)
+    fprintf(fid, '%s\n', log_lines{ii});
+end
+fclose(fid);
+
+xvals = bw_index_list;
+xlabels = arrayfun(@(k) sprintf('bw/%d', k), bw_index_list, 'UniformOutput', false);
+
+figure('Name', 'Route A0 tol success rate', 'NumberTitle', 'off');
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(xvals, squeeze(tol_success_rate(iSnap, :)), '-o', 'LineWidth', 1.2);
+    grid on;
+    xticks(xvals);
+    xticklabels(xlabels);
+    ylabel('tol success');
+    title(sprintf('Route A0 tol success rate, T_{snap} = %d', T_snap_list(iSnap)));
+end
+xlabel('target separation');
+
+figure('Name', 'Route A0 RMSE', 'NumberTitle', 'off');
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(xvals, squeeze(rmse(iSnap, :)), '-o', 'LineWidth', 1.2);
+    grid on;
+    xticks(xvals);
+    xticklabels(xlabels);
+    ylabel('RMSE (deg)');
+    title(sprintf('Route A0 RMSE, T_{snap} = %d', T_snap_list(iSnap)));
+end
+xlabel('target separation');
+
+figure('Name', 'Route A0 raw success and boundary hit', 'NumberTitle', 'off');
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(xvals, squeeze(raw_success_rate(iSnap, :)), '-o', 'LineWidth', 1.2);
+    hold on;
+    plot(xvals, squeeze(boundary_like_hit_rate(iSnap, :)), '-s', 'LineWidth', 1.2);
+    hold off;
+    grid on;
+    xticks(xvals);
+    xticklabels(xlabels);
+    ylabel('rate');
+    title(sprintf('Route A0 raw success / boundary hit, T_{snap} = %d', T_snap_list(iSnap)));
+    legend({'raw success', 'boundary-like hit'}, 'Location', 'best');
+end
+xlabel('target separation');
+
+function log_lines = append_log(log_lines, fmt, varargin)
+line = sprintf(fmt, varargin{:});
+fprintf('%s\n', line);
+log_lines{end+1, 1} = line;
+end

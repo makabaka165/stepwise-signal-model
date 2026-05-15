@@ -22,45 +22,39 @@ tol_deg = 0.1;
 T_snap_list = [130, 260, 520];
 bw_index_list = 1:10;
 
-search_scale_B = 4;
-K_fbss = 56;
-M_full = 48;
-center_beam_count = 37;
-
-if K_fbss >= array_num
-    error('K_fbss must be smaller than array_num.');
-end
-if K_fbss <= 2
-    error('K_fbss must be larger than the source count.');
-end
-if (array_num - K_fbss + 1) < 2
-    error('The number of overlapped subarrays is too small.');
-end
-if center_beam_count <= 2
-    error('center_beam_count must be larger than the source count.');
-end
-if center_beam_count > (M_full + 1)
-    error('center_beam_count must not exceed M_full + 1.');
-end
+search_scale_A1 = 4;
+qSmoothRatio_A1 = 0.2;
 
 j = sqrt(-1);
+position_full = d * (0:array_num-1).';
+win_old = taylorwin(array_num, 25, -40)';
+win_old = win_old / sqrt(win_old * win_old');
+
+routeA1_beam_span = search_scale_A1 * bw_64;
+M_old_A1 = round(search_scale_A1 * 50);
+angle_recv_A1 = linspace(theta_c - routeA1_beam_span / 2, ...
+                         theta_c + routeA1_beam_span / 2, ...
+                         M_old_A1 + 1);
+A1_beam_matrix = diag(win_old) * exp( ...
+    j * 2 * pi * position_full / lambda * sin(angle_recv_A1 * pi / 180));
+
 nsnap = numel(T_snap_list);
 nbw = numel(bw_index_list);
 raw_success_count = zeros(nsnap, nbw);
 tol_success_count = zeros(nsnap, nbw);
 rmse_sum_sqerr = zeros(nsnap, nbw);
 rmse_valid_count = zeros(nsnap, nbw);
-sum_num_peaks = zeros(nsnap, nbw);
+edge_hit_count = zeros(nsnap, nbw);
 
 log_lines = {};
-log_lines = append_log(log_lines, 'Step 07 Route B');
+log_lines = append_log(log_lines, 'Step 07 Route A1');
 log_lines = append_log(log_lines, 'Common experiment settings:');
 log_lines = append_log(log_lines, 'snr=%.2f, Metkl=%d, tol_deg=%.3f', snr, Metkl, tol_deg);
 log_lines = append_log(log_lines, 'T_snap_list=%s', mat2str(T_snap_list));
 log_lines = append_log(log_lines, 'bw_index_list=%s', mat2str(bw_index_list));
-log_lines = append_log(log_lines, 'Route B internal settings:');
-log_lines = append_log(log_lines, 'K_fbss=%d, M_full=%d, center_beam_count=%d, search_scale_B=%.2f', ...
-    K_fbss, M_full, center_beam_count, search_scale_B);
+log_lines = append_log(log_lines, 'Route A1 internal settings:');
+log_lines = append_log(log_lines, 'search_scale_A1=%.2f, QSmoothRatio_A1=%.2f, M_old_A1=%d', ...
+    search_scale_A1, qSmoothRatio_A1, M_old_A1);
 log_lines = append_log(log_lines, '');
 
 for iSnap = 1:nsnap
@@ -75,11 +69,7 @@ for iSnap = 1:nsnap
         theta_b = theta_c + theta_sep / 2;
         target_theta = [theta_a, theta_b];
         RecvbeamC = mean(target_theta);
-        theta_search_B = search_scale_B * theta_sep;
-        routeB_beam_span = 1.5 * theta_search_B;
-        beam_grid_full_deg = linspace(RecvbeamC - routeB_beam_span / 2, ...
-                                      RecvbeamC + routeB_beam_span / 2, ...
-                                      M_full + 1);
+        theta_search_A1 = search_scale_A1 * theta_sep;
 
         for metkl_num = 1:Metkl
             s1 = sqrt(10^(snr / 10)) * exp(j * 2 * pi * fc * t);
@@ -92,25 +82,23 @@ for iSnap = 1:nsnap
             y = s11 + s21 + (1 / sqrt(2)) * (randn(array_num, T_snap) + ...
                 j * randn(array_num, T_snap));
 
-            [doa_B, debug_B] = DOA_three_music_new_route_centerT( ...
-                y, ...
-                K_fbss, ...
-                beam_grid_full_deg, ...
-                center_beam_count, ...
-                RecvbeamC, ...
-                theta_search_B, ...
+            sr_DBF_A1 = A1_beam_matrix.' * y;
+            [doa_A1, debug_A1] = DOA_three_music_hecheng_fangzhen_eval( ...
+                sr_DBF_A1, array_num, A1_beam_matrix, RecvbeamC, theta_search_A1, ...
                 'Lc', 2, ...
-                'GridStepDeg', 0.01, ...
-                'UseQR', true);
+                'QSmoothRatio', qSmoothRatio_A1, ...
+                'TargetTheta', target_theta);
 
-            sum_num_peaks(iSnap, ibw) = sum_num_peaks(iSnap, ibw) + debug_B.num_peaks;
+            if debug_A1.edge_hit
+                edge_hit_count(iSnap, ibw) = edge_hit_count(iSnap, ibw) + 1;
+            end
 
-            raw_ok = all(isfinite(doa_B));
-            tol_ok = is_valid_doa_success(doa_B, target_theta, tol_deg);
+            raw_ok = all(isfinite(doa_A1));
+            tol_ok = is_valid_doa_success(doa_A1, target_theta, tol_deg);
 
             if raw_ok
                 raw_success_count(iSnap, ibw) = raw_success_count(iSnap, ibw) + 1;
-                sqerr = sum((sort(doa_B(:).') - sort(target_theta(:).')).^2);
+                sqerr = sum((sort(doa_A1(:).') - sort(target_theta(:).')).^2);
                 rmse_sum_sqerr(iSnap, ibw) = rmse_sum_sqerr(iSnap, ibw) + sqerr;
                 rmse_valid_count(iSnap, ibw) = rmse_valid_count(iSnap, ibw) + 1;
             end
@@ -125,11 +113,11 @@ for iSnap = 1:nsnap
             current_rmse = sqrt(rmse_sum_sqerr(iSnap, ibw) / (2 * rmse_valid_count(iSnap, ibw)));
         end
 
-        mean_num_peaks_now = sum_num_peaks(iSnap, ibw) / Metkl;
+        edge_hit_rate = edge_hit_count(iSnap, ibw) / Metkl;
         log_lines = append_log(log_lines, ...
-            'bw/%d | raw=%d tol=%d RMSE=%.4f mean_num_peaks=%.2f', ...
+            'bw/%d | raw=%d tol=%d RMSE=%.4f edge_hit=%.2f', ...
             angle_grid_num, raw_success_count(iSnap, ibw), ...
-            tol_success_count(iSnap, ibw), current_rmse, mean_num_peaks_now);
+            tol_success_count(iSnap, ibw), current_rmse, edge_hit_rate);
     end
     log_lines = append_log(log_lines, '');
 end
@@ -139,7 +127,7 @@ tol_success_rate = tol_success_count / Metkl;
 rmse = nan(nsnap, nbw);
 valid_mask = rmse_valid_count > 0;
 rmse(valid_mask) = sqrt(rmse_sum_sqerr(valid_mask) ./ (2 * rmse_valid_count(valid_mask)));
-mean_num_peaks = sum_num_peaks / Metkl;
+edge_hit_rate = edge_hit_count / Metkl;
 
 output_dir = fileparts(mfilename('fullpath'));
 fid = fopen(fullfile(output_dir, [mfilename, '.log']), 'w');
@@ -154,7 +142,7 @@ fclose(fid);
 xvals = bw_index_list;
 xlabels = arrayfun(@(k) sprintf('bw/%d', k), bw_index_list, 'UniformOutput', false);
 
-figure('Name', 'Route B tol success rate', 'NumberTitle', 'off');
+figure('Name', 'Route A1 tol success rate', 'NumberTitle', 'off');
 for iSnap = 1:nsnap
     subplot(nsnap, 1, iSnap);
     plot(xvals, squeeze(tol_success_rate(iSnap, :)), '-o', 'LineWidth', 1.2);
@@ -162,11 +150,11 @@ for iSnap = 1:nsnap
     xticks(xvals);
     xticklabels(xlabels);
     ylabel('tol success');
-    title(sprintf('Route B tol success rate, T_{snap} = %d', T_snap_list(iSnap)));
+    title(sprintf('Route A1 tol success rate, T_{snap} = %d', T_snap_list(iSnap)));
 end
 xlabel('target separation');
 
-figure('Name', 'Route B RMSE', 'NumberTitle', 'off');
+figure('Name', 'Route A1 RMSE', 'NumberTitle', 'off');
 for iSnap = 1:nsnap
     subplot(nsnap, 1, iSnap);
     plot(xvals, squeeze(rmse(iSnap, :)), '-o', 'LineWidth', 1.2);
@@ -174,23 +162,23 @@ for iSnap = 1:nsnap
     xticks(xvals);
     xticklabels(xlabels);
     ylabel('RMSE (deg)');
-    title(sprintf('Route B RMSE, T_{snap} = %d', T_snap_list(iSnap)));
+    title(sprintf('Route A1 RMSE, T_{snap} = %d', T_snap_list(iSnap)));
 end
 xlabel('target separation');
 
-figure('Name', 'Route B raw success and peak count', 'NumberTitle', 'off');
+figure('Name', 'Route A1 raw success and edge hit', 'NumberTitle', 'off');
 for iSnap = 1:nsnap
     subplot(nsnap, 1, iSnap);
     plot(xvals, squeeze(raw_success_rate(iSnap, :)), '-o', 'LineWidth', 1.2);
     hold on;
-    plot(xvals, squeeze(mean_num_peaks(iSnap, :)), '-s', 'LineWidth', 1.2);
+    plot(xvals, squeeze(edge_hit_rate(iSnap, :)), '-s', 'LineWidth', 1.2);
     hold off;
     grid on;
     xticks(xvals);
     xticklabels(xlabels);
-    ylabel('value');
-    title(sprintf('Route B raw success / mean peak count, T_{snap} = %d', T_snap_list(iSnap)));
-    legend({'raw success', 'mean num peaks'}, 'Location', 'best');
+    ylabel('rate');
+    title(sprintf('Route A1 raw success / edge hit, T_{snap} = %d', T_snap_list(iSnap)));
+    legend({'raw success', 'edge hit'}, 'Location', 'best');
 end
 xlabel('target separation');
 
