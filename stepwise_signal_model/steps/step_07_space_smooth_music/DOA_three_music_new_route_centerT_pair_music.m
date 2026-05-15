@@ -1,17 +1,14 @@
 function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
     y, subarray_num, T_center, angle_recv, theta_bw, varargin)
 
-    % 新路线 centerT 的 2D pair-MUSIC 版本：
-    % 阵元域处理 -> centerT beamspace -> 角度对 MUSIC 搜索。
-    %
-    % 该函数只改变 MUSIC 后端，不改变当前 Route B 的前端处理逻辑。
-    % 即：仍使用 Rx = mssp(Rxx, subarray_num)，保持与
-    % DOA_three_music_new_route_centerT.m 的前半段一致。
+    % Route C: keep the same frontend as Route B and replace only the
+    % backend with a 2D pair-MUSIC search.
 
     p = inputParser;
     addParameter(p, 'Lc', 2);
     addParameter(p, 'GridStepDeg', 0.005);
     addParameter(p, 'SearchMarginDeg', []);
+    addParameter(p, 'PairCenterTolDeg', []);
     addParameter(p, 'MinSepDeg', 0.03);
     addParameter(p, 'DiagonalLoading', 1e-12);
     parse(p, varargin{:});
@@ -19,6 +16,7 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
     Lc = p.Results.Lc;
     grid_step_deg = p.Results.GridStepDeg;
     search_margin_deg = p.Results.SearchMarginDeg;
+    pair_center_tol_deg = p.Results.PairCenterTolDeg;
     min_sep_deg = p.Results.MinSepDeg;
     diagonal_loading = p.Results.DiagonalLoading;
 
@@ -27,7 +25,11 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
     end
 
     if isempty(search_margin_deg)
-        search_margin_deg = max(0.2, 0.2 * theta_bw);
+        search_margin_deg = 0;
+    end
+
+    if isempty(pair_center_tol_deg)
+        pair_center_tol_deg = max(0.08, 0.05 * theta_bw);
     end
 
     j = sqrt(-1);
@@ -37,7 +39,6 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
     d = 0.047;
 
     [Nuse, Lsnap] = size(y);
-
     if Nuse ~= subarray_num
         error('The row count of y must equal subarray_num.');
     end
@@ -50,19 +51,15 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
         error('T_center must have more columns than Lc.');
     end
 
-    % 1. 阵元域协方差
     Rxx = y * y' / Lsnap;
     Rxx = 0.5 * (Rxx + Rxx');
 
-    % 2. 保持与当前 Route B 一致的前端处理
     Rx = mssp(Rxx, subarray_num);
     Rx = 0.5 * (Rx + Rx');
 
-    % 3. centerT beamspace 投影
-    Rb = T_center' * Rx * T_center;
+    Rb = T_center.' * Rx * conj(T_center);
     Rb = 0.5 * (Rb + Rb');
 
-    % 4. EVD
     [E, D] = eig(Rb);
     eigvals = real(diag(D));
     [eigvals, idx] = sort(eigvals, 'descend');
@@ -79,44 +76,47 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
     En = E(:, Lc+1:end);
     Qn = En * En';
 
-    % 5. 搜索角网格
     angle_grid = angle_recv - theta_bw/2 - search_margin_deg : ...
                  grid_step_deg : ...
                  angle_recv + theta_bw/2 + search_margin_deg;
 
     pos = d * (0:subarray_num-1).';
     G = zeros(size(T_center, 2), numel(angle_grid));
-
     for ii = 1:numel(angle_grid)
         theta = angle_grid(ii);
-        a_sub = exp(-j * 2*pi/lambda * pos * sind(theta));
-        b_sub = T_center' * a_sub;
+        a_sub = exp(-j * 2 * pi / lambda * pos * sind(theta));
+        b_sub = T_center.' * a_sub;
         G(:, ii) = b_sub / max(norm(b_sub), eps);
     end
 
-    % 6. 2D pair-MUSIC 搜索
     best_score = inf;
+    best_score_det = inf;
     best_pair = [nan nan];
 
     for ii = 1:numel(angle_grid)-1
         for jj = ii+1:numel(angle_grid)
-
             if angle_grid(jj) - angle_grid(ii) < min_sep_deg
                 continue;
             end
 
-            Bpair = [G(:, ii), G(:, jj)];
-            Gram = Bpair' * Bpair;
-
-            if rcond(Gram) < 1e-8
+            pair_center = 0.5 * (angle_grid(ii) + angle_grid(jj));
+            if abs(pair_center - angle_recv) > pair_center_tol_deg
                 continue;
             end
 
-            Mpair = Bpair' * Qn * Bpair;
-            score = real(det(Mpair + diagonal_loading * eye(2)));
+            Bpair = [G(:, ii), G(:, jj)];
+            [Qpair, Rpair] = qr(Bpair, 0);
+            if rcond(Rpair) < 1e-8
+                continue;
+            end
+
+            Mpair = Qpair' * Qn * Qpair;
+            score = real(trace(Mpair));
+            score_det = real(det(Mpair + diagonal_loading * eye(2)));
 
             if score < best_score
                 best_score = score;
+                best_score_det = score_det;
                 best_pair = [angle_grid(ii), angle_grid(jj)];
             end
         end
@@ -127,14 +127,17 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
         debug.reason = 'no_valid_pair';
         debug.angle_grid = angle_grid;
         debug.best_score = best_score;
+        debug.best_score_det = best_score_det;
         debug.best_pair = best_pair;
         debug.eigvals = eigvals;
         debug.subarray_num = subarray_num;
         debug.center_beam_count = size(T_center, 2);
         debug.search_margin_deg = search_margin_deg;
+        debug.pair_center_tol_deg = pair_center_tol_deg;
         debug.grid_step_deg = grid_step_deg;
         debug.min_sep_deg = min_sep_deg;
         debug.diagonal_loading = diagonal_loading;
+        debug.score_mode = 'trace_Qpair_Qn_Qpair';
         return;
     end
 
@@ -142,12 +145,15 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT_pair_music( ...
 
     debug.angle_grid = angle_grid;
     debug.best_score = best_score;
+    debug.best_score_det = best_score_det;
     debug.best_pair = best_pair;
     debug.eigvals = eigvals;
     debug.subarray_num = subarray_num;
     debug.center_beam_count = size(T_center, 2);
     debug.search_margin_deg = search_margin_deg;
+    debug.pair_center_tol_deg = pair_center_tol_deg;
     debug.grid_step_deg = grid_step_deg;
     debug.min_sep_deg = min_sep_deg;
     debug.diagonal_loading = diagonal_loading;
+    debug.score_mode = 'trace_Qpair_Qn_Qpair';
 end

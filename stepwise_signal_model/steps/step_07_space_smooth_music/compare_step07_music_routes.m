@@ -19,7 +19,7 @@ snr = 12;
 Metkl = 50;
 
 T_snap_list = [130, 520];
-bw_index_list = [8 9 10]; % 完整实验应使用 1:10；Route C 的 2D 搜索较重，默认先跑 bw/8~bw/10。
+bw_index_list = [8 9 10]; % Full experiment should use 1:10.
 
 subarray_num = 59;
 M_full = 32;
@@ -67,12 +67,12 @@ mat_path = fullfile(output_dir, 'compare_step07_music_routes.mat');
 log_path = fullfile(output_dir, 'compare_step07_music_routes.log');
 
 has_esprit = false;
-esprit_note = '未找到已有 ESPRIT 函数，本次 ESPRIT 对比跳过。';
+esprit_note = 'No existing ESPRIT function was found, so Route D is skipped as NaN.';
 existing_esprit_files = {'doa_esprit_from_Rss.m', 'DOA_esprit_.m', 'esprit_.m'};
 for ii = 1:numel(existing_esprit_files)
     if exist(existing_esprit_files{ii}, 'file') == 2
         has_esprit = true;
-        esprit_note = ['检测到可用 ESPRIT 文件: ', existing_esprit_files{ii}];
+        esprit_note = ['Detected ESPRIT file: ', existing_esprit_files{ii}];
         break;
     end
 end
@@ -91,21 +91,21 @@ fid = fopen(log_path, 'w');
 if fid < 0
     error('Failed to open log file: %s', log_path);
 end
-
-cleanup_obj = onCleanup(@() fclose(fid));
+cleanup_obj = onCleanup(@() fclose(fid)); %#ok<NASGU>
 
 fprintf(fid, 'compare_step07_music_routes\n');
-fprintf(fid, '生成时间: %s\n\n', datestr(now, 31));
-fprintf(fid, '参数汇总:\n');
+fprintf(fid, 'Generated at: %s\n\n', datestr(now, 31));
+fprintf(fid, 'Parameter summary:\n');
 fprintf(fid, 'array_num=%d, subarray_num=%d, snr=%.2f, Metkl=%d\n', ...
     array_num, subarray_num, snr, Metkl);
 fprintf(fid, 'T_snap_list=%s\n', mat2str(T_snap_list));
 fprintf(fid, 'center_beam_count=%d, M_full=%d, search_scale=%.2f, tol_deg=%.3f\n', ...
     center_beam_count, M_full, search_scale, tol_deg);
 fprintf(fid, 'bw_index_list=%s\n', mat2str(bw_index_list));
-fprintf(fid, '说明: 完整实验推荐 bw_index_list = 1:10；当前默认仅运行 bw/8~bw/10 以控制 Route C 的 2D pair-MUSIC 计算量。\n');
-fprintf(fid, 'Route B/C 前端说明: 当前仍使用 mssp(Rxx, subarray_num)，即“阵元域前后向平均 / 退化 mssp -> centerT -> beamspace”，不是严格 K < N 的阵元域 FBSS。\n');
-fprintf(fid, 'ESPRIT说明: %s\n\n', esprit_note);
+fprintf(fid, 'Note: full experiment should use bw_index_list = 1:10; default run stays on bw/8~bw/10 to control Route C runtime.\n');
+fprintf(fid, 'Frontend note: Route B/C still use mssp(Rxx, subarray_num), i.e. element-domain forward/backward averaging / degraded mssp -> centerT -> beamspace, not strict K < N FBSS.\n');
+fprintf(fid, 'Projection fix: Route B/C centerT projection changed from T'' * R * T to T.'' * R * conj(T), consistent with route A beam projection A.'' * y.\n');
+fprintf(fid, 'ESPRIT note: %s\n\n', esprit_note);
 
 for iSnap = 1:nsnap
     T_snap = T_snap_list(iSnap);
@@ -133,13 +133,11 @@ for iSnap = 1:nsnap
             s21 = A_b.' * s2;
             y = s11 + s21 + (1 / sqrt(2)) * (randn(array_num, T_snap) + j * randn(array_num, T_snap));
 
-            % Route A: 旧路线 beam-index smoothing MUSIC，冻结逻辑
             A_old = diag(win_old) * exp(j * 2 * pi * position_full / lambda * sin(angle_recv_old_template * pi / 180));
             sr_DBF_boshu = A_old.' * y;
             doa_old = DOA_three_music_hecheng_fangzhen( ...
                 sr_DBF_boshu, array_num, A_old, RecvbeamC, theta_bw(angle_grid_num));
 
-            % Route B/C: 共用同一个 y_sub 和同一个 T_center
             y_sub = y(1:subarray_num, :);
             doa_center_1d = DOA_three_music_new_route_centerT( ...
                 y_sub, subarray_num, T_center, RecvbeamC, theta_search_new);
@@ -147,20 +145,29 @@ for iSnap = 1:nsnap
                 y_sub, subarray_num, T_center, RecvbeamC, theta_search_new, ...
                 'Lc', 2, ...
                 'GridStepDeg', 0.005, ...
-                'MinSepDeg', 0.03);
+                'SearchMarginDeg', 0, ...
+                'PairCenterTolDeg', max(0.08, 0.05 * theta_search_new), ...
+                'MinSepDeg', 0.05);
 
             if metkl_num == 1
                 sample_debug.routeC{iSnap, ibw} = debug_pair;
+                fprintf(fid, ['Route C sample | T_snap=%d bw/%d metkl=1 ', ...
+                    'target_theta=%s doa_center_pair=%s best_pair=%s best_score=%.6g ', ...
+                    'pair_center_tol_deg=%.6g\n'], ...
+                    T_snap, angle_grid_num, ...
+                    mat2str(target_theta, 6), ...
+                    mat2str(doa_center_pair, 6), ...
+                    mat2str(debug_pair.best_pair, 6), ...
+                    debug_pair.best_score, ...
+                    debug_pair.pair_center_tol_deg);
             end
 
-            % Route D: ESPRIT 参考项，仅复用已有函数；当前无函数则记 NaN
             doa_esprit = [NaN NaN];
             if has_esprit
                 doa_esprit = [NaN NaN];
             end
 
             doa_all = {doa_old, doa_center_1d, doa_center_pair, doa_esprit};
-
             for iroute = 1:route_count
                 doa_est = doa_all{iroute};
                 raw_ok = all(isfinite(doa_est));
@@ -182,7 +189,6 @@ for iSnap = 1:nsnap
         current_raw = squeeze(raw_success_count(iSnap, ibw, :)).';
         current_tol = squeeze(tol_success_count(iSnap, ibw, :)).';
         current_rmse = nan(1, route_count);
-
         valid_mask = squeeze(rmse_valid_count(iSnap, ibw, :)) > 0;
         current_rmse(valid_mask) = sqrt( ...
             squeeze(rmse_sum_sqerr(iSnap, ibw, valid_mask)) ./ ...
@@ -226,7 +232,8 @@ params.center_beam_count = center_beam_count;
 params.search_scale = search_scale;
 params.tol_deg = tol_deg;
 params.route_labels = route_labels;
-params.route_frontend_note = 'Route B/C 当前仍使用 mssp(Rxx, subarray_num)，属于阵元域前后向平均/退化 mssp -> centerT -> beamspace，而非严格 K < N 的 FBSS。';
+params.route_frontend_note = 'Route B/C still use mssp(Rxx, subarray_num), so this is degraded mssp / forward-backward averaging -> centerT -> beamspace, not strict K < N FBSS.';
+params.projection_fix_note = 'Route B/C centerT projection changed from T'' * R * T to T.'' * R * conj(T), consistent with route A A.'' * y.';
 params.esprit_note = esprit_note;
 
 save(mat_path, ...
@@ -261,7 +268,7 @@ for iSnap = 1:nsnap
     grid on
     xticks(xvals)
     xticklabels(xlabels)
-    xlabel('目标角间隔档位')
+    xlabel('spacing bucket')
     ylabel('tol success rate')
     legend(route_labels, 'Location', 'best')
     title(sprintf('T_{snap} = %d tol success rate', T_snap))
@@ -277,7 +284,7 @@ for iSnap = 1:nsnap
     grid on
     xticks(xvals)
     xticklabels(xlabels)
-    xlabel('目标角间隔档位')
+    xlabel('spacing bucket')
     ylabel('RMSE (deg)')
     legend(route_labels, 'Location', 'best')
     title(sprintf('T_{snap} = %d RMSE', T_snap))
@@ -293,7 +300,7 @@ hold off
 grid on
 xticks(xvals)
 xticklabels(xlabels)
-xlabel('目标角间隔档位')
+xlabel('spacing bucket')
 ylabel('tol success rate')
 legend({'Route B T=130', 'Route B T=520'}, 'Location', 'best')
 title('Route B snapshot comparison')
@@ -308,7 +315,7 @@ hold off
 grid on
 xticks(xvals)
 xticklabels(xlabels)
-xlabel('目标角间隔档位')
+xlabel('spacing bucket')
 ylabel('tol success rate')
 legend({'Route C T=130', 'Route C T=520'}, 'Location', 'best')
 title('Route C snapshot comparison')
@@ -327,33 +334,33 @@ bar(small_data)
 grid on
 xticks(1:numel(small_idx))
 xticklabels(small_labels)
-xlabel('小角间隔档位')
+xlabel('small-spacing bucket')
 ylabel('tol success rate')
 legend({'Route B T=130', 'Route C T=130', 'Route B T=520', 'Route C T=520'}, 'Location', 'best')
 title('Route B vs Route C on bw/8 bw/9 bw/10')
 saveas(fig5, fullfile(output_dir, 'fig_small_spacing_compare.png'));
 close(fig5)
 
-fprintf(fid, '汇总结论:\n');
+fprintf(fid, 'Summary conclusions:\n');
 if nsnap >= 2
     route_b_delta = squeeze(tol_success_rate(2, :, 2) - tol_success_rate(1, :, 2)).';
     route_c_delta = squeeze(tol_success_rate(2, :, 3) - tol_success_rate(1, :, 3)).';
-    fprintf(fid, 'Route B: T_snap 从 %d 到 %d 的 tol_success_rate 差值 = %s\n', ...
+    fprintf(fid, 'Route B tol_success_rate delta from %d to %d = %s\n', ...
         T_snap_list(1), T_snap_list(2), mat2str(route_b_delta, 4));
-    fprintf(fid, 'Route C: T_snap 从 %d 到 %d 的 tol_success_rate 差值 = %s\n', ...
+    fprintf(fid, 'Route C tol_success_rate delta from %d to %d = %s\n', ...
         T_snap_list(1), T_snap_list(2), mat2str(route_c_delta, 4));
 end
 
-fprintf(fid, 'Route C 相对 Route B 的 tol_success_rate 差值:\n');
+fprintf(fid, 'Route C minus Route B tol_success_rate:\n');
 for iSnap = 1:nsnap
     diff_bc = squeeze(tol_success_rate(iSnap, :, 3) - tol_success_rate(iSnap, :, 2)).';
     fprintf(fid, 'T_snap=%d: %s\n', T_snap_list(iSnap), mat2str(diff_bc, 4));
 end
 
 if has_esprit
-    fprintf(fid, 'ESPRIT 结果已接入，请结合 Route D 统计表分析差距。\n');
+    fprintf(fid, 'ESPRIT was detected, inspect Route D if you later wire the call.\n');
 else
-    fprintf(fid, 'ESPRIT 未接入，Route D 全部为 NaN。\n');
+    fprintf(fid, 'ESPRIT was not wired in this run, so Route D is NaN.\n');
 end
 
 fprintf('Saved results to %s\n', output_dir);

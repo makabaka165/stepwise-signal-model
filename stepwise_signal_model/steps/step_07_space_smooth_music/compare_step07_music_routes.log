@@ -1,29 +1,36 @@
 compare_step07_music_routes
-生成时间: 2026-05-14 21:32:06
+Generated at: 2026-05-15 08:55:58
 
-参数汇总:
+Parameter summary:
 array_num=64, subarray_num=59, snr=12.00, Metkl=50
 T_snap_list=[130 520]
 center_beam_count=25, M_full=32, search_scale=4.00, tol_deg=0.100
 bw_index_list=[8 9 10]
-说明: 完整实验推荐 bw_index_list = 1:10；当前默认仅运行 bw/8~bw/10 以控制 Route C 的 2D pair-MUSIC 计算量。
-Route B/C 前端说明: 当前仍使用 mssp(Rxx, subarray_num)，即“阵元域前后向平均 / 退化 mssp -> centerT -> beamspace”，不是严格 K < N 的阵元域 FBSS。
-ESPRIT说明: 未找到已有 ESPRIT 函数，本次 ESPRIT 对比跳过。
+Note: full experiment should use bw_index_list = 1:10; default run stays on bw/8~bw/10 to control Route C runtime.
+Frontend note: Route B/C still use mssp(Rxx, subarray_num), i.e. element-domain forward/backward averaging / degraded mssp -> centerT -> beamspace, not strict K < N FBSS.
+Projection fix: Route B/C centerT projection changed from T' * R * T to T.' * R * conj(T), consistent with route A beam projection A.' * y.
+ESPRIT note: No existing ESPRIT function was found, so Route D is skipped as NaN.
 
 === T_snap = 130 ===
-bw/8 | A raw=50 tol=50 RMSE=0.0000 | B raw=31 tol=0 RMSE=0.4701 | C raw=50 tol=0 RMSE=0.3489 | D raw=0 tol=0 RMSE=NaN
-bw/9 | A raw=50 tol=50 RMSE=0.0008 | B raw=2 tol=0 RMSE=0.4644 | C raw=50 tol=0 RMSE=0.3303 | D raw=0 tol=0 RMSE=NaN
-bw/10 | A raw=50 tol=50 RMSE=0.0000 | B raw=0 tol=0 RMSE=NaN | C raw=50 tol=0 RMSE=0.3167 | D raw=0 tol=0 RMSE=NaN
+Route C sample | T_snap=130 bw/8 metkl=1 target_theta=[12.825 13.175] doa_center_pair=[12.715 13.305] best_pair=[12.715 13.305] best_score=2.49279e-05 pair_center_tol_deg=0.08
+bw/8 | A raw=50 tol=50 RMSE=0.0000 | B raw=50 tol=47 RMSE=0.0418 | C raw=50 tol=8 RMSE=0.1157 | D raw=0 tol=0 RMSE=NaN
+Route C sample | T_snap=130 bw/9 metkl=1 target_theta=[12.8444 13.1556] doa_center_pair=[12.6128 13.2578] best_pair=[12.6128 13.2578] best_score=4.03045e-05 pair_center_tol_deg=0.08
+bw/9 | A raw=50 tol=50 RMSE=0.0008 | B raw=50 tol=47 RMSE=0.0495 | C raw=50 tol=0 RMSE=0.1548 | D raw=0 tol=0 RMSE=NaN
+Route C sample | T_snap=130 bw/10 metkl=1 target_theta=[12.86 13.14] doa_center_pair=[12.73 13.43] best_pair=[12.73 13.43] best_score=5.8797e-05 pair_center_tol_deg=0.08
+bw/10 | A raw=50 tol=50 RMSE=0.0000 | B raw=47 tol=41 RMSE=0.0582 | C raw=50 tol=0 RMSE=0.1943 | D raw=0 tol=0 RMSE=NaN
 
 === T_snap = 520 ===
-bw/8 | A raw=50 tol=50 RMSE=0.0000 | B raw=33 tol=0 RMSE=0.4624 | C raw=50 tol=0 RMSE=0.3489 | D raw=0 tol=0 RMSE=NaN
-bw/9 | A raw=50 tol=50 RMSE=0.0008 | B raw=0 tol=0 RMSE=NaN | C raw=50 tol=0 RMSE=0.3303 | D raw=0 tol=0 RMSE=NaN
-bw/10 | A raw=50 tol=50 RMSE=0.0000 | B raw=0 tol=0 RMSE=NaN | C raw=50 tol=0 RMSE=0.3167 | D raw=0 tol=0 RMSE=NaN
+Route C sample | T_snap=520 bw/8 metkl=1 target_theta=[12.825 13.175] doa_center_pair=[12.7 13.265] best_pair=[12.7 13.265] best_score=1.59032e-05 pair_center_tol_deg=0.08
+bw/8 | A raw=50 tol=50 RMSE=0.0000 | B raw=50 tol=50 RMSE=0.0212 | C raw=50 tol=2 RMSE=0.1092 | D raw=0 tol=0 RMSE=NaN
+Route C sample | T_snap=520 bw/9 metkl=1 target_theta=[12.8444 13.1556] doa_center_pair=[12.6878 13.3078] best_pair=[12.6878 13.3078] best_score=3.75732e-05 pair_center_tol_deg=0.08
+bw/9 | A raw=50 tol=50 RMSE=0.0008 | B raw=50 tol=50 RMSE=0.0247 | C raw=50 tol=0 RMSE=0.1451 | D raw=0 tol=0 RMSE=NaN
+Route C sample | T_snap=520 bw/10 metkl=1 target_theta=[12.86 13.14] doa_center_pair=[12.7 13.35] best_pair=[12.7 13.35] best_score=5.42288e-05 pair_center_tol_deg=0.08
+bw/10 | A raw=50 tol=50 RMSE=0.0000 | B raw=50 tol=50 RMSE=0.0273 | C raw=50 tol=0 RMSE=0.1805 | D raw=0 tol=0 RMSE=NaN
 
-汇总结论:
-Route B: T_snap 从 130 到 520 的 tol_success_rate 差值 = [0;0;0]
-Route C: T_snap 从 130 到 520 的 tol_success_rate 差值 = [0;0;0]
-Route C 相对 Route B 的 tol_success_rate 差值:
-T_snap=130: [0;0;0]
-T_snap=520: [0;0;0]
-ESPRIT 未接入，Route D 全部为 NaN。
+Summary conclusions:
+Route B tol_success_rate delta from 130 to 520 = [0.06;0.06;0.18]
+Route C tol_success_rate delta from 130 to 520 = [-0.12;0;0]
+Route C minus Route B tol_success_rate:
+T_snap=130: [-0.78;-0.94;-0.82]
+T_snap=520: [-0.96;-1;-1]
+ESPRIT was not wired in this run, so Route D is NaN.
