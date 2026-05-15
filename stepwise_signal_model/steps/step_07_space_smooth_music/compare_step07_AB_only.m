@@ -22,43 +22,56 @@ T_snap_list = [130, 260, 520];
 bw_index_list = 1:10;
 
 subarray_num = 59;
+K_fbss = 48;
 M_full = 32;
 center_beam_count = 25;
-search_scale = 4;
+search_scale_A = 4;
+search_scale_B = 4;
 tol_deg = 0.1;
 
-route_names = {'Route A', 'Route B'};
+route_names = {'Route A eval', 'Route B'};
 route_labels = { ...
-    'Route A legacy beam-index smoothing MUSIC', ...
-    'Route B current new-route centerT / beamspace MUSIC'};
+    'Route A eval beam-index smoothing MUSIC', ...
+    'Route B true array-domain FBSS / centerT beamspace MUSIC'};
 route_count = numel(route_names);
+
+if K_fbss >= subarray_num
+    error('K_fbss must be smaller than subarray_num.');
+end
+
+if K_fbss <= 2
+    error('K_fbss must be larger than Lc.');
+end
+
+if (subarray_num - K_fbss + 1) < 2
+    error('subarray_num - K_fbss + 1 must be at least Lc.');
+end
+
+if center_beam_count <= 2
+    error('center_beam_count must be larger than Lc.');
+end
 
 if center_beam_count > (M_full + 1)
     error('center_beam_count must be <= M_full + 1.');
 end
 
-if center_beam_count <= 2
-    error('center_beam_count must be > Lc.');
-end
-
 j = sqrt(-1);
 position_full = d * (0:array_num-1).';
-position_center = d * (0:subarray_num-1).';
 win_old = taylorwin(array_num, 25, -40)';
 win_old = win_old / sqrt(win_old * win_old');
-win_center = taylorwin(subarray_num, 25, -40)';
-win_center = win_center / sqrt(win_center * win_center');
 
 M_old = 50;
-angle_recv_old_template = linspace(theta_c - bw_64 / 2, theta_c + bw_64 / 2, M_old + 1);
-angle_recv_full = linspace(theta_c - bw_64 / 2, theta_c + bw_64 / 2, M_full + 1);
-T_full = diag(win_center) * exp(j * 2 * pi * position_center / lambda * sin(angle_recv_full * pi / 180));
-beam_start = floor((size(T_full, 2) - center_beam_count) / 2) + 1;
-T_center = T_full(:, beam_start:beam_start + center_beam_count - 1);
+routeA_beam_span = search_scale_A * bw_64;
+angle_recv_old_template = linspace( ...
+    theta_c - routeA_beam_span / 2, ...
+    theta_c + routeA_beam_span / 2, ...
+    M_old + 1);
 
-if size(T_center, 1) ~= subarray_num
-    error('T_center row count must equal subarray_num.');
-end
+routeB_beam_span = search_scale_B * bw_64;
+beam_grid_full_deg = linspace( ...
+    theta_c - routeB_beam_span / 2, ...
+    theta_c + routeB_beam_span / 2, ...
+    M_full + 1);
 
 nsnap = numel(T_snap_list);
 nbw = numel(bw_index_list);
@@ -66,12 +79,14 @@ raw_success_count = zeros(nsnap, nbw, route_count);
 tol_success_count = zeros(nsnap, nbw, route_count);
 rmse_sum_sqerr = zeros(nsnap, nbw, route_count);
 rmse_valid_count = zeros(nsnap, nbw, route_count);
+edge_hit_count_A = zeros(nsnap, nbw);
+sample_debug_B = cell(nsnap, nbw);
 
 log_lines = {};
 log_lines = append_log(log_lines, 'compare_step07_AB_only');
 log_lines = append_log(log_lines, 'Active routes:');
-log_lines = append_log(log_lines, '- Route A: legacy beam-index smoothing MUSIC');
-log_lines = append_log(log_lines, '- Route B: current new-route centerT / beamspace MUSIC');
+log_lines = append_log(log_lines, '- Route A: legacy beam-index smoothing MUSIC (eval version for fair assessment)');
+log_lines = append_log(log_lines, '- Route B: true array-domain FBSS -> centerT beamspace -> 1D MUSIC');
 log_lines = append_log(log_lines, '');
 log_lines = append_log(log_lines, 'Paused routes:');
 log_lines = append_log(log_lines, '- Route C: 2D pair-MUSIC backend, archived');
@@ -80,13 +95,16 @@ log_lines = append_log(log_lines, '');
 log_lines = append_log(log_lines, 'This run does not modify or evaluate Route C/D.');
 log_lines = append_log(log_lines, '');
 log_lines = append_log(log_lines, 'Parameter summary:');
-log_lines = append_log(log_lines, 'array_num=%d, subarray_num=%d, snr=%.2f, Metkl=%d', ...
-    array_num, subarray_num, snr, Metkl);
+log_lines = append_log(log_lines, 'array_num=%d, subarray_num=%d, K_fbss=%d, snr=%.2f, Metkl=%d', ...
+    array_num, subarray_num, K_fbss, snr, Metkl);
 log_lines = append_log(log_lines, 'T_snap_list=%s', mat2str(T_snap_list));
-log_lines = append_log(log_lines, 'center_beam_count=%d, M_full=%d, search_scale=%.2f, tol_deg=%.3f', ...
-    center_beam_count, M_full, search_scale, tol_deg);
+log_lines = append_log(log_lines, 'center_beam_count=%d, M_full=%d, search_scale_A=%.2f, search_scale_B=%.2f, tol_deg=%.3f', ...
+    center_beam_count, M_full, search_scale_A, search_scale_B, tol_deg);
 log_lines = append_log(log_lines, 'bw_index_list=%s', mat2str(bw_index_list));
-log_lines = append_log(log_lines, 'Frontend note: current Route B still uses mssp(Rxx, subarray_num), i.e. degraded mssp / forward-backward averaging -> centerT -> beamspace.');
+log_lines = append_log(log_lines, 'Route B uses K_fbss < subarray_num.');
+log_lines = append_log(log_lines, 'Rss = mssp_array_fb(Rxx, K_fbss).');
+log_lines = append_log(log_lines, 'Psub = subarray_num - K_fbss + 1 = %d.', subarray_num - K_fbss + 1);
+log_lines = append_log(log_lines, 'centerT/Tk is built internally from the K-dimensional subarray.');
 log_lines = append_log(log_lines, '');
 
 for iSnap = 1:nsnap
@@ -96,11 +114,13 @@ for iSnap = 1:nsnap
 
     for ibw = 1:nbw
         angle_grid_num = bw_index_list(ibw);
-        theta_a = theta_c - theta_bw(angle_grid_num) / 2;
-        theta_b = theta_c + theta_bw(angle_grid_num) / 2;
+        theta_sep = theta_bw(angle_grid_num);
+        theta_a = theta_c - theta_sep / 2;
+        theta_b = theta_c + theta_sep / 2;
         target_theta = [theta_a, theta_b];
         RecvbeamC = mean(target_theta);
-        theta_search_new = search_scale * theta_bw(angle_grid_num);
+        theta_search_A = search_scale_A * theta_sep;
+        theta_search_B = search_scale_B * theta_sep;
 
         for metkl_num = 1:Metkl
             s1 = sqrt(10^(snr / 10)) * exp(j * 2 * pi * fc * t);
@@ -114,14 +134,30 @@ for iSnap = 1:nsnap
 
             A_old = diag(win_old) * exp(j * 2 * pi * position_full / lambda * sin(angle_recv_old_template * pi / 180));
             sr_DBF_boshu = A_old.' * y;
-            doa_old = DOA_three_music_hecheng_fangzhen( ...
-                sr_DBF_boshu, array_num, A_old, RecvbeamC, theta_bw(angle_grid_num));
+            [doa_old_eval, debug_A] = DOA_three_music_hecheng_fangzhen_eval( ...
+                sr_DBF_boshu, array_num, A_old, RecvbeamC, theta_search_A);
+
+            if debug_A.edge_hit
+                edge_hit_count_A(iSnap, ibw) = edge_hit_count_A(iSnap, ibw) + 1;
+            end
 
             y_sub = y(1:subarray_num, :);
-            doa_center_1d = DOA_three_music_new_route_centerT( ...
-                y_sub, subarray_num, T_center, RecvbeamC, theta_search_new);
+            [doa_center_1d, debug_B] = DOA_three_music_new_route_centerT( ...
+                y_sub, ...
+                K_fbss, ...
+                beam_grid_full_deg, ...
+                center_beam_count, ...
+                RecvbeamC, ...
+                theta_search_B, ...
+                'Lc', 2, ...
+                'GridStepDeg', 0.01, ...
+                'UseQR', true);
 
-            doa_all = {doa_old, doa_center_1d};
+            if metkl_num == 1
+                sample_debug_B{iSnap, ibw} = debug_B;
+            end
+
+            doa_all = {doa_old_eval, doa_center_1d};
             for iroute = 1:route_count
                 doa_est = doa_all{iroute};
                 raw_ok = all(isfinite(doa_est));
@@ -148,11 +184,12 @@ for iSnap = 1:nsnap
             squeeze(rmse_sum_sqerr(iSnap, ibw, valid_mask)) ./ ...
             (2 * squeeze(rmse_valid_count(iSnap, ibw, valid_mask))) );
 
+        edge_hit_rate_A = edge_hit_count_A(iSnap, ibw) / Metkl;
         log_lines = append_log(log_lines, ['bw/%d | ', ...
-            'A raw=%d tol=%d RMSE=%.4f | ', ...
+            'A raw=%d tol=%d RMSE=%.4f edge_hit_rate=%.2f | ', ...
             'B raw=%d tol=%d RMSE=%.4f'], ...
             angle_grid_num, ...
-            current_raw(1), current_tol(1), current_rmse(1), ...
+            current_raw(1), current_tol(1), current_rmse(1), edge_hit_rate_A, ...
             current_raw(2), current_tol(2), current_rmse(2));
     end
     log_lines = append_log(log_lines, '');
@@ -163,9 +200,12 @@ tol_success_rate = tol_success_count / Metkl;
 rmse = nan(nsnap, nbw, route_count);
 valid_all = rmse_valid_count > 0;
 rmse(valid_all) = sqrt(rmse_sum_sqerr(valid_all) ./ (2 * rmse_valid_count(valid_all)));
+edge_hit_rate_A = edge_hit_count_A / Metkl;
 
 log_lines = append_log(log_lines, 'Summary conclusions:');
 for iSnap = 1:nsnap
+    log_lines = append_log(log_lines, 'Route A edge_hit_rate @ T_snap=%d = %s', ...
+        T_snap_list(iSnap), mat2str(squeeze(edge_hit_rate_A(iSnap, :)), 4));
     log_lines = append_log(log_lines, 'Route B tol_success_rate @ T_snap=%d = %s', ...
         T_snap_list(iSnap), mat2str(squeeze(tol_success_rate(iSnap, :, 2)), 4));
     log_lines = append_log(log_lines, 'Route B RMSE @ T_snap=%d = %s', ...
@@ -242,9 +282,11 @@ results.params = struct( ...
     'T_snap_list', T_snap_list, ...
     'bw_index_list', bw_index_list, ...
     'subarray_num', subarray_num, ...
+    'K_fbss', K_fbss, ...
     'M_full', M_full, ...
     'center_beam_count', center_beam_count, ...
-    'search_scale', search_scale, ...
+    'search_scale_A', search_scale_A, ...
+    'search_scale_B', search_scale_B, ...
     'tol_deg', tol_deg);
 results.theta_bw = theta_bw;
 results.route_names = route_names;
@@ -256,6 +298,8 @@ results.raw_success_count = raw_success_count;
 results.tol_success_count = tol_success_count;
 results.rmse_sum_sqerr = rmse_sum_sqerr;
 results.rmse_valid_count = rmse_valid_count;
+results.edge_hit_rate_A = edge_hit_rate_A;
+results.sample_debug_B = sample_debug_B;
 results.log_lines = log_lines;
 
 function log_lines = append_log(log_lines, fmt, varargin)
