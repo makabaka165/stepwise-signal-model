@@ -18,8 +18,8 @@ theta_c = 13;
 snr = 12;
 Metkl = 50;
 
-T_snap_list = [130, 520];
-bw_index_list = [8 9 10]; % Full experiment should use 1:10.
+T_snap_list = [130, 260, 520];
+bw_index_list = 1:10;
 
 subarray_num = 59;
 M_full = 32;
@@ -60,10 +60,6 @@ if size(T_center, 1) ~= subarray_num
     error('T_center row count must equal subarray_num.');
 end
 
-output_dir = fileparts(mfilename('fullpath'));
-mat_path = fullfile(output_dir, 'compare_step07_AB_only.mat');
-log_path = fullfile(output_dir, 'compare_step07_AB_only.log');
-
 nsnap = numel(T_snap_list);
 nbw = numel(bw_index_list);
 raw_success_count = zeros(nsnap, nbw, route_count);
@@ -71,36 +67,32 @@ tol_success_count = zeros(nsnap, nbw, route_count);
 rmse_sum_sqerr = zeros(nsnap, nbw, route_count);
 rmse_valid_count = zeros(nsnap, nbw, route_count);
 
-fid = fopen(log_path, 'w');
-if fid < 0
-    error('Failed to open log file: %s', log_path);
-end
-cleanup_obj = onCleanup(@() fclose(fid)); %#ok<NASGU>
-
-fprintf(fid, 'compare_step07_AB_only\n');
-fprintf(fid, 'Generated at: %s\n\n', datestr(now, 31));
-fprintf(fid, 'Active routes:\n');
-fprintf(fid, '- Route A: legacy beam-index smoothing MUSIC\n');
-fprintf(fid, '- Route B: current new-route centerT / beamspace MUSIC\n\n');
-fprintf(fid, 'Paused routes:\n');
-fprintf(fid, '- Route C: 2D pair-MUSIC backend, archived\n');
-fprintf(fid, '- Route D: ESPRIT reference comparison, archived or skipped\n\n');
-fprintf(fid, 'This run does not modify or evaluate Route C/D.\n\n');
-fprintf(fid, 'Parameter summary:\n');
-fprintf(fid, 'array_num=%d, subarray_num=%d, snr=%.2f, Metkl=%d\n', ...
+log_lines = {};
+log_lines = append_log(log_lines, 'compare_step07_AB_only');
+log_lines = append_log(log_lines, 'Active routes:');
+log_lines = append_log(log_lines, '- Route A: legacy beam-index smoothing MUSIC');
+log_lines = append_log(log_lines, '- Route B: current new-route centerT / beamspace MUSIC');
+log_lines = append_log(log_lines, '');
+log_lines = append_log(log_lines, 'Paused routes:');
+log_lines = append_log(log_lines, '- Route C: 2D pair-MUSIC backend, archived');
+log_lines = append_log(log_lines, '- Route D: ESPRIT reference comparison, archived or skipped');
+log_lines = append_log(log_lines, '');
+log_lines = append_log(log_lines, 'This run does not modify or evaluate Route C/D.');
+log_lines = append_log(log_lines, '');
+log_lines = append_log(log_lines, 'Parameter summary:');
+log_lines = append_log(log_lines, 'array_num=%d, subarray_num=%d, snr=%.2f, Metkl=%d', ...
     array_num, subarray_num, snr, Metkl);
-fprintf(fid, 'T_snap_list=%s\n', mat2str(T_snap_list));
-fprintf(fid, 'center_beam_count=%d, M_full=%d, search_scale=%.2f, tol_deg=%.3f\n', ...
+log_lines = append_log(log_lines, 'T_snap_list=%s', mat2str(T_snap_list));
+log_lines = append_log(log_lines, 'center_beam_count=%d, M_full=%d, search_scale=%.2f, tol_deg=%.3f', ...
     center_beam_count, M_full, search_scale, tol_deg);
-fprintf(fid, 'bw_index_list=%s\n', mat2str(bw_index_list));
-fprintf(fid, 'Note: full experiment should use bw_index_list = 1:10; default run stays on bw/8~bw/10.\n');
-fprintf(fid, 'Frontend note: current Route B still uses mssp(Rxx, subarray_num), i.e. degraded mssp / forward-backward averaging -> centerT -> beamspace.\n\n');
+log_lines = append_log(log_lines, 'bw_index_list=%s', mat2str(bw_index_list));
+log_lines = append_log(log_lines, 'Frontend note: current Route B still uses mssp(Rxx, subarray_num), i.e. degraded mssp / forward-backward averaging -> centerT -> beamspace.');
+log_lines = append_log(log_lines, '');
 
 for iSnap = 1:nsnap
     T_snap = T_snap_list(iSnap);
     t = linspace(0, 1, T_snap);
-    fprintf('Running T_snap = %d\n', T_snap);
-    fprintf(fid, '=== T_snap = %d ===\n', T_snap);
+    log_lines = append_log(log_lines, '=== T_snap = %d ===', T_snap);
 
     for ibw = 1:nbw
         angle_grid_num = bw_index_list(ibw);
@@ -109,8 +101,6 @@ for iSnap = 1:nsnap
         target_theta = [theta_a, theta_b];
         RecvbeamC = mean(target_theta);
         theta_search_new = search_scale * theta_bw(angle_grid_num);
-
-        fprintf('  bw/%d (%d/%d)\n', angle_grid_num, ibw, nbw);
 
         for metkl_num = 1:Metkl
             s1 = sqrt(10^(snr / 10)) * exp(j * 2 * pi * fc * t);
@@ -158,14 +148,14 @@ for iSnap = 1:nsnap
             squeeze(rmse_sum_sqerr(iSnap, ibw, valid_mask)) ./ ...
             (2 * squeeze(rmse_valid_count(iSnap, ibw, valid_mask))) );
 
-        fprintf(fid, ['bw/%d | ', ...
+        log_lines = append_log(log_lines, ['bw/%d | ', ...
             'A raw=%d tol=%d RMSE=%.4f | ', ...
-            'B raw=%d tol=%d RMSE=%.4f\n'], ...
+            'B raw=%d tol=%d RMSE=%.4f'], ...
             angle_grid_num, ...
             current_raw(1), current_tol(1), current_rmse(1), ...
             current_raw(2), current_tol(2), current_rmse(2));
     end
-    fprintf(fid, '\n');
+    log_lines = append_log(log_lines, '');
 end
 
 raw_success_rate = raw_success_count / Metkl;
@@ -174,120 +164,102 @@ rmse = nan(nsnap, nbw, route_count);
 valid_all = rmse_valid_count > 0;
 rmse(valid_all) = sqrt(rmse_sum_sqerr(valid_all) ./ (2 * rmse_valid_count(valid_all)));
 
-params = struct();
-params.c = c;
-params.array_num = array_num;
-params.fc = fc;
-params.lambda = lambda;
-params.d = d;
-params.bw_64 = bw_64;
-params.theta_c = theta_c;
-params.snr = snr;
-params.Metkl = Metkl;
-params.T_snap_list = T_snap_list;
-params.bw_index_list = bw_index_list;
-params.subarray_num = subarray_num;
-params.M_full = M_full;
-params.center_beam_count = center_beam_count;
-params.search_scale = search_scale;
-params.tol_deg = tol_deg;
-params.route_labels = route_labels;
-params.active_routes = route_names;
-params.paused_routes = {'Route C', 'Route D'};
-
-save(mat_path, ...
-    'params', ...
-    'theta_bw', ...
-    'T_snap_list', ...
-    'bw_index_list', ...
-    'route_names', ...
-    'route_labels', ...
-    'raw_success_rate', ...
-    'tol_success_rate', ...
-    'rmse', ...
-    'raw_success_count', ...
-    'tol_success_count', ...
-    'rmse_sum_sqerr', ...
-    'rmse_valid_count');
-
-xvals = bw_index_list;
-xlabels = arrayfun(@(k) sprintf('bw/%d', k), bw_index_list, 'UniformOutput', false);
-plot_styles = {'-o', '-s'};
-
+log_lines = append_log(log_lines, 'Summary conclusions:');
 for iSnap = 1:nsnap
-    T_snap = T_snap_list(iSnap);
-
-    fig1 = figure('Visible', 'off');
-    hold on
-    for iroute = 1:route_count
-        plot(xvals, squeeze(tol_success_rate(iSnap, :, iroute)), plot_styles{iroute}, 'LineWidth', 1.2);
-    end
-    hold off
-    grid on
-    xticks(xvals)
-    xticklabels(xlabels)
-    xlabel('spacing bucket')
-    ylabel('tol success rate')
-    legend(route_labels, 'Location', 'best')
-    title(sprintf('A/B tol success, T_{snap} = %d', T_snap))
-    saveas(fig1, fullfile(output_dir, sprintf('fig_AB_tol_success_T%d.png', T_snap)));
-    close(fig1)
-
-    fig2 = figure('Visible', 'off');
-    hold on
-    for iroute = 1:route_count
-        plot(xvals, squeeze(rmse(iSnap, :, iroute)), plot_styles{iroute}, 'LineWidth', 1.2);
-    end
-    hold off
-    grid on
-    xticks(xvals)
-    xticklabels(xlabels)
-    xlabel('spacing bucket')
-    ylabel('RMSE (deg)')
-    legend(route_labels, 'Location', 'best')
-    title(sprintf('A/B RMSE, T_{snap} = %d', T_snap))
-    saveas(fig2, fullfile(output_dir, sprintf('fig_AB_rmse_T%d.png', T_snap)));
-    close(fig2)
+    log_lines = append_log(log_lines, 'Route B tol_success_rate @ T_snap=%d = %s', ...
+        T_snap_list(iSnap), mat2str(squeeze(tol_success_rate(iSnap, :, 2)), 4));
+    log_lines = append_log(log_lines, 'Route B RMSE @ T_snap=%d = %s', ...
+        T_snap_list(iSnap), mat2str(squeeze(rmse(iSnap, :, 2)), 4));
 end
 
-fig3 = figure('Visible', 'off');
-hold on
-plot(xvals, squeeze(tol_success_rate(1, :, 2)), '-s', 'LineWidth', 1.2);
-plot(xvals, squeeze(tol_success_rate(2, :, 2)), '-o', 'LineWidth', 1.2);
-hold off
-grid on
-xticks(xvals)
-xticklabels(xlabels)
-xlabel('spacing bucket')
-ylabel('tol success rate')
-legend({'Route B T=130', 'Route B T=520'}, 'Location', 'best')
-title('Route B tol success snapshot comparison')
-saveas(fig3, fullfile(output_dir, 'fig_B_snap_compare_tol_success.png'));
-close(fig3)
-
-fig4 = figure('Visible', 'off');
-hold on
-plot(xvals, squeeze(rmse(1, :, 2)), '-s', 'LineWidth', 1.2);
-plot(xvals, squeeze(rmse(2, :, 2)), '-o', 'LineWidth', 1.2);
-hold off
-grid on
-xticks(xvals)
-xticklabels(xlabels)
-xlabel('spacing bucket')
-ylabel('RMSE (deg)')
-legend({'Route B T=130', 'Route B T=520'}, 'Location', 'best')
-title('Route B RMSE snapshot comparison')
-saveas(fig4, fullfile(output_dir, 'fig_B_snap_compare_rmse.png'));
-close(fig4)
-
-fprintf(fid, 'Summary conclusions:\n');
-if nsnap >= 2
-    route_b_tol_delta = squeeze(tol_success_rate(2, :, 2) - tol_success_rate(1, :, 2)).';
-    route_b_rmse_delta = squeeze(rmse(2, :, 2) - rmse(1, :, 2)).';
-    fprintf(fid, 'Route B tol_success_rate delta from %d to %d = %s\n', ...
-        T_snap_list(1), T_snap_list(2), mat2str(route_b_tol_delta, 4));
-    fprintf(fid, 'Route B RMSE delta from %d to %d = %s\n', ...
-        T_snap_list(1), T_snap_list(2), mat2str(route_b_rmse_delta, 4));
+figure(1);
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(bw_index_list, squeeze(tol_success_rate(iSnap, :, 1)), '-o', 'LineWidth', 1.2);
+    hold on;
+    plot(bw_index_list, squeeze(tol_success_rate(iSnap, :, 2)), '-s', 'LineWidth', 1.2);
+    hold off;
+    grid on;
+    xticks(bw_index_list);
+    xlabel('bw index');
+    ylabel('tol success');
+    title(sprintf('A/B tol success, T_{snap} = %d', T_snap_list(iSnap)));
+    legend(route_labels, 'Location', 'best');
 end
 
-fprintf('Saved results to %s\n', output_dir);
+figure(2);
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(bw_index_list, squeeze(rmse(iSnap, :, 1)), '-o', 'LineWidth', 1.2);
+    hold on;
+    plot(bw_index_list, squeeze(rmse(iSnap, :, 2)), '-s', 'LineWidth', 1.2);
+    hold off;
+    grid on;
+    xticks(bw_index_list);
+    xlabel('bw index');
+    ylabel('RMSE (deg)');
+    title(sprintf('A/B RMSE, T_{snap} = %d', T_snap_list(iSnap)));
+    legend(route_labels, 'Location', 'best');
+end
+
+figure(3);
+plot(bw_index_list, squeeze(tol_success_rate(1, :, 2)), '-o', 'LineWidth', 1.2);
+hold on;
+plot(bw_index_list, squeeze(tol_success_rate(2, :, 2)), '-s', 'LineWidth', 1.2);
+plot(bw_index_list, squeeze(tol_success_rate(3, :, 2)), '-d', 'LineWidth', 1.2);
+hold off;
+grid on;
+xticks(bw_index_list);
+xlabel('bw index');
+ylabel('tol success');
+title('Route B tol success snapshot comparison');
+legend({'Route B T=130', 'Route B T=260', 'Route B T=520'}, 'Location', 'best');
+
+figure(4);
+plot(bw_index_list, squeeze(rmse(1, :, 2)), '-o', 'LineWidth', 1.2);
+hold on;
+plot(bw_index_list, squeeze(rmse(2, :, 2)), '-s', 'LineWidth', 1.2);
+plot(bw_index_list, squeeze(rmse(3, :, 2)), '-d', 'LineWidth', 1.2);
+hold off;
+grid on;
+xticks(bw_index_list);
+xlabel('bw index');
+ylabel('RMSE (deg)');
+title('Route B RMSE snapshot comparison');
+legend({'Route B T=130', 'Route B T=260', 'Route B T=520'}, 'Location', 'best');
+
+results = struct();
+results.params = struct( ...
+    'c', c, ...
+    'array_num', array_num, ...
+    'fc', fc, ...
+    'lambda', lambda, ...
+    'd', d, ...
+    'bw_64', bw_64, ...
+    'theta_c', theta_c, ...
+    'snr', snr, ...
+    'Metkl', Metkl, ...
+    'T_snap_list', T_snap_list, ...
+    'bw_index_list', bw_index_list, ...
+    'subarray_num', subarray_num, ...
+    'M_full', M_full, ...
+    'center_beam_count', center_beam_count, ...
+    'search_scale', search_scale, ...
+    'tol_deg', tol_deg);
+results.theta_bw = theta_bw;
+results.route_names = route_names;
+results.route_labels = route_labels;
+results.raw_success_rate = raw_success_rate;
+results.tol_success_rate = tol_success_rate;
+results.rmse = rmse;
+results.raw_success_count = raw_success_count;
+results.tol_success_count = tol_success_count;
+results.rmse_sum_sqerr = rmse_sum_sqerr;
+results.rmse_valid_count = rmse_valid_count;
+results.log_lines = log_lines;
+
+function log_lines = append_log(log_lines, fmt, varargin)
+    line = sprintf(fmt, varargin{:});
+    fprintf('%s\n', line);
+    log_lines{end+1, 1} = line;
+end
