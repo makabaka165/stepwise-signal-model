@@ -31,26 +31,26 @@ M_full = 48;
 center_beam_count = 37;
 
 if K_fbss >= subarray_num
-    error('K_fbss must be smaller than subarray_num.');
+    error('K_fbss 必须小于 subarray_num。');
 end
 if K_fbss <= 2
-    error('K_fbss must be larger than Lc.');
+    error('K_fbss 必须大于目标数 Lc。');
 end
 if (subarray_num - K_fbss + 1) < 2
-    error('subarray_num - K_fbss + 1 must be at least Lc.');
+    error('重叠子阵数 subarray_num-K_fbss+1 不能小于 Lc。');
 end
 if center_beam_count <= 2
-    error('center_beam_count must be larger than Lc.');
+    error('center_beam_count 必须大于目标数 Lc。');
 end
 if center_beam_count > (M_full + 1)
-    error('center_beam_count must be <= M_full + 1.');
+    error('center_beam_count 不能大于 M_full + 1。');
 end
 
 route_names = {'A0_original', 'A1_eval_improved', 'B_true_FBSS_centerT'};
 route_labels = { ...
-    'A0 original Route A', ...
-    'A1 eval improved Route A', ...
-    'B true FBSS centerT'};
+    'A0 原始旧路线', ...
+    'A1 评估改进路线', ...
+    'B 严格 FBSS + centerT'};
 route_count = numel(route_names);
 
 j = sqrt(-1);
@@ -85,25 +85,25 @@ edge_hit_count_A1 = zeros(nsnap, nbw);
 sample_debug_B = cell(nsnap, nbw);
 
 log_lines = {};
-log_lines = append_log(log_lines, 'compare_step07_A0_A1_B');
-log_lines = append_log(log_lines, 'A0_original:');
+log_lines = append_log(log_lines, '第 7 步 A0 / A1 / B 三路线对比');
+log_lines = append_log(log_lines, 'A0_original：');
 log_lines = append_log(log_lines, '    原始 Route A，保留旧搜索假定。');
 log_lines = append_log(log_lines, '    search_width = theta_sep。');
 log_lines = append_log(log_lines, '    用于复现旧结果。');
 log_lines = append_log(log_lines, '    该路线带有受限搜索先验，不作为完全公平的一般搜索基线。');
 log_lines = append_log(log_lines, '');
-log_lines = append_log(log_lines, 'A1_eval_improved:');
+log_lines = append_log(log_lines, 'A1_eval_improved：');
 log_lines = append_log(log_lines, '    搜索宽度与目标间隔解耦。');
 log_lines = append_log(log_lines, '    search_width = 4 * theta_sep。');
-log_lines = append_log(log_lines, '    使用 no-edge peak detection。');
+log_lines = append_log(log_lines, '    使用无边界峰值检测。');
 log_lines = append_log(log_lines, '    beam grid 密度保持与原始 A 一致：M_old_A1 = round(search_scale_A1 * 50)。');
 log_lines = append_log(log_lines, '    QSmoothRatio = %.2f。', qSmoothRatio_A1);
 log_lines = append_log(log_lines, '');
-log_lines = append_log(log_lines, 'B_true_FBSS_centerT:');
-log_lines = append_log(log_lines, '    true array-domain FBSS -> centerT beamspace -> 1D MUSIC。');
+log_lines = append_log(log_lines, 'B_true_FBSS_centerT：');
+log_lines = append_log(log_lines, '    严格阵元域 FBSS -> centerT 波束域投影 -> 一维 MUSIC。');
 log_lines = append_log(log_lines, '    使用 N=%d, K=%d, Psub=%d。', array_num, K_fbss, array_num - K_fbss + 1);
 log_lines = append_log(log_lines, '');
-log_lines = append_log(log_lines, 'Parameter summary:');
+log_lines = append_log(log_lines, '参数汇总：');
 log_lines = append_log(log_lines, 'snr=%.2f, Metkl=%d, tol_deg=%.3f', snr, Metkl, tol_deg);
 log_lines = append_log(log_lines, 'T_snap_list=%s', mat2str(T_snap_list));
 log_lines = append_log(log_lines, 'bw_index_list=%s', mat2str(bw_index_list));
@@ -112,7 +112,7 @@ log_lines = append_log(log_lines, '');
 for iSnap = 1:nsnap
     T_snap = T_snap_list(iSnap);
     t = linspace(0, 1, T_snap);
-    log_lines = append_log(log_lines, '=== T_snap = %d ===', T_snap);
+    log_lines = append_log(log_lines, '=== 快拍数 T_snap = %d ===', T_snap);
 
     for ibw = 1:nbw
         angle_grid_num = bw_index_list(ibw);
@@ -164,9 +164,8 @@ for iSnap = 1:nsnap
                 edge_hit_count_A1(iSnap, ibw) = edge_hit_count_A1(iSnap, ibw) + 1;
             end
 
-            y_sub = y;
             [doa_B, debug_B] = DOA_three_music_new_route_centerT( ...
-                y_sub, ...
+                y, ...
                 K_fbss, ...
                 beam_grid_full_deg, ...
                 center_beam_count, ...
@@ -230,134 +229,74 @@ rmse(valid_all) = sqrt(rmse_sum_sqerr(valid_all) ./ (2 * rmse_valid_count(valid_
 boundary_like_hit_rate_A0 = boundary_like_hit_count_A0 / Metkl;
 edge_hit_rate_A1 = edge_hit_count_A1 / Metkl;
 
-params = struct();
-params.c = c;
-params.array_num = array_num;
-params.fc = fc;
-params.lambda = lambda;
-params.d = d;
-params.bw_64 = bw_64;
-params.theta_c = theta_c;
-params.snr = snr;
-params.Metkl = Metkl;
-params.tol_deg = tol_deg;
-params.T_snap_list = T_snap_list;
-params.bw_index_list = bw_index_list;
-params.search_scale_A1 = search_scale_A1;
-params.search_scale_B = search_scale_B;
-params.qSmoothRatio_A1 = qSmoothRatio_A1;
-params.M_old_A0 = M_old_A0;
-params.M_old_A1 = M_old_A1;
-params.K_fbss = K_fbss;
-params.center_beam_count = center_beam_count;
-params.M_full = M_full;
+figure('Name', 'A0/A1/B 容差成功率', 'NumberTitle', 'off');
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(bw_index_list, squeeze(tol_success_rate(iSnap, :, 1)), '-o', 'LineWidth', 1.2);
+    hold on;
+    plot(bw_index_list, squeeze(tol_success_rate(iSnap, :, 2)), '-s', 'LineWidth', 1.2);
+    plot(bw_index_list, squeeze(tol_success_rate(iSnap, :, 3)), '-d', 'LineWidth', 1.2);
+    hold off;
+    grid on;
+    xticks(bw_index_list);
+    xlabel('角间隔档位');
+    ylabel('容差成功率');
+    title(sprintf('T_{snap} = %d 时的容差成功率', T_snap_list(iSnap)));
+    legend(route_labels, 'Location', 'best');
+end
 
-result_struct = struct();
-result_struct.params = params;
-result_struct.route_names = route_names;
-result_struct.route_labels = route_labels;
-result_struct.raw_success_rate = raw_success_rate;
-result_struct.tol_success_rate = tol_success_rate;
-result_struct.rmse = rmse;
-result_struct.boundary_like_hit_rate_A0 = boundary_like_hit_rate_A0;
-result_struct.edge_hit_rate_A1 = edge_hit_rate_A1;
-result_struct.sample_debug_B = sample_debug_B;
-result_struct.log_lines = log_lines;
+figure('Name', 'A0/A1/B 均方根误差', 'NumberTitle', 'off');
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(bw_index_list, squeeze(rmse(iSnap, :, 1)), '-o', 'LineWidth', 1.2);
+    hold on;
+    plot(bw_index_list, squeeze(rmse(iSnap, :, 2)), '-s', 'LineWidth', 1.2);
+    plot(bw_index_list, squeeze(rmse(iSnap, :, 3)), '-d', 'LineWidth', 1.2);
+    hold off;
+    grid on;
+    xticks(bw_index_list);
+    xlabel('角间隔档位');
+    ylabel('均方根误差（度）');
+    title(sprintf('T_{snap} = %d 时的均方根误差', T_snap_list(iSnap)));
+    legend(route_labels, 'Location', 'best');
+end
 
-output_dir = fileparts(mfilename('fullpath'));
-mat_path = fullfile(output_dir, 'compare_step07_A0_A1_B.mat');
-log_path = fullfile(output_dir, 'compare_step07_A0_A1_B.log');
-save(mat_path, '-struct', 'result_struct');
+figure('Name', 'A0 边界命中率与 A1 边缘命中率', 'NumberTitle', 'off');
+for iSnap = 1:nsnap
+    subplot(nsnap, 1, iSnap);
+    plot(bw_index_list, squeeze(boundary_like_hit_rate_A0(iSnap, :)), '-o', 'LineWidth', 1.2);
+    hold on;
+    plot(bw_index_list, squeeze(edge_hit_rate_A1(iSnap, :)), '-s', 'LineWidth', 1.2);
+    hold off;
+    grid on;
+    xticks(bw_index_list);
+    xlabel('角间隔档位');
+    ylabel('命中率');
+    title(sprintf('T_{snap} = %d 时的 A0 边界命中与 A1 边缘命中', T_snap_list(iSnap)));
+    legend({'A0 边界命中', 'A1 边缘命中'}, 'Location', 'best');
+end
 
-fid = fopen(log_path, 'w');
+figure('Name', '路线 B 不同快拍数对比', 'NumberTitle', 'off');
+plot(bw_index_list, squeeze(tol_success_rate(1, :, 3)), '-o', 'LineWidth', 1.2);
+hold on;
+plot(bw_index_list, squeeze(tol_success_rate(2, :, 3)), '-s', 'LineWidth', 1.2);
+plot(bw_index_list, squeeze(tol_success_rate(3, :, 3)), '-d', 'LineWidth', 1.2);
+hold off;
+grid on;
+xticks(bw_index_list);
+xlabel('角间隔档位');
+ylabel('容差成功率');
+title('路线 B 在不同快拍数下的容差成功率对比');
+legend({'路线 B，T=130', '路线 B，T=260', '路线 B，T=520'}, 'Location', 'best');
+
+fid = fopen(fullfile(fileparts(mfilename('fullpath')), 'compare_step07_A0_A1_B.log'), 'w');
 if fid < 0
-    error('Failed to open log file.');
+    error('无法打开日志文件。');
 end
 for ii = 1:numel(log_lines)
     fprintf(fid, '%s\n', log_lines{ii});
 end
 fclose(fid);
-
-xvals = bw_index_list;
-xlabels = arrayfun(@(k) sprintf('bw/%d', k), bw_index_list, 'UniformOutput', false);
-
-fig1 = figure('Visible', 'off');
-for iSnap = 1:nsnap
-    subplot(nsnap, 1, iSnap);
-    plot(xvals, squeeze(tol_success_rate(iSnap, :, 1)), '-o', 'LineWidth', 1.2);
-    hold on;
-    plot(xvals, squeeze(tol_success_rate(iSnap, :, 2)), '-s', 'LineWidth', 1.2);
-    plot(xvals, squeeze(tol_success_rate(iSnap, :, 3)), '-d', 'LineWidth', 1.2);
-    hold off;
-    grid on;
-    xticks(xvals);
-    xticklabels(xlabels);
-    ylabel('tol success');
-    title(sprintf('T_{snap} = %d tol success', T_snap_list(iSnap)));
-    if iSnap == 1
-        legend(route_labels, 'Location', 'best');
-    end
-end
-xlabel('bw index');
-saveas(fig1, fullfile(output_dir, 'fig_A0_A1_B_tol_success.png'));
-close(fig1);
-
-fig2 = figure('Visible', 'off');
-for iSnap = 1:nsnap
-    subplot(nsnap, 1, iSnap);
-    plot(xvals, squeeze(rmse(iSnap, :, 1)), '-o', 'LineWidth', 1.2);
-    hold on;
-    plot(xvals, squeeze(rmse(iSnap, :, 2)), '-s', 'LineWidth', 1.2);
-    plot(xvals, squeeze(rmse(iSnap, :, 3)), '-d', 'LineWidth', 1.2);
-    hold off;
-    grid on;
-    xticks(xvals);
-    xticklabels(xlabels);
-    ylabel('RMSE (deg)');
-    title(sprintf('T_{snap} = %d RMSE', T_snap_list(iSnap)));
-    if iSnap == 1
-        legend(route_labels, 'Location', 'best');
-    end
-end
-xlabel('bw index');
-saveas(fig2, fullfile(output_dir, 'fig_A0_A1_B_rmse.png'));
-close(fig2);
-
-fig3 = figure('Visible', 'off');
-for iSnap = 1:nsnap
-    subplot(nsnap, 1, iSnap);
-    plot(xvals, squeeze(boundary_like_hit_rate_A0(iSnap, :)), '-o', 'LineWidth', 1.2);
-    hold on;
-    plot(xvals, squeeze(edge_hit_rate_A1(iSnap, :)), '-s', 'LineWidth', 1.2);
-    hold off;
-    grid on;
-    xticks(xvals);
-    xticklabels(xlabels);
-    ylabel('edge hit rate');
-    title(sprintf('T_{snap} = %d A0 boundary-like vs A1 edge-hit', T_snap_list(iSnap)));
-    if iSnap == 1
-        legend({'A0 boundary-like', 'A1 edge-hit'}, 'Location', 'best');
-    end
-end
-xlabel('bw index');
-saveas(fig3, fullfile(output_dir, 'fig_A_boundary_vs_eval_edge.png'));
-close(fig3);
-
-fig4 = figure('Visible', 'off');
-plot(xvals, squeeze(tol_success_rate(1, :, 3)), '-o', 'LineWidth', 1.2);
-hold on;
-plot(xvals, squeeze(tol_success_rate(2, :, 3)), '-s', 'LineWidth', 1.2);
-plot(xvals, squeeze(tol_success_rate(3, :, 3)), '-d', 'LineWidth', 1.2);
-hold off;
-grid on;
-xticks(xvals);
-xticklabels(xlabels);
-xlabel('bw index');
-ylabel('tol success');
-title('Route B snapshot comparison');
-legend({'B T=130', 'B T=260', 'B T=520'}, 'Location', 'best');
-saveas(fig4, fullfile(output_dir, 'fig_B_snapshot_compare.png'));
-close(fig4);
 
 function log_lines = append_log(log_lines, fmt, varargin)
     line = sprintf(fmt, varargin{:});

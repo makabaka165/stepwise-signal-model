@@ -1,0 +1,43 @@
+第 7 步 A1 路线诊断对比
+变体列表：
+- A1_ratio_center（A1 比例窗 + 中心谱）
+- A1_fixed41_center（A1 固定41窗 + 中心谱）
+- A1_fixedPhysical_center（A1 固定物理窗 + 中心谱）
+- A1_ratio_manifold（A1 比例窗 + 流形谱）
+- A1_fixed41_manifold（A1 固定41窗 + 流形谱）
+
+=== 快拍数 T_snap = 130 ===
+bw/1 诊断完成。
+bw/2 诊断完成。
+bw/3 诊断完成。
+bw/4 诊断完成。
+bw/5 诊断完成。
+bw/6 诊断完成。
+bw/7 诊断完成。
+bw/8 诊断完成。
+bw/9 诊断完成。
+bw/10 诊断完成。
+
+=== 快拍数 T_snap = 520 ===
+bw/1 诊断完成。
+bw/2 诊断完成。
+bw/3 诊断完成。
+bw/4 诊断完成。
+bw/5 诊断完成。
+bw/6 诊断完成。
+bw/7 诊断完成。
+bw/8 诊断完成。
+bw/9 诊断完成。
+bw/10 诊断完成。
+
+诊断汇总：
+A1_ratio_center 在 T=130 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_ratio_center 在 T=520 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_fixed41_center 在 T=130 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_fixed41_center 在 T=520 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_fixedPhysical_center 在 T=130 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_fixedPhysical_center 在 T=520 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_ratio_manifold 在 T=130 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_ratio_manifold 在 T=520 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_fixed41_manifold 在 T=130 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]
+A1_fixed41_manifold 在 T=520 时的容差成功率：[0 0 0 0 0 0 0 0 0 0]

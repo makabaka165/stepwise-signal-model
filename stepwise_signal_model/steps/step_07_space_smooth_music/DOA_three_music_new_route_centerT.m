@@ -1,14 +1,14 @@
 function [doa_value, debug] = DOA_three_music_new_route_centerT( ...
     y, K, beam_grid_full_deg, center_beam_count, angle_recv, search_width_deg, varargin)
-
-    % Route B: true array-domain FBSS -> centerT beamspace -> 1D MUSIC.
+    % Route B：
+    % 严格阵元域 FBSS -> centerT 波束域投影 -> 一维 MUSIC。
     %
-    % y                  : N x T_snap array-domain snapshots
-    % K                  : FBSS subarray length, K < N
-    % beam_grid_full_deg : full candidate beam grid in degrees
-    % center_beam_count  : number of center beams kept for beamspace projection
-    % angle_recv         : local search center in degrees
-    % search_width_deg   : MUSIC search width in degrees
+    % y                  : N x T_snap 阵元域快拍
+    % K                  : FBSS 子阵长度，要求 K < N
+    % beam_grid_full_deg : 完整候选波束角网格（度）
+    % center_beam_count  : 中心截取的波束数量
+    % angle_recv         : 局部搜索中心角（度）
+    % search_width_deg   : MUSIC 搜索宽度（度）
 
     p = inputParser;
     addParameter(p, 'Lc', 2);
@@ -29,42 +29,42 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT( ...
     [N, T_snap] = size(y);
 
     if K >= N
-        error('K must be smaller than N for true FBSS.');
+        error('严格 FBSS 要求 K 小于 N。');
     end
 
     if K <= Lc
-        error('K must be larger than Lc.');
+        error('K 必须大于目标数 Lc。');
     end
 
     Psub = N - K + 1;
     if Psub < Lc
-        error('N-K+1 must be at least Lc.');
+        error('重叠子阵数 N-K+1 不能小于 Lc。');
     end
 
     beam_grid_full_deg = reshape(beam_grid_full_deg, 1, []);
     full_beam_count = numel(beam_grid_full_deg);
 
     if center_beam_count <= Lc
-        error('center_beam_count must be larger than Lc.');
+        error('中心波束数量必须大于目标数 Lc。');
     end
 
     if center_beam_count > full_beam_count
-        error('center_beam_count must not exceed full_beam_count.');
+        error('中心波束数量不能超过完整波束网格数量。');
     end
 
     if search_width_deg <= 0
-        error('search_width_deg must be positive.');
+        error('搜索宽度必须为正数。');
     end
 
-    % 1. Array-domain covariance
+    % 1. 阵元域协方差
     Rxx = y * y' / T_snap;
     Rxx = 0.5 * (Rxx + Rxx');
 
-    % 2. True array-domain FBSS
+    % 2. 严格阵元域 FBSS
     Rss = mssp_array_fb(Rxx, K);
     Rss = 0.5 * (Rss + Rss');
 
-    % 3. Center beam selection from full beam grid
+    % 3. 从完整波束网格中截取中心波束
     center_idx = floor((full_beam_count + 1) / 2);
     half_left = floor((center_beam_count - 1) / 2);
     half_right = center_beam_count - half_left - 1;
@@ -73,16 +73,16 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT( ...
     end_idx = center_idx + half_right;
 
     if start_idx < 1 || end_idx > full_beam_count
-        error('Center beam selection exceeds beam grid boundary.');
+        error('中心波束截取超出波束网格边界。');
     end
 
     center_indices = start_idx:end_idx;
     beam_grid_center_deg = beam_grid_full_deg(center_indices);
 
-    % 4. Build K-dimensional centerT
+    % 4. 构造 K 维 centerT 投影矩阵
     posK = d * (0:K-1).';
 
-    % Positive exponent convention, consistent with Route A using A.' * y.
+    % 使用正指数约定，与 Route A 的 A.' * y 保持一致。
     Wcenter = exp(j * 2*pi/lambda * posK * sind(beam_grid_center_deg));
 
     if use_qr
@@ -92,18 +92,17 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT( ...
     end
 
     if size(Tk, 2) <= Lc
-        error('Beamspace dimension must be larger than Lc.');
+        error('波束域维数必须大于目标数 Lc。');
     end
 
-    % 5. Beamspace covariance
-    % Since Tk uses positive exponent and array steering uses negative exponent,
-    % use non-conjugate transpose for projection consistency:
+    % 5. 波束域协方差
+    % Tk 使用正指数，阵元导向矢量使用负指数，因此投影保持：
     %   B = Tk.' * Y
     %   Rb = Tk.' * Rss * conj(Tk)
     Rb = Tk.' * Rss * conj(Tk);
     Rb = 0.5 * (Rb + Rb');
 
-    % 6. EVD
+    % 6. 特征分解
     [E, D] = eig(Rb);
     eigvals = real(diag(D));
     [eigvals, idx] = sort(eigvals, 'descend');
@@ -112,14 +111,14 @@ function [doa_value, debug] = DOA_three_music_new_route_centerT( ...
     if size(E, 2) <= Lc
         doa_value = nan(1, Lc);
         debug = struct();
-        debug.reason = 'empty_noise_subspace';
+        debug.reason = '噪声子空间为空';
         debug.eigvals = eigvals;
         return;
     end
 
     En = E(:, Lc+1:end);
 
-    % 7. MUSIC search
+    % 7. 一维 MUSIC 搜索
     angle_search = angle_recv - search_width_deg/2 : ...
                    grid_step_deg : ...
                    angle_recv + search_width_deg/2;
