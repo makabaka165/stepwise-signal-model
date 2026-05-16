@@ -1,0 +1,44 @@
+Step 07 Route A0
+Common experiment settings:
+snr=12.00, Metkl=50, tol_deg=0.100
+T_snap_list=[130 260 520]
+bw_index_list=[1 2 3 4 5 6 7 8 9 10]
+Route A0 internal settings:
+search_width = theta_sep, M_old_A0 = 50
+
+=== T_snap = 130 ===
+bw/1 | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+bw/2 | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+bw/3 | raw=50 tol=50 RMSE=0.0374 boundary_like=0.00
+bw/4 | raw=50 tol=50 RMSE=0.0061 boundary_like=1.00
+bw/5 | raw=50 tol=50 RMSE=0.0010 boundary_like=1.00
+bw/6 | raw=50 tol=50 RMSE=0.0047 boundary_like=1.00
+bw/7 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/8 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/9 | raw=50 tol=50 RMSE=0.0008 boundary_like=1.00
+bw/10 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+
+=== T_snap = 260 ===
+bw/1 | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+bw/2 | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+bw/3 | raw=50 tol=50 RMSE=0.0366 boundary_like=0.00
+bw/4 | raw=50 tol=50 RMSE=0.0050 boundary_like=1.00
+bw/5 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/6 | raw=50 tol=50 RMSE=0.0047 boundary_like=1.00
+bw/7 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/8 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/9 | raw=50 tol=50 RMSE=0.0008 boundary_like=1.00
+bw/10 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+
+=== T_snap = 520 ===
+bw/1 | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+bw/2 | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+bw/3 | raw=50 tol=50 RMSE=0.0367 boundary_like=0.00
+bw/4 | raw=50 tol=50 RMSE=0.0052 boundary_like=1.00
+bw/5 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/6 | raw=50 tol=50 RMSE=0.0047 boundary_like=1.00
+bw/7 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/8 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+bw/9 | raw=50 tol=50 RMSE=0.0008 boundary_like=1.00
+bw/10 | raw=50 tol=50 RMSE=0.0000 boundary_like=1.00
+

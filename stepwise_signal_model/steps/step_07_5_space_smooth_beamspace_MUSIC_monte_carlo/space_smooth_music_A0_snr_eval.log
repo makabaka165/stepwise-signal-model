@@ -1,0 +1,28 @@
+Route A0 SNR sweep, constrained boundary-prior route
+Common experiment settings:
+snr_list=[-10 -8 -6 -4 -2 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30], Metkl=200, tol_deg=0.100
+T_snap=260, theta_sep=2.8000, theta_a=11.6000, theta_b=14.4000
+Route A0 internal settings:
+routeA0_beam_span=2.8000, M_old_A0=50, theta_search_A0=2.8000
+
+SNR=-10 dB | raw=200 tol=0 RMSE=0.2142 boundary_like=0.00
+SNR=-8 dB | raw=200 tol=0 RMSE=0.2445 boundary_like=0.00
+SNR=-6 dB | raw=200 tol=0 RMSE=0.2877 boundary_like=0.00
+SNR=-4 dB | raw=200 tol=0 RMSE=0.3689 boundary_like=0.00
+SNR=-2 dB | raw=200 tol=0 RMSE=0.5032 boundary_like=0.00
+SNR=0 dB | raw=196 tol=0 RMSE=0.7687 boundary_like=0.00
+SNR=2 dB | raw=4 tol=0 RMSE=1.0413 boundary_like=0.00
+SNR=4 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=6 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=8 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=10 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=12 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=14 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=16 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=18 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=20 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=22 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=24 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=26 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=28 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00
+SNR=30 dB | raw=0 tol=0 RMSE=NaN boundary_like=0.00

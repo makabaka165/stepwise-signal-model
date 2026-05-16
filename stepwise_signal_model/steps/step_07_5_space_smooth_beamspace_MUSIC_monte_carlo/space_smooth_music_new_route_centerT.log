@@ -1,0 +1,49 @@
+Step 07.5 Route B SNR sweep
+Common experiment settings:
+snr_list=[-10 -8 -6 -4 -2 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30], Metkl=200, tol_deg=0.100
+T_snap=260, theta_sep=2.8000, theta_a=11.6000, theta_b=14.4000
+Route B internal settings:
+K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+
+=== SNR = -10.0 dB ===
+SNR=-10.0 | raw=200 tol=161 RMSE=0.0666 mean_num_peaks=4.00
+=== SNR = -8.0 dB ===
+SNR=-8.0 | raw=200 tol=192 RMSE=0.0455 mean_num_peaks=4.00
+=== SNR = -6.0 dB ===
+SNR=-6.0 | raw=200 tol=198 RMSE=0.0345 mean_num_peaks=4.00
+=== SNR = -4.0 dB ===
+SNR=-4.0 | raw=200 tol=200 RMSE=0.0259 mean_num_peaks=4.00
+=== SNR = -2.0 dB ===
+SNR=-2.0 | raw=200 tol=200 RMSE=0.0200 mean_num_peaks=4.00
+=== SNR = 0.0 dB ===
+SNR=0.0 | raw=200 tol=200 RMSE=0.0162 mean_num_peaks=4.00
+=== SNR = 2.0 dB ===
+SNR=2.0 | raw=200 tol=200 RMSE=0.0120 mean_num_peaks=4.00
+=== SNR = 4.0 dB ===
+SNR=4.0 | raw=200 tol=200 RMSE=0.0100 mean_num_peaks=4.00
+=== SNR = 6.0 dB ===
+SNR=6.0 | raw=200 tol=200 RMSE=0.0079 mean_num_peaks=4.00
+=== SNR = 8.0 dB ===
+SNR=8.0 | raw=200 tol=200 RMSE=0.0062 mean_num_peaks=4.00
+=== SNR = 10.0 dB ===
+SNR=10.0 | raw=200 tol=200 RMSE=0.0052 mean_num_peaks=4.00
+=== SNR = 12.0 dB ===
+SNR=12.0 | raw=200 tol=200 RMSE=0.0040 mean_num_peaks=4.00
+=== SNR = 14.0 dB ===
+SNR=14.0 | raw=200 tol=200 RMSE=0.0029 mean_num_peaks=4.00
+=== SNR = 16.0 dB ===
+SNR=16.0 | raw=200 tol=200 RMSE=0.0021 mean_num_peaks=4.00
+=== SNR = 18.0 dB ===
+SNR=18.0 | raw=200 tol=200 RMSE=0.0009 mean_num_peaks=4.00
+=== SNR = 20.0 dB ===
+SNR=20.0 | raw=200 tol=200 RMSE=0.0005 mean_num_peaks=4.00
+=== SNR = 22.0 dB ===
+SNR=22.0 | raw=200 tol=200 RMSE=0.0000 mean_num_peaks=4.00
+=== SNR = 24.0 dB ===
+SNR=24.0 | raw=200 tol=200 RMSE=0.0000 mean_num_peaks=4.00
+=== SNR = 26.0 dB ===
+SNR=26.0 | raw=200 tol=200 RMSE=0.0000 mean_num_peaks=4.00
+=== SNR = 28.0 dB ===
+SNR=28.0 | raw=200 tol=200 RMSE=0.0000 mean_num_peaks=4.00
+=== SNR = 30.0 dB ===
+SNR=30.0 | raw=200 tol=200 RMSE=0.0000 mean_num_peaks=4.00
