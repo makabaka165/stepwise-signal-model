@@ -238,7 +238,48 @@ idx = find(tol_success_rate(iSep, :) >= 0.9, 1, 'first');
 
 ---
 
-## 9. 当前阶段结论
+## 9. bw/1 到 bw/10 全扫描结果
+
+本轮扩展实验新增脚本：
+
+- [space_smooth_music_B_snr_resolution_limit_fullscan.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/space_smooth_music_B_snr_resolution_limit_fullscan.m)
+
+结果目录：
+
+- [results_step7_5_routeB_fullscan_bw1_to_bw10](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/results_step7_5_routeB_fullscan_bw1_to_bw10)
+
+本轮扩展实验设置：
+
+- `sep_factor_list = 1:10`
+- `snr_list = -4:2:30`
+- `Metkl = 200`
+- `T_snap = 260`
+- 其余 `Route B` 参数保持不变
+
+结果表明，`Route B` 的 `SNR90` 随目标间隔缩小而单调升高。
+
+| 角间隔 | SNR90 |
+| --- | --- |
+| `bw/1` | `<= -4 dB`，此前低 SNR 复核约为 `-8 dB` |
+| `bw/2` | `<= -4 dB`，此前低 SNR 复核约为 `-6 dB` |
+| `bw/3` | 约 `-2 ~ 0 dB` |
+| `bw/4` | `4 dB` |
+| `bw/5` | `8 dB` |
+| `bw/6` | `12 dB` |
+| `bw/7` | `16 dB` |
+| `bw/8` | `18 dB` |
+| `bw/9` | `22 dB` |
+| `bw/10` | `24 dB` |
+
+从完整扫描结果看：
+
+- `bw/1` 和 `bw/2` 在本轮扫描起点 `-4 dB` 已经达到 `90%` 以上 `tol success`；
+- `bw/3` 仍属于较稳间隔，`SNR90` 只比 `bw/2` 略高；
+- `bw/4` 开始出现明显分辨门槛，是本轮实验中的关键过渡区；
+- `bw/5 ~ bw/10` 的 `SNR90` 近似按间隔缩小而持续抬升，说明当前 `T_snap = 260` 下已经进入典型超分辨代价区。
+
+这说明在当前 `T_snap = 260` 条件下，`Route B` 在 `bw/10` 的相干双目标间隔下仍可达到 `90%` 以上 `tol success`，但需要约 `24 dB` 输入 SNR。
+
+## 10. 当前阶段结论
 
 本实验不再以 `A0 / A1` 作为候选路线。`A0 / A1` 已在第 7.5 步诊断中表现出系统性失效，因此后续主线集中验证 `B` 的 SNR 分辨极限。
-
