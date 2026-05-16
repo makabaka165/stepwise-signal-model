@@ -1,0 +1,25 @@
+Step 7.5 Route B stability recheck
+Route B only: element-domain covariance -> element-domain FBSS -> centerT beamspace -> 1D MUSIC.
+Common experiment settings:
+snr_list=[-4 -2 0 2 4 6 8], Metkl=500, T_snap=260, tol_deg=0.100
+sep_factor_list=[3 4]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+
+=== sep_factor = 3, theta_sep = 0.9333 deg ===
+SNR=-4 dB | raw=500 tol=362 raw_rate=1.000 tol_rate=0.724 RMSE=0.0733 mean_num_peaks=2.00
+SNR=-2 dB | raw=500 tol=443 raw_rate=1.000 tol_rate=0.886 RMSE=0.0556 mean_num_peaks=2.00
+SNR=0 dB | raw=500 tol=489 raw_rate=1.000 tol_rate=0.978 RMSE=0.0403 mean_num_peaks=2.00
+SNR=2 dB | raw=500 tol=498 raw_rate=1.000 tol_rate=0.996 RMSE=0.0300 mean_num_peaks=2.00
+SNR=4 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=6 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0187 mean_num_peaks=2.00
+SNR=8 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0142 mean_num_peaks=2.00
+
+=== sep_factor = 4, theta_sep = 0.7000 deg ===
+SNR=-4 dB | raw=23 tol=6 raw_rate=0.046 tol_rate=0.012 RMSE=0.1847 mean_num_peaks=1.05
+SNR=-2 dB | raw=145 tol=39 raw_rate=0.290 tol_rate=0.078 RMSE=0.1209 mean_num_peaks=1.29
+SNR=0 dB | raw=408 tol=199 raw_rate=0.816 tol_rate=0.398 RMSE=0.0971 mean_num_peaks=1.82
+SNR=2 dB | raw=496 tol=384 raw_rate=0.992 tol_rate=0.768 RMSE=0.0677 mean_num_peaks=1.99
+SNR=4 dB | raw=500 tol=477 raw_rate=1.000 tol_rate=0.954 RMSE=0.0474 mean_num_peaks=2.00
+SNR=6 dB | raw=500 tol=495 raw_rate=1.000 tol_rate=0.990 RMSE=0.0356 mean_num_peaks=2.00
+SNR=8 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0266 mean_num_peaks=2.00
+
