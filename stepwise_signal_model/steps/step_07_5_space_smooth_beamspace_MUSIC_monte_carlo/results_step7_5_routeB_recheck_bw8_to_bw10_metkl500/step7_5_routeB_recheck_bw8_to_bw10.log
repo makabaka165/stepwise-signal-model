@@ -1,0 +1,67 @@
+Step 7.5 Route B stability recheck for bw/8~bw/10
+Route B only: element-domain covariance -> element-domain FBSS -> centerT beamspace -> 1D MUSIC.
+Common experiment settings:
+snr_list=[-4 -2 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30], Metkl=500, T_snap=260, tol_deg=0.100
+sep_factor_list=[8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=-4 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=-2 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=0 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=2 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=4 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=6 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=8 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=10 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=12 dB | raw=7 tol=5 raw_rate=0.014 tol_rate=0.010 RMSE=0.0769 mean_num_peaks=1.01
+SNR=14 dB | raw=86 tol=73 raw_rate=0.172 tol_rate=0.146 RMSE=0.0684 mean_num_peaks=1.17
+SNR=16 dB | raw=309 tol=298 raw_rate=0.618 tol_rate=0.596 RMSE=0.0546 mean_num_peaks=1.62
+SNR=18 dB | raw=456 tol=452 raw_rate=0.912 tol_rate=0.904 RMSE=0.0415 mean_num_peaks=1.91
+SNR=20 dB | raw=498 tol=498 raw_rate=0.996 tol_rate=0.996 RMSE=0.0310 mean_num_peaks=2.00
+SNR=22 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0223 mean_num_peaks=2.00
+SNR=24 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0166 mean_num_peaks=2.00
+SNR=26 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0130 mean_num_peaks=2.00
+SNR=28 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0102 mean_num_peaks=2.00
+SNR=30 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0087 mean_num_peaks=2.00
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=-4 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=-2 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=0 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=2 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=4 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=6 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=8 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=10 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=12 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | raw=1 tol=1 raw_rate=0.002 tol_rate=0.002 RMSE=0.0660 mean_num_peaks=1.00
+SNR=16 dB | raw=34 tol=31 raw_rate=0.068 tol_rate=0.062 RMSE=0.0691 mean_num_peaks=1.07
+SNR=18 dB | raw=184 tol=182 raw_rate=0.368 tol_rate=0.364 RMSE=0.0527 mean_num_peaks=1.37
+SNR=20 dB | raw=422 tol=421 raw_rate=0.844 tol_rate=0.842 RMSE=0.0422 mean_num_peaks=1.84
+SNR=22 dB | raw=495 tol=495 raw_rate=0.990 tol_rate=0.990 RMSE=0.0323 mean_num_peaks=1.99
+SNR=24 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0226 mean_num_peaks=2.00
+SNR=26 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00
+SNR=28 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0133 mean_num_peaks=2.00
+SNR=30 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0103 mean_num_peaks=2.00
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=-4 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=-2 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=0 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=2 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=4 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=6 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=8 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=10 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=12 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=16 dB | raw=2 tol=1 raw_rate=0.004 tol_rate=0.002 RMSE=0.1344 mean_num_peaks=1.00
+SNR=18 dB | raw=16 tol=13 raw_rate=0.032 tol_rate=0.026 RMSE=0.0855 mean_num_peaks=1.03
+SNR=20 dB | raw=130 tol=130 raw_rate=0.260 tol_rate=0.260 RMSE=0.0489 mean_num_peaks=1.26
+SNR=22 dB | raw=351 tol=351 raw_rate=0.702 tol_rate=0.702 RMSE=0.0409 mean_num_peaks=1.70
+SNR=24 dB | raw=472 tol=472 raw_rate=0.944 tol_rate=0.944 RMSE=0.0313 mean_num_peaks=1.94
+SNR=26 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0227 mean_num_peaks=2.00
+SNR=28 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0171 mean_num_peaks=2.00
+SNR=30 dB | raw=500 tol=500 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00
+

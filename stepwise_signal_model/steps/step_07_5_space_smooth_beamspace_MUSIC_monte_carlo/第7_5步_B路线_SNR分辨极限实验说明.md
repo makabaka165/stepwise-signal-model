@@ -283,3 +283,25 @@ idx = find(tol_success_rate(iSep, :) >= 0.9, 1, 'first');
 ## 10. 当前阶段结论
 
 本实验不再以 `A0 / A1` 作为候选路线。`A0 / A1` 已在第 7.5 步诊断中表现出系统性失效，因此后续主线集中验证 `B` 的 SNR 分辨极限。
+
+## 11. bw/8~bw/10 的 Metkl=500 稳健性复核
+
+为确认 `fullscan` 中小间隔区的 `SNR90` 门槛不是 Monte Carlo 抽样波动导致，进一步对 `bw/8`、`bw/9`、`bw/10` 进行 `Metkl=500` 复核。其余 `Route B` 参数保持不变。
+
+新增脚本：
+
+- [space_smooth_music_B_snr_resolution_limit_recheck_bw8to10.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/space_smooth_music_B_snr_resolution_limit_recheck_bw8to10.m)
+
+结果目录：
+
+- [results_step7_5_routeB_recheck_bw8_to_bw10_metkl500](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/results_step7_5_routeB_recheck_bw8_to_bw10_metkl500)
+
+复核结果如下：
+
+- `bw/8`: `SNR90 = 18 dB`
+- `bw/9`: `SNR90 = 22 dB`
+- `bw/10`: `SNR90 = 24 dB`
+
+该结果与 `Metkl=200 fullscan` 一致，说明小间隔区的分辨门槛稳定。
+
+其中，`bw/10` 在 `22 dB` 时 `tol_rate = 0.702`，在 `24 dB` 时 `tol_rate = 0.944`，说明其 `90%` 成功率门槛稳定落在 `24 dB`。
