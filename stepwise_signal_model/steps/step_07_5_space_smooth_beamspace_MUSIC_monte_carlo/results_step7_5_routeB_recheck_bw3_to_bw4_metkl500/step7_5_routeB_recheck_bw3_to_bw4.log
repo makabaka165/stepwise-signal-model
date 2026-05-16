@@ -1,4 +1,4 @@
-Step 7.5 Route B stability recheck
+Step 7.5 Route B stability recheck for bw/3~bw/4
 Route B only: element-domain covariance -> element-domain FBSS -> centerT beamspace -> 1D MUSIC.
 Common experiment settings:
 snr_list=[-4 -2 0 2 4 6 8], Metkl=500, T_snap=260, tol_deg=0.100

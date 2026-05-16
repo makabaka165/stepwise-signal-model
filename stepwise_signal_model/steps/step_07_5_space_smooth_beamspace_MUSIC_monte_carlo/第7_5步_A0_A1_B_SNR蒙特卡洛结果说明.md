@@ -180,6 +180,8 @@ $$
 
 因此，当某个 SNR 下 `raw_success = 0` 时，`RMSE = NaN`，并不是误差无限大，而是没有有效样本。
 
+同时需要注意：`rmse_deg` 只对 `raw_success` 样本统计，因此当 `raw_success_rate` 较低时，`RMSE` 需要结合 `raw_success_rate` 与 `tol_success_rate` 一起解释。
+
 ---
 
 ## 4. Route A0：受限搜索旧路线
@@ -554,39 +556,166 @@ $$
 
 ---
 
-## 9. 后续 B 主线建议
+## 9. Route B 后续主线结果总览
 
-建议下一步直接做 `B` 的二维参数实验：
+在确认 `A0 / A1` 失效后，第 7.5 步后续实验全部围绕 `Route B` 展开。当前已经形成三组主结果：
 
-```matlab
-theta_sep_list = [bw_64/1, bw_64/2, bw_64/3, bw_64/4];
-snr_list = -10:2:30;
-Metkl = 200;
-T_snap = 260;
-```
+### 9.1 bw/1 ~ bw/4 基础分辨极限实验
 
-建议输出：
+对应脚本：
 
-1. 每个 `theta_sep` 下的 `tol_success_rate vs SNR`
-2. 每个 `theta_sep` 下的 `RMSE vs SNR`
-3. 每个 `theta_sep` 达到 `90% tol_success` 所需的 SNR 阈值
+- [space_smooth_music_B_snr_resolution_limit.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/space_smooth_music_B_snr_resolution_limit.m)
 
-这会直接给出：
+该实验首先验证了 `bw/1 ~ bw/4` 下 `Route B` 的 SNR 趋势是否正常。结果显示：
 
-> `B` 路线在不同目标角间隔下的 SNR 分辨极限。
+- `bw/1`、`bw/2` 在较低 SNR 下已基本稳定；
+- `bw/3` 仍处于较稳区；
+- `bw/4` 开始进入明显分辨门槛区。
+
+这一步确认了 `Route B` 适合作为后续分辨极限主线。
+
+### 9.2 bw/1 ~ bw/10 fullscan
+
+对应脚本：
+
+- [space_smooth_music_B_snr_resolution_limit_fullscan.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/space_smooth_music_B_snr_resolution_limit_fullscan.m)
+
+结果目录：
+
+- [results_step7_5_routeB_fullscan_bw1_to_bw10](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/results_step7_5_routeB_fullscan_bw1_to_bw10)
+
+`fullscan` 统一给出了 `bw/1 ~ bw/10` 在 `T_snap = 260` 下的 `SNR90`：
+
+| 角间隔 | SNR90 |
+| --- | --- |
+| `bw/1` | `<= -4 dB`；低 SNR sanity scan 中为 `-8 dB` |
+| `bw/2` | `<= -4 dB`；低 SNR sanity scan 中为 `-6 dB` |
+| `bw/3` | 约 `-2 ~ 0 dB`；`Metkl=500` 复核保守为 `0 dB` |
+| `bw/4` | `4 dB`；`Metkl=500` 复核一致 |
+| `bw/5` | `8 dB` |
+| `bw/6` | `12 dB` |
+| `bw/7` | `16 dB` |
+| `bw/8` | `18 dB`；`Metkl=500` 复核一致 |
+| `bw/9` | `22 dB`；`Metkl=500` 复核一致 |
+| `bw/10` | `24 dB`；`Metkl=500` 复核一致 |
+
+这里的 `snr90_db` 是在当前 `snr_list` 离散采样网格上首次达到 `tol_success_rate >= 0.9` 的 SNR，不是连续插值得到的精确阈值。因此对于 `bw/1` 和 `bw/2`，本轮 `fullscan` 只能写成 `<= -4 dB`，不能反推真实连续门槛恰好等于 `-4 dB`。
+
+结论非常清楚：随着目标角间隔缩小，`Route B` 达到 `90% tol_success` 所需的输入 `SNR` 单调升高。
+
+### 9.3 两次局部 recheck
+
+为验证关键间隔区的门槛不是 Monte Carlo 抽样波动造成，又做了两次局部复核。
+
+第一组：
+
+- [space_smooth_music_B_snr_resolution_limit_recheck.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/space_smooth_music_B_snr_resolution_limit_recheck.m)
+- [results_step7_5_routeB_recheck_bw3_to_bw4_metkl500](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/results_step7_5_routeB_recheck_bw3_to_bw4_metkl500)
+
+该组复核确认：
+
+- `bw/3` 的门槛可表述为约 `-2 ~ 0 dB`，在 `Metkl=500` 复核口径下按离散阈值保守记为 `0 dB`
+- `bw/4` 的门槛稳定在 `4 dB`
+
+第二组：
+
+- [space_smooth_music_B_snr_resolution_limit_recheck_bw8to10.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/space_smooth_music_B_snr_resolution_limit_recheck_bw8to10.m)
+- [results_step7_5_routeB_recheck_bw8_to_bw10_metkl500](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_07_5_space_smooth_beamspace_MUSIC_monte_carlo/results_step7_5_routeB_recheck_bw8_to_bw10_metkl500)
+
+该组复核确认：
+
+- `bw/8: SNR90 = 18 dB`
+- `bw/9: SNR90 = 22 dB`
+- `bw/10: SNR90 = 24 dB`
+
+其中 `bw/10` 在 `22 dB` 时 `tol_rate = 0.702`，在 `24 dB` 时 `tol_rate = 0.944`，说明 `90%` 成功率门槛稳定落在 `24 dB`。
+
+### 9.4 Route B 主线总判断
+
+结合 `fullscan` 与两次 `recheck`，当前可以把 `Route B` 的结论写清楚：
+
+1. `Route B` 的 SNR 趋势是正常且可复现的；
+2. `bw/4` 是从“较稳分辨区”进入“明显超分辨代价区”的关键拐点；
+3. `bw/8 ~ bw/10` 的小间隔门槛经过 `Metkl=500` 复核后仍与 `fullscan` 一致；
+4. 在 `T_snap = 260` 下，`Route B` 仍可分辨到 `bw/10`，但需要约 `24 dB` 输入 SNR。
 
 ---
 
-## 10. 最终结论
+## 10. 结果目录与字段检查
 
-当前第 7.5 步对 `A0 / A1 / B` 三条路线进行了固定角间隔、固定快拍数下的 SNR Monte Carlo 验证。
+### 10.1 结果目录命名
 
-- `A0`：高 SNR 下 raw 输出塌陷，`tol_success` 全程为 0；
-- `A1`：去除边界约束后，在 `center / manifold` 和多组 `qSmoothRatio` 下仍表现出稳定系统性偏差；
-- `B`：SNR 趋势正常，高 SNR 下稳定满成功。
+当前第 7.5 步 `Route B` 的结果目录已统一为：
+
+- `results_step7_5_routeB_fullscan_bw1_to_bw10`
+- `results_step7_5_routeB_recheck_bw3_to_bw4_metkl500`
+- `results_step7_5_routeB_recheck_bw8_to_bw10_metkl500`
+
+命名规则已经统一包含：
+
+1. `step7_5`
+2. `routeB`
+3. 实验类型：`fullscan` 或 `recheck`
+4. 角间隔范围
+5. 若是复核，则附带 `Metkl` 规模
+
+### 10.2 日志内容
+
+三套 `Route B` 日志都清楚给出：
+
+- 实验名称；
+- 公共参数：`snr_list`、`Metkl`、`T_snap`、`tol_deg`；
+- `sep_factor_list`；
+- `Route B` 内部参数：`K_fbss`、`M_full`、`center_beam_count`、`search_scale_B`；
+- 每个 `(sep_factor, snr)` 的 `raw/tol/raw_rate/tol_rate/RMSE/mean_num_peaks`。
+
+因此日志层面的信息已经足够明确。
+
+### 10.3 CSV 字段
+
+目前 `fullscan` 和两套 `recheck` 的汇总 CSV 字段已经统一为：
+
+```text
+sep_factor,
+theta_sep_deg,
+theta_a_deg,
+theta_b_deg,
+snr_db,
+raw_success_count,
+tol_success_count,
+raw_success_rate,
+tol_success_rate,
+rmse_deg,
+rmse_valid_count,
+mean_num_peaks,
+snr90_db
+```
+
+这组字段已经能够完整表达：
+
+1. 当前角间隔设置；
+2. 当前 SNR；
+3. 原始输出成功率；
+4. 容差成功率；
+5. RMSE；
+6. 有效 RMSE 样本数；
+7. 平均局部峰个数；
+8. 当前角间隔对应的 `SNR90`。
+
+因此，结果目录命名和 `log / CSV` 字段目前已经是清楚且一致的。
+
+---
+
+## 11. 最终结论
+
+当前第 7.5 步已经形成完整结论链：
+
+- `A0`：受限搜索旧路线，在当前相干双目标模型下系统性失效；
+- `A1`：放宽搜索后仍存在稳定系统性谱峰偏差；
+- `B`：阵元域 `FBSS + centerT beamspace MUSIC` 路线稳定，且其 SNR 分辨门槛已经通过 `fullscan + recheck` 验证清楚。
 
 因此：
 
-> `A0 / A1` 不再作为后续主线，仅保留为历史备份与反例诊断；  
-> `B` 作为第 7.5 步后续分辨极限验证的主算法路线。
-
+> `A0 / A1` 只保留为历史诊断与反例说明；  
+> `B` 是第 7.5 步当前唯一保留的主算法路线。  
+> 在 `T_snap = 260` 下，`Route B` 的分辨门槛随目标间隔缩小单调升高，并在 `bw/10` 处稳定落在约 `24 dB` 输入 SNR。

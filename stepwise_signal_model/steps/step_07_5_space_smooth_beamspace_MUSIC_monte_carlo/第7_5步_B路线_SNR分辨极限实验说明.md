@@ -179,6 +179,8 @@ rmse(valid_mask) = sqrt(rmse_sum_sqerr(valid_mask) ./ ...
     (2 * rmse_valid_count(valid_mask)));
 ```
 
+`rmse_deg` 只对 `raw_success` 样本统计；当 `raw_success_rate` 较低时，`RMSE` 需要结合 `raw_success_rate` 和 `tol_success_rate` 一起解释。
+
 ### 6.4 `mean_num_peaks`
 
 记录当前 1D MUSIC 后端平均提取到的局部峰数：
@@ -197,6 +199,8 @@ idx = find(tol_success_rate(iSep, :) >= 0.9, 1, 'first');
 ```
 
 如果在 `30 dB` 内仍未达到 `90%`，则保留 `NaN`。
+
+这里的 `snr90_db` 是在当前 `snr_list` 离散采样网格上首次达到 `tol_success_rate >= 0.9` 的 SNR，不是连续插值得到的精确阈值。
 
 ---
 
@@ -262,14 +266,14 @@ idx = find(tol_success_rate(iSep, :) >= 0.9, 1, 'first');
 | --- | --- |
 | `bw/1` | `<= -4 dB`，此前低 SNR 复核约为 `-8 dB` |
 | `bw/2` | `<= -4 dB`，此前低 SNR 复核约为 `-6 dB` |
-| `bw/3` | 约 `-2 ~ 0 dB` |
-| `bw/4` | `4 dB` |
+| `bw/3` | 约 `-2 ~ 0 dB`；`Metkl=500` 复核保守为 `0 dB` |
+| `bw/4` | `4 dB`；`Metkl=500` 复核一致 |
 | `bw/5` | `8 dB` |
 | `bw/6` | `12 dB` |
 | `bw/7` | `16 dB` |
-| `bw/8` | `18 dB` |
-| `bw/9` | `22 dB` |
-| `bw/10` | `24 dB` |
+| `bw/8` | `18 dB`；`Metkl=500` 复核一致 |
+| `bw/9` | `22 dB`；`Metkl=500` 复核一致 |
+| `bw/10` | `24 dB`；`Metkl=500` 复核一致 |
 
 从完整扫描结果看：
 

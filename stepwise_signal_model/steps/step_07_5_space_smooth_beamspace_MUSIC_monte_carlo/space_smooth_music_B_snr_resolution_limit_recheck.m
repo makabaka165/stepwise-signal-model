@@ -2,6 +2,8 @@ clc
 clear
 close all
 
+% Route B SNR resolution limit recheck for bw/3 and bw/4 with Metkl=500.
+
 rng(20260515, 'twister');
 
 c = 3e8;
@@ -58,7 +60,7 @@ theta_a_deg = nan(nsep, 1);
 theta_b_deg = nan(nsep, 1);
 
 log_lines = {};
-log_lines = append_log(log_lines, 'Step 7.5 Route B stability recheck');
+log_lines = append_log(log_lines, 'Step 7.5 Route B stability recheck for bw/3~bw/4');
 log_lines = append_log(log_lines, 'Route B only: element-domain covariance -> element-domain FBSS -> centerT beamspace -> 1D MUSIC.');
 log_lines = append_log(log_lines, 'Common experiment settings:');
 log_lines = append_log(log_lines, 'snr_list=%s, Metkl=%d, T_snap=%d, tol_deg=%.3f', ...
@@ -189,14 +191,14 @@ params.search_scale_B = search_scale_B;
 params.K_fbss = K_fbss;
 params.M_full = M_full;
 params.center_beam_count = center_beam_count;
-params.recheck_note = 'Step 7.5 stability recheck for bw/3 and bw/4 with Metkl=500 and snr=-4:2:8.';
+params.recheck_note = 'Step 7.5 stability recheck for bw/3~bw/4 with Metkl=500 and snr=-4:2:8.';
 
-result_dir = fullfile(fileparts(mfilename('fullpath')), 'results_step7_5_routeB_recheck_bw34_metkl500');
+result_dir = fullfile(fileparts(mfilename('fullpath')), 'results_step7_5_routeB_recheck_bw3_to_bw4_metkl500');
 if ~exist(result_dir, 'dir')
     mkdir(result_dir);
 end
 
-log_path = fullfile(result_dir, 'step7_5_routeB_recheck.log');
+log_path = fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4.log');
 fid = fopen(log_path, 'w');
 if fid < 0
     error('Failed to open log file.');
@@ -206,24 +208,24 @@ for ii = 1:numel(log_lines)
 end
 fclose(fid);
 
-csv_path = fullfile(result_dir, 'step7_5_routeB_recheck_summary.csv');
+csv_path = fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_summary.csv');
 fid = fopen(csv_path, 'w');
 if fid < 0
     error('Failed to open csv file.');
 end
-fprintf(fid, 'sep_factor,theta_sep_deg,theta_a_deg,theta_b_deg,snr_db,raw_success_count,tol_success_count,raw_success_rate,tol_success_rate,rmse_deg,rmse_valid_count,mean_num_peaks\n');
+fprintf(fid, 'sep_factor,theta_sep_deg,theta_a_deg,theta_b_deg,snr_db,raw_success_count,tol_success_count,raw_success_rate,tol_success_rate,rmse_deg,rmse_valid_count,mean_num_peaks,snr90_db\n');
 for iSep = 1:nsep
     for iSNR = 1:nsnr
-        fprintf(fid, '%d,%.6f,%.6f,%.6f,%d,%d,%d,%.6f,%.6f,%.6f,%d,%.6f\n', ...
+        fprintf(fid, '%d,%.6f,%.6f,%.6f,%d,%d,%d,%.6f,%.6f,%.6f,%d,%.6f,%.6f\n', ...
             sep_factor_list(iSep), theta_sep_deg(iSep), theta_a_deg(iSep), theta_b_deg(iSep), ...
             snr_list(iSNR), raw_success_count(iSep, iSNR), tol_success_count(iSep, iSNR), ...
             raw_success_rate(iSep, iSNR), tol_success_rate(iSep, iSNR), rmse(iSep, iSNR), ...
-            rmse_valid_count(iSep, iSNR), mean_num_peaks(iSep, iSNR));
+            rmse_valid_count(iSep, iSNR), mean_num_peaks(iSep, iSNR), snr90(iSep));
     end
 end
 fclose(fid);
 
-mat_path = fullfile(result_dir, 'step7_5_routeB_recheck_result.mat');
+mat_path = fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_result.mat');
 save(mat_path, ...
     'params', ...
     'sep_factor_list', ...
@@ -253,9 +255,9 @@ hold off
 grid on
 xlabel('SNR (dB)');
 ylabel('tol success rate');
-title('Step 7.5 Route B stability recheck: tol success rate');
+title('Step 7.5 Route B recheck bw/3~bw/4: tol success rate');
 legend(legend_labels, 'Location', 'best');
-saveas(fig1, fullfile(result_dir, 'step7_5_routeB_recheck_tol_success.png'));
+saveas(fig1, fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_tol_success.png'));
 close(fig1)
 
 fig2 = figure('Visible', 'off');
@@ -267,10 +269,49 @@ hold off
 grid on
 xlabel('SNR (dB)');
 ylabel('RMSE (deg)');
-title('Step 7.5 Route B stability recheck: RMSE');
+title('Step 7.5 Route B recheck bw/3~bw/4: RMSE');
 legend(legend_labels, 'Location', 'best');
-saveas(fig2, fullfile(result_dir, 'step7_5_routeB_recheck_rmse.png'));
+saveas(fig2, fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_rmse.png'));
 close(fig2)
+
+fig3 = figure('Visible', 'off');
+hold on
+for iSep = 1:nsep
+    plot(snr_list, raw_success_rate(iSep, :), '-o', 'LineWidth', 1.2);
+end
+hold off
+grid on
+xlabel('SNR (dB)');
+ylabel('raw success rate');
+title('Step 7.5 Route B recheck bw/3~bw/4: raw success rate');
+legend(legend_labels, 'Location', 'best');
+saveas(fig3, fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_raw_success.png'));
+close(fig3)
+
+fig4 = figure('Visible', 'off');
+hold on
+for iSep = 1:nsep
+    plot(snr_list, mean_num_peaks(iSep, :), '-o', 'LineWidth', 1.2);
+end
+hold off
+grid on
+xlabel('SNR (dB)');
+ylabel('mean num peaks');
+title('Step 7.5 Route B recheck bw/3~bw/4: mean number of peaks');
+legend(legend_labels, 'Location', 'best');
+saveas(fig4, fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_mean_num_peaks.png'));
+close(fig4)
+
+fig5 = figure('Visible', 'off');
+plot(1:nsep, snr90, '-o', 'LineWidth', 1.2);
+grid on
+xticks(1:nsep)
+xticklabels(legend_labels)
+xlabel('target separation')
+ylabel('SNR required for 90% tol success');
+title('Step 7.5 Route B recheck bw/3~bw/4: SNR90');
+saveas(fig5, fullfile(result_dir, 'step7_5_routeB_recheck_bw3_to_bw4_snr90.png'));
+close(fig5)
 
 disp('Summary arrays:');
 disp('sep_factor_list =');
