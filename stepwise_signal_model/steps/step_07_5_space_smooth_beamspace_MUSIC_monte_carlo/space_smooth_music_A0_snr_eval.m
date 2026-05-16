@@ -125,32 +125,6 @@ valid_mask = rmse_valid_count > 0;
 rmse(valid_mask) = sqrt(rmse_sum_sqerr(valid_mask) ./ (2 * rmse_valid_count(valid_mask)));
 boundary_like_hit_rate = boundary_like_hit_count / Metkl;
 
-output_dir = fileparts(mfilename('fullpath'));
-
-log_path = fullfile(output_dir, 'space_smooth_music_A0_snr_eval.log');
-fid = fopen(log_path, 'w');
-if fid < 0
-    error('Failed to open log file.');
-end
-for ii = 1:numel(log_lines)
-    fprintf(fid, '%s\n', log_lines{ii});
-end
-fclose(fid);
-
-csv_path = fullfile(output_dir, 'A0_snr_summary.csv');
-fid = fopen(csv_path, 'w');
-if fid < 0
-    error('Failed to open csv file.');
-end
-fprintf(fid, 'snr_db,raw_success_count,tol_success_count,raw_success_rate,tol_success_rate,rmse,rmse_valid_count,boundary_like_hit_count,boundary_like_hit_rate\n');
-for iSNR = 1:nsnr
-    fprintf(fid, '%g,%d,%d,%.6f,%.6f,%.6f,%d,%d,%.6f\n', ...
-        snr_list(iSNR), raw_success_count(iSNR), tol_success_count(iSNR), ...
-        raw_success_rate(iSNR), tol_success_rate(iSNR), rmse(iSNR), ...
-        rmse_valid_count(iSNR), boundary_like_hit_count(iSNR), boundary_like_hit_rate(iSNR));
-end
-fclose(fid);
-
 fig1 = figure('Name', 'Route A0 tol success vs SNR', 'NumberTitle', 'off');
 plot(snr_list, tol_success_rate, '-o', 'LineWidth', 1.2);
 grid on;
@@ -158,7 +132,6 @@ xlabel('SNR (dB)');
 ylabel('tol success rate');
 title(sprintf('Route A0 SNR sweep, constrained boundary-prior route: tol success, T_{snap}=%d, \\theta_{sep}=%.4f', ...
     T_snap, theta_sep));
-saveas(fig1, fullfile(output_dir, 'A0_tol_success_vs_snr.png'));
 
 fig2 = figure('Name', 'Route A0 RMSE vs SNR', 'NumberTitle', 'off');
 plot(snr_list, rmse, '-o', 'LineWidth', 1.2);
@@ -167,7 +140,6 @@ xlabel('SNR (dB)');
 ylabel('RMSE (deg)');
 title(sprintf('Route A0 SNR sweep, constrained boundary-prior route: RMSE, T_{snap}=%d, \\theta_{sep}=%.4f', ...
     T_snap, theta_sep));
-saveas(fig2, fullfile(output_dir, 'A0_rmse_vs_snr.png'));
 
 fig3 = figure('Name', 'Route A0 raw success and boundary hit vs SNR', 'NumberTitle', 'off');
 plot(snr_list, raw_success_rate, '-o', 'LineWidth', 1.2);
@@ -180,7 +152,6 @@ ylabel('rate');
 title(sprintf('Route A0 SNR sweep, constrained boundary-prior route: raw success / boundary hit, T_{snap}=%d, \\theta_{sep}=%.4f', ...
     T_snap, theta_sep));
 legend({'raw success', 'boundary-like hit'}, 'Location', 'best');
-saveas(fig3, fullfile(output_dir, 'A0_raw_boundary_vs_snr.png'));
 
 function log_lines = append_log(log_lines, fmt, varargin)
 line = sprintf(fmt, varargin{:});

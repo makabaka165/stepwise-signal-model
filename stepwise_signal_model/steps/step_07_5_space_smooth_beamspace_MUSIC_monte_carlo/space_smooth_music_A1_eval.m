@@ -145,16 +145,6 @@ valid_mask = rmse_valid_count > 0;
 rmse(valid_mask) = sqrt(rmse_sum_sqerr(valid_mask) ./ (2 * rmse_valid_count(valid_mask)));
 edge_hit_rate = edge_hit_count / Metkl;
 
-output_dir = fileparts(mfilename('fullpath'));
-fid = fopen(fullfile(output_dir, [mfilename, '.log']), 'w');
-if fid < 0
-    error('Failed to open log file.');
-end
-for ii = 1:numel(log_lines)
-    fprintf(fid, '%s\n', log_lines{ii});
-end
-fclose(fid);
-
 figure('Name', 'Route A1 tol success parameter sweep', 'NumberTitle', 'off');
 for iMode = 1:nmode
     subplot(nmode, 1, iMode);

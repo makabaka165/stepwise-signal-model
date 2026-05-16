@@ -139,16 +139,6 @@ valid_mask = rmse_valid_count > 0;
 rmse(valid_mask) = sqrt(rmse_sum_sqerr(valid_mask) ./ (2 * rmse_valid_count(valid_mask)));
 mean_num_peaks = sum_num_peaks / Metkl;
 
-output_dir = fileparts(mfilename('fullpath'));
-fid = fopen(fullfile(output_dir, [mfilename, '.log']), 'w');
-if fid < 0
-    error('Failed to open log file.');
-end
-for ii = 1:numel(log_lines)
-    fprintf(fid, '%s\n', log_lines{ii});
-end
-fclose(fid);
-
 figure('Name', 'Route B tol success vs SNR', 'NumberTitle', 'off');
 plot(snr_list, tol_success_rate, '-o', 'LineWidth', 1.2);
 grid on;
