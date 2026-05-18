@@ -83,13 +83,10 @@ for iSnap = 1:nsnap
                 j * randn(array_num, T_snap));
 
             sr_DBF_A1 = A1_beam_matrix.' * y;
-            [doa_A1, debug_A1] = DOA_three_music_hecheng_fangzhen_eval( ...
-                sr_DBF_A1, array_num, A1_beam_matrix, RecvbeamC, theta_search_A1, ...
-                'Lc', 2, ...
-                'QSmoothRatio', qSmoothRatio_A1, ...
-                'TargetTheta', target_theta);
+            [doa_A1, edge_hit_flag] = DOA_three_music_hecheng_fangzhen_eval( ...
+                sr_DBF_A1, array_num, A1_beam_matrix, RecvbeamC, theta_search_A1, qSmoothRatio_A1);
 
-            if debug_A1.edge_hit
+            if edge_hit_flag
                 edge_hit_count(iSnap, ibw) = edge_hit_count(iSnap, ibw) + 1;
             end
 
