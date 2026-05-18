@@ -26,22 +26,6 @@ K_fbss = 56;
 M_full = 48;
 center_beam_count = 37;
 
-if K_fbss >= array_num
-    error('K_fbss must be smaller than array_num.');
-end
-if K_fbss <= 2
-    error('K_fbss must be larger than the source count.');
-end
-if (array_num - K_fbss + 1) < 2
-    error('The number of overlapped subarrays is too small.');
-end
-if center_beam_count <= 2
-    error('center_beam_count must be larger than the source count.');
-end
-if center_beam_count > (M_full + 1)
-    error('center_beam_count must not exceed M_full + 1.');
-end
-
 j = sqrt(-1);
 t = linspace(0, 1, T_snap);
 theta_a = theta_c - theta_sep / 2;
@@ -53,6 +37,18 @@ routeB_beam_span = 1.5 * theta_search_B;
 beam_grid_full_deg = linspace(RecvbeamC - routeB_beam_span / 2, ...
                               RecvbeamC + routeB_beam_span / 2, ...
                               M_full + 1);
+
+% 中心截取 + QR 构造 centerT 投影矩阵
+full_beam_count = numel(beam_grid_full_deg);
+center_idx = floor((full_beam_count + 1) / 2);
+half_left = floor((center_beam_count - 1) / 2);
+half_right = center_beam_count - half_left - 1;
+center_indices = (center_idx - half_left):(center_idx + half_right);
+beam_grid_center_deg = beam_grid_full_deg(center_indices);
+
+posK = d * (0:K_fbss-1).';
+Wcenter = exp(j * 2*pi/lambda * posK * sind(beam_grid_center_deg));
+[Tk, ~] = qr(Wcenter, 0);
 
 nsnr = numel(snr_list);
 raw_success_count = zeros(1, nsnr);
@@ -93,18 +89,10 @@ for iSNR = 1:nsnr
 
         y = y_clean + noise;
 
-        [doa_B, debug_B] = DOA_three_music_new_route_centerT( ...
-            y, ...
-            K_fbss, ...
-            beam_grid_full_deg, ...
-            center_beam_count, ...
-            RecvbeamC, ...
-            theta_search_B, ...
-            'Lc', 2, ...
-            'GridStepDeg', 0.01, ...
-            'UseQR', true);
+        [doa_B, num_peaks_B] = DOA_three_music_new_route_centerT( ...
+            y, K_fbss, Tk, RecvbeamC, theta_search_B);
 
-        sum_num_peaks(iSNR) = sum_num_peaks(iSNR) + debug_B.num_peaks;
+        sum_num_peaks(iSNR) = sum_num_peaks(iSNR) + num_peaks_B;
 
         raw_ok = all(isfinite(doa_B));
         tol_ok = is_valid_doa_success(doa_B, target_theta, tol_deg);
