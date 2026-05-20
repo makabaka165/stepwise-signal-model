@@ -1954,3 +1954,143 @@ RMSE 也明显异常大，例如：
 - 因此后续若继续做 `Step 8`，更合理的主线应是：
   - 以 `Prototype 6` 为基线
   - 再考虑文档中提到的下一步方向，例如 Toeplitz 投影等结构化增强
+
+## Prototype 7：Toeplitz-FBSS + Root-MUSIC 组合创新
+
+### 本次新增
+
+新增脚本：
+
+- [space_smooth_music_B_toeplitz_root_music_prototype7.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/space_smooth_music_B_toeplitz_root_music_prototype7.m)
+- [toeplitz_project.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/toeplitz_project.m)
+- [doa_root_music_array_toeplitz.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/doa_root_music_array_toeplitz.m)
+- [doa_root_music_beamspace_toeplitz.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/doa_root_music_beamspace_toeplitz.m)
+
+新增结果目录：
+
+- [results_step8_routeB_toeplitz_root_music_proto7](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/results_step8_routeB_toeplitz_root_music_proto7)
+
+### 设计动机
+
+`Prototype 6` 已经证明了 `FBSS + Root-MUSIC` 相对稳定 Route B 能系统性下移 `2 dB`。`Prototype 7` 的目标是在此基础上再叠加一次 Toeplitz 结构投影，验证两件事：
+
+1. `SNR90` 能否在 `bw/9` 或 `bw/10` 再下移至少 1 档；
+2. 即便门槛不降，`lambda2/noise_floor` 或 `RMSE` 是否能持续改善，从而作为「数值稳定性增强」保留。
+
+动机本身是合理的：
+
+- ULA + 时间平稳条件下，真协方差应满足 Toeplitz；
+- 有限快拍与 FBSS 残留的非 Toeplitz 分量可以看作噪声扰动；
+- 强制 Toeplitz 化相当于做一次额外平均。
+
+### 实验参数
+
+- `sep_factor_list = [7, 8, 9, 10]`
+- `snr_list = 14:2:28`
+- `Metkl = 200`
+- `T_snap = 260`
+- `base_seed = 20260523`
+- 5 条路线：
+  - `baseline_routeB_centerT_grid_music`
+  - `proto4e_fft_piecewise_grid_music`
+  - `proto6_array_root_music`
+  - `proto7_toeplitz_array_root_music`
+  - `proto7_toeplitz_beamspace_root_music`
+
+### 6.7.1 公平性回归
+
+这一关通过。
+
+`SNR90_abs01` 回归结果为：
+
+- baseline: `16 / 18 / 22 / 24 dB`
+- proto4e: `18 / 18 / 22 / 24 dB`
+- proto6_array: `14 / 16 / 20 / 22 dB`
+
+与第六章 6.7.1 的强制回归线完全一致，说明：
+
+- `space_smooth_music_B_toeplitz_root_music_prototype7.m` 没有改坏原有公平性框架；
+- `mssp_array_fb`、噪声功率计算、`centerT` 构造、`proto4e` 与 `proto6` 的调用语义都保持正确。
+
+### 结果
+
+`proto7` 两条 Toeplitz 路线的主结果如下：
+
+- `proto7_toeplitz_array_root_music`
+  - `bw/7 = NaN`
+  - `bw/8 = NaN`
+  - `bw/9 = NaN`
+  - `bw/10 = NaN`
+- `proto7_toeplitz_beamspace_root_music`
+  - `bw/7 = NaN`
+  - `bw/8 = NaN`
+  - `bw/9 = NaN`
+  - `bw/10 = NaN`
+
+这里的 `NaN` 不是“没有输出角度”，而是更糟的情况：
+
+- `raw_success_rate` 基本为 `1.0`
+- 但 `tol_success_rate_abs01` 与 `tol_success_rate_rel025` 基本为 `0`
+
+也就是说，Toeplitz 版几乎总是给出两个有限 DOA，但这两个 DOA 在统计上系统性偏离真值。
+
+典型样本（`bw/7`, `14 dB`）：
+
+- 目标真值：`[12.8, 13.2]`
+- `proto6_array`: `[12.7653, 13.1166]`
+- `proto7_array`: `[12.9076, 13.0166]`
+- `proto7_beam`: `[12.9076, 13.0166]`
+
+可以看到 Toeplitz 版明显把两个估计角向中间拉拢，导致双目标间隔被压缩，最终整体判错。
+
+### 诊断判断
+
+这轮结果最值得注意的地方是：**Toeplitz 投影把诊断量抬高了，但把 DOA 结果做坏了。**
+
+典型样本（`bw/7`, `14 dB`）中：
+
+- `lambda2_over_noise_before_tp = 2.8732`
+- `lambda2_over_noise_after_tp = 8.9531`
+- `toeplitz_residual_norm = 0.0093`
+
+这说明：
+
+1. Toeplitz 投影确实在数值上强烈改变了 `Rss` 的谱结构；
+2. 改动幅度并不大到像是数值爆炸，残差范数比只有 `0.0093`；
+3. 但对 Root-MUSIC 多项式而言，这个投影把原本正确的双根结构推向了“更靠中间、更紧凑”的错误解。
+
+因此当前失败不是：
+
+- 公平性框架错了；
+- 没有输出；
+- 或者 beamspace 顺序写反了。
+
+而是更实质的算法问题：
+
+- **在当前 FBSS + coherent equal-amplitude + small-separation 场景下，直接对 `Rss` 做 Toeplitz 投影后再走当前 Root-MUSIC 根选取流程，会系统性压缩两目标间距。**
+
+并且 array / beamspace Toeplitz 版一起失败，也进一步说明：
+
+- 问题不是 beamspace 特有；
+- 问题更可能来自 `Rss -> Toeplitz(Rss)` 之后，多项式根结构的物理含义已经偏离了当前这组目标场景。
+
+### 结论
+
+按第六章 6.7.2 的处置表，本轮明确归入 **C：失败**。
+
+原因不是“没有改善”，而是：
+
+- `proto7_array` 的 `SNR90` 比 `proto6` 还差，已经退化到全 `NaN`；
+- `proto7_beam` 与 `proto7_array` 同步失败；
+- 因此它不能作为「组合创新点」保留，也不能作为「数值稳定性增强」附加创新点保留。
+
+### 保留建议
+
+- **脚本保留**：作为失败原型证据保留；
+- **结果保留**：因为它展示了一个重要反例：
+  - `lambda2/noise` 变好并不等于 DOA 判决会更好；
+  - 当前 Toeplitz 投影会把双目标间距往中间挤压，导致系统性误判；
+- **当前不继续沿 proto7 深挖**：除非后续明确重审：
+  - Toeplitz 投影是否该作用于别的协方差形式；
+  - Root-MUSIC 的根选取规则是否需要针对 Toeplitz 后结构重写；
+  - 或者是否应先做别的结构化预处理，再决定是否引入 Toeplitz。
