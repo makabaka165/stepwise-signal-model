@@ -1,0 +1,90 @@
+Step 08 Route B FFT-guided centerT prototype 4
+Prototype scope: replace true center with FFT coarse center while keeping Route B FBSS + centerT + 1D MUSIC unchanged.
+Route comparison: baseline_true_centerT vs fft_guided_centerT.
+Common experiment settings:
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+FFT settings: Nfft_spatial=4096, FFT input = mean(y,2), center pick = max spatial FFT bin.
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline raw=40 tol=34 raw_rate=0.200 tol_rate=0.170 RMSE=0.0650 mean_num_peaks=1.20
+SNR=14 dB | fft-guided raw=26 tol=21 raw_rate=0.130 tol_rate=0.105 RMSE=0.0633 mean_num_peaks=0.93 mean_fft_center_err=-3.8790 std_fft_center_err=20.6614
+sample metkl=1 | center_true=13.0000 center_fft=-0.5622 center_err=-13.5622 doa_true=[NaN NaN] doa_fft=[NaN NaN] peaks_true=1 peaks_fft=0
+SNR=16 dB | baseline raw=120 tol=116 raw_rate=0.600 tol_rate=0.580 RMSE=0.0527 mean_num_peaks=1.60
+SNR=16 dB | fft-guided raw=105 tol=100 raw_rate=0.525 tol_rate=0.500 RMSE=0.0529 mean_num_peaks=1.48 mean_fft_center_err=-0.7572 std_fft_center_err=9.6907
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_err=0.0763 doa_true=[12.81 13.09] doa_fft=[12.81 13.09] peaks_true=2 peaks_fft=2
+SNR=18 dB | baseline raw=185 tol=184 raw_rate=0.925 tol_rate=0.920 RMSE=0.0446 mean_num_peaks=1.93
+SNR=18 dB | fft-guided raw=182 tol=181 raw_rate=0.910 tol_rate=0.905 RMSE=0.0444 mean_num_peaks=1.91 mean_fft_center_err=-0.0042 std_fft_center_err=0.2403
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_err=0.0763 doa_true=[12.84 13.16] doa_fft=[12.84 13.16] peaks_true=2 peaks_fft=2
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0319 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0321 mean_num_peaks=2.00 mean_fft_center_err=-0.0053 std_fft_center_err=0.1821
+sample metkl=1 | center_true=13.0000 center_fft=13.2461 center_err=0.2461 doa_true=[12.85 13.14] doa_fft=[12.85 13.14] peaks_true=2 peaks_fft=2
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0230 mean_num_peaks=2.00 mean_fft_center_err=-0.0139 std_fft_center_err=0.1392
+sample metkl=1 | center_true=13.0000 center_fft=12.8727 center_err=-0.1273 doa_true=[12.81 13.13] doa_fft=[12.81 13.13] peaks_true=2 peaks_fft=2
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0166 mean_num_peaks=2.00 mean_fft_center_err=-0.0058 std_fft_center_err=0.1222
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_err=0.0763 doa_true=[12.82 13.15] doa_fft=[12.83 13.15] peaks_true=2 peaks_fft=2
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0129 mean_num_peaks=2.00 mean_fft_center_err=-0.0011 std_fft_center_err=0.0912
+sample metkl=1 | center_true=13.0000 center_fft=12.9405 center_err=-0.0595 doa_true=[12.81 13.15] doa_fft=[12.81 13.15] peaks_true=2 peaks_fft=2
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0106 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0105 mean_num_peaks=2.00 mean_fft_center_err=0.0005 std_fft_center_err=0.0696
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_err=0.0763 doa_true=[12.84 13.18] doa_fft=[12.84 13.19] peaks_true=2 peaks_fft=2
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | fft-guided raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.76 mean_fft_center_err=-4.4445 std_fft_center_err=24.7891
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_err=0.1103 doa_true=[NaN NaN] doa_fft=[NaN NaN] peaks_true=1 peaks_fft=1
+SNR=16 dB | baseline raw=24 tol=23 raw_rate=0.120 tol_rate=0.115 RMSE=0.0575 mean_num_peaks=1.12
+SNR=16 dB | fft-guided raw=23 tol=22 raw_rate=0.115 tol_rate=0.110 RMSE=0.0582 mean_num_peaks=1.02 mean_fft_center_err=-2.4108 std_fft_center_err=13.5372
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_err=0.1103 doa_true=[NaN NaN] doa_fft=[NaN NaN] peaks_true=1 peaks_fft=1
+SNR=18 dB | baseline raw=75 tol=75 raw_rate=0.375 tol_rate=0.375 RMSE=0.0493 mean_num_peaks=1.38
+SNR=18 dB | fft-guided raw=69 tol=69 raw_rate=0.345 tol_rate=0.345 RMSE=0.0470 mean_num_peaks=1.33 mean_fft_center_err=-0.5874 std_fft_center_err=6.3129
+sample metkl=1 | center_true=13.0000 center_fft=13.5180 center_err=0.5180 doa_true=[12.86 13.09] doa_fft=[NaN NaN] peaks_true=2 peaks_fft=1
+SNR=20 dB | baseline raw=163 tol=163 raw_rate=0.815 tol_rate=0.815 RMSE=0.0409 mean_num_peaks=1.81
+SNR=20 dB | fft-guided raw=165 tol=165 raw_rate=0.825 tol_rate=0.825 RMSE=0.0411 mean_num_peaks=1.82 mean_fft_center_err=-0.0160 std_fft_center_err=0.1759
+sample metkl=1 | center_true=13.0000 center_fft=12.7031 center_err=-0.2969 doa_true=[12.93 13.08] doa_fft=[12.93 13.08] peaks_true=2 peaks_fft=2
+SNR=22 dB | baseline raw=194 tol=194 raw_rate=0.970 tol_rate=0.970 RMSE=0.0339 mean_num_peaks=1.97
+SNR=22 dB | fft-guided raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0336 mean_num_peaks=1.96 mean_fft_center_err=0.0046 std_fft_center_err=0.1452
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 center_err=0.1442 doa_true=[12.84 13.15] doa_fft=[12.83 13.14] peaks_true=2 peaks_fft=2
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0223 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0226 mean_num_peaks=2.00 mean_fft_center_err=0.0056 std_fft_center_err=0.1156
+sample metkl=1 | center_true=13.0000 center_fft=12.6692 center_err=-0.3308 doa_true=[12.8 13.12] doa_fft=[12.81 13.12] peaks_true=2 peaks_fft=2
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0178 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0174 mean_num_peaks=2.00 mean_fft_center_err=-0.0001 std_fft_center_err=0.0862
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 center_err=0.0084 doa_true=[12.83 13.13] doa_fft=[12.83 13.13] peaks_true=2 peaks_fft=2
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0136 mean_num_peaks=2.00 mean_fft_center_err=0.0045 std_fft_center_err=0.0642
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 center_err=0.1442 doa_true=[12.85 13.15] doa_fft=[12.85 13.14] peaks_true=2 peaks_fft=2
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | fft-guided raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.69 mean_fft_center_err=-5.7114 std_fft_center_err=23.5342
+sample metkl=1 | center_true=13.0000 center_fft=13.4160 center_err=0.4160 doa_true=[NaN NaN] doa_fft=[NaN NaN] peaks_true=1 peaks_fft=1
+SNR=16 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=16 dB | fft-guided raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.93 mean_fft_center_err=-0.2166 std_fft_center_err=8.7707
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 center_err=-0.0255 doa_true=[NaN NaN] doa_fft=[NaN NaN] peaks_true=1 peaks_fft=1
+SNR=18 dB | baseline raw=5 tol=5 raw_rate=0.025 tol_rate=0.025 RMSE=0.0509 mean_num_peaks=1.02
+SNR=18 dB | fft-guided raw=4 tol=4 raw_rate=0.020 tol_rate=0.020 RMSE=0.0506 mean_num_peaks=1.00 mean_fft_center_err=-0.3837 std_fft_center_err=5.3453
+sample metkl=1 | center_true=13.0000 center_fft=13.2121 center_err=0.2121 doa_true=[NaN NaN] doa_fft=[NaN NaN] peaks_true=1 peaks_fft=1
+SNR=20 dB | baseline raw=54 tol=54 raw_rate=0.270 tol_rate=0.270 RMSE=0.0491 mean_num_peaks=1.27
+SNR=20 dB | fft-guided raw=53 tol=53 raw_rate=0.265 tol_rate=0.265 RMSE=0.0484 mean_num_peaks=1.26 mean_fft_center_err=-0.0031 std_fft_center_err=0.1769
+sample metkl=1 | center_true=13.0000 center_fft=13.2121 center_err=0.2121 doa_true=[12.93 13.1] doa_fft=[12.93 13.09] peaks_true=2 peaks_fft=2
+SNR=22 dB | baseline raw=140 tol=140 raw_rate=0.700 tol_rate=0.700 RMSE=0.0410 mean_num_peaks=1.70
+SNR=22 dB | fft-guided raw=139 tol=139 raw_rate=0.695 tol_rate=0.695 RMSE=0.0405 mean_num_peaks=1.70 mean_fft_center_err=0.0010 std_fft_center_err=0.1324
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_err=0.1103 doa_true=[12.92 13.14] doa_fft=[12.92 13.14] peaks_true=2 peaks_fft=2
+SNR=24 dB | baseline raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0318 mean_num_peaks=1.96
+SNR=24 dB | fft-guided raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0320 mean_num_peaks=1.96 mean_fft_center_err=0.0028 std_fft_center_err=0.1081
+sample metkl=1 | center_true=13.0000 center_fft=12.9066 center_err=-0.0934 doa_true=[12.89 13.15] doa_fft=[12.89 13.15] peaks_true=2 peaks_fft=2
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0233 mean_num_peaks=2.00 mean_fft_center_err=0.0027 std_fft_center_err=0.0853
+sample metkl=1 | center_true=13.0000 center_fft=12.9405 center_err=-0.0595 doa_true=[12.86 13.11] doa_fft=[12.86 13.11] peaks_true=2 peaks_fft=2
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0181 mean_num_peaks=2.00 mean_fft_center_err=0.0061 std_fft_center_err=0.0677
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 center_err=0.0424 doa_true=[12.85 13.12] doa_fft=[12.85 13.11] peaks_true=2 peaks_fft=2
+
+SNR90 summary | bw/8 baseline=18 dB fft-guided=18 dB
+SNR90 summary | bw/9 baseline=22 dB fft-guided=22 dB
+SNR90 summary | bw/10 baseline=24 dB fft-guided=24 dB

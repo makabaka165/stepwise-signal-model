@@ -1,0 +1,185 @@
+Step 08 Route B FFT-guided adaptive window prototype 4b
+Prototype scope: keep FFT coarse center fixed, adapt theta_search_B and routeB_beam_span from FFT peak FWHM.
+Route comparison: baseline_true_centerT vs fft_guided_centerT vs fft_guided_centerT_adaptive_window.
+Common experiment settings:
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[6 7 8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+FFT settings: Nfft_spatial=4096, FWHM-driven adaptive window with gamma_search=1.20, gamma_span=1.50.
+Adaptive bounds: search in [0.60, 1.60] x fixed, span in [0.80, 1.60] x fixed.
+
+=== sep_factor = 6, theta_sep = 0.4667 deg ===
+SNR=14 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0327 mean_num_peaks=2.00
+SNR=14 dB | fft-guided raw=126 tol=126 raw_rate=0.630 tol_rate=0.630 RMSE=0.0332 mean_num_peaks=1.51 mean_fft_err=-3.7112 std_fft_err=20.8262
+SNR=14 dB | adaptive-window raw=138 tol=136 raw_rate=0.690 tol_rate=0.680 RMSE=3.8126 mean_num_peaks=1.63 mean_fwhm=2.2278 mean_search_adapt=2.5037 mean_span_adapt=3.7556
+sample metkl=1 | center_true=13.0000 center_fft=-0.5622 err_fft=-13.5622 fwhm=1.9790 search_fixed=1.8667 search_adapt=2.3749 span_fixed=2.8000 span_adapt=3.5623 fallback_fwhm=0 doa_true=[12.81 13.21] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=16 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0232 mean_num_peaks=2.00
+SNR=16 dB | fft-guided raw=180 tol=180 raw_rate=0.900 tol_rate=0.900 RMSE=0.0234 mean_num_peaks=1.87 mean_fft_err=-0.7584 std_fft_err=9.6908
+SNR=16 dB | adaptive-window raw=187 tol=186 raw_rate=0.935 tol_rate=0.930 RMSE=3.2000 mean_num_peaks=1.92 mean_fwhm=2.0697 mean_search_adapt=2.4327 mean_span_adapt=3.6490
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 err_fft=0.0763 fwhm=1.9400 search_fixed=1.8667 search_adapt=2.3280 span_fixed=2.8000 span_adapt=3.4919 fallback_fwhm=0 doa_true=[12.74 13.18] doa_fft=[12.74 13.17] doa_adapt=[12.74 13.17]
+SNR=18 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0199 mean_num_peaks=2.00
+SNR=18 dB | fft-guided raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0200 mean_num_peaks=2.00 mean_fft_err=-0.0055 std_fft_err=0.2450
+SNR=18 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0200 mean_num_peaks=2.00 mean_fwhm=2.0004 mean_search_adapt=2.3935 mean_span_adapt=3.5902
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 err_fft=0.1103 fwhm=1.9664 search_fixed=1.8667 search_adapt=2.3597 span_fixed=2.8000 span_adapt=3.5396 fallback_fwhm=0 doa_true=[12.77 13.23] doa_fft=[12.77 13.23] doa_adapt=[12.77 13.23]
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0144 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0146 mean_num_peaks=2.00 mean_fft_err=-0.0046 std_fft_err=0.1850
+SNR=20 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0144 mean_num_peaks=2.00 mean_fwhm=1.9821 mean_search_adapt=2.3785 mean_span_adapt=3.5678
+sample metkl=1 | center_true=13.0000 center_fft=13.2461 err_fft=0.2461 fwhm=1.9508 search_fixed=1.8667 search_adapt=2.3409 span_fixed=2.8000 span_adapt=3.5114 fallback_fwhm=0 doa_true=[12.76 13.23] doa_fft=[12.76 13.22] doa_adapt=[12.76 13.23]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0118 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0119 mean_num_peaks=2.00 mean_fft_err=-0.0143 std_fft_err=0.1410
+SNR=22 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0118 mean_num_peaks=2.00 mean_fwhm=1.9568 mean_search_adapt=2.3482 mean_span_adapt=3.5222
+sample metkl=1 | center_true=13.0000 center_fft=12.8727 err_fft=-0.1273 fwhm=2.0971 search_fixed=1.8667 search_adapt=2.5165 span_fixed=2.8000 span_adapt=3.7748 fallback_fwhm=0 doa_true=[12.76 13.22] doa_fft=[12.75 13.21] doa_adapt=[12.75 13.21]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0088 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0088 mean_num_peaks=2.00 mean_fft_err=-0.0051 std_fft_err=0.1235
+SNR=24 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0091 mean_num_peaks=2.00 mean_fwhm=1.9538 mean_search_adapt=2.3445 mean_span_adapt=3.5168
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 err_fft=0.1103 fwhm=2.0420 search_fixed=1.8667 search_adapt=2.4504 span_fixed=2.8000 span_adapt=3.6756 fallback_fwhm=0 doa_true=[12.77 13.23] doa_fft=[12.77 13.22] doa_adapt=[12.77 13.23]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0073 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0073 mean_num_peaks=2.00 mean_fft_err=-0.0004 std_fft_err=0.0925
+SNR=26 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0073 mean_num_peaks=2.00 mean_fwhm=1.9617 mean_search_adapt=2.3541 mean_span_adapt=3.5311
+sample metkl=1 | center_true=13.0000 center_fft=12.9405 err_fft=-0.0595 fwhm=1.9830 search_fixed=1.8667 search_adapt=2.3797 span_fixed=2.8000 span_adapt=3.5695 fallback_fwhm=0 doa_true=[12.76 13.23] doa_fft=[12.76 13.23] doa_adapt=[12.76 13.22]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0062 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0064 mean_num_peaks=2.00 mean_fft_err=0.0010 std_fft_err=0.0707
+SNR=28 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0064 mean_num_peaks=2.00 mean_fwhm=1.9475 mean_search_adapt=2.3370 mean_span_adapt=3.5055
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 err_fft=0.1103 fwhm=1.9640 search_fixed=1.8667 search_adapt=2.3568 span_fixed=2.8000 span_adapt=3.5351 fallback_fwhm=0 doa_true=[12.78 13.24] doa_fft=[12.78 13.24] doa_adapt=[12.77 13.24]
+
+=== sep_factor = 7, theta_sep = 0.4000 deg ===
+SNR=14 dB | baseline raw=162 tol=159 raw_rate=0.810 tol_rate=0.795 RMSE=0.0543 mean_num_peaks=1.81
+SNR=14 dB | fft-guided raw=104 tol=99 raw_rate=0.520 tol_rate=0.495 RMSE=0.0560 mean_num_peaks=1.37 mean_fft_err=-3.9593 std_fft_err=24.3801
+SNR=14 dB | adaptive-window raw=113 tol=102 raw_rate=0.565 tol_rate=0.510 RMSE=1.4870 mean_num_peaks=1.48 mean_fwhm=2.3004 mean_search_adapt=2.3610 mean_span_adapt=3.5416
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 err_fft=0.1442 fwhm=1.6639 search_fixed=1.6000 search_adapt=1.9967 span_fixed=2.4000 span_adapt=2.9951 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=16 dB | baseline raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0374 mean_num_peaks=2.00
+SNR=16 dB | fft-guided raw=176 tol=176 raw_rate=0.880 tol_rate=0.880 RMSE=0.0376 mean_num_peaks=1.83 mean_fft_err=-2.5331 std_fft_err=13.6300
+SNR=16 dB | adaptive-window raw=180 tol=180 raw_rate=0.900 tol_rate=0.900 RMSE=0.0376 mean_num_peaks=1.86 mean_fwhm=2.1212 mean_search_adapt=2.3731 mean_span_adapt=3.5597
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 err_fft=0.1103 fwhm=1.8511 search_fixed=1.6000 search_adapt=2.2213 span_fixed=2.4000 span_adapt=3.3320 fallback_fwhm=0 doa_true=[12.86 13.18] doa_fft=[12.86 13.18] doa_adapt=[12.86 13.18]
+SNR=18 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0267 mean_num_peaks=2.00
+SNR=18 dB | fft-guided raw=195 tol=195 raw_rate=0.975 tol_rate=0.975 RMSE=0.0263 mean_num_peaks=1.97 mean_fft_err=-0.5878 std_fft_err=6.3130
+SNR=18 dB | adaptive-window raw=198 tol=198 raw_rate=0.990 tol_rate=0.990 RMSE=0.0264 mean_num_peaks=1.99 mean_fwhm=2.0098 mean_search_adapt=2.3559 mean_span_adapt=3.5338
+sample metkl=1 | center_true=13.0000 center_fft=13.5180 err_fft=0.5180 fwhm=1.7834 search_fixed=1.6000 search_adapt=2.1400 span_fixed=2.4000 span_adapt=3.2100 fallback_fwhm=0 doa_true=[12.79 13.16] doa_fft=[12.8 13.17] doa_adapt=[12.8 13.17]
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0208 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0209 mean_num_peaks=2.00 mean_fft_err=-0.0160 std_fft_err=0.1763
+SNR=20 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0210 mean_num_peaks=2.00 mean_fwhm=2.0041 mean_search_adapt=2.3749 mean_span_adapt=3.5624
+sample metkl=1 | center_true=13.0000 center_fft=12.7031 err_fft=-0.2969 fwhm=2.0696 search_fixed=1.6000 search_adapt=2.4835 span_fixed=2.4000 span_adapt=3.7253 fallback_fwhm=0 doa_true=[12.81 13.17] doa_fft=[12.81 13.17] doa_adapt=[12.81 13.17]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0177 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0171 mean_num_peaks=2.00 mean_fft_err=0.0040 std_fft_err=0.1466
+SNR=22 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0174 mean_num_peaks=2.00 mean_fwhm=1.9676 mean_search_adapt=2.3544 mean_span_adapt=3.5315
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 err_fft=0.1442 fwhm=1.9902 search_fixed=1.6000 search_adapt=2.3883 span_fixed=2.4000 span_adapt=3.5824 fallback_fwhm=0 doa_true=[12.78 13.2] doa_fft=[12.78 13.19] doa_adapt=[12.78 13.2]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0121 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0125 mean_num_peaks=2.00 mean_fft_err=0.0054 std_fft_err=0.1163
+SNR=24 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0124 mean_num_peaks=2.00 mean_fwhm=1.9615 mean_search_adapt=2.3499 mean_span_adapt=3.5249
+sample metkl=1 | center_true=13.0000 center_fft=12.6692 err_fft=-0.3308 fwhm=2.0538 search_fixed=1.6000 search_adapt=2.4645 span_fixed=2.4000 span_adapt=3.6968 fallback_fwhm=0 doa_true=[12.77 13.18] doa_fft=[12.77 13.18] doa_adapt=[12.78 13.18]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0100 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0099 mean_num_peaks=2.00 mean_fft_err=-0.0004 std_fft_err=0.0873
+SNR=26 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0101 mean_num_peaks=2.00 mean_fwhm=1.9505 mean_search_adapt=2.3404 mean_span_adapt=3.5106
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 err_fft=0.0084 fwhm=1.8771 search_fixed=1.6000 search_adapt=2.2525 span_fixed=2.4000 span_adapt=3.3788 fallback_fwhm=0 doa_true=[12.79 13.18] doa_fft=[12.79 13.19] doa_adapt=[12.79 13.18]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0082 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0080 mean_num_peaks=2.00 mean_fft_err=0.0038 std_fft_err=0.0645
+SNR=28 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0079 mean_num_peaks=2.00 mean_fwhm=1.9415 mean_search_adapt=2.3297 mean_span_adapt=3.4946
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 err_fft=0.1442 fwhm=2.0003 search_fixed=1.6000 search_adapt=2.4003 span_fixed=2.4000 span_adapt=3.6005 fallback_fwhm=0 doa_true=[12.8 13.19] doa_fft=[12.8 13.19] doa_adapt=[12.8 13.19]
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline raw=31 tol=31 raw_rate=0.155 tol_rate=0.155 RMSE=0.0610 mean_num_peaks=1.16
+SNR=14 dB | fft-guided raw=16 tol=16 raw_rate=0.080 tol_rate=0.080 RMSE=0.0631 mean_num_peaks=0.82 mean_fft_err=-5.3313 std_fft_err=23.0698
+SNR=14 dB | adaptive-window raw=19 tol=19 raw_rate=0.095 tol_rate=0.095 RMSE=0.0624 mean_num_peaks=0.93 mean_fwhm=2.3696 mean_search_adapt=2.1992 mean_span_adapt=3.2988
+sample metkl=1 | center_true=13.0000 center_fft=13.4160 err_fft=0.4160 fwhm=2.1442 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=16 dB | baseline raw=125 tol=121 raw_rate=0.625 tol_rate=0.605 RMSE=0.0521 mean_num_peaks=1.62
+SNR=16 dB | fft-guided raw=116 tol=111 raw_rate=0.580 tol_rate=0.555 RMSE=0.0518 mean_num_peaks=1.53 mean_fft_err=-0.2167 std_fft_err=8.7719
+SNR=16 dB | adaptive-window raw=120 tol=114 raw_rate=0.600 tol_rate=0.570 RMSE=0.0536 mean_num_peaks=1.57 mean_fwhm=2.0226 mean_search_adapt=2.1967 mean_span_adapt=3.2951
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 err_fft=-0.0255 fwhm=1.7715 search_fixed=1.4000 search_adapt=2.1258 span_fixed=2.1000 span_adapt=3.1887 fallback_fwhm=0 doa_true=[12.93 13.15] doa_fft=[12.93 13.15] doa_adapt=[12.93 13.15]
+SNR=18 dB | baseline raw=177 tol=174 raw_rate=0.885 tol_rate=0.870 RMSE=0.0421 mean_num_peaks=1.89
+SNR=18 dB | fft-guided raw=174 tol=171 raw_rate=0.870 tol_rate=0.855 RMSE=0.0424 mean_num_peaks=1.86 mean_fft_err=-0.3837 std_fft_err=5.3453
+SNR=18 dB | adaptive-window raw=177 tol=174 raw_rate=0.885 tol_rate=0.870 RMSE=0.0424 mean_num_peaks=1.88 mean_fwhm=1.9824 mean_search_adapt=2.2136 mean_span_adapt=3.3204
+sample metkl=1 | center_true=13.0000 center_fft=13.2121 err_fft=0.2121 fwhm=1.9815 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=20 dB | baseline raw=199 tol=198 raw_rate=0.995 tol_rate=0.990 RMSE=0.0305 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=199 tol=198 raw_rate=0.995 tol_rate=0.990 RMSE=0.0304 mean_num_peaks=2.00 mean_fft_err=-0.0036 std_fft_err=0.1784
+SNR=20 dB | adaptive-window raw=199 tol=198 raw_rate=0.995 tol_rate=0.990 RMSE=0.0305 mean_num_peaks=2.00 mean_fwhm=1.9734 mean_search_adapt=2.2257 mean_span_adapt=3.3385
+sample metkl=1 | center_true=13.0000 center_fft=13.2121 err_fft=0.2121 fwhm=1.9318 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[12.85 13.18] doa_fft=[12.85 13.18] doa_adapt=[12.85 13.18]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0230 mean_num_peaks=2.00 mean_fft_err=0.0013 std_fft_err=0.1346
+SNR=22 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0230 mean_num_peaks=2.00 mean_fwhm=1.9591 mean_search_adapt=2.2266 mean_span_adapt=3.3399
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 err_fft=0.1103 fwhm=2.1565 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[12.86 13.19] doa_fft=[12.86 13.19] doa_adapt=[12.86 13.19]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0160 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0164 mean_num_peaks=2.00 mean_fft_err=0.0025 std_fft_err=0.1089
+SNR=24 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0164 mean_num_peaks=2.00 mean_fwhm=1.9499 mean_search_adapt=2.2317 mean_span_adapt=3.3476
+sample metkl=1 | center_true=13.0000 center_fft=12.9066 err_fft=-0.0934 fwhm=2.0675 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[12.84 13.19] doa_fft=[12.85 13.19] doa_adapt=[12.85 13.19]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0132 mean_num_peaks=2.00 mean_fft_err=0.0025 std_fft_err=0.0862
+SNR=26 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00 mean_fwhm=1.9414 mean_search_adapt=2.2362 mean_span_adapt=3.3543
+sample metkl=1 | center_true=13.0000 center_fft=12.9405 err_fft=-0.0595 fwhm=1.9157 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[12.82 13.16] doa_fft=[12.82 13.16] doa_adapt=[12.82 13.16]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0112 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0110 mean_num_peaks=2.00 mean_fft_err=0.0055 std_fft_err=0.0682
+SNR=28 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0110 mean_num_peaks=2.00 mean_fwhm=1.9417 mean_search_adapt=2.2381 mean_span_adapt=3.3572
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 err_fft=0.0424 fwhm=1.9259 search_fixed=1.4000 search_adapt=2.2400 span_fixed=2.1000 span_adapt=3.3600 fallback_fwhm=0 doa_true=[12.81 13.16] doa_fft=[12.81 13.16] doa_adapt=[12.81 13.16]
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0660 mean_num_peaks=1.00
+SNR=14 dB | fft-guided raw=2 tol=2 raw_rate=0.010 tol_rate=0.010 RMSE=0.0662 mean_num_peaks=0.74 mean_fft_err=-2.4809 std_fft_err=19.4208
+SNR=14 dB | adaptive-window raw=2 tol=2 raw_rate=0.010 tol_rate=0.010 RMSE=0.0647 mean_num_peaks=0.88 mean_fwhm=2.2553 mean_search_adapt=1.9879 mean_span_adapt=2.9819
+sample metkl=1 | center_true=13.0000 center_fft=12.7031 err_fft=-0.2969 fwhm=2.0405 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=16 dB | baseline raw=13 tol=12 raw_rate=0.065 tol_rate=0.060 RMSE=0.0572 mean_num_peaks=1.06
+SNR=16 dB | fft-guided raw=11 tol=10 raw_rate=0.055 tol_rate=0.050 RMSE=0.0536 mean_num_peaks=0.94 mean_fft_err=-0.3574 std_fft_err=13.2250
+SNR=16 dB | adaptive-window raw=12 tol=10 raw_rate=0.060 tol_rate=0.050 RMSE=0.0605 mean_num_peaks=0.98 mean_fwhm=2.1349 mean_search_adapt=1.9863 mean_span_adapt=2.9794
+sample metkl=1 | center_true=13.0000 center_fft=-69.3227 err_fft=-82.3227 fwhm=5.8167 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=18 dB | baseline raw=78 tol=76 raw_rate=0.390 tol_rate=0.380 RMSE=0.0552 mean_num_peaks=1.39
+SNR=18 dB | fft-guided raw=80 tol=78 raw_rate=0.400 tol_rate=0.390 RMSE=0.0546 mean_num_peaks=1.38 mean_fft_err=-0.2298 std_fft_err=4.1685
+SNR=18 dB | adaptive-window raw=76 tol=73 raw_rate=0.380 tol_rate=0.365 RMSE=0.0557 mean_num_peaks=1.38 mean_fwhm=1.9778 mean_search_adapt=1.9903 mean_span_adapt=2.9855
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 err_fft=0.0424 fwhm=1.8150 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[12.83 13.1] doa_fft=[12.83 13.1] doa_adapt=[12.84 13.1]
+SNR=20 dB | baseline raw=165 tol=164 raw_rate=0.825 tol_rate=0.820 RMSE=0.0430 mean_num_peaks=1.82
+SNR=20 dB | fft-guided raw=164 tol=164 raw_rate=0.820 tol_rate=0.820 RMSE=0.0431 mean_num_peaks=1.82 mean_fft_err=0.0034 std_fft_err=0.1845
+SNR=20 dB | adaptive-window raw=164 tol=162 raw_rate=0.820 tol_rate=0.810 RMSE=0.0430 mean_num_peaks=1.82 mean_fwhm=1.9657 mean_search_adapt=1.9909 mean_span_adapt=2.9864
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 err_fft=0.0763 fwhm=1.8280 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[12.87 13.12] doa_fft=[12.86 13.11] doa_adapt=[12.87 13.11]
+SNR=22 dB | baseline raw=198 tol=198 raw_rate=0.990 tol_rate=0.990 RMSE=0.0306 mean_num_peaks=1.99
+SNR=22 dB | fft-guided raw=197 tol=197 raw_rate=0.985 tol_rate=0.985 RMSE=0.0304 mean_num_peaks=1.99 mean_fft_err=-0.0107 std_fft_err=0.1499
+SNR=22 dB | adaptive-window raw=197 tol=197 raw_rate=0.985 tol_rate=0.985 RMSE=0.0299 mean_num_peaks=1.99 mean_fwhm=1.9449 mean_search_adapt=1.9911 mean_span_adapt=2.9867
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 err_fft=0.0424 fwhm=1.8970 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[12.86 13.11] doa_fft=[12.86 13.11] doa_adapt=[12.86 13.11]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0238 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0238 mean_num_peaks=2.00 mean_fft_err=-0.0004 std_fft_err=0.1096
+SNR=24 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0239 mean_num_peaks=2.00 mean_fwhm=1.9502 mean_search_adapt=1.9911 mean_span_adapt=2.9867
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 err_fft=0.1442 fwhm=1.9317 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[12.86 13.15] doa_fft=[12.86 13.14] doa_adapt=[12.86 13.15]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0181 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0182 mean_num_peaks=2.00 mean_fft_err=0.0016 std_fft_err=0.0864
+SNR=26 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00 mean_fwhm=1.9370 mean_search_adapt=1.9911 mean_span_adapt=2.9867
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 err_fft=-0.0255 fwhm=1.9079 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[12.86 13.16] doa_fft=[12.86 13.16] doa_adapt=[12.86 13.16]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0137 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0138 mean_num_peaks=2.00 mean_fft_err=-0.0023 std_fft_err=0.0683
+SNR=28 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0139 mean_num_peaks=2.00 mean_fwhm=1.9364 mean_search_adapt=1.9911 mean_span_adapt=2.9867
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 err_fft=-0.0255 fwhm=1.9242 search_fixed=1.2444 search_adapt=1.9911 span_fixed=1.8667 span_adapt=2.9867 fallback_fwhm=0 doa_true=[12.86 13.17] doa_fft=[12.86 13.16] doa_adapt=[12.86 13.17]
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | fft-guided raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.76 mean_fft_err=-5.5067 std_fft_err=21.2736
+SNR=14 dB | adaptive-window raw=1 tol=0 raw_rate=0.005 tol_rate=0.000 RMSE=13.1139 mean_num_peaks=0.88 mean_fwhm=2.1942 mean_search_adapt=1.7892 mean_span_adapt=2.6838
+sample metkl=1 | center_true=13.0000 center_fft=13.3820 err_fft=0.3820 fwhm=2.3604 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=16 dB | baseline raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0430 mean_num_peaks=1.00
+SNR=16 dB | fft-guided raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0443 mean_num_peaks=0.91 mean_fft_err=-1.2925 std_fft_err=10.6458
+SNR=16 dB | adaptive-window raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0413 mean_num_peaks=0.97 mean_fwhm=2.0598 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=13.3141 err_fft=0.3141 fwhm=1.7788 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=18 dB | baseline raw=15 tol=14 raw_rate=0.075 tol_rate=0.070 RMSE=0.0730 mean_num_peaks=1.07
+SNR=18 dB | fft-guided raw=13 tol=11 raw_rate=0.065 tol_rate=0.055 RMSE=0.0744 mean_num_peaks=1.04 mean_fft_err=0.3077 std_fft_err=4.6803
+SNR=18 dB | adaptive-window raw=8 tol=6 raw_rate=0.040 tol_rate=0.030 RMSE=0.0822 mean_num_peaks=1.03 mean_fwhm=2.0259 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 err_fft=0.0084 fwhm=1.8848 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_adapt=[NaN NaN]
+SNR=20 dB | baseline raw=62 tol=61 raw_rate=0.310 tol_rate=0.305 RMSE=0.0473 mean_num_peaks=1.31
+SNR=20 dB | fft-guided raw=59 tol=57 raw_rate=0.295 tol_rate=0.285 RMSE=0.0471 mean_num_peaks=1.29 mean_fft_err=-0.0036 std_fft_err=0.1794
+SNR=20 dB | adaptive-window raw=63 tol=62 raw_rate=0.315 tol_rate=0.310 RMSE=0.0482 mean_num_peaks=1.31 mean_fwhm=1.9605 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 err_fft=0.0084 fwhm=2.5604 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[12.98 13.07] doa_fft=[12.98 13.07] doa_adapt=[12.98 13.07]
+SNR=22 dB | baseline raw=144 tol=144 raw_rate=0.720 tol_rate=0.720 RMSE=0.0410 mean_num_peaks=1.72
+SNR=22 dB | fft-guided raw=144 tol=144 raw_rate=0.720 tol_rate=0.720 RMSE=0.0409 mean_num_peaks=1.72 mean_fft_err=-0.0063 std_fft_err=0.1309
+SNR=22 dB | adaptive-window raw=145 tol=145 raw_rate=0.725 tol_rate=0.725 RMSE=0.0411 mean_num_peaks=1.73 mean_fwhm=1.9513 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=13.1782 err_fft=0.1782 fwhm=1.9454 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[12.9 13.11] doa_fft=[12.9 13.11] doa_adapt=[12.9 13.11]
+SNR=24 dB | baseline raw=190 tol=190 raw_rate=0.950 tol_rate=0.950 RMSE=0.0300 mean_num_peaks=1.95
+SNR=24 dB | fft-guided raw=191 tol=191 raw_rate=0.955 tol_rate=0.955 RMSE=0.0305 mean_num_peaks=1.96 mean_fft_err=-0.0073 std_fft_err=0.1089
+SNR=24 dB | adaptive-window raw=191 tol=191 raw_rate=0.955 tol_rate=0.955 RMSE=0.0304 mean_num_peaks=1.96 mean_fwhm=1.9472 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 err_fft=0.0763 fwhm=1.9116 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[12.86 13.11] doa_fft=[12.86 13.12] doa_adapt=[12.86 13.11]
+SNR=26 dB | baseline raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0226 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0227 mean_num_peaks=2.00 mean_fft_err=0.0055 std_fft_err=0.0849
+SNR=26 dB | adaptive-window raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0224 mean_num_peaks=2.00 mean_fwhm=1.9348 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 err_fft=0.0424 fwhm=2.0519 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[12.9 13.18] doa_fft=[12.9 13.18] doa_adapt=[12.91 13.18]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0181 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0180 mean_num_peaks=2.00 mean_fft_err=0.0027 std_fft_err=0.0718
+SNR=28 dB | adaptive-window raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0180 mean_num_peaks=2.00 mean_fwhm=1.9318 mean_search_adapt=1.7920 mean_span_adapt=2.6880
+sample metkl=1 | center_true=13.0000 center_fft=12.9066 err_fft=-0.0934 fwhm=1.9729 search_fixed=1.1200 search_adapt=1.7920 span_fixed=1.6800 span_adapt=2.6880 fallback_fwhm=0 doa_true=[12.88 13.14] doa_fft=[12.88 13.14] doa_adapt=[12.88 13.14]
+
+SNR90 summary | bw/6 baseline=14 dB fft-guided=16 dB adaptive-window=16 dB
+SNR90 summary | bw/7 baseline=16 dB fft-guided=18 dB adaptive-window=16 dB
+SNR90 summary | bw/8 baseline=20 dB fft-guided=20 dB adaptive-window=20 dB
+SNR90 summary | bw/9 baseline=22 dB fft-guided=22 dB adaptive-window=22 dB
+SNR90 summary | bw/10 baseline=24 dB fft-guided=24 dB adaptive-window=24 dB

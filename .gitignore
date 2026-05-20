@@ -6,6 +6,7 @@
 !/stepwise_signal_model/**
 
 matlab_mcp_logs/
+/.claude/
 
 # MATLAB autosave and generated artifacts
 *.asv

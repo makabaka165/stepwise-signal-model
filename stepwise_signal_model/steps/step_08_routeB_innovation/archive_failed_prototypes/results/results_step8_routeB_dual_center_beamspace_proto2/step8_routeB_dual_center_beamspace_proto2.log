@@ -1,0 +1,90 @@
+Step 08 Route B dual-center beamspace prototype 2
+Prototype scope: keep Route B baseline framing, replace centerT with dual-center candidate beamspace when coarse peak is wide or asymmetric.
+Route comparison: baseline_centerT vs dual_center_beamspace.
+Common experiment settings:
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+Dual-center trigger: peak_width_deg > 0.200 or asym_ratio > 0.150, gamma_sigma = 0.60
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline raw=40 tol=34 raw_rate=0.200 tol_rate=0.170 RMSE=0.0650 mean_num_peaks=1.20
+SNR=14 dB | dual raw=40 tol=33 raw_rate=0.200 tol_rate=0.165 RMSE=0.0663 mean_num_peaks=1.20 trigger_rate=0.775 win12=[179 21]
+sample metkl=1 | use_dual=1 mu_hat=12.9800 sigma_hat=0.1062 width=0.2500 asym=0.1200 doa_base=[NaN NaN] doa_dual=[NaN NaN] score12=[Inf Inf] chosen=1
+SNR=16 dB | baseline raw=120 tol=116 raw_rate=0.600 tol_rate=0.580 RMSE=0.0527 mean_num_peaks=1.60
+SNR=16 dB | dual raw=121 tol=116 raw_rate=0.605 tol_rate=0.580 RMSE=0.0527 mean_num_peaks=1.60 trigger_rate=0.900 win12=[153 47]
+sample metkl=1 | use_dual=1 mu_hat=13.0900 sigma_hat=0.0425 width=0.1000 asym=0.2000 doa_base=[12.81 13.09] doa_dual=[12.81 13.09] score12=[5.632e-05 5.542e-05] chosen=2
+SNR=18 dB | baseline raw=185 tol=184 raw_rate=0.925 tol_rate=0.920 RMSE=0.0446 mean_num_peaks=1.93
+SNR=18 dB | dual raw=186 tol=185 raw_rate=0.930 tol_rate=0.925 RMSE=0.0446 mean_num_peaks=1.93 trigger_rate=0.710 win12=[135 65]
+sample metkl=1 | use_dual=0 mu_hat=12.8400 sigma_hat=0.0425 width=0.1000 asym=0.0000 doa_base=[12.84 13.16] doa_dual=[12.84 13.16] score12=[2.645e-05 2.645e-05] chosen=1
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0319 mean_num_peaks=2.00
+SNR=20 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0317 mean_num_peaks=2.00 trigger_rate=0.560 win12=[140 60]
+sample metkl=1 | use_dual=1 mu_hat=13.1400 sigma_hat=0.0722 width=0.1700 asym=0.2941 doa_base=[12.85 13.14] doa_dual=[12.85 13.14] score12=[7.460e-05 7.454e-05] chosen=2
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00
+SNR=22 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00 trigger_rate=0.245 win12=[180 20]
+sample metkl=1 | use_dual=1 mu_hat=13.1300 sigma_hat=0.0510 width=0.1200 asym=0.1667 doa_base=[12.81 13.13] doa_dual=[12.81 13.13] score12=[3.461e-05 3.467e-05] chosen=1
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00
+SNR=24 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00 trigger_rate=0.200 win12=[188 12]
+sample metkl=1 | use_dual=0 mu_hat=13.1500 sigma_hat=0.0382 width=0.0900 asym=0.1111 doa_base=[12.82 13.15] doa_dual=[12.82 13.15] score12=[1.929e-05 1.929e-05] chosen=1
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00
+SNR=26 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0130 mean_num_peaks=2.00 trigger_rate=0.390 win12=[157 43]
+sample metkl=1 | use_dual=1 mu_hat=13.1500 sigma_hat=0.0212 width=0.0500 asym=0.2000 doa_base=[12.81 13.15] doa_dual=[12.81 13.15] score12=[1.047e-05 1.056e-05] chosen=1
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0106 mean_num_peaks=2.00
+SNR=28 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0106 mean_num_peaks=2.00 trigger_rate=0.430 win12=[154 46]
+sample metkl=1 | use_dual=0 mu_hat=13.1800 sigma_hat=0.0255 width=0.0600 asym=0.0000 doa_base=[12.84 13.18] doa_dual=[12.84 13.18] score12=[9.636e-06 9.636e-06] chosen=1
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | dual raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00 trigger_rate=0.230 win12=[200 0]
+sample metkl=1 | use_dual=0 mu_hat=13.0278 sigma_hat=0.0255 width=0.0600 asym=0.0000 doa_base=[NaN NaN] doa_dual=[NaN NaN] score12=[Inf Inf] chosen=1
+SNR=16 dB | baseline raw=24 tol=23 raw_rate=0.120 tol_rate=0.115 RMSE=0.0575 mean_num_peaks=1.12
+SNR=16 dB | dual raw=29 tol=28 raw_rate=0.145 tol_rate=0.140 RMSE=0.0600 mean_num_peaks=1.15 trigger_rate=0.675 win12=[185 15]
+sample metkl=1 | use_dual=0 mu_hat=12.9778 sigma_hat=0.0637 width=0.1500 asym=0.0667 doa_base=[NaN NaN] doa_dual=[NaN NaN] score12=[Inf Inf] chosen=1
+SNR=18 dB | baseline raw=75 tol=75 raw_rate=0.375 tol_rate=0.375 RMSE=0.0493 mean_num_peaks=1.38
+SNR=18 dB | dual raw=78 tol=76 raw_rate=0.390 tol_rate=0.380 RMSE=0.0505 mean_num_peaks=1.39 trigger_rate=0.845 win12=[170 30]
+sample metkl=1 | use_dual=1 mu_hat=13.0878 sigma_hat=0.0637 width=0.1500 asym=0.3333 doa_base=[12.86 13.09] doa_dual=[12.85 13.09] score12=[3.871e-05 4.119e-05] chosen=1
+SNR=20 dB | baseline raw=163 tol=163 raw_rate=0.815 tol_rate=0.815 RMSE=0.0409 mean_num_peaks=1.81
+SNR=20 dB | dual raw=165 tol=165 raw_rate=0.825 tol_rate=0.825 RMSE=0.0409 mean_num_peaks=1.82 trigger_rate=0.745 win12=[141 59]
+sample metkl=1 | use_dual=1 mu_hat=13.0778 sigma_hat=0.1401 width=0.3300 asym=0.5152 doa_base=[12.93 13.08] doa_dual=[12.92 13.08] score12=[5.115e-05 5.134e-05] chosen=1
+SNR=22 dB | baseline raw=194 tol=194 raw_rate=0.970 tol_rate=0.970 RMSE=0.0339 mean_num_peaks=1.97
+SNR=22 dB | dual raw=194 tol=194 raw_rate=0.970 tol_rate=0.970 RMSE=0.0337 mean_num_peaks=1.97 trigger_rate=0.565 win12=[145 55]
+sample metkl=1 | use_dual=1 mu_hat=13.1478 sigma_hat=0.0510 width=0.1200 asym=0.1667 doa_base=[12.84 13.15] doa_dual=[12.84 13.15] score12=[2.543e-05 2.571e-05] chosen=1
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0223 mean_num_peaks=2.00
+SNR=24 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0223 mean_num_peaks=2.00 trigger_rate=0.400 win12=[159 41]
+sample metkl=1 | use_dual=0 mu_hat=13.1178 sigma_hat=0.0297 width=0.0700 asym=0.1429 doa_base=[12.8 13.12] doa_dual=[12.8 13.12] score12=[1.822e-05 1.822e-05] chosen=1
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0178 mean_num_peaks=2.00
+SNR=26 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0177 mean_num_peaks=2.00 trigger_rate=0.245 win12=[171 29]
+sample metkl=1 | use_dual=0 mu_hat=13.1278 sigma_hat=0.0255 width=0.0600 asym=0.0000 doa_base=[12.83 13.13] doa_dual=[12.83 13.13] score12=[7.078e-06 7.078e-06] chosen=1
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+SNR=28 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00 trigger_rate=0.360 win12=[168 32]
+sample metkl=1 | use_dual=0 mu_hat=12.8478 sigma_hat=0.0255 width=0.0600 asym=0.0000 doa_base=[12.85 13.15] doa_dual=[12.85 13.15] score12=[6.866e-06 6.866e-06] chosen=1
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | dual raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00 trigger_rate=0.115 win12=[200 0]
+sample metkl=1 | use_dual=1 mu_hat=12.9800 sigma_hat=0.0212 width=0.0500 asym=0.2000 doa_base=[NaN NaN] doa_dual=[NaN NaN] score12=[Inf Inf] chosen=1
+SNR=16 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=16 dB | dual raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00 trigger_rate=0.165 win12=[200 0]
+sample metkl=1 | use_dual=0 mu_hat=13.0000 sigma_hat=0.0552 width=0.1300 asym=0.0769 doa_base=[NaN NaN] doa_dual=[NaN NaN] score12=[Inf Inf] chosen=1
+SNR=18 dB | baseline raw=5 tol=5 raw_rate=0.025 tol_rate=0.025 RMSE=0.0509 mean_num_peaks=1.02
+SNR=18 dB | dual raw=5 tol=5 raw_rate=0.025 tol_rate=0.025 RMSE=0.0475 mean_num_peaks=1.02 trigger_rate=0.490 win12=[197 3]
+sample metkl=1 | use_dual=0 mu_hat=13.0000 sigma_hat=0.0425 width=0.1000 asym=0.0000 doa_base=[NaN NaN] doa_dual=[NaN NaN] score12=[Inf Inf] chosen=1
+SNR=20 dB | baseline raw=54 tol=54 raw_rate=0.270 tol_rate=0.270 RMSE=0.0491 mean_num_peaks=1.27
+SNR=20 dB | dual raw=56 tol=56 raw_rate=0.280 tol_rate=0.280 RMSE=0.0495 mean_num_peaks=1.28 trigger_rate=0.815 win12=[176 24]
+sample metkl=1 | use_dual=1 mu_hat=12.9300 sigma_hat=0.1401 width=0.3300 asym=0.5152 doa_base=[12.93 13.1] doa_dual=[12.93 13.11] score12=[5.129e-05 5.156e-05] chosen=1
+SNR=22 dB | baseline raw=140 tol=140 raw_rate=0.700 tol_rate=0.700 RMSE=0.0410 mean_num_peaks=1.70
+SNR=22 dB | dual raw=141 tol=141 raw_rate=0.705 tol_rate=0.705 RMSE=0.0406 mean_num_peaks=1.71 trigger_rate=0.785 win12=[141 59]
+sample metkl=1 | use_dual=1 mu_hat=12.9200 sigma_hat=0.1401 width=0.3300 asym=0.6364 doa_base=[12.92 13.14] doa_dual=[12.92 13.14] score12=[3.301e-05 3.286e-05] chosen=2
+SNR=24 dB | baseline raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0318 mean_num_peaks=1.96
+SNR=24 dB | dual raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0317 mean_num_peaks=1.96 trigger_rate=0.705 win12=[135 65]
+sample metkl=1 | use_dual=1 mu_hat=12.8900 sigma_hat=0.0425 width=0.1000 asym=0.2000 doa_base=[12.89 13.15] doa_dual=[12.89 13.15] score12=[1.710e-05 1.686e-05] chosen=2
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=26 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0230 mean_num_peaks=2.00 trigger_rate=0.420 win12=[161 39]
+sample metkl=1 | use_dual=1 mu_hat=13.1100 sigma_hat=0.0510 width=0.1200 asym=0.1667 doa_base=[12.86 13.11] doa_dual=[12.86 13.11] score12=[1.693e-05 1.707e-05] chosen=1
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00
+SNR=28 dB | dual raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00 trigger_rate=0.305 win12=[176 24]
+sample metkl=1 | use_dual=1 mu_hat=13.1200 sigma_hat=0.0340 width=0.0800 asym=0.2500 doa_base=[12.85 13.12] doa_dual=[12.85 13.12] score12=[1.513e-05 1.509e-05] chosen=2
+
+SNR90 summary | bw/8 baseline=18 dB dual=18 dB
+SNR90 summary | bw/9 baseline=22 dB dual=22 dB
+SNR90 summary | bw/10 baseline=24 dB dual=24 dB

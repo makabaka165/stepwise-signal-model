@@ -1,0 +1,90 @@
+Step 08 Route B covariance residual refine prototype 3
+Prototype scope: keep Route B baseline framing, add beamspace covariance residual cancellation and single-target second-pass refinement.
+Route comparison: baseline_centerT vs cov_residual_refine_centerT.
+Common experiment settings:
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+Residual refine rule: dominant peak chosen by baseline peak height, beamspace rank-1 covariance cancellation, PSD projection, and guard-band protected second-pass refinement.
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline raw=40 tol=34 raw_rate=0.200 tol_rate=0.170 RMSE=0.0650 mean_num_peaks=1.20
+SNR=14 dB | proto3 raw=40 tol=0 raw_rate=0.200 tol_rate=0.000 RMSE=0.2027 mean_num_peaks=0.20 insufficient_first_pass=160 no_refined_peak=0
+sample metkl=1 | doa_base=[NaN NaN] doa_proto3=[NaN NaN] dom=NaN other_init=NaN refined=NaN alpha=NaN guard=0.0525 eig_before=NaN neg=NaN eig_after=NaN reason=insufficient_first_pass_peaks
+SNR=16 dB | baseline raw=120 tol=116 raw_rate=0.600 tol_rate=0.580 RMSE=0.0527 mean_num_peaks=1.60
+SNR=16 dB | proto3 raw=120 tol=0 raw_rate=0.600 tol_rate=0.000 RMSE=0.2096 mean_num_peaks=0.60 insufficient_first_pass=80 no_refined_peak=0
+sample metkl=1 | doa_base=[12.81 13.09] doa_proto3=[13.09 13.15] dom=13.0900 other_init=12.8100 refined=13.1500 alpha=3.678e+00 guard=0.0525 eig_before=-1.306e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=18 dB | baseline raw=185 tol=184 raw_rate=0.925 tol_rate=0.920 RMSE=0.0446 mean_num_peaks=1.93
+SNR=18 dB | proto3 raw=185 tol=0 raw_rate=0.925 tol_rate=0.000 RMSE=0.2144 mean_num_peaks=0.93 insufficient_first_pass=15 no_refined_peak=0
+sample metkl=1 | doa_base=[12.84 13.16] doa_proto3=[12.78 12.84] dom=12.8400 other_init=13.1600 refined=12.7800 alpha=3.647e+00 guard=0.0525 eig_before=-2.241e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0319 mean_num_peaks=2.00
+SNR=20 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2264 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.85 13.14] doa_proto3=[13.14 13.2] dom=13.1400 other_init=12.8500 refined=13.2000 alpha=3.653e+00 guard=0.0525 eig_before=-1.983e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00
+SNR=22 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2357 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.81 13.13] doa_proto3=[13.13 13.19] dom=13.1300 other_init=12.8100 refined=13.1900 alpha=3.657e+00 guard=0.0525 eig_before=-1.849e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00
+SNR=24 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2416 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.82 13.15] doa_proto3=[13.15 13.21] dom=13.1500 other_init=12.8200 refined=13.2100 alpha=3.653e+00 guard=0.0525 eig_before=-2.103e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00
+SNR=26 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2442 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.81 13.15] doa_proto3=[13.15 13.21] dom=13.1500 other_init=12.8100 refined=13.2100 alpha=3.652e+00 guard=0.0525 eig_before=-2.109e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0106 mean_num_peaks=2.00
+SNR=28 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2464 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.84 13.18] doa_proto3=[13.18 13.24] dom=13.1800 other_init=12.8400 refined=13.2400 alpha=3.632e+00 guard=0.0525 eig_before=-2.496e+01 neg=1 eig_after=0.000e+00 reason=ok
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | proto3 raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.00 insufficient_first_pass=200 no_refined_peak=0
+sample metkl=1 | doa_base=[NaN NaN] doa_proto3=[NaN NaN] dom=NaN other_init=NaN refined=NaN alpha=NaN guard=0.0500 eig_before=NaN neg=NaN eig_after=NaN reason=insufficient_first_pass_peaks
+SNR=16 dB | baseline raw=24 tol=23 raw_rate=0.120 tol_rate=0.115 RMSE=0.0575 mean_num_peaks=1.12
+SNR=16 dB | proto3 raw=24 tol=0 raw_rate=0.120 tol_rate=0.000 RMSE=0.1798 mean_num_peaks=0.12 insufficient_first_pass=176 no_refined_peak=0
+sample metkl=1 | doa_base=[NaN NaN] doa_proto3=[NaN NaN] dom=NaN other_init=NaN refined=NaN alpha=NaN guard=0.0500 eig_before=NaN neg=NaN eig_after=NaN reason=insufficient_first_pass_peaks
+SNR=18 dB | baseline raw=75 tol=75 raw_rate=0.375 tol_rate=0.375 RMSE=0.0493 mean_num_peaks=1.38
+SNR=18 dB | proto3 raw=75 tol=0 raw_rate=0.375 tol_rate=0.000 RMSE=0.1840 mean_num_peaks=0.38 insufficient_first_pass=125 no_refined_peak=0
+sample metkl=1 | doa_base=[12.86 13.09] doa_proto3=[13.09 13.15] dom=13.0878 other_init=12.8578 refined=13.1478 alpha=3.738e+00 guard=0.0500 eig_before=-1.285e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=20 dB | baseline raw=163 tol=163 raw_rate=0.815 tol_rate=0.815 RMSE=0.0409 mean_num_peaks=1.81
+SNR=20 dB | proto3 raw=163 tol=0 raw_rate=0.815 tol_rate=0.000 RMSE=0.1887 mean_num_peaks=0.81 insufficient_first_pass=37 no_refined_peak=0
+sample metkl=1 | doa_base=[12.93 13.08] doa_proto3=[13.08 13.14] dom=13.0778 other_init=12.9278 refined=13.1378 alpha=3.745e+00 guard=0.0500 eig_before=-1.186e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=22 dB | baseline raw=194 tol=194 raw_rate=0.970 tol_rate=0.970 RMSE=0.0339 mean_num_peaks=1.97
+SNR=22 dB | proto3 raw=194 tol=0 raw_rate=0.970 tol_rate=0.000 RMSE=0.1954 mean_num_peaks=0.97 insufficient_first_pass=6 no_refined_peak=0
+sample metkl=1 | doa_base=[12.84 13.15] doa_proto3=[13.15 13.2] dom=13.1478 other_init=12.8378 refined=13.1978 alpha=3.720e+00 guard=0.0500 eig_before=-2.129e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0223 mean_num_peaks=2.00
+SNR=24 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2057 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.8 13.12] doa_proto3=[13.12 13.17] dom=13.1178 other_init=12.7978 refined=13.1678 alpha=3.732e+00 guard=0.0500 eig_before=-1.708e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0178 mean_num_peaks=2.00
+SNR=26 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2105 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.83 13.13] doa_proto3=[13.13 13.18] dom=13.1278 other_init=12.8278 refined=13.1778 alpha=3.723e+00 guard=0.0500 eig_before=-1.855e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+SNR=28 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.2144 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.85 13.15] doa_proto3=[12.8 12.85] dom=12.8478 other_init=13.1478 refined=12.7978 alpha=3.709e+00 guard=0.0500 eig_before=-2.187e+01 neg=1 eig_after=0.000e+00 reason=ok
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | proto3 raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.00 insufficient_first_pass=200 no_refined_peak=0
+sample metkl=1 | doa_base=[NaN NaN] doa_proto3=[NaN NaN] dom=NaN other_init=NaN refined=NaN alpha=NaN guard=0.0500 eig_before=NaN neg=NaN eig_after=NaN reason=insufficient_first_pass_peaks
+SNR=16 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=16 dB | proto3 raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.00 insufficient_first_pass=200 no_refined_peak=0
+sample metkl=1 | doa_base=[NaN NaN] doa_proto3=[NaN NaN] dom=NaN other_init=NaN refined=NaN alpha=NaN guard=0.0500 eig_before=NaN neg=NaN eig_after=NaN reason=insufficient_first_pass_peaks
+SNR=18 dB | baseline raw=5 tol=5 raw_rate=0.025 tol_rate=0.025 RMSE=0.0509 mean_num_peaks=1.02
+SNR=18 dB | proto3 raw=5 tol=0 raw_rate=0.025 tol_rate=0.000 RMSE=0.1600 mean_num_peaks=0.03 insufficient_first_pass=195 no_refined_peak=0
+sample metkl=1 | doa_base=[NaN NaN] doa_proto3=[NaN NaN] dom=NaN other_init=NaN refined=NaN alpha=NaN guard=0.0500 eig_before=NaN neg=NaN eig_after=NaN reason=insufficient_first_pass_peaks
+SNR=20 dB | baseline raw=54 tol=54 raw_rate=0.270 tol_rate=0.270 RMSE=0.0491 mean_num_peaks=1.27
+SNR=20 dB | proto3 raw=54 tol=0 raw_rate=0.270 tol_rate=0.000 RMSE=0.1623 mean_num_peaks=0.27 insufficient_first_pass=146 no_refined_peak=0
+sample metkl=1 | doa_base=[12.93 13.1] doa_proto3=[12.88 12.93] dom=12.9300 other_init=13.1000 refined=12.8800 alpha=3.799e+00 guard=0.0500 eig_before=-1.065e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=22 dB | baseline raw=140 tol=140 raw_rate=0.700 tol_rate=0.700 RMSE=0.0410 mean_num_peaks=1.70
+SNR=22 dB | proto3 raw=140 tol=0 raw_rate=0.700 tol_rate=0.000 RMSE=0.1667 mean_num_peaks=0.70 insufficient_first_pass=60 no_refined_peak=0
+sample metkl=1 | doa_base=[12.92 13.14] doa_proto3=[12.87 12.92] dom=12.9200 other_init=13.1400 refined=12.8700 alpha=3.793e+00 guard=0.0500 eig_before=-1.193e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=24 dB | baseline raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0318 mean_num_peaks=1.96
+SNR=24 dB | proto3 raw=192 tol=0 raw_rate=0.960 tol_rate=0.000 RMSE=0.1755 mean_num_peaks=0.96 insufficient_first_pass=8 no_refined_peak=0
+sample metkl=1 | doa_base=[12.89 13.15] doa_proto3=[12.83 12.89] dom=12.8900 other_init=13.1500 refined=12.8300 alpha=3.779e+00 guard=0.0500 eig_before=-1.628e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=26 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.1830 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.86 13.11] doa_proto3=[13.11 13.17] dom=13.1100 other_init=12.8600 refined=13.1700 alpha=3.776e+00 guard=0.0500 eig_before=-1.633e+01 neg=1 eig_after=0.000e+00 reason=ok
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00
+SNR=28 dB | proto3 raw=200 tol=0 raw_rate=1.000 tol_rate=0.000 RMSE=0.1887 mean_num_peaks=1.00 insufficient_first_pass=0 no_refined_peak=0
+sample metkl=1 | doa_base=[12.85 13.12] doa_proto3=[13.12 13.18] dom=13.1200 other_init=12.8500 refined=13.1800 alpha=3.774e+00 guard=0.0500 eig_before=-1.773e+01 neg=1 eig_after=0.000e+00 reason=ok
+
+SNR90 summary | bw/8 baseline=18 dB proto3=NaN
+SNR90 summary | bw/9 baseline=22 dB proto3=NaN
+SNR90 summary | bw/10 baseline=24 dB proto3=NaN

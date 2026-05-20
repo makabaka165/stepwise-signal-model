@@ -1,0 +1,90 @@
+Step 08 Route B adaptive weighted centerT prototype 1
+Prototype scope: keep Route B baseline framing, only replace centerT with adaptive weighted centerT.
+Route comparison: baseline_centerT vs adaptive_weighted_centerT.
+Common experiment settings:
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+Weighted centerT rule: smoothed coarse MUSIC direct weights with [1 2 1]/4 smoothing and 5% floor.
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline raw=40 tol=34 raw_rate=0.200 tol_rate=0.170 RMSE=0.0650 mean_num_peaks=1.20
+SNR=14 dB | weighted raw=40 tol=34 raw_rate=0.200 tol_rate=0.170 RMSE=0.0668 mean_num_peaks=1.20
+sample metkl=1 | doa_base=[NaN NaN] doa_weighted=[NaN NaN] cond_base=6.326e+16 cond_weighted=3.692e+17 weight_minmax=[0.050 1.000]
+SNR=16 dB | baseline raw=120 tol=116 raw_rate=0.600 tol_rate=0.580 RMSE=0.0527 mean_num_peaks=1.60
+SNR=16 dB | weighted raw=120 tol=116 raw_rate=0.600 tol_rate=0.580 RMSE=0.0529 mean_num_peaks=1.60
+sample metkl=1 | doa_base=[12.81 13.09] doa_weighted=[12.81 13.09] cond_base=6.326e+16 cond_weighted=2.969e+17 weight_minmax=[0.050 1.000]
+SNR=18 dB | baseline raw=185 tol=184 raw_rate=0.925 tol_rate=0.920 RMSE=0.0446 mean_num_peaks=1.93
+SNR=18 dB | weighted raw=184 tol=183 raw_rate=0.920 tol_rate=0.915 RMSE=0.0442 mean_num_peaks=1.92
+sample metkl=1 | doa_base=[12.84 13.16] doa_weighted=[12.84 13.16] cond_base=6.326e+16 cond_weighted=3.756e+17 weight_minmax=[0.050 1.000]
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0319 mean_num_peaks=2.00
+SNR=20 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0318 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.85 13.14] doa_weighted=[12.85 13.14] cond_base=6.326e+16 cond_weighted=3.953e+17 weight_minmax=[0.050 1.000]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00
+SNR=22 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.81 13.13] doa_weighted=[12.81 13.13] cond_base=6.326e+16 cond_weighted=3.876e+17 weight_minmax=[0.050 1.000]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00
+SNR=24 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0170 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.82 13.15] doa_weighted=[12.82 13.15] cond_base=6.326e+16 cond_weighted=3.542e+17 weight_minmax=[0.050 1.000]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00
+SNR=26 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0131 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.81 13.15] doa_weighted=[12.81 13.15] cond_base=6.326e+16 cond_weighted=3.496e+17 weight_minmax=[0.050 1.000]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0106 mean_num_peaks=2.00
+SNR=28 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0106 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.84 13.18] doa_weighted=[12.84 13.18] cond_base=6.326e+16 cond_weighted=3.510e+17 weight_minmax=[0.050 1.000]
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | weighted raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+sample metkl=1 | doa_base=[NaN NaN] doa_weighted=[NaN NaN] cond_base=8.211e+16 cond_weighted=3.062e+17 weight_minmax=[0.050 1.000]
+SNR=16 dB | baseline raw=24 tol=23 raw_rate=0.120 tol_rate=0.115 RMSE=0.0575 mean_num_peaks=1.12
+SNR=16 dB | weighted raw=25 tol=24 raw_rate=0.125 tol_rate=0.120 RMSE=0.0590 mean_num_peaks=1.12
+sample metkl=1 | doa_base=[NaN NaN] doa_weighted=[NaN NaN] cond_base=8.211e+16 cond_weighted=3.848e+17 weight_minmax=[0.050 1.000]
+SNR=18 dB | baseline raw=75 tol=75 raw_rate=0.375 tol_rate=0.375 RMSE=0.0493 mean_num_peaks=1.38
+SNR=18 dB | weighted raw=75 tol=75 raw_rate=0.375 tol_rate=0.375 RMSE=0.0490 mean_num_peaks=1.38
+sample metkl=1 | doa_base=[12.86 13.09] doa_weighted=[12.86 13.09] cond_base=8.211e+16 cond_weighted=3.433e+17 weight_minmax=[0.050 1.000]
+SNR=20 dB | baseline raw=163 tol=163 raw_rate=0.815 tol_rate=0.815 RMSE=0.0409 mean_num_peaks=1.81
+SNR=20 dB | weighted raw=164 tol=164 raw_rate=0.820 tol_rate=0.820 RMSE=0.0411 mean_num_peaks=1.82
+sample metkl=1 | doa_base=[12.93 13.08] doa_weighted=[12.93 13.08] cond_base=8.211e+16 cond_weighted=4.279e+17 weight_minmax=[0.050 1.000]
+SNR=22 dB | baseline raw=194 tol=194 raw_rate=0.970 tol_rate=0.970 RMSE=0.0339 mean_num_peaks=1.97
+SNR=22 dB | weighted raw=194 tol=194 raw_rate=0.970 tol_rate=0.970 RMSE=0.0338 mean_num_peaks=1.97
+sample metkl=1 | doa_base=[12.84 13.15] doa_weighted=[12.84 13.15] cond_base=8.211e+16 cond_weighted=4.020e+17 weight_minmax=[0.050 1.000]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0223 mean_num_peaks=2.00
+SNR=24 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0224 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.8 13.12] doa_weighted=[12.8 13.12] cond_base=8.211e+16 cond_weighted=3.019e+17 weight_minmax=[0.050 1.000]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0178 mean_num_peaks=2.00
+SNR=26 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0178 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.83 13.13] doa_weighted=[12.83 13.13] cond_base=8.211e+16 cond_weighted=4.131e+17 weight_minmax=[0.050 1.000]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+SNR=28 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.85 13.15] doa_weighted=[12.85 13.15] cond_base=8.211e+16 cond_weighted=2.950e+17 weight_minmax=[0.050 1.000]
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | weighted raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+sample metkl=1 | doa_base=[NaN NaN] doa_weighted=[NaN NaN] cond_base=8.689e+16 cond_weighted=3.352e+17 weight_minmax=[0.050 1.000]
+SNR=16 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=16 dB | weighted raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+sample metkl=1 | doa_base=[NaN NaN] doa_weighted=[NaN NaN] cond_base=8.689e+16 cond_weighted=3.703e+17 weight_minmax=[0.050 1.000]
+SNR=18 dB | baseline raw=5 tol=5 raw_rate=0.025 tol_rate=0.025 RMSE=0.0509 mean_num_peaks=1.02
+SNR=18 dB | weighted raw=5 tol=5 raw_rate=0.025 tol_rate=0.025 RMSE=0.0508 mean_num_peaks=1.02
+sample metkl=1 | doa_base=[NaN NaN] doa_weighted=[NaN NaN] cond_base=8.689e+16 cond_weighted=3.175e+17 weight_minmax=[0.050 1.000]
+SNR=20 dB | baseline raw=54 tol=54 raw_rate=0.270 tol_rate=0.270 RMSE=0.0491 mean_num_peaks=1.27
+SNR=20 dB | weighted raw=54 tol=54 raw_rate=0.270 tol_rate=0.270 RMSE=0.0487 mean_num_peaks=1.27
+sample metkl=1 | doa_base=[12.93 13.1] doa_weighted=[12.93 13.1] cond_base=8.689e+16 cond_weighted=4.409e+17 weight_minmax=[0.050 1.000]
+SNR=22 dB | baseline raw=140 tol=140 raw_rate=0.700 tol_rate=0.700 RMSE=0.0410 mean_num_peaks=1.70
+SNR=22 dB | weighted raw=139 tol=139 raw_rate=0.695 tol_rate=0.695 RMSE=0.0405 mean_num_peaks=1.70
+sample metkl=1 | doa_base=[12.92 13.14] doa_weighted=[12.92 13.15] cond_base=8.689e+16 cond_weighted=4.117e+17 weight_minmax=[0.050 1.000]
+SNR=24 dB | baseline raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0318 mean_num_peaks=1.96
+SNR=24 dB | weighted raw=192 tol=192 raw_rate=0.960 tol_rate=0.960 RMSE=0.0318 mean_num_peaks=1.96
+sample metkl=1 | doa_base=[12.89 13.15] doa_weighted=[12.89 13.15] cond_base=8.689e+16 cond_weighted=4.219e+17 weight_minmax=[0.050 1.000]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=26 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.86 13.11] doa_weighted=[12.86 13.11] cond_base=8.689e+16 cond_weighted=4.504e+17 weight_minmax=[0.050 1.000]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00
+SNR=28 dB | weighted raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0183 mean_num_peaks=2.00
+sample metkl=1 | doa_base=[12.85 13.12] doa_weighted=[12.85 13.12] cond_base=8.689e+16 cond_weighted=4.070e+17 weight_minmax=[0.050 1.000]
+
+SNR90 summary | bw/8 baseline=18 dB weighted=18 dB
+SNR90 summary | bw/9 baseline=22 dB weighted=22 dB
+SNR90 summary | bw/10 baseline=24 dB weighted=24 dB

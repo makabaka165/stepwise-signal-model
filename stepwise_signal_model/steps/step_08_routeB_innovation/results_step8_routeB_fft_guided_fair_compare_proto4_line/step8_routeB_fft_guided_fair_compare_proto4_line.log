@@ -1,0 +1,52 @@
+Step 08 Route B FFT-guided prototype4 line fair compare
+Fair compare scope: baseline_true_centerT vs proto4 vs proto4b vs proto4e.
+Fairness rule: each (sep_factor, snr_db, metkl_num) uses an independent fixed RNG seed.
+base_seed=20260520
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[7 8 9 10]
+Route B settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00, Nfft_spatial=4096
+
+=== sep_factor = 7, theta_sep = 0.4000 deg ===
+SNR=14 dB | baseline tol_rate=0.815 proto4 tol_rate=0.515 proto4b tol_rate=0.570 proto4e tol_rate=0.565 | fft_err_mean=-2.8466 std=24.3485 | fwhm_mean=2.3015 std=0.7335
+SNR=16 dB | baseline tol_rate=1.000 proto4 tol_rate=0.855 proto4b tol_rate=0.880 proto4e tol_rate=0.870 | fft_err_mean=-2.2013 std=14.7157 | fwhm_mean=2.1391 std=0.5199
+SNR=18 dB | baseline tol_rate=1.000 proto4 tol_rate=0.955 proto4b tol_rate=0.985 proto4e tol_rate=0.985 | fft_err_mean=-0.3483 std=4.3589 | fwhm_mean=1.9804 std=0.2097
+SNR=20 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0051 std=0.1875 | fwhm_mean=1.9786 std=0.1629
+SNR=22 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0071 std=0.1406 | fwhm_mean=1.9605 std=0.1184
+SNR=24 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0145 std=0.1066 | fwhm_mean=1.9575 std=0.0809
+SNR=26 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0019 std=0.0908 | fwhm_mean=1.9373 std=0.0693
+SNR=28 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0010 std=0.0702 | fwhm_mean=1.9399 std=0.0534
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline tol_rate=0.210 proto4 tol_rate=0.120 proto4b tol_rate=0.135 proto4e tol_rate=0.135 | fft_err_mean=-3.3214 std=19.3124 | fwhm_mean=2.2667 std=0.6868
+SNR=16 dB | baseline tol_rate=0.590 proto4 tol_rate=0.500 proto4b tol_rate=0.550 proto4e tol_rate=0.535 | fft_err_mean=-1.1079 std=12.8183 | fwhm_mean=2.1236 std=0.6479
+SNR=18 dB | baseline tol_rate=0.930 proto4 tol_rate=0.925 proto4b tol_rate=0.935 proto4e tol_rate=0.930 | fft_err_mean=-0.0125 std=0.2148 | fwhm_mean=2.0046 std=0.2160
+SNR=20 dB | baseline tol_rate=1.000 proto4 tol_rate=0.985 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0037 std=0.2002 | fwhm_mean=1.9780 std=0.1658
+SNR=22 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0109 std=0.1306 | fwhm_mean=1.9540 std=0.0980
+SNR=24 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0154 std=0.1047 | fwhm_mean=1.9415 std=0.0868
+SNR=26 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0093 std=0.0894 | fwhm_mean=1.9400 std=0.0709
+SNR=28 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0005 std=0.0747 | fwhm_mean=1.9407 std=0.0563
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline tol_rate=0.005 proto4 tol_rate=0.000 proto4b tol_rate=0.000 proto4e tol_rate=0.000 | fft_err_mean=-0.9213 std=23.4665 | fwhm_mean=2.3703 std=1.5779
+SNR=16 dB | baseline tol_rate=0.060 proto4 tol_rate=0.045 proto4b tol_rate=0.055 proto4e tol_rate=0.055 | fft_err_mean=-2.1180 std=11.3236 | fwhm_mean=2.0622 std=0.3507
+SNR=18 dB | baseline tol_rate=0.425 proto4 tol_rate=0.425 proto4b tol_rate=0.425 proto4e tol_rate=0.435 | fft_err_mean=-0.1654 std=2.4609 | fwhm_mean=1.9901 std=0.1905
+SNR=20 dB | baseline tol_rate=0.845 proto4 tol_rate=0.840 proto4b tol_rate=0.825 proto4e tol_rate=0.840 | fft_err_mean=0.0107 std=0.1646 | fwhm_mean=1.9535 std=0.1420
+SNR=22 dB | baseline tol_rate=0.995 proto4 tol_rate=0.995 proto4b tol_rate=0.995 proto4e tol_rate=0.995 | fft_err_mean=0.0108 std=0.1312 | fwhm_mean=1.9376 std=0.1072
+SNR=24 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0039 std=0.1161 | fwhm_mean=1.9398 std=0.0790
+SNR=26 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0054 std=0.0881 | fwhm_mean=1.9374 std=0.0693
+SNR=28 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0036 std=0.0685 | fwhm_mean=1.9334 std=0.0534
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline tol_rate=0.000 proto4 tol_rate=0.000 proto4b tol_rate=0.000 proto4e tol_rate=0.000 | fft_err_mean=-1.6980 std=20.7050 | fwhm_mean=2.1856 std=0.8193
+SNR=16 dB | baseline tol_rate=0.000 proto4 tol_rate=0.000 proto4b tol_rate=0.000 proto4e tol_rate=0.000 | fft_err_mean=-0.1316 std=12.6924 | fwhm_mean=2.1409 std=0.7724
+SNR=18 dB | baseline tol_rate=0.035 proto4 tol_rate=0.030 proto4b tol_rate=0.025 proto4e tol_rate=0.025 | fft_err_mean=-0.0003 std=0.3614 | fwhm_mean=1.9846 std=0.1917
+SNR=20 dB | baseline tol_rate=0.310 proto4 tol_rate=0.305 proto4b tol_rate=0.305 proto4e tol_rate=0.310 | fft_err_mean=0.0049 std=0.1749 | fwhm_mean=1.9542 std=0.1258
+SNR=22 dB | baseline tol_rate=0.745 proto4 tol_rate=0.745 proto4b tol_rate=0.735 proto4e tol_rate=0.735 | fft_err_mean=-0.0019 std=0.1532 | fwhm_mean=1.9345 std=0.1042
+SNR=24 dB | baseline tol_rate=0.960 proto4 tol_rate=0.960 proto4b tol_rate=0.955 proto4e tol_rate=0.955 | fft_err_mean=-0.0089 std=0.1154 | fwhm_mean=1.9420 std=0.0872
+SNR=26 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=0.0081 std=0.0851 | fwhm_mean=1.9422 std=0.0689
+SNR=28 dB | baseline tol_rate=1.000 proto4 tol_rate=1.000 proto4b tol_rate=1.000 proto4e tol_rate=1.000 | fft_err_mean=-0.0023 std=0.0696 | fwhm_mean=1.9312 std=0.0558
+
+SNR90 summary | bw/7 baseline=16 dB proto4=18 dB proto4b=18 dB proto4e=18 dB
+SNR90 summary | bw/8 baseline=18 dB proto4=18 dB proto4b=18 dB proto4e=18 dB
+SNR90 summary | bw/9 baseline=22 dB proto4=22 dB proto4b=22 dB proto4e=22 dB
+SNR90 summary | bw/10 baseline=24 dB proto4=24 dB proto4b=24 dB proto4e=24 dB

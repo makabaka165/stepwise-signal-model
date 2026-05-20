@@ -1,0 +1,81 @@
+Step 08 Route B adaptive window mapping scan prototype 4d
+Scan scope: compare three small-range FWHM-to-window mappings for prototype4d.
+snr_list=[16 18 20 22 24], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[7 8 9 10]
+Common Route B settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00, Nfft_spatial=4096
+Config config_A_current4b | gamma_search=1.20 gamma_span=1.50 search_upper_ratio=1.60 span_upper_ratio=1.60
+Config config_B_moderate_shrink | gamma_search=1.10 gamma_span=1.40 search_upper_ratio=1.50 span_upper_ratio=1.50
+Config config_C_strong_shrink | gamma_search=1.05 gamma_span=1.35 search_upper_ratio=1.40 span_upper_ratio=1.40
+
+=== sep_factor = 7, theta_sep = 0.4000 deg ===
+config_A_current4b | SNR=16 dB raw=181 tol=178 raw_rate=0.905 tol_rate=0.890 RMSE=0.0390 mean_fwhm=2.0742 mean_search_adapt=2.3527 mean_span_adapt=3.5291 mean_num_peaks=1.88
+config_B_moderate_shrink | SNR=16 dB raw=181 tol=178 raw_rate=0.905 tol_rate=0.890 RMSE=0.0388 mean_fwhm=2.0742 mean_search_adapt=2.1697 mean_span_adapt=3.0803 mean_num_peaks=1.88
+config_C_strong_shrink | SNR=16 dB raw=181 tol=178 raw_rate=0.905 tol_rate=0.890 RMSE=0.0390 mean_fwhm=2.0742 mean_search_adapt=2.0586 mean_span_adapt=2.8418 mean_num_peaks=1.88
+config_A_current4b | SNR=18 dB raw=198 tol=198 raw_rate=0.990 tol_rate=0.990 RMSE=0.0265 mean_fwhm=1.9933 mean_search_adapt=2.3390 mean_span_adapt=3.5085 mean_num_peaks=1.98
+config_B_moderate_shrink | SNR=18 dB raw=198 tol=198 raw_rate=0.990 tol_rate=0.990 RMSE=0.0266 mean_fwhm=1.9933 mean_search_adapt=2.1547 mean_span_adapt=3.0434 mean_num_peaks=1.98
+config_C_strong_shrink | SNR=18 dB raw=198 tol=198 raw_rate=0.990 tol_rate=0.990 RMSE=0.0268 mean_fwhm=1.9933 mean_search_adapt=2.0466 mean_span_adapt=2.8052 mean_num_peaks=1.98
+config_A_current4b | SNR=20 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0222 mean_fwhm=1.9740 mean_search_adapt=2.3509 mean_span_adapt=3.5263 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=20 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0225 mean_fwhm=1.9740 mean_search_adapt=2.1596 mean_span_adapt=3.0351 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=20 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0220 mean_fwhm=1.9740 mean_search_adapt=2.0570 mean_span_adapt=2.7954 mean_num_peaks=2.00
+config_A_current4b | SNR=22 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0164 mean_fwhm=1.9621 mean_search_adapt=2.3487 mean_span_adapt=3.5231 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=22 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0159 mean_fwhm=1.9621 mean_search_adapt=2.1560 mean_span_adapt=3.0216 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=22 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0160 mean_fwhm=1.9621 mean_search_adapt=2.0551 mean_span_adapt=2.7812 mean_num_peaks=2.00
+config_A_current4b | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0127 mean_fwhm=1.9441 mean_search_adapt=2.3325 mean_span_adapt=3.4988 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0127 mean_fwhm=1.9441 mean_search_adapt=2.1385 mean_span_adapt=2.9940 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0129 mean_fwhm=1.9441 mean_search_adapt=2.0410 mean_span_adapt=2.7558 mean_num_peaks=2.00
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+config_A_current4b | SNR=16 dB raw=94 tol=90 raw_rate=0.470 tol_rate=0.450 RMSE=0.0531 mean_fwhm=2.0793 mean_search_adapt=2.1960 mean_span_adapt=3.2940 mean_num_peaks=1.43
+config_B_moderate_shrink | SNR=16 dB raw=91 tol=88 raw_rate=0.455 tol_rate=0.440 RMSE=0.0521 mean_fwhm=2.0793 mean_search_adapt=2.0426 mean_span_adapt=2.9632 mean_num_peaks=1.41
+config_C_strong_shrink | SNR=16 dB raw=92 tol=88 raw_rate=0.460 tol_rate=0.440 RMSE=0.0529 mean_fwhm=2.0793 mean_search_adapt=1.9215 mean_span_adapt=2.7426 mean_num_peaks=1.40
+config_A_current4b | SNR=18 dB raw=182 tol=180 raw_rate=0.910 tol_rate=0.900 RMSE=0.0437 mean_fwhm=2.0666 mean_search_adapt=2.2213 mean_span_adapt=3.3319 mean_num_peaks=1.90
+config_B_moderate_shrink | SNR=18 dB raw=182 tol=179 raw_rate=0.910 tol_rate=0.895 RMSE=0.0442 mean_fwhm=2.0666 mean_search_adapt=2.0694 mean_span_adapt=2.9980 mean_num_peaks=1.90
+config_C_strong_shrink | SNR=18 dB raw=182 tol=180 raw_rate=0.910 tol_rate=0.900 RMSE=0.0441 mean_fwhm=2.0666 mean_search_adapt=1.9436 mean_span_adapt=2.7732 mean_num_peaks=1.90
+config_A_current4b | SNR=20 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0303 mean_fwhm=1.9645 mean_search_adapt=2.2161 mean_span_adapt=3.3242 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=20 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0304 mean_fwhm=1.9645 mean_search_adapt=2.0621 mean_span_adapt=2.9753 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=20 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0304 mean_fwhm=1.9645 mean_search_adapt=1.9391 mean_span_adapt=2.7482 mean_num_peaks=2.00
+config_A_current4b | SNR=22 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0230 mean_fwhm=1.9539 mean_search_adapt=2.2285 mean_span_adapt=3.3428 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=22 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0232 mean_fwhm=1.9539 mean_search_adapt=2.0769 mean_span_adapt=2.9880 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=22 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_fwhm=1.9539 mean_search_adapt=1.9500 mean_span_adapt=2.7572 mean_num_peaks=2.00
+config_A_current4b | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0158 mean_fwhm=1.9514 mean_search_adapt=2.2318 mean_span_adapt=3.3477 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0160 mean_fwhm=1.9514 mean_search_adapt=2.0814 mean_span_adapt=2.9942 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0157 mean_fwhm=1.9514 mean_search_adapt=1.9528 mean_span_adapt=2.7598 mean_num_peaks=2.00
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+config_A_current4b | SNR=16 dB raw=15 tol=15 raw_rate=0.075 tol_rate=0.075 RMSE=0.0553 mean_fwhm=2.1140 mean_search_adapt=1.9901 mean_span_adapt=2.9851 mean_num_peaks=1.03
+config_B_moderate_shrink | SNR=16 dB raw=15 tol=15 raw_rate=0.075 tol_rate=0.075 RMSE=0.0559 mean_fwhm=2.1140 mean_search_adapt=1.8645 mean_span_adapt=2.7777 mean_num_peaks=1.03
+config_C_strong_shrink | SNR=16 dB raw=14 tol=14 raw_rate=0.070 tol_rate=0.070 RMSE=0.0537 mean_fwhm=2.1140 mean_search_adapt=1.7413 mean_span_adapt=2.5852 mean_num_peaks=1.02
+config_A_current4b | SNR=18 dB raw=79 tol=77 raw_rate=0.395 tol_rate=0.385 RMSE=0.0520 mean_fwhm=2.0433 mean_search_adapt=1.9907 mean_span_adapt=2.9861 mean_num_peaks=1.40
+config_B_moderate_shrink | SNR=18 dB raw=77 tol=74 raw_rate=0.385 tol_rate=0.370 RMSE=0.0511 mean_fwhm=2.0433 mean_search_adapt=1.8658 mean_span_adapt=2.7853 mean_num_peaks=1.38
+config_C_strong_shrink | SNR=18 dB raw=75 tol=73 raw_rate=0.375 tol_rate=0.365 RMSE=0.0509 mean_fwhm=2.0433 mean_search_adapt=1.7419 mean_span_adapt=2.5928 mean_num_peaks=1.38
+config_A_current4b | SNR=20 dB raw=158 tol=158 raw_rate=0.790 tol_rate=0.790 RMSE=0.0433 mean_fwhm=1.9748 mean_search_adapt=1.9906 mean_span_adapt=2.9859 mean_num_peaks=1.79
+config_B_moderate_shrink | SNR=20 dB raw=157 tol=157 raw_rate=0.785 tol_rate=0.785 RMSE=0.0428 mean_fwhm=1.9748 mean_search_adapt=1.8654 mean_span_adapt=2.7864 mean_num_peaks=1.78
+config_C_strong_shrink | SNR=20 dB raw=158 tol=157 raw_rate=0.790 tol_rate=0.785 RMSE=0.0429 mean_fwhm=1.9748 mean_search_adapt=1.7418 mean_span_adapt=2.5953 mean_num_peaks=1.79
+config_A_current4b | SNR=22 dB raw=196 tol=196 raw_rate=0.980 tol_rate=0.980 RMSE=0.0312 mean_fwhm=1.9663 mean_search_adapt=1.9909 mean_span_adapt=2.9864 mean_num_peaks=1.98
+config_B_moderate_shrink | SNR=22 dB raw=197 tol=197 raw_rate=0.985 tol_rate=0.985 RMSE=0.0314 mean_fwhm=1.9663 mean_search_adapt=1.8661 mean_span_adapt=2.7911 mean_num_peaks=1.99
+config_C_strong_shrink | SNR=22 dB raw=197 tol=197 raw_rate=0.985 tol_rate=0.985 RMSE=0.0315 mean_fwhm=1.9663 mean_search_adapt=1.7421 mean_span_adapt=2.6006 mean_num_peaks=1.99
+config_A_current4b | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0236 mean_fwhm=1.9501 mean_search_adapt=1.9911 mean_span_adapt=2.9867 mean_num_peaks=2.00
+config_B_moderate_shrink | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0236 mean_fwhm=1.9501 mean_search_adapt=1.8667 mean_span_adapt=2.7986 mean_num_peaks=2.00
+config_C_strong_shrink | SNR=24 dB raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0236 mean_fwhm=1.9501 mean_search_adapt=1.7422 mean_span_adapt=2.6097 mean_num_peaks=2.00
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+config_A_current4b | SNR=16 dB raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0570 mean_fwhm=2.0902 mean_search_adapt=1.7920 mean_span_adapt=2.6880 mean_num_peaks=0.95
+config_B_moderate_shrink | SNR=16 dB raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0616 mean_fwhm=2.0902 mean_search_adapt=1.6800 mean_span_adapt=2.5159 mean_num_peaks=0.95
+config_C_strong_shrink | SNR=16 dB raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0565 mean_fwhm=2.0902 mean_search_adapt=1.5680 mean_span_adapt=2.3466 mean_num_peaks=0.95
+config_A_current4b | SNR=18 dB raw=7 tol=7 raw_rate=0.035 tol_rate=0.035 RMSE=0.0466 mean_fwhm=2.0090 mean_search_adapt=1.7920 mean_span_adapt=2.6880 mean_num_peaks=1.03
+config_B_moderate_shrink | SNR=18 dB raw=7 tol=7 raw_rate=0.035 tol_rate=0.035 RMSE=0.0443 mean_fwhm=2.0090 mean_search_adapt=1.6800 mean_span_adapt=2.5183 mean_num_peaks=1.03
+config_C_strong_shrink | SNR=18 dB raw=8 tol=8 raw_rate=0.040 tol_rate=0.040 RMSE=0.0485 mean_fwhm=2.0090 mean_search_adapt=1.5680 mean_span_adapt=2.3498 mean_num_peaks=1.04
+config_A_current4b | SNR=20 dB raw=57 tol=56 raw_rate=0.285 tol_rate=0.280 RMSE=0.0483 mean_fwhm=1.9502 mean_search_adapt=1.7920 mean_span_adapt=2.6880 mean_num_peaks=1.28
+config_B_moderate_shrink | SNR=20 dB raw=57 tol=55 raw_rate=0.285 tol_rate=0.275 RMSE=0.0481 mean_fwhm=1.9502 mean_search_adapt=1.6800 mean_span_adapt=2.5200 mean_num_peaks=1.28
+config_C_strong_shrink | SNR=20 dB raw=58 tol=57 raw_rate=0.290 tol_rate=0.285 RMSE=0.0488 mean_fwhm=1.9502 mean_search_adapt=1.5680 mean_span_adapt=2.3520 mean_num_peaks=1.29
+config_A_current4b | SNR=22 dB raw=140 tol=140 raw_rate=0.700 tol_rate=0.700 RMSE=0.0401 mean_fwhm=1.9414 mean_search_adapt=1.7920 mean_span_adapt=2.6880 mean_num_peaks=1.70
+config_B_moderate_shrink | SNR=22 dB raw=139 tol=139 raw_rate=0.695 tol_rate=0.695 RMSE=0.0399 mean_fwhm=1.9414 mean_search_adapt=1.6800 mean_span_adapt=2.5200 mean_num_peaks=1.70
+config_C_strong_shrink | SNR=22 dB raw=139 tol=139 raw_rate=0.695 tol_rate=0.695 RMSE=0.0399 mean_fwhm=1.9414 mean_search_adapt=1.5680 mean_span_adapt=2.3520 mean_num_peaks=1.70
+config_A_current4b | SNR=24 dB raw=187 tol=187 raw_rate=0.935 tol_rate=0.935 RMSE=0.0301 mean_fwhm=1.9477 mean_search_adapt=1.7920 mean_span_adapt=2.6880 mean_num_peaks=1.94
+config_B_moderate_shrink | SNR=24 dB raw=188 tol=188 raw_rate=0.940 tol_rate=0.940 RMSE=0.0306 mean_fwhm=1.9477 mean_search_adapt=1.6800 mean_span_adapt=2.5200 mean_num_peaks=1.94
+config_C_strong_shrink | SNR=24 dB raw=189 tol=189 raw_rate=0.945 tol_rate=0.945 RMSE=0.0306 mean_fwhm=1.9477 mean_search_adapt=1.5680 mean_span_adapt=2.3520 mean_num_peaks=1.95
+
+SNR90 summary | bw/7 config_A_current4b=18 dB config_B_moderate_shrink=18 dB config_C_strong_shrink=18 dB
+SNR90 summary | bw/8 config_A_current4b=18 dB config_B_moderate_shrink=20 dB config_C_strong_shrink=18 dB
+SNR90 summary | bw/9 config_A_current4b=22 dB config_B_moderate_shrink=22 dB config_C_strong_shrink=22 dB
+SNR90 summary | bw/10 config_A_current4b=24 dB config_B_moderate_shrink=24 dB config_C_strong_shrink=24 dB

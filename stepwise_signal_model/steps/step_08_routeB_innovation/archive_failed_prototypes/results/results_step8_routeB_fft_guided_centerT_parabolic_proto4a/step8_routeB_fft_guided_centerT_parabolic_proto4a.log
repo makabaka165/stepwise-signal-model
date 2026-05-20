@@ -1,0 +1,184 @@
+Step 08 Route B FFT-guided centerT parabolic prototype 4a
+Prototype scope: keep Route B unchanged, compare true center, coarse FFT center, and parabolic-refined FFT center.
+Route comparison: baseline_true_centerT vs fft_guided_centerT vs fft_guided_centerT_parabolic.
+Common experiment settings:
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100
+sep_factor_list=[6 7 8 9 10]
+Route B internal settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+FFT settings: Nfft_spatial=4096, FFT input = mean(y,2), center pick = max spatial FFT bin + optional 3-point parabolic refinement.
+
+=== sep_factor = 6, theta_sep = 0.4667 deg ===
+SNR=14 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0327 mean_num_peaks=2.00
+SNR=14 dB | fft-guided raw=126 tol=126 raw_rate=0.630 tol_rate=0.630 RMSE=0.0332 mean_num_peaks=1.51 mean_fft_err=-3.7112 std_fft_err=20.8262
+SNR=14 dB | parabolic raw=126 tol=126 raw_rate=0.630 tol_rate=0.630 RMSE=0.0330 mean_num_peaks=1.50 mean_para_err=-3.7118 std_para_err=20.8299
+sample metkl=1 | center_true=13.0000 center_fft=-0.5622 center_para=-0.5593 err_fft=-13.5622 err_para=-13.5593 delta_bin=-0.0881 used_parabolic=1 doa_true=[12.81 13.21] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=16 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0232 mean_num_peaks=2.00
+SNR=16 dB | fft-guided raw=180 tol=180 raw_rate=0.900 tol_rate=0.900 RMSE=0.0234 mean_num_peaks=1.87 mean_fft_err=-0.7584 std_fft_err=9.6908
+SNR=16 dB | parabolic raw=180 tol=180 raw_rate=0.900 tol_rate=0.900 RMSE=0.0229 mean_num_peaks=1.87 mean_para_err=-0.7583 std_para_err=9.6895
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_para=13.0621 err_fft=0.0763 err_para=0.0621 delta_bin=0.4186 used_parabolic=1 doa_true=[12.74 13.18] doa_fft=[12.74 13.17] doa_para=[12.74 13.18]
+SNR=18 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0199 mean_num_peaks=2.00
+SNR=18 dB | fft-guided raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0200 mean_num_peaks=2.00 mean_fft_err=-0.0055 std_fft_err=0.2450
+SNR=18 dB | parabolic raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0200 mean_num_peaks=2.00 mean_para_err=-0.0058 std_para_err=0.2443
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_para=13.0968 err_fft=0.1103 err_para=0.0968 delta_bin=0.3964 used_parabolic=1 doa_true=[12.77 13.23] doa_fft=[12.77 13.23] doa_para=[12.76 13.22]
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0144 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0146 mean_num_peaks=2.00 mean_fft_err=-0.0046 std_fft_err=0.1850
+SNR=20 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0144 mean_num_peaks=2.00 mean_para_err=-0.0050 std_para_err=0.1843
+sample metkl=1 | center_true=13.0000 center_fft=13.2461 center_para=13.2298 err_fft=0.2461 err_para=0.2298 delta_bin=0.4793 used_parabolic=1 doa_true=[12.76 13.23] doa_fft=[12.76 13.22] doa_para=[12.76 13.23]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0118 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0119 mean_num_peaks=2.00 mean_fft_err=-0.0143 std_fft_err=0.1410
+SNR=22 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0117 mean_num_peaks=2.00 mean_para_err=-0.0147 std_para_err=0.1404
+sample metkl=1 | center_true=13.0000 center_fft=12.8727 center_para=12.8657 err_fft=-0.1273 err_para=-0.1343 delta_bin=0.2070 used_parabolic=1 doa_true=[12.76 13.22] doa_fft=[12.75 13.21] doa_para=[12.75 13.21]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0088 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0088 mean_num_peaks=2.00 mean_fft_err=-0.0051 std_fft_err=0.1235
+SNR=24 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0087 mean_num_peaks=2.00 mean_para_err=-0.0062 std_para_err=0.1236
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_para=13.1006 err_fft=0.1103 err_para=0.1006 delta_bin=0.2844 used_parabolic=1 doa_true=[12.77 13.23] doa_fft=[12.77 13.22] doa_para=[12.77 13.22]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0073 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0073 mean_num_peaks=2.00 mean_fft_err=-0.0004 std_fft_err=0.0925
+SNR=26 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0073 mean_num_peaks=2.00 mean_para_err=-0.0002 std_para_err=0.0915
+sample metkl=1 | center_true=13.0000 center_fft=12.9405 center_para=12.9521 err_fft=-0.0595 err_para=-0.0479 delta_bin=-0.3413 used_parabolic=1 doa_true=[12.76 13.23] doa_fft=[12.76 13.23] doa_para=[12.76 13.22]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0062 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0064 mean_num_peaks=2.00 mean_fft_err=0.0010 std_fft_err=0.0707
+SNR=28 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0062 mean_num_peaks=2.00 mean_para_err=0.0007 std_para_err=0.0693
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_para=13.0937 err_fft=0.1103 err_para=0.0937 delta_bin=0.4875 used_parabolic=1 doa_true=[12.78 13.24] doa_fft=[12.78 13.24] doa_para=[12.77 13.24]
+
+=== sep_factor = 7, theta_sep = 0.4000 deg ===
+SNR=14 dB | baseline raw=162 tol=159 raw_rate=0.810 tol_rate=0.795 RMSE=0.0543 mean_num_peaks=1.81
+SNR=14 dB | fft-guided raw=104 tol=99 raw_rate=0.520 tol_rate=0.495 RMSE=0.0560 mean_num_peaks=1.37 mean_fft_err=-3.9593 std_fft_err=24.3801
+SNR=14 dB | parabolic raw=103 tol=97 raw_rate=0.515 tol_rate=0.485 RMSE=0.0560 mean_num_peaks=1.35 mean_para_err=-3.9591 std_para_err=24.3848
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 center_para=13.1314 err_fft=0.1442 err_para=0.1314 delta_bin=0.3770 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=16 dB | baseline raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0374 mean_num_peaks=2.00
+SNR=16 dB | fft-guided raw=176 tol=176 raw_rate=0.880 tol_rate=0.880 RMSE=0.0376 mean_num_peaks=1.83 mean_fft_err=-2.5331 std_fft_err=13.6300
+SNR=16 dB | parabolic raw=174 tol=174 raw_rate=0.870 tol_rate=0.870 RMSE=0.0377 mean_num_peaks=1.82 mean_para_err=-2.5342 std_para_err=13.6295
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_para=13.1242 err_fft=0.1103 err_para=0.1242 delta_bin=-0.4092 used_parabolic=1 doa_true=[12.86 13.18] doa_fft=[12.86 13.18] doa_para=[12.85 13.18]
+SNR=18 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0267 mean_num_peaks=2.00
+SNR=18 dB | fft-guided raw=195 tol=195 raw_rate=0.975 tol_rate=0.975 RMSE=0.0263 mean_num_peaks=1.97 mean_fft_err=-0.5878 std_fft_err=6.3130
+SNR=18 dB | parabolic raw=196 tol=196 raw_rate=0.980 tol_rate=0.980 RMSE=0.0265 mean_num_peaks=1.98 mean_para_err=-0.5875 std_para_err=6.3107
+sample metkl=1 | center_true=13.0000 center_fft=13.5180 center_para=13.5205 err_fft=0.5180 err_para=0.5205 delta_bin=-0.0717 used_parabolic=1 doa_true=[12.79 13.16] doa_fft=[12.8 13.17] doa_para=[12.79 13.16]
+SNR=20 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0208 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0209 mean_num_peaks=2.00 mean_fft_err=-0.0160 std_fft_err=0.1763
+SNR=20 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0210 mean_num_peaks=2.00 mean_para_err=-0.0168 std_para_err=0.1774
+sample metkl=1 | center_true=13.0000 center_fft=12.7031 center_para=12.7020 err_fft=-0.2969 err_para=-0.2980 delta_bin=0.0340 used_parabolic=1 doa_true=[12.81 13.17] doa_fft=[12.81 13.17] doa_para=[12.81 13.17]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0177 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0171 mean_num_peaks=2.00 mean_fft_err=0.0040 std_fft_err=0.1466
+SNR=22 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0176 mean_num_peaks=2.00 mean_para_err=0.0042 std_para_err=0.1460
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 center_para=13.1566 err_fft=0.1442 err_para=0.1566 delta_bin=-0.3652 used_parabolic=1 doa_true=[12.78 13.2] doa_fft=[12.78 13.19] doa_para=[12.79 13.2]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0121 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0125 mean_num_peaks=2.00 mean_fft_err=0.0054 std_fft_err=0.1163
+SNR=24 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0121 mean_num_peaks=2.00 mean_para_err=0.0062 std_para_err=0.1152
+sample metkl=1 | center_true=13.0000 center_fft=12.6692 center_para=12.6714 err_fft=-0.3308 err_para=-0.3286 delta_bin=-0.0633 used_parabolic=1 doa_true=[12.77 13.18] doa_fft=[12.77 13.18] doa_para=[12.77 13.18]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0100 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0099 mean_num_peaks=2.00 mean_fft_err=-0.0004 std_fft_err=0.0873
+SNR=26 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0100 mean_num_peaks=2.00 mean_para_err=-0.0001 std_para_err=0.0867
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 center_para=12.9980 err_fft=0.0084 err_para=-0.0020 delta_bin=0.3066 used_parabolic=1 doa_true=[12.79 13.18] doa_fft=[12.79 13.19] doa_para=[12.79 13.19]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0082 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0080 mean_num_peaks=2.00 mean_fft_err=0.0038 std_fft_err=0.0645
+SNR=28 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0081 mean_num_peaks=2.00 mean_para_err=0.0047 std_para_err=0.0641
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 center_para=13.1431 err_fft=0.1442 err_para=0.1431 delta_bin=0.0326 used_parabolic=1 doa_true=[12.8 13.19] doa_fft=[12.8 13.19] doa_para=[12.8 13.19]
+
+=== sep_factor = 8, theta_sep = 0.3500 deg ===
+SNR=14 dB | baseline raw=31 tol=31 raw_rate=0.155 tol_rate=0.155 RMSE=0.0610 mean_num_peaks=1.16
+SNR=14 dB | fft-guided raw=16 tol=16 raw_rate=0.080 tol_rate=0.080 RMSE=0.0631 mean_num_peaks=0.82 mean_fft_err=-5.3313 std_fft_err=23.0698
+SNR=14 dB | parabolic raw=16 tol=16 raw_rate=0.080 tol_rate=0.080 RMSE=0.0623 mean_num_peaks=0.83 mean_para_err=-5.3326 std_para_err=23.0713
+sample metkl=1 | center_true=13.0000 center_fft=13.4160 center_para=13.4181 err_fft=0.4160 err_para=0.4181 delta_bin=-0.0596 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=16 dB | baseline raw=125 tol=121 raw_rate=0.625 tol_rate=0.605 RMSE=0.0521 mean_num_peaks=1.62
+SNR=16 dB | fft-guided raw=116 tol=111 raw_rate=0.580 tol_rate=0.555 RMSE=0.0518 mean_num_peaks=1.53 mean_fft_err=-0.2167 std_fft_err=8.7719
+SNR=16 dB | parabolic raw=116 tol=112 raw_rate=0.580 tol_rate=0.560 RMSE=0.0512 mean_num_peaks=1.52 mean_para_err=-0.2167 std_para_err=8.7708
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 center_para=12.9647 err_fft=-0.0255 err_para=-0.0353 delta_bin=0.2884 used_parabolic=1 doa_true=[12.93 13.15] doa_fft=[12.93 13.15] doa_para=[12.93 13.15]
+SNR=18 dB | baseline raw=177 tol=174 raw_rate=0.885 tol_rate=0.870 RMSE=0.0421 mean_num_peaks=1.89
+SNR=18 dB | fft-guided raw=174 tol=171 raw_rate=0.870 tol_rate=0.855 RMSE=0.0424 mean_num_peaks=1.86 mean_fft_err=-0.3837 std_fft_err=5.3453
+SNR=18 dB | parabolic raw=174 tol=171 raw_rate=0.870 tol_rate=0.855 RMSE=0.0420 mean_num_peaks=1.86 mean_para_err=-0.3845 std_para_err=5.3431
+sample metkl=1 | center_true=13.0000 center_fft=13.2121 center_para=13.2221 err_fft=0.2121 err_para=0.2221 delta_bin=-0.2936 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=20 dB | baseline raw=199 tol=198 raw_rate=0.995 tol_rate=0.990 RMSE=0.0305 mean_num_peaks=2.00
+SNR=20 dB | fft-guided raw=199 tol=198 raw_rate=0.995 tol_rate=0.990 RMSE=0.0304 mean_num_peaks=2.00 mean_fft_err=-0.0036 std_fft_err=0.1784
+SNR=20 dB | parabolic raw=199 tol=198 raw_rate=0.995 tol_rate=0.990 RMSE=0.0305 mean_num_peaks=2.00 mean_para_err=-0.0041 std_para_err=0.1784
+sample metkl=1 | center_true=13.0000 center_fft=13.2121 center_para=13.2124 err_fft=0.2121 err_para=0.2124 delta_bin=-0.0073 used_parabolic=1 doa_true=[12.85 13.18] doa_fft=[12.85 13.18] doa_para=[12.85 13.18]
+SNR=22 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0231 mean_num_peaks=2.00
+SNR=22 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0230 mean_num_peaks=2.00 mean_fft_err=0.0013 std_fft_err=0.1346
+SNR=22 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0229 mean_num_peaks=2.00 mean_para_err=0.0012 std_para_err=0.1342
+sample metkl=1 | center_true=13.0000 center_fft=13.1103 center_para=13.1104 err_fft=0.1103 err_para=0.1104 delta_bin=-0.0049 used_parabolic=1 doa_true=[12.86 13.19] doa_fft=[12.86 13.19] doa_para=[12.86 13.19]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0160 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0164 mean_num_peaks=2.00 mean_fft_err=0.0025 std_fft_err=0.1089
+SNR=24 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0161 mean_num_peaks=2.00 mean_para_err=0.0019 std_para_err=0.1084
+sample metkl=1 | center_true=13.0000 center_fft=12.9066 center_para=12.8964 err_fft=-0.0934 err_para=-0.1036 delta_bin=0.3013 used_parabolic=1 doa_true=[12.84 13.19] doa_fft=[12.85 13.19] doa_para=[12.85 13.19]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0134 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0132 mean_num_peaks=2.00 mean_fft_err=0.0025 std_fft_err=0.0862
+SNR=26 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0130 mean_num_peaks=2.00 mean_para_err=0.0036 std_para_err=0.0851
+sample metkl=1 | center_true=13.0000 center_fft=12.9405 center_para=12.9507 err_fft=-0.0595 err_para=-0.0493 delta_bin=-0.2983 used_parabolic=1 doa_true=[12.82 13.16] doa_fft=[12.82 13.16] doa_para=[12.82 13.16]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0112 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0110 mean_num_peaks=2.00 mean_fft_err=0.0055 std_fft_err=0.0682
+SNR=28 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0113 mean_num_peaks=2.00 mean_para_err=0.0064 std_para_err=0.0678
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 center_para=13.0359 err_fft=0.0424 err_para=0.0359 delta_bin=0.1912 used_parabolic=1 doa_true=[12.81 13.16] doa_fft=[12.81 13.16] doa_para=[12.82 13.17]
+
+=== sep_factor = 9, theta_sep = 0.3111 deg ===
+SNR=14 dB | baseline raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0660 mean_num_peaks=1.00
+SNR=14 dB | fft-guided raw=2 tol=2 raw_rate=0.010 tol_rate=0.010 RMSE=0.0662 mean_num_peaks=0.74 mean_fft_err=-2.4809 std_fft_err=19.4208
+SNR=14 dB | parabolic raw=2 tol=2 raw_rate=0.010 tol_rate=0.010 RMSE=0.0643 mean_num_peaks=0.75 mean_para_err=-2.4815 std_para_err=19.4193
+sample metkl=1 | center_true=13.0000 center_fft=12.7031 center_para=12.6883 err_fft=-0.2969 err_para=-0.3117 delta_bin=0.4380 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=16 dB | baseline raw=13 tol=12 raw_rate=0.065 tol_rate=0.060 RMSE=0.0572 mean_num_peaks=1.06
+SNR=16 dB | fft-guided raw=11 tol=10 raw_rate=0.055 tol_rate=0.050 RMSE=0.0536 mean_num_peaks=0.94 mean_fft_err=-0.3574 std_fft_err=13.2250
+SNR=16 dB | parabolic raw=12 tol=11 raw_rate=0.060 tol_rate=0.055 RMSE=0.0557 mean_num_peaks=0.96 mean_para_err=-0.3572 std_para_err=13.2276
+sample metkl=1 | center_true=13.0000 center_fft=-69.3227 center_para=-69.3376 err_fft=-82.3227 err_para=-82.3376 delta_bin=0.1593 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=18 dB | baseline raw=78 tol=76 raw_rate=0.390 tol_rate=0.380 RMSE=0.0552 mean_num_peaks=1.39
+SNR=18 dB | fft-guided raw=80 tol=78 raw_rate=0.400 tol_rate=0.390 RMSE=0.0546 mean_num_peaks=1.38 mean_fft_err=-0.2298 std_fft_err=4.1685
+SNR=18 dB | parabolic raw=77 tol=74 raw_rate=0.385 tol_rate=0.370 RMSE=0.0546 mean_num_peaks=1.36 mean_para_err=-0.2290 std_para_err=4.1699
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 center_para=13.0401 err_fft=0.0424 err_para=0.0401 delta_bin=0.0660 used_parabolic=1 doa_true=[12.83 13.1] doa_fft=[12.83 13.1] doa_para=[12.83 13.1]
+SNR=20 dB | baseline raw=165 tol=164 raw_rate=0.825 tol_rate=0.820 RMSE=0.0430 mean_num_peaks=1.82
+SNR=20 dB | fft-guided raw=164 tol=164 raw_rate=0.820 tol_rate=0.820 RMSE=0.0431 mean_num_peaks=1.82 mean_fft_err=0.0034 std_fft_err=0.1845
+SNR=20 dB | parabolic raw=163 tol=163 raw_rate=0.815 tol_rate=0.815 RMSE=0.0431 mean_num_peaks=1.81 mean_para_err=0.0024 std_para_err=0.1839
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_para=13.0604 err_fft=0.0763 err_para=0.0604 delta_bin=0.4700 used_parabolic=1 doa_true=[12.87 13.12] doa_fft=[12.86 13.11] doa_para=[12.87 13.11]
+SNR=22 dB | baseline raw=198 tol=198 raw_rate=0.990 tol_rate=0.990 RMSE=0.0306 mean_num_peaks=1.99
+SNR=22 dB | fft-guided raw=197 tol=197 raw_rate=0.985 tol_rate=0.985 RMSE=0.0304 mean_num_peaks=1.99 mean_fft_err=-0.0107 std_fft_err=0.1499
+SNR=22 dB | parabolic raw=197 tol=197 raw_rate=0.985 tol_rate=0.985 RMSE=0.0303 mean_num_peaks=1.99 mean_para_err=-0.0106 std_para_err=0.1487
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 center_para=13.0592 err_fft=0.0424 err_para=0.0592 delta_bin=-0.4953 used_parabolic=1 doa_true=[12.86 13.11] doa_fft=[12.86 13.11] doa_para=[12.86 13.11]
+SNR=24 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0238 mean_num_peaks=2.00
+SNR=24 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0238 mean_num_peaks=2.00 mean_fft_err=-0.0004 std_fft_err=0.1096
+SNR=24 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0236 mean_num_peaks=2.00 mean_para_err=-0.0002 std_para_err=0.1094
+sample metkl=1 | center_true=13.0000 center_fft=13.1442 center_para=13.1280 err_fft=0.1442 err_para=0.1280 delta_bin=0.4789 used_parabolic=1 doa_true=[12.86 13.15] doa_fft=[12.86 13.14] doa_para=[12.86 13.15]
+SNR=26 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0181 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0182 mean_num_peaks=2.00 mean_fft_err=0.0016 std_fft_err=0.0864
+SNR=26 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0184 mean_num_peaks=2.00 mean_para_err=0.0021 std_para_err=0.0861
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 center_para=12.9681 err_fft=-0.0255 err_para=-0.0319 delta_bin=0.1879 used_parabolic=1 doa_true=[12.86 13.16] doa_fft=[12.86 13.16] doa_para=[12.87 13.17]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0137 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0138 mean_num_peaks=2.00 mean_fft_err=-0.0023 std_fft_err=0.0683
+SNR=28 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0137 mean_num_peaks=2.00 mean_para_err=-0.0019 std_para_err=0.0680
+sample metkl=1 | center_true=13.0000 center_fft=12.9745 center_para=12.9743 err_fft=-0.0255 err_para=-0.0257 delta_bin=0.0050 used_parabolic=1 doa_true=[12.86 13.17] doa_fft=[12.86 13.16] doa_para=[12.86 13.16]
+
+=== sep_factor = 10, theta_sep = 0.2800 deg ===
+SNR=14 dB | baseline raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=1.00
+SNR=14 dB | fft-guided raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.76 mean_fft_err=-5.5067 std_fft_err=21.2736
+SNR=14 dB | parabolic raw=0 tol=0 raw_rate=0.000 tol_rate=0.000 RMSE=NaN mean_num_peaks=0.76 mean_para_err=-5.5064 std_para_err=21.2733
+sample metkl=1 | center_true=13.0000 center_fft=13.3820 center_para=13.3862 err_fft=0.3820 err_para=0.3862 delta_bin=-0.1237 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=16 dB | baseline raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0430 mean_num_peaks=1.00
+SNR=16 dB | fft-guided raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0443 mean_num_peaks=0.91 mean_fft_err=-1.2925 std_fft_err=10.6458
+SNR=16 dB | parabolic raw=1 tol=1 raw_rate=0.005 tol_rate=0.005 RMSE=0.0404 mean_num_peaks=0.91 mean_para_err=-1.2937 std_para_err=10.6460
+sample metkl=1 | center_true=13.0000 center_fft=13.3141 center_para=13.3188 err_fft=0.3141 err_para=0.3188 delta_bin=-0.1389 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=18 dB | baseline raw=15 tol=14 raw_rate=0.075 tol_rate=0.070 RMSE=0.0730 mean_num_peaks=1.07
+SNR=18 dB | fft-guided raw=13 tol=11 raw_rate=0.065 tol_rate=0.055 RMSE=0.0744 mean_num_peaks=1.04 mean_fft_err=0.3077 std_fft_err=4.6803
+SNR=18 dB | parabolic raw=12 tol=10 raw_rate=0.060 tol_rate=0.050 RMSE=0.0750 mean_num_peaks=1.03 mean_para_err=0.3077 std_para_err=4.6800
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 center_para=13.0009 err_fft=0.0084 err_para=0.0009 delta_bin=0.2215 used_parabolic=1 doa_true=[NaN NaN] doa_fft=[NaN NaN] doa_para=[NaN NaN]
+SNR=20 dB | baseline raw=62 tol=61 raw_rate=0.310 tol_rate=0.305 RMSE=0.0473 mean_num_peaks=1.31
+SNR=20 dB | fft-guided raw=59 tol=57 raw_rate=0.295 tol_rate=0.285 RMSE=0.0471 mean_num_peaks=1.29 mean_fft_err=-0.0036 std_fft_err=0.1794
+SNR=20 dB | parabolic raw=60 tol=58 raw_rate=0.300 tol_rate=0.290 RMSE=0.0474 mean_num_peaks=1.29 mean_para_err=-0.0035 std_para_err=0.1793
+sample metkl=1 | center_true=13.0000 center_fft=13.0084 center_para=13.0105 err_fft=0.0084 err_para=0.0105 delta_bin=-0.0627 used_parabolic=1 doa_true=[12.98 13.07] doa_fft=[12.98 13.07] doa_para=[12.98 13.07]
+SNR=22 dB | baseline raw=144 tol=144 raw_rate=0.720 tol_rate=0.720 RMSE=0.0410 mean_num_peaks=1.72
+SNR=22 dB | fft-guided raw=144 tol=144 raw_rate=0.720 tol_rate=0.720 RMSE=0.0409 mean_num_peaks=1.72 mean_fft_err=-0.0063 std_fft_err=0.1309
+SNR=22 dB | parabolic raw=144 tol=144 raw_rate=0.720 tol_rate=0.720 RMSE=0.0403 mean_num_peaks=1.72 mean_para_err=-0.0052 std_para_err=0.1298
+sample metkl=1 | center_true=13.0000 center_fft=13.1782 center_para=13.1726 err_fft=0.1782 err_para=0.1726 delta_bin=0.1630 used_parabolic=1 doa_true=[12.9 13.11] doa_fft=[12.9 13.11] doa_para=[12.9 13.1]
+SNR=24 dB | baseline raw=190 tol=190 raw_rate=0.950 tol_rate=0.950 RMSE=0.0300 mean_num_peaks=1.95
+SNR=24 dB | fft-guided raw=191 tol=191 raw_rate=0.955 tol_rate=0.955 RMSE=0.0305 mean_num_peaks=1.96 mean_fft_err=-0.0073 std_fft_err=0.1089
+SNR=24 dB | parabolic raw=190 tol=190 raw_rate=0.950 tol_rate=0.950 RMSE=0.0300 mean_num_peaks=1.95 mean_para_err=-0.0063 std_para_err=0.1096
+sample metkl=1 | center_true=13.0000 center_fft=13.0763 center_para=13.0692 err_fft=0.0763 err_para=0.0692 delta_bin=0.2090 used_parabolic=1 doa_true=[12.86 13.11] doa_fft=[12.86 13.12] doa_para=[12.86 13.11]
+SNR=26 dB | baseline raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0226 mean_num_peaks=2.00
+SNR=26 dB | fft-guided raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0227 mean_num_peaks=2.00 mean_fft_err=0.0055 std_fft_err=0.0849
+SNR=26 dB | parabolic raw=199 tol=199 raw_rate=0.995 tol_rate=0.995 RMSE=0.0222 mean_num_peaks=2.00 mean_para_err=0.0041 std_para_err=0.0852
+sample metkl=1 | center_true=13.0000 center_fft=13.0424 center_para=13.0518 err_fft=0.0424 err_para=0.0518 delta_bin=-0.2783 used_parabolic=1 doa_true=[12.9 13.18] doa_fft=[12.9 13.18] doa_para=[12.9 13.18]
+SNR=28 dB | baseline raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0181 mean_num_peaks=2.00
+SNR=28 dB | fft-guided raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0180 mean_num_peaks=2.00 mean_fft_err=0.0027 std_fft_err=0.0718
+SNR=28 dB | parabolic raw=200 tol=200 raw_rate=1.000 tol_rate=1.000 RMSE=0.0181 mean_num_peaks=2.00 mean_para_err=0.0025 std_para_err=0.0706
+sample metkl=1 | center_true=13.0000 center_fft=12.9066 center_para=12.9188 err_fft=-0.0934 err_para=-0.0812 delta_bin=-0.3579 used_parabolic=1 doa_true=[12.88 13.14] doa_fft=[12.88 13.14] doa_para=[12.88 13.14]
+
+SNR90 summary | bw/6 baseline=14 dB fft-guided=16 dB parabolic=16 dB
+SNR90 summary | bw/7 baseline=16 dB fft-guided=18 dB parabolic=18 dB
+SNR90 summary | bw/8 baseline=20 dB fft-guided=20 dB parabolic=20 dB
+SNR90 summary | bw/9 baseline=22 dB fft-guided=22 dB parabolic=22 dB
+SNR90 summary | bw/10 baseline=24 dB fft-guided=24 dB parabolic=24 dB
