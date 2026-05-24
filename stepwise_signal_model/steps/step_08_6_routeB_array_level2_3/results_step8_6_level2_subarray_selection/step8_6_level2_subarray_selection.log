@@ -1,0 +1,59 @@
+Step 08.6 level 2 part 3: subarray selection and weighted spectrum validation
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_subarray_selection
+First-part commit: 03c02c9
+Second-part commit: c217c0f
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+First-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_subarray_manifold.m
+Second-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_spectrum_diagnostics.m
+Second-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\step8_6_level2_spectrum_diagnostics_summary.csv
+Second-part single-subarray diag: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\step8_6_level2_single_subarray_spectrum_diag.csv
+Second-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第二部分_谱函数消融诊断记录.md
+Scope guard: level 2 subarray selection only. No fullscan, no level 3, no 2D az/el MUSIC, no covariance fitting.
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, angle_step=0.005000 deg, ngrid=1056
+
+Routes
+   1: center_real
+   2: min_den_forward
+   3: min_den_fb
+   4: center_window_3_avg_spectrum
+   5: center_window_5_avg_spectrum
+   6: center_window_7_avg_spectrum
+   7: center_window_9_avg_spectrum
+   8: center_window_5_min_den
+   9: center_window_7_min_den
+  10: gaussian_weight_avg_spectrum
+  11: gaussian_weight_den_then_inverse
+  12: oracle_best_subarray_upper_bound
+
+K_phi=20, P_phi=46, subarray_span=35.625000 deg
+  sep=7 finished for K=20, elapsed=9.8 s
+  sep=10 finished for K=20, elapsed=18.7 s
+
+K_phi=24, P_phi=42, subarray_span=43.125000 deg
+  sep=7 finished for K=24, elapsed=27.8 s
+  sep=10 finished for K=24, elapsed=37.4 s
+
+K_phi=28, P_phi=38, subarray_span=50.625000 deg
+  sep=7 finished for K=28, elapsed=46.9 s
+  sep=10 finished for K=28, elapsed=56.4 s
+
+K_phi=32, P_phi=34, subarray_span=58.125000 deg
+  sep=7 finished for K=32, elapsed=66.0 s
+  sep=10 finished for K=32, elapsed=75.2 s
+
+Diagnostic conclusion: 中心子阵真实流形已经基本达到当前层次二 MUSIC 谱函数族上限，进一步聚合收益有限。
+Next step: 进入层次二协方差拟合。
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\step8_6_level2_subarray_selection_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\step8_6_level2_subarray_selection_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\step8_6_level2_subarray_selection_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\level2_subarray_selection_tol_sep10_snr30.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\level2_subarray_selection_kphi_vs_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\level2_center_window_size_vs_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\level2_oracle_gap_vs_route.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第三部分_子阵选择与加权谱验证记录.md
