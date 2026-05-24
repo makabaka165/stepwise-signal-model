@@ -1,0 +1,58 @@
+Verify B: source coherence phase sensitivity scan
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\verify_coherence_sensitivity
+Frozen algorithm path: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation
+
+Layer 1 geometry health check
+phase_offset_deg_list=[0 5 15 30 60 90 180]
+K_fbss=28, arc_dist=0.01308997 m, arc/lambda=0.43633231, subArc_span_deg=120.000000 deg
+N_arc_span_deg=58.125000 deg, bw_eq=5.450000 deg, dz/lambda=0.56666667
+expected_snr_gain=15.051500 dB, selected global cols=[178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17]
+Layer 1 passed.
+
+Layer 2 phase-offset sanity check
+phase=0 deg sanity pass=1 doa=[-0.5230 0.5161], true=[-0.5450 0.5450], max_err=0.0289 deg, threshold=0.0500, lambda2_over_noise=29.85
+phase=5 deg sanity pass=1 doa=[-0.5011 0.5559], true=[-0.5450 0.5450], max_err=0.0439 deg, threshold=0.0500, lambda2_over_noise=46.88
+phase=15 deg sanity pass=1 doa=[-0.5170 0.5413], true=[-0.5450 0.5450], max_err=0.0280 deg, threshold=0.0500, lambda2_over_noise=327.2
+phase=30 deg sanity pass=1 doa=[-0.5242 0.5358], true=[-0.5450 0.5450], max_err=0.0208 deg, threshold=0.0500, lambda2_over_noise=1402
+phase=60 deg sanity pass=1 doa=[-0.5292 0.5345], true=[-0.5450 0.5450], max_err=0.0158 deg, threshold=0.1000, lambda2_over_noise=6597
+phase=90 deg sanity pass=1 doa=[-0.5329 0.5359], true=[-0.5450 0.5450], max_err=0.0121 deg, threshold=0.1000, lambda2_over_noise=1.838e+04
+phase=180 deg sanity pass=0 doa=[-0.8525 0.8522], true=[-0.5450 0.5450], max_err=0.3075 deg, threshold=0.3000, lambda2_over_noise=1.256e+04
+Layer 2 completed. all_pass=0, trend_check_0_to_90=1
+
+Layer 3 coherence sensitivity full scan starts
+sep_factor=1, theta_sep=5.450000 deg, theta_a=-2.725000, theta_b=2.725000
+sep_factor=1 finished, elapsed=170.0 s
+sep_factor=2, theta_sep=2.725000 deg, theta_a=-1.362500, theta_b=1.362500
+sep_factor=2 finished, elapsed=339.7 s
+sep_factor=3, theta_sep=1.816667 deg, theta_a=-0.908333, theta_b=0.908333
+sep_factor=3 finished, elapsed=509.0 s
+sep_factor=5, theta_sep=1.090000 deg, theta_a=-0.545000, theta_b=0.545000
+sep_factor=5 finished, elapsed=679.3 s
+sep_factor=7, theta_sep=0.778571 deg, theta_a=-0.389286, theta_b=0.389286
+sep_factor=7 finished, elapsed=850.0 s
+sep_factor=10, theta_sep=0.545000 deg, theta_a=-0.272500, theta_b=0.272500
+sep_factor=10 finished, elapsed=1020.5 s
+
+Layer 3 acceptance checks
+3a phase=0 proto14 replay pass=1, rmse_diff_max=0, tol_count_diff_max=0, degraded_diff_max=0
+3b phase=30 sep=10 SNR=24 tol_rate=1.000000, pass=1
+3c phase=60/90 sep=10 SNR=20 tol_rate=[1.000000 1.000000], pass=1
+3d degraded rates 0->90=[0.2538 0.1904 0.05556 0.005 0 0], monotonic_down=1
+3e phase=180 degraded=0.000000 vs phase=0 degraded=0.253796, ratio=0.000000
+3f phase=0 sep=10 SNR=30 mean_bias diff=0 deg, pass=1
+phase=0 deg SNR90=[-4 4 12 22 28 NaN], degraded_total=0.253796
+phase=5 deg SNR90=[-4 4 10 20 22 26], degraded_total=0.190417
+phase=15 deg SNR90=[-4 2 6 12 14 16], degraded_total=0.055556
+phase=30 deg SNR90=[-4 -2 2 4 8 10], degraded_total=0.005000
+phase=60 deg SNR90=[-4 -4 -4 -2 2 4], degraded_total=0.000000
+phase=90 deg SNR90=[-4 -4 -4 -4 -2 0], degraded_total=0.000000
+phase=180 deg SNR90=[-4 10 NaN NaN NaN NaN], degraded_total=0.000000
+
+Layer 4 diagnostic figures generated.
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_verify_coherence_sensitivity
+
+4-layer acceptance summary
+Layer 1 geometry: PASS
+Layer 2 sanity all_pass=0, max_err=[0.0289 0.0439 0.0280 0.0208 0.0158 0.0121 0.3075], trend_0_to_90=1
+Layer 3 regression: 3a=1, 3b=1, 3c=1, 3d=1, 3e=report, 3f=1
+Layer 4 figures: PASS

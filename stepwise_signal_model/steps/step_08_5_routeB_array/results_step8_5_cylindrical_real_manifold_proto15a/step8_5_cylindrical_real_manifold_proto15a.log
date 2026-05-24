@@ -1,0 +1,58 @@
+Step 08.5 Prototype 15.A: cylindrical real-manifold grid-MUSIC
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\space_smooth_music_B_cylindrical_real_manifold_prototype15a
+Frozen paths: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation ; E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo
+
+Layer 1 geometry health check
+arc_dist=0.01308997 m, arc/lambda=0.43633231, subArc_span_deg=120.000000
+N_arc=32, K_fbss=28, N_arc_span_deg=58.125000, edge_offset_deg=29.062500, bw_eq=5.450000 deg
+dz/lambda=0.56666667, elev_aperture=0.52700000 m, expected_snr_gain=15.051500 dB
+P_sub=5, p_mid=3, col_center(local)=[20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47]
+col_center global cols=[180 181 182 183 184 185 186 187 188 189 190 191 192 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15]
+X_K range=[0.35874910 0.40000000] m, Y_K range=[-0.16508281 0.17691548] m
+max |X_K-X_K(1)|=0.03565447 m, max |Y_K-Y_K(1)|=0.34199829 m
+grid search: range=+/-5.450 deg, step=0.005 deg, ngrid=2181
+Layer 1 passed.
+
+Layer 2 fully in-phase sanity check
+Real manifold grid sanity: pass=1, doa=[-0.5300 0.5250], true=[-0.5450 0.5450], max_err=0.0200 deg, peaks=2, lambda2_over_noise=29.85
+ULA grid ablation sanity: pass=1, doa=[-0.5050 0.5000], true=[-0.5450 0.5450], max_err=0.0450 deg, peaks=2
+Proto6 replay sanity: pass=1, doa=[12.7206 13.2797], true=[12.7200 13.2800], max_err=0.0006 deg, lambda2_over_noise=229.8
+Layer 2 passed.
+
+Layer 3 real-manifold and ULA-grid ablation regression starts
+sep_factor=1, theta_sep=5.450000 deg, theta_a=-2.725000, theta_b=2.725000
+sep_factor=1 finished, elapsed=22.6 s
+sep_factor=2, theta_sep=2.725000 deg, theta_a=-1.362500, theta_b=1.362500
+sep_factor=2 finished, elapsed=44.6 s
+sep_factor=3, theta_sep=1.816667 deg, theta_a=-0.908333, theta_b=0.908333
+sep_factor=3 finished, elapsed=66.8 s
+sep_factor=5, theta_sep=1.090000 deg, theta_a=-0.545000, theta_b=0.545000
+sep_factor=5 finished, elapsed=88.8 s
+sep_factor=7, theta_sep=0.778571 deg, theta_a=-0.389286, theta_b=0.389286
+sep_factor=7 finished, elapsed=110.9 s
+sep_factor=10, theta_sep=0.545000 deg, theta_a=-0.272500, theta_b=0.272500
+sep_factor=10 finished, elapsed=133.0 s
+
+Layer 3 acceptance checks
+sep_factor=1 | SNR90 baseline=-4, real=-4, ula_grid=-4 | RMSE@30 baseline=0.0492, real=0.0150, ula_grid=0.0500
+sep_factor=2 | SNR90 baseline=4, real=2, ula_grid=4 | RMSE@30 baseline=0.0320, real=0.0131, ula_grid=0.0346
+sep_factor=3 | SNR90 baseline=12, real=10, ula_grid=12 | RMSE@30 baseline=0.0276, real=0.0142, ula_grid=0.0330
+sep_factor=5 | SNR90 baseline=22, real=22, ula_grid=22 | RMSE@30 baseline=0.0282, real=0.0205, ula_grid=0.0395
+sep_factor=7 | SNR90 baseline=28, real=28, ula_grid=NaN | RMSE@30 baseline=0.0421, real=0.0452, ula_grid=0.0668
+sep_factor=10 | SNR90 baseline=NaN, real=NaN, ula_grid=NaN | RMSE@30 baseline=0.1203, real=0.1149, ula_grid=0.1258
+3a proto6 replay pass=1, SNR90=[14 16 18 20] dB, history=[14 16 20 22] dB
+3b real manifold sep=10 SNR=24 tol_rate=0.000000, pass=0
+3c real manifold SNR90 advance vs proto14=[0 2 2 0 0 NaN] dB, pass=0
+3d sep=10 SNR=30 RMSE ratio real/ULAgrid=0.913676, pass=0
+3e degradation rates baseline=0.253796, real=0.410370, ula_grid=0.412963, pass=0
+3f sep=10 SNR=30 real mean_bias=-0.00366667 deg, pass=1
+
+Layer 4 diagnostics generated.
+Generated figures: manifold_compare, rmse_compare, snr90, spectrum_example, proto6_replay.
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_real_manifold_proto15a
+
+4-layer acceptance summary
+Layer 1 geometry: PASS
+Layer 2 sanity: real=1 (err=0.0200), ula_grid=1 (err=0.0450), proto6=1 (err=0.0006)
+Layer 3 regression: 3a=1, 3b=0, 3c=0, 3d=0, 3e=0, 3f=1
+Layer 4 figures: PASS

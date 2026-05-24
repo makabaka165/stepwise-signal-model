@@ -1,0 +1,55 @@
+Verify A: FBSS P_sub sensitivity scan
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\verify_p_sub_sensitivity
+Frozen algorithm path: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation
+
+Layer 1 geometry health check
+K index 1: K_fbss=28, P_sub=5, K/N=0.875
+K index 2: K_fbss=24, P_sub=9, K/N=0.750
+K index 3: K_fbss=20, P_sub=13, K/N=0.625
+K index 4: K_fbss=16, P_sub=17, K/N=0.500
+arc_dist=0.01308997 m, arc/lambda=0.43633231, subArc_span_deg=120.000000 deg
+N_arc_span_deg=58.125000 deg, bw_eq=5.450000 deg, dz/lambda=0.56666667
+expected_snr_gain=15.051500 dB, selected global cols=[178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17]
+Layer 1 passed.
+
+Layer 2 fully in-phase sanity check
+K=28 P_sub=5 sanity pass=1 doa=[-0.5230 0.5161], true=[-0.5450 0.5450], max_err=0.0289 deg, threshold=0.0500, lambda2_over_noise=29.85
+K=24 P_sub=9 sanity pass=1 doa=[-0.5270 0.5236], true=[-0.5450 0.5450], max_err=0.0214 deg, threshold=0.0500, lambda2_over_noise=61.19
+K=20 P_sub=13 sanity pass=1 doa=[-0.5399 0.5139], true=[-0.5450 0.5450], max_err=0.0311 deg, threshold=0.1000, lambda2_over_noise=75.96
+K=16 P_sub=17 sanity pass=1 doa=[-0.5319 0.5182], true=[-0.5450 0.5450], max_err=0.0268 deg, threshold=0.3000, lambda2_over_noise=67.64
+Layer 2 completed. K=16 sanity_failed=0.
+
+Layer 3 P_sub sensitivity full scan starts
+sep_factor=1, theta_sep=5.450000 deg, theta_a=-2.725000, theta_b=2.725000
+sep_factor=1 finished, elapsed=33.0 s
+sep_factor=2, theta_sep=2.725000 deg, theta_a=-1.362500, theta_b=1.362500
+sep_factor=2 finished, elapsed=66.3 s
+sep_factor=3, theta_sep=1.816667 deg, theta_a=-0.908333, theta_b=0.908333
+sep_factor=3 finished, elapsed=105.1 s
+sep_factor=5, theta_sep=1.090000 deg, theta_a=-0.545000, theta_b=0.545000
+sep_factor=5 finished, elapsed=140.2 s
+sep_factor=7, theta_sep=0.778571 deg, theta_a=-0.389286, theta_b=0.389286
+sep_factor=7 finished, elapsed=175.3 s
+sep_factor=10, theta_sep=0.545000 deg, theta_a=-0.272500, theta_b=0.272500
+sep_factor=10 finished, elapsed=211.1 s
+
+Layer 3 acceptance checks
+3a K=28 proto14 replay pass=1, rmse_diff_max=0, tol_count_diff_max=0
+3b K=24 sep=10 SNR=24 tol_rate=0.140000, pass=0
+3c K=24 sep=10 SNR90=30 dB, pass=0
+3d K=20 sep=10 SNR90=30 dB vs K=24 30 dB, pass=1
+3e degraded total K=20 0.169306, K=16 0.173241, sanity_failed_K16=0
+3f K=24 vs K=28 sep=10 SNR=30 mean_bias diff=0.00848990 deg, pass=0
+K=28 P_sub=5 SNR90=[-4 4 12 22 28 NaN], degraded_total=0.253796
+K=24 P_sub=9 SNR90=[-4 2 10 18 24 30], degraded_total=0.188194
+K=20 P_sub=13 SNR90=[-4 2 8 18 22 30], degraded_total=0.169306
+K=16 P_sub=17 SNR90=[-4 4 8 18 22 28], degraded_total=0.173241
+
+Layer 4 diagnostic figures generated.
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_verify_p_sub_sensitivity
+
+4-layer acceptance summary
+Layer 1 geometry: PASS
+Layer 2 sanity max_err=[0.0289 0.0214 0.0311 0.0268], sanity_failed=[0  0  0  0]
+Layer 3 regression: 3a=1, 3b=0, 3c=0, 3d=1, 3e=report, 3f=0
+Layer 4 figures: PASS

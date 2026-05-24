@@ -1,0 +1,53 @@
+Verify C: K_fbss x source phase joint scan
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\verify_joint_psub_coherence
+Frozen algorithm path: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation
+
+Layer 1 geometry health check
+K_fbss_list=[28 24], phase_offset_deg_list=[0 5 15 30]
+arc_dist=0.01308997 m, arc/lambda=0.43633231, subArc_span_deg=120.000000 deg
+N_arc_span_deg=58.125000 deg, bw_eq=5.450000 deg, dz/lambda=0.56666667, expected_snr_gain=15.051500 dB
+Layer 1 passed.
+
+Layer 2 joint sanity check
+K=28 phase=0 sanity pass=1 doa=[-0.5230 0.5161], max_err=0.0289 deg, lambda2_over_noise=29.85
+K=28 phase=5 sanity pass=1 doa=[-0.5011 0.5559], max_err=0.0439 deg, lambda2_over_noise=46.88
+K=28 phase=15 sanity pass=1 doa=[-0.5170 0.5413], max_err=0.0280 deg, lambda2_over_noise=327.2
+K=28 phase=30 sanity pass=1 doa=[-0.5242 0.5358], max_err=0.0208 deg, lambda2_over_noise=1402
+K=24 phase=0 sanity pass=1 doa=[-0.5270 0.5236], max_err=0.0214 deg, lambda2_over_noise=61.19
+K=24 phase=5 sanity pass=1 doa=[-0.5172 0.5393], max_err=0.0278 deg, lambda2_over_noise=72.22
+K=24 phase=15 sanity pass=1 doa=[-0.5203 0.5406], max_err=0.0247 deg, lambda2_over_noise=257.2
+K=24 phase=30 sanity pass=1 doa=[-0.5255 0.5369], max_err=0.0195 deg, lambda2_over_noise=967.3
+Layer 2 passed.
+
+Layer 3 joint scan starts
+sep_factor=1, theta_sep=5.450000 deg, theta_a=-2.725000, theta_b=2.725000
+sep_factor=1 finished, elapsed=184.1 s
+sep_factor=2, theta_sep=2.725000 deg, theta_a=-1.362500, theta_b=1.362500
+sep_factor=2 finished, elapsed=375.7 s
+sep_factor=3, theta_sep=1.816667 deg, theta_a=-0.908333, theta_b=0.908333
+sep_factor=3 finished, elapsed=576.6 s
+sep_factor=5, theta_sep=1.090000 deg, theta_a=-0.545000, theta_b=0.545000
+sep_factor=5 finished, elapsed=778.9 s
+sep_factor=7, theta_sep=0.778571 deg, theta_a=-0.389286, theta_b=0.389286
+sep_factor=7 finished, elapsed=980.9 s
+sep_factor=10, theta_sep=0.545000 deg, theta_a=-0.272500, theta_b=0.272500
+sep_factor=10 finished, elapsed=1182.9 s
+
+Layer 3 acceptance checks
+3a-1 self-check K28 phase0 vs proto14: pass=1, rmse_diff_max=0, tol_count_diff_max=0
+3a-2 self-check K28 phase15 vs verifyB: pass=1, rmse_diff_max=0, tol_count_diff_max=0
+3a-3 self-check K24 phase0 vs verifyA: pass=1, rmse_diff_max=0, tol_count_diff_max=0
+3b J1 delta SNR90(K24-K28) at phase15 sep10 = 0 dB, pass=1
+3c delta SNR90(K24-K28) at phase5 sep10 = 0 dB
+3d delta SNR90(K24-K28) at phase0 sep10 = -Inf dB, pass=1
+3e degraded K24<=K28 by phase = 0, degraded matrix=[0.2538 0.1904 0.05556 0.005;0.1882 0.1583 0.06296 0.009398]
+sep=10 SNR90 matrix rows K=[28;24], cols phase=[0 5 15 30]: [NaN 26 16 10;30 26 16 12]
+
+Layer 4 diagnostic figures generated.
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_verify_joint_psub_coherence
+
+4-layer acceptance summary
+Layer 1 geometry: PASS
+Layer 2 sanity max_err matrix=[0.02889 0.0439 0.02795 0.02083;0.02143 0.02783 0.0247 0.0195]
+Layer 3 regression: self_checks=1, J1=1, phase0_K24_gain=1, K24_degraded_le_K28=0
+Layer 4 figures: PASS

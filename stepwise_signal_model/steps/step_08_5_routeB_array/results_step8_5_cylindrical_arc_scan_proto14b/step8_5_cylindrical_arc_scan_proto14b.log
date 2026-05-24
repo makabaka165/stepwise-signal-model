@@ -1,0 +1,64 @@
+Step 08.5 Prototype 14b: cylindrical arc N_arc=48/64 aperture scan
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\space_smooth_music_B_cylindrical_arc_scan_prototype14b
+Frozen algorithm paths: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation ; E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo
+
+Layer 1 geometry health check
+cfg.beam.sectorHalf=60.000000 deg, cfg.beam.subNaz=65, subArc_span_deg=120.000000 deg
+arc_dist=0.01308997 m, arc/lambda=0.43633231, dz/lambda=0.56666667, expected layer gain=15.0515 dB
+N_arc=48, K_fbss=44, N_arc_span_deg=88.125000, edge_offset_deg=44.062500, sin(phi)/phi=0.904305, mismatch=9.570%, bw_eq=3.590000 deg
+N_arc=64, K_fbss=60, N_arc_span_deg=118.125000, edge_offset_deg=59.062500, sin(phi)/phi=0.832072, mismatch=16.793%, bw_eq=2.680000 deg
+Layer 1 passed.
+
+Layer 2 fully in-phase sanity check
+N_arc=48 sanity: pass=1, doa=[-0.2791 0.2815], true=[-0.3590 0.3590], max_err=0.0799 deg, threshold=0.10, lambda2_over_noise=16.03
+N_arc=64 sanity: pass=0, doa=[-0.0622 0.0131], true=[-0.2680 0.2680], max_err=0.2549 deg, threshold=0.15, lambda2_over_noise=8.987
+Proto6 replay sanity: pass=1, doa=[12.7206 13.2797], true=[12.7200 13.2800], max_err=0.0006 deg, lambda2_over_noise=229.8
+Layer 2 failed, but full regression continues to quantify aperture/mismatch boundary.
+
+Layer 3 N_arc=48/64 full regression starts
+Start N_arc=48, K_fbss=44, seed_offset=10000000
+N_arc=48, sep_factor=1, theta_sep=3.590000 deg, theta_a=-1.795000, theta_b=1.795000, clean_gain=15.0515 dB
+N_arc=48, sep_factor=2, theta_sep=1.795000 deg, theta_a=-0.897500, theta_b=0.897500, clean_gain=15.0515 dB
+N_arc=48, sep_factor=3, theta_sep=1.196667 deg, theta_a=-0.598333, theta_b=0.598333, clean_gain=15.0515 dB
+N_arc=48, sep_factor=5, theta_sep=0.718000 deg, theta_a=-0.359000, theta_b=0.359000, clean_gain=15.0515 dB
+N_arc=48, sep_factor=7, theta_sep=0.512857 deg, theta_a=-0.256429, theta_b=0.256429, clean_gain=15.0515 dB
+N_arc=48, sep_factor=10, theta_sep=0.359000 deg, theta_a=-0.179500, theta_b=0.179500, clean_gain=15.0515 dB
+N_arc=48 finished, elapsed=283.1 s
+Start N_arc=64, K_fbss=60, seed_offset=20000000
+N_arc=64, sep_factor=1, theta_sep=2.680000 deg, theta_a=-1.340000, theta_b=1.340000, clean_gain=15.0515 dB
+N_arc=64, sep_factor=2, theta_sep=1.340000 deg, theta_a=-0.670000, theta_b=0.670000, clean_gain=15.0515 dB
+N_arc=64, sep_factor=3, theta_sep=0.893333 deg, theta_a=-0.446667, theta_b=0.446667, clean_gain=15.0515 dB
+N_arc=64, sep_factor=5, theta_sep=0.536000 deg, theta_a=-0.268000, theta_b=0.268000, clean_gain=15.0515 dB
+N_arc=64, sep_factor=7, theta_sep=0.382857 deg, theta_a=-0.191429, theta_b=0.191429, clean_gain=15.0515 dB
+N_arc=64, sep_factor=10, theta_sep=0.268000 deg, theta_a=-0.134000, theta_b=0.134000, clean_gain=15.0515 dB
+N_arc=64 finished, elapsed=722.7 s
+
+Layer 3 proto6 replay starts: pure_ula_root_music_64ch_proto6_replay
+
+Layer 3 acceptance checks
+sep_factor=1 | SNR90 N32=-4, N48=-4, N64=NaN | degradation N32=0.0000, N48=0.0000, N64=0.0000 | sep10 tol rates logged separately
+sep_factor=2 | SNR90 N32=4, N48=6, N64=NaN | degradation N32=0.0000, N48=0.0000, N64=0.0311 | sep10 tol rates logged separately
+sep_factor=3 | SNR90 N32=12, N48=16, N64=NaN | degradation N32=0.0564, N48=0.1519, N64=0.2508 | sep10 tol rates logged separately
+sep_factor=5 | SNR90 N32=22, N48=NaN, N64=NaN | degradation N32=0.3131, N48=0.4128, N64=0.5108 | sep10 tol rates logged separately
+sep_factor=7 | SNR90 N32=28, N48=NaN, N64=NaN | degradation N32=0.4881, N48=0.5736, N64=0.6789 | sep10 tol rates logged separately
+sep_factor=10 | SNR90 N32=NaN, N48=NaN, N64=NaN | degradation N32=0.6653, N48=0.7522, N64=0.8542 | sep10 tol rates logged separately
+proto6 replay sep_factor=7 | SNR90 abs01=14 dB, rel025=14 dB
+proto6 replay sep_factor=8 | SNR90 abs01=16 dB, rel025=18 dB
+proto6 replay sep_factor=9 | SNR90 abs01=18 dB, rel025=20 dB
+proto6 replay sep_factor=10 | SNR90 abs01=20 dB, rel025=22 dB
+3a proto6 replay pass=1, SNR90=[14 16 18 20] dB, history=[14 16 20 22] dB
+3b N48 sep=10 SNR=18 tol_rate=0.000000, pass=0
+3c N64 sep=10 SNR=14 tol_rate=0.000000, pass=0
+3d degradation overall N48=0.315093, N64=0.387639, pass=0
+3e N48 SNR90 advance vs N32=[0 -2 -4 NaN NaN NaN] dB, pass=0
+3f abs mean_bias increment N64 vs N48 at 30dB=[0.002495 0.006373 0.007758 0.009208 0.01093 0.01249] deg, pass=1
+
+Layer 4 diagnostics generated.
+Generated figures: narc_vs_degradation, narc_vs_snr90, steering_mismatch, proto6_replay.
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_arc_scan_proto14b
+
+4-layer acceptance summary
+Layer 1 geometry: PASS
+Layer 2 sanity: N48=1 (err=0.0799), N64=0 (err=0.2549), proto6=1 (err=0.0006)
+Layer 3 regression: 3a=1, 3b=0, 3c=0, 3d=0, 3e=0, 3f=1
+Layer 4 figures: PASS

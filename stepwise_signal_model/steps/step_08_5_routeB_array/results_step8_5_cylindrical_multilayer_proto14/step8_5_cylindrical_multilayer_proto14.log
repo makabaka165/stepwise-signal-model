@@ -1,0 +1,84 @@
+Step 08.5 Prototype 14: cylindrical multilayer coherent elevation combining + azimuth Root-MUSIC
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\space_smooth_music_B_cylindrical_multilayer_prototype14
+Frozen algorithm paths: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation ; E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo
+
+Layer 1 geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, cfg.arr.R=0.400000 m, cfg.arr.dPhi=1.875000 deg
+cfg.beam.sectorHalf=60.000000 deg, cfg.beam.subNaz=65
+arc_dist=0.01308997 m
+arc/lambda=0.43633231
+subArc_span_deg=120.000000 deg
+N_arc_span_deg=58.125000 deg
+edge_offset_deg=29.062500 deg
+dz/lambda=0.56666667
+elev_aperture=0.52700000 m, elev_aperture/lambda=17.56666667
+elev_aperture_deg_3dB=4.193169 deg
+N_arc*Nel=1024 elements before combining
+expected_snr_gain=15.051500 dB
+d_eq=0.01308997 m, d_eq/lambda=0.43633231, bw_eq=5.450000 deg
+col_select=[18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49] within the 65-column working sector
+selected global cols=[178 179 180 181 182 183 184 185 186 187 188 189 190 191 192 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17]
+selected relative phi first/last = -28.125000 / 30.000000 deg
+z first/mid/last = 0.00000000 / 0.25500000 / 0.52700000 m
+Layer 1 passed.
+
+Layer 2 fully in-phase single-sample sanity check
+Single-layer sanity: pass=1, doa=[-0.4086, 0.2768], true=[-0.5450, 0.5450], max_err=0.2682 deg, lambda2_over_noise=1.755
+Multilayer coherent sanity: pass=1, doa=[-0.5230, 0.5161], true=[-0.5450, 0.5450], max_err=0.0289 deg, lambda2_over_noise=29.85, measured_gain=15.0515 dB
+Multilayer el mismatch 2deg sanity: pass=1, doa=[-0.4914, 0.5145], true=[-0.5450, 0.5450], max_err=0.0536 deg, lambda2_over_noise=6.89, measured_gain=8.3087 dB
+Pure ULA N=64 proto6 replay sanity: pass=1, doa=[12.7206, 13.2797], true=[12.7200, 13.2800], max_err=0.0006 deg, lambda2_over_noise=229.8
+Layer 2 route 2 passed; full regression continues.
+
+Layer 3 full fair comparison starts
+sep_factor_list=[1 2 3 5 7 10]
+snr_list=[-4 -2 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30], Metkl=200, T_snap=260, tol_deg=0.100, tol_rel_ratio=0.25
+N_arc=32, Nel=32, K_fbss=28, base_seed=20260601, no source phase bias
+sep_factor=1, theta_sep=5.450000 deg, theta_a=-2.725000 deg, theta_b=2.725000 deg, tol_rel=1.362500 deg, clean_gain_main=15.0515 dB, clean_gain_mismatch=8.3087 dB
+sep_factor=1 finished, elapsed=39.9 s
+sep_factor=2, theta_sep=2.725000 deg, theta_a=-1.362500 deg, theta_b=1.362500 deg, tol_rel=0.681250 deg, clean_gain_main=15.0515 dB, clean_gain_mismatch=8.3087 dB
+sep_factor=2 finished, elapsed=78.4 s
+sep_factor=3, theta_sep=1.816667 deg, theta_a=-0.908333 deg, theta_b=0.908333 deg, tol_rel=0.454167 deg, clean_gain_main=15.0515 dB, clean_gain_mismatch=8.3087 dB
+sep_factor=3 finished, elapsed=116.4 s
+sep_factor=5, theta_sep=1.090000 deg, theta_a=-0.545000 deg, theta_b=0.545000 deg, tol_rel=0.272500 deg, clean_gain_main=15.0515 dB, clean_gain_mismatch=8.3087 dB
+sep_factor=5 finished, elapsed=154.7 s
+sep_factor=7, theta_sep=0.778571 deg, theta_a=-0.389286 deg, theta_b=0.389286 deg, tol_rel=0.194643 deg, clean_gain_main=15.0515 dB, clean_gain_mismatch=8.3087 dB
+sep_factor=7 finished, elapsed=193.4 s
+sep_factor=10, theta_sep=0.545000 deg, theta_a=-0.272500 deg, theta_b=0.272500 deg, tol_rel=0.136250 deg, clean_gain_main=15.0515 dB, clean_gain_mismatch=8.3087 dB
+sep_factor=10 finished, elapsed=233.6 s
+
+Layer 3 proto6 replay starts: pure_ula_root_music_64ch_proto6_replay
+sep_factor_list_64=[7 8 9 10], snr_list_64=[14 16 18 20 22 24 26 28], N_64=64, K_fbss_64=56, d_64=0.047000, lambda_64=0.11111111, bw_64=2.800, theta_c_64=13.000
+proto6 replay sep_factor=7, theta_sep=0.400000 deg, theta_a=12.800000 deg, theta_b=13.200000 deg, tol_rel=0.100000 deg
+proto6 replay sep_factor=8, theta_sep=0.350000 deg, theta_a=12.825000 deg, theta_b=13.175000 deg, tol_rel=0.087500 deg
+proto6 replay sep_factor=9, theta_sep=0.311111 deg, theta_a=12.844444 deg, theta_b=13.155556 deg, tol_rel=0.077778 deg
+proto6 replay sep_factor=10, theta_sep=0.280000 deg, theta_a=12.860000 deg, theta_b=13.140000 deg, tol_rel=0.070000 deg
+
+Layer 3 acceptance checks
+sep_factor=1 | SNR90 abs01 -> single=6 dB, multilayer=-4 dB, mismatch2deg=-2 dB | main advance lower-bound=10 dB | sep degradation main=0.0000
+sep_factor=2 | SNR90 abs01 -> single=18 dB, multilayer=4 dB, mismatch2deg=10 dB | main advance lower-bound=14 dB | sep degradation main=0.0000
+sep_factor=3 | SNR90 abs01 -> single=26 dB, multilayer=12 dB, mismatch2deg=18 dB | main advance lower-bound=14 dB | sep degradation main=0.0564
+sep_factor=5 | SNR90 abs01 -> single=NaN dB, multilayer=22 dB, mismatch2deg=28 dB | main advance lower-bound=10 dB | sep degradation main=0.3131
+sep_factor=7 | SNR90 abs01 -> single=NaN dB, multilayer=28 dB, mismatch2deg=NaN dB | main advance lower-bound=4 dB | sep degradation main=0.4881
+sep_factor=10 | SNR90 abs01 -> single=NaN dB, multilayer=NaN dB, mismatch2deg=NaN dB | main advance lower-bound=NaN dB | sep degradation main=0.6653
+proto6 replay sep_factor=7 | SNR90 abs01=14 dB, rel025=14 dB, degraded_rate_at_snr90=0.0000
+proto6 replay sep_factor=8 | SNR90 abs01=16 dB, rel025=18 dB, degraded_rate_at_snr90=0.0000
+proto6 replay sep_factor=9 | SNR90 abs01=18 dB, rel025=20 dB, degraded_rate_at_snr90=0.0000
+proto6 replay sep_factor=10 | SNR90 abs01=20 dB, rel025=22 dB, degraded_rate_at_snr90=0.0000
+3a proto6 replay SNR90 vs historical [14,16,20,22] dB with +/-2 dB tolerance, pass=1
+3b route2 sep_factor=10, SNR=10 dB tol_rate_abs01=0.000000, pass=0
+3c route2 SNR90 advance vs route1 lower-bound=[10 14 14 10 4 NaN] dB, pass=0
+3d route2 degradation by sep=[0 0 0.05639 0.3131 0.4881 0.6653], overall=0.253796, pass=0
+3e route3 el mismatch 2deg SNR90 loss vs route2=[2 6 6 6 NaN NaN] dB, pass/report=0
+
+Layer 4 diagnostics generated.
+Generated figures: layer_gain, degradation_rate, snr90, el_mismatch, geometry_diag.
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_multilayer_proto14
+
+4-layer acceptance summary
+Layer 1 geometry: PASS
+Layer 2 sanity: route1=1 (err=0.2682), route2=1 (err=0.0289), route3=1 (err=0.0536), route4=1 (err=0.0006)
+Layer 3 regression: 3a=1, 3b=0, 3c=0, 3d=0, 3e=0
+Layer 4 figures: PASS
+Route2 measured coherent gain by sep=[15.05 15.05 15.05 15.05 15.05 15.05] dB, theoretical=15.0515 dB
+Route2 degradation overall=0.253796 (proto10 v2 reference 0.5639). Route1 degradation overall=0.564630.
+Route3 el mismatch 2deg SNR90 loss vs route2=[2 6 6 6 NaN NaN] dB; clean coherent loss=6.7428 dB.
