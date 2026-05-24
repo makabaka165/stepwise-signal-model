@@ -1,0 +1,47 @@
+Step 08 Prototype 6 fullscan: baseline Route B vs proto6 array Root-MUSIC
+Fairness rule: same (sep_factor, snr_db, metkl_num) uses the same independent seed for both routes.
+base_seed=20260524
+snr_list=[-4 -2 0 2 4 6 8 10 12 14 16 18 20 22 24 26 28 30], Metkl=200, T_snap=260, tol_deg=0.100, tol_rel_ratio=0.25
+sep_factor_list=[1 2 3 4 5 6 7 8 9 10]
+Route B settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+
+=== sep_factor = 1, theta_sep = 2.8000 deg, tol_rel = 0.7000 deg ===
+sep_factor=1 finished, elapsed=100.2 s
+=== sep_factor = 2, theta_sep = 1.4000 deg, tol_rel = 0.3500 deg ===
+sep_factor=2 finished, elapsed=174.3 s
+=== sep_factor = 3, theta_sep = 0.9333 deg, tol_rel = 0.2333 deg ===
+sep_factor=3 finished, elapsed=242.3 s
+=== sep_factor = 4, theta_sep = 0.7000 deg, tol_rel = 0.1750 deg ===
+sep_factor=4 finished, elapsed=305.8 s
+=== sep_factor = 5, theta_sep = 0.5600 deg, tol_rel = 0.1400 deg ===
+sep_factor=5 finished, elapsed=376.4 s
+=== sep_factor = 6, theta_sep = 0.4667 deg, tol_rel = 0.1167 deg ===
+sep_factor=6 finished, elapsed=455.1 s
+=== sep_factor = 7, theta_sep = 0.4000 deg, tol_rel = 0.1000 deg ===
+sep_factor=7 finished, elapsed=530.8 s
+=== sep_factor = 8, theta_sep = 0.3500 deg, tol_rel = 0.0875 deg ===
+sep_factor=8 finished, elapsed=605.7 s
+=== sep_factor = 9, theta_sep = 0.3111 deg, tol_rel = 0.0778 deg ===
+sep_factor=9 finished, elapsed=678.0 s
+=== sep_factor = 10, theta_sep = 0.2800 deg, tol_rel = 0.0700 deg ===
+sep_factor=10 finished, elapsed=749.4 s
+sep_factor=1 | SNR90 abs01 -> baseline=-4 dB, proto6-array=-4 dB
+sep_factor=1 | SNR90 rel025 -> baseline=-4 dB, proto6-array=-4 dB
+sep_factor=2 | SNR90 abs01 -> baseline=-4 dB, proto6-array=-4 dB
+sep_factor=2 | SNR90 rel025 -> baseline=-4 dB, proto6-array=-4 dB
+sep_factor=3 | SNR90 abs01 -> baseline=-2 dB, proto6-array=-2 dB
+sep_factor=3 | SNR90 rel025 -> baseline=-4 dB, proto6-array=-4 dB
+sep_factor=4 | SNR90 abs01 -> baseline=4 dB, proto6-array=4 dB
+sep_factor=4 | SNR90 rel025 -> baseline=2 dB, proto6-array=0 dB
+sep_factor=5 | SNR90 abs01 -> baseline=8 dB, proto6-array=8 dB
+sep_factor=5 | SNR90 rel025 -> baseline=8 dB, proto6-array=6 dB
+sep_factor=6 | SNR90 abs01 -> baseline=12 dB, proto6-array=12 dB
+sep_factor=6 | SNR90 rel025 -> baseline=12 dB, proto6-array=10 dB
+sep_factor=7 | SNR90 abs01 -> baseline=16 dB, proto6-array=14 dB
+sep_factor=7 | SNR90 rel025 -> baseline=16 dB, proto6-array=14 dB
+sep_factor=8 | SNR90 abs01 -> baseline=18 dB, proto6-array=16 dB
+sep_factor=8 | SNR90 rel025 -> baseline=18 dB, proto6-array=18 dB
+sep_factor=9 | SNR90 abs01 -> baseline=22 dB, proto6-array=18 dB
+sep_factor=9 | SNR90 rel025 -> baseline=22 dB, proto6-array=20 dB
+sep_factor=10 | SNR90 abs01 -> baseline=24 dB, proto6-array=22 dB
+sep_factor=10 | SNR90 rel025 -> baseline=24 dB, proto6-array=24 dB

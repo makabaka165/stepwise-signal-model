@@ -1,0 +1,21 @@
+Step 08 Prototype 8: Unitary Root-MUSIC fair compare
+Routes: baseline Route B, proto6 array/beamspace, proto8 unitary array/beamspace.
+Fairness rule: same (sep_factor, snr_db, metkl_num) uses the same independent seed for all routes.
+base_seed=20260525
+snr_list=[14 16 18 20 22 24 26 28], Metkl=200, T_snap=260, tol_deg=0.100, tol_rel_ratio=0.25
+sep_factor_list=[7 8 9 10]
+Route B settings: K_fbss=56, M_full=48, center_beam_count=37, search_scale_B=4.00
+
+=== sep_factor = 7, theta_sep = 0.4000 deg, tol_rel = 0.1000 deg ===
+=== sep_factor = 8, theta_sep = 0.3500 deg, tol_rel = 0.0875 deg ===
+=== sep_factor = 9, theta_sep = 0.3111 deg, tol_rel = 0.0778 deg ===
+=== sep_factor = 10, theta_sep = 0.2800 deg, tol_rel = 0.0700 deg ===
+sep_factor=7 | SNR90 abs01 -> baseline=16 dB, proto6-array=14 dB, proto6-beam=14 dB, proto8-array=14 dB, proto8-beam=NaN
+sep_factor=7 | SNR90 rel025 -> baseline=16 dB, proto6-array=14 dB, proto6-beam=14 dB, proto8-array=14 dB, proto8-beam=NaN
+sep_factor=8 | SNR90 abs01 -> baseline=18 dB, proto6-array=16 dB, proto6-beam=16 dB, proto8-array=16 dB, proto8-beam=NaN
+sep_factor=8 | SNR90 rel025 -> baseline=18 dB, proto6-array=18 dB, proto6-beam=18 dB, proto8-array=18 dB, proto8-beam=NaN
+sep_factor=9 | SNR90 abs01 -> baseline=22 dB, proto6-array=20 dB, proto6-beam=20 dB, proto8-array=20 dB, proto8-beam=NaN
+sep_factor=9 | SNR90 rel025 -> baseline=22 dB, proto6-array=20 dB, proto6-beam=20 dB, proto8-array=20 dB, proto8-beam=NaN
+sep_factor=10 | SNR90 abs01 -> baseline=24 dB, proto6-array=22 dB, proto6-beam=22 dB, proto8-array=22 dB, proto8-beam=NaN
+sep_factor=10 | SNR90 rel025 -> baseline=24 dB, proto6-array=22 dB, proto6-beam=22 dB, proto8-array=22 dB, proto8-beam=NaN
+max(max_imag_mean)=4.796e-17

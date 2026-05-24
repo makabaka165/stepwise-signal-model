@@ -1,5 +1,12 @@
 # Local tool configuration
 .claude/
 
-# Generated experiment outputs; keep source scripts and docs in Git.
-steps/**/results_step*/
+# Experiment evidence is intentionally versionable:
+# keep summary/keypoints CSV, logs, final MAT files, and figures available
+# for later algorithm review and AI-assisted analysis.
+#
+# Only ignore bulky or transient checkpoints/caches.
+steps/**/results_step*/**/*_partial.mat
+steps/**/results_step*/**/*partial*.tmp
+steps/**/results_step*/**/*cache*
+steps/**/results_step*/**/tmp*/
