@@ -513,7 +513,7 @@ function stage = run_level2_stage_local(stage_name, K_phi_list, sep_factor_list,
     snr90_rel025 = calc_snr90_4d_local(tol_success_rate_rel025, snr_list);
 
     summary_rows = build_summary_rows_local(stage_name, route_names, K_phi_list, sep_factor_list, snr_list, ...
-        theta_sep_deg, theta_a_deg, theta_b_deg, common.cfg.arr.dPhi, raw_success_count, ...
+        theta_sep_deg, theta_a_deg, theta_b_deg, common.full_Q, common.cfg.arr.dPhi, raw_success_count, ...
         tol_success_count_abs01, tol_success_count_rel025, raw_success_rate, tol_success_rate_abs01, ...
         tol_success_rate_rel025, rmse_deg, rmse_valid_count, mean_num_peaks, lambda2_over_noise_mean, ...
         degraded_count, degraded_rate, snr90_abs01, snr90_rel025);
@@ -744,7 +744,7 @@ function snr90 = calc_snr90_4d_local(rate4d, snr_list)
 end
 
 function rows = build_summary_rows_local(stage_name, route_names, K_phi_list, sep_factor_list, snr_list, ...
-    theta_sep_deg, theta_a_deg, theta_b_deg, dPhi, raw_success_count, tol_success_count_abs01, ...
+    theta_sep_deg, theta_a_deg, theta_b_deg, Q, dPhi, raw_success_count, tol_success_count_abs01, ...
     tol_success_count_rel025, raw_success_rate, tol_success_rate_abs01, tol_success_rate_rel025, ...
     rmse_deg, rmse_valid_count, mean_num_peaks, lambda2_over_noise_mean, degraded_count, ...
     degraded_rate, snr90_abs01, snr90_rel025)
@@ -754,7 +754,7 @@ function rows = build_summary_rows_local(stage_name, route_names, K_phi_list, se
     for iroute = 1:nroutes
         for iK = 1:numel(K_phi_list)
             K_phi = K_phi_list(iK);
-            P_phi = 65 - K_phi + 1;
+            P_phi = Q - K_phi + 1;
             subarray_span_deg = (K_phi - 1) * dPhi;
             for iSep = 1:numel(sep_factor_list)
                 for iSNR = 1:numel(snr_list)
@@ -1059,7 +1059,8 @@ function write_record_doc_local(path_out, params, route_names, sanity_result, kp
     write_stage_markdown_summary_local(fid, sanity_result, route_names, 10, 30);
 
     fprintf(fid, '## K_phi 扫描结果摘要\n\n');
-    fprintf(fid, '- 扫描K_phi：`%s`；最优候选 `K_phi=%d`。\n', mat2str(kphi_result.K_phi_list), K_phi_best);
+    fprintf(fid, '- 扫描K_phi：`%s`；route 1 在 `K_phi=%d` 表现最好；route 4 不存在有效最佳 K_phi。\n', ...
+        mat2str(kphi_result.K_phi_list), K_phi_best);
     fprintf(fid, '- 判定：%s\n', kphi_decision.note);
     write_stage_markdown_summary_local(fid, kphi_result, route_names, 10, 30);
 
@@ -1129,7 +1130,7 @@ function conclusion = choose_conclusion_local(kphi_decision)
         conclusion = ['真实圆柱子阵流形修正有一定收益，但完全同相小间隔仍主要受秩恢复和双峰合并限制。'];
     else
         conclusion = ['当前瓶颈不只是ULA近似误差。对于完全同相、同俯仰、极小方位间隔，' ...
-            '层次二真实圆柱流形MUSIC仍不足以根治问题。后续层次二内可考虑更严格的平滑协方差拟合，但本轮不展开层次三。'];
+            '当前子阵平均真实流形 MUSIC 谱函数仍不足以根治问题。后续层次二内可考虑更严格的谱函数诊断或平滑协方差拟合，但本轮不展开层次三。'];
     end
 end
 

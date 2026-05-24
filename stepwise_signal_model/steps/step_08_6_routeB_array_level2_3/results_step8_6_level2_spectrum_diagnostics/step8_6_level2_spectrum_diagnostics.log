@@ -1,0 +1,62 @@
+Step 08.6 level 2 part 2: spectrum aggregation diagnostics
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_spectrum_diagnostics
+First-part commit: 03c02c9
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Formula doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步层次二和三公式推导.md
+First-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_subarray_manifold.m
+First-part result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold_result.mat
+First-part summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold_summary.csv
+First-part keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold_keypoints.csv
+First-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二_65列真实圆柱子阵流形验证记录.md
+Old helper paths:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\core\config\sim_cfg.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\core\array\arr_cyl.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo\mssp_array_fb.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo\FindLocalPeak_NoEdge_Fun.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo\is_valid_doa_success.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation\doa_root_music_array.m
+Scope guard: level 2 spectrum diagnostics only. No fullscan, no level 3, no 2D az/el MUSIC, no PME, no sparse recovery.
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, cfg.arr.R=0.400000000 m, lambda=0.030000000 m
+cfg.arr.dz=0.017000000 m, dz/lambda=0.566666667, dPhi=1.875000000 deg
+cfg.beam.sectorHalf=60.000000000 deg, cfg.beam.subNaz=65, Q=65
+working phi first/last/span = -60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, angle_step=0.005000 deg, ngrid=1056
+32-layer theoretical coherent gain=15.051500 dB
+
+Spectrum aggregation routes
+A center_real: P=1/d_mid.
+B avg_den_forward: P=1/mean_p d_p. This is first-part route 3.
+C avg_spectrum_forward: P=mean_p 1/d_p.
+D min_den_forward: P=1/min_p d_p.
+E median_den_forward: P=1/median_p d_p.
+F trimmed_avg_den_forward: remove lowest/highest 20% of d_p then P=1/mean.
+G avg_den_fb: P=1/mean_p 0.5*(d_p+d_b,p). This is first-part route 4.
+H avg_spectrum_fb: P=mean_p 0.5*(1/d_p+1/d_b,p).
+I min_den_fb: P=1/min_p 0.5*(d_p+d_b,p).
+
+K_phi=24, P_phi=42, subarray_span=43.125000 deg
+  sep=7 finished for K=24, elapsed=4.6 s
+  sep=10 finished for K=24, elapsed=9.0 s
+
+K_phi=28, P_phi=38, subarray_span=50.625000 deg
+  sep=7 finished for K=28, elapsed=13.6 s
+  sep=10 finished for K=28, elapsed=18.1 s
+
+K_phi=32, P_phi=34, subarray_span=58.125000 deg
+  sep=7 finished for K=32, elapsed=22.6 s
+  sep=10 finished for K=32, elapsed=27.1 s
+
+Diagnostic conclusion: 层次二仍有价值。当前改进方向应是谱函数聚合方式，而不是直接进入协方差拟合或层次三。
+Next step: 对最佳聚合方式做小规模 K_phi/SNR 扫描。
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\step8_6_level2_spectrum_diagnostics_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\step8_6_level2_single_subarray_spectrum_diag.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\step8_6_level2_spectrum_diagnostics_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\level2_spectrum_aggregation_compare_sep10_snr30_K24.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\level2_single_subarray_peak_map_sep10_snr30_K24.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\level2_single_subarray_num_peaks_vs_index_sep10_snr30_K24.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\level2_aggregation_peak_loss_rate.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_spectrum_diagnostics\level2_route_tol_compare_spectrum_diagnostics.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第二部分_谱函数消融诊断记录.md
