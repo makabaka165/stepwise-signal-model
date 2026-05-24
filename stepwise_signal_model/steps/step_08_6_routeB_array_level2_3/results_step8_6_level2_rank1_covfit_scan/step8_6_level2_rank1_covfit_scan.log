@@ -1,0 +1,59 @@
+Step 08.6 level 2 part 5: rank1 equal-phase covfit stability and bias scan
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_covfit_scan
+Fourth-part commit: 0a36280
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Fourth-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_covfit.m
+Fourth-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\step8_6_level2_covfit_summary.csv
+Fourth-part keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\step8_6_level2_covfit_keypoints.csv
+Fourth-part MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\step8_6_level2_covfit_result.mat
+Fourth-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第四部分_一维圆柱协方差拟合验证记录.md
+Scope guard: level 2 rank1 covfit scan only. No fullscan, no level 3, no 2D az/el MUSIC, no Hermitian LS optimization, no phase-scan covfit.
+Fourth-part loaded benchmark at K=20, sep=10, SNR=30: rank1 tol_abs01=1.000, center/min_den tol_abs01=0.420
+Fourth-part keypoints rows=48, MAT vars=26, record chars=3070
+Metkl requested=100, used=50. Reason: Reduced from 100 to 50 because fourth-part 600-trial covfit took about 445 s; this scan is much larger.
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, music_step=0.005000 deg, coarse_step=0.020000 deg, refine_step=0.005000 deg
+
+Routes
+  1: center_real
+  2: min_den_fb
+  3: covfit_rank1_equal_phase
+
+Stage 1: K/SNR small scan
+K_phi=16, P_phi=50, coarse_candidates=9191, subarray_span=28.125000 deg
+  sep=7 finished for K=16, elapsed=34.6 s
+  sep=10 finished for K=16, elapsed=67.6 s
+K_phi=20, P_phi=46, coarse_candidates=9191, subarray_span=35.625000 deg
+  sep=7 finished for K=20, elapsed=108.7 s
+  sep=10 finished for K=20, elapsed=149.7 s
+K_phi=24, P_phi=42, coarse_candidates=9191, subarray_span=43.125000 deg
+  sep=7 finished for K=24, elapsed=194.1 s
+  sep=10 finished for K=24, elapsed=239.4 s
+K_phi=28, P_phi=38, coarse_candidates=9191, subarray_span=50.625000 deg
+  sep=7 finished for K=28, elapsed=289.5 s
+  sep=10 finished for K=28, elapsed=338.2 s
+Best K_phi for phase mismatch diagnosis: 28 (lowest finite sep=10 rank1 SNR90_abs01=18.0 dB, tie-broken by mean tol and sep error)
+
+Stage 2: phase/model mismatch diagnosis, K=28, sep=10, SNR=30, Metkl=50
+  phase offset 0.0 deg finished
+  phase offset 5.0 deg finished
+  phase offset 15.0 deg finished
+  phase offset 30.0 deg finished
+  phase offset 60.0 deg finished
+
+Diagnostic conclusion: rank1 equal-phase covfit 是层次二当前主算法候选。
+Next step: 围绕 rank1 equal-phase covfit 做更大范围 fullscan 或论文整理。
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\step8_6_level2_rank1_covfit_scan_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\step8_6_level2_rank1_covfit_scan_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\step8_6_level2_rank1_covfit_scan_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\rank1_covfit_snr90_vs_kphi.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\rank1_covfit_tol_vs_snr_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\rank1_covfit_sep_bias_vs_snr.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\rank1_covfit_objective_valley_width.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\rank1_covfit_phase_offset_sensitivity.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第五部分_rank1协方差拟合稳定性扫描记录.md
