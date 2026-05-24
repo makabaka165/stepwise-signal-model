@@ -1,0 +1,114 @@
+Step 08.6 level 2: 65-column dynamic subarray + 32-layer coherent combining + 1D real cylindrical subarray-manifold MUSIC
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_subarray_manifold
+Formula doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步层次二和三公式推导.md
+Reference code paths:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\core\config\sim_cfg.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\core\array\arr_cyl.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo\mssp_array_fb.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo\FindLocalPeak_NoEdge_Fun.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_07_5_space_smooth_beamspace_MUSIC_monte_carlo\is_valid_doa_success.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation\doa_root_music_array.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_routeB_innovation\space_smooth_music_B_root_music_prototype6.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\space_smooth_music_B_cylindrical_multilayer_prototype14.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\space_smooth_music_B_cylindrical_real_manifold_prototype15a.m
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_multilayer_proto14\step8_5_cylindrical_multilayer_proto14_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_multilayer_proto14\step8_5_cylindrical_multilayer_proto14_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_real_manifold_proto15a\step8_5_cylindrical_real_manifold_proto15a_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\results_step8_5_cylindrical_real_manifold_proto15a\step8_5_cylindrical_real_manifold_proto15a_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\第8.5步_routeB_array_实验记录.md
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_5_routeB_array\第8.5步_算法与路线技术规范.md
+
+Scope guard: only level 2 is implemented. No level 3, no 2D az/el MUSIC, no PME, no sparse/DML/SBL/SPICE.
+
+Geometry health check
+cfg.arr.Naz=192
+cfg.arr.Nel=32
+cfg.arr.R=0.400000000 m
+cfg.arr.lambda=0.030000000 m
+cfg.arr.dz=0.017000000 m
+cfg.arr.dPhi=1.875000000 deg
+cfg.beam.sectorHalf=60.000000000 deg
+cfg.beam.subNaz=65
+Q=65
+arrInfo.phiActRel(first)=-60.000000000 deg
+arrInfo.phiActRel(last)=60.000000000 deg
+working subarray azimuth span=120.000000000 deg, approximately 120 deg=1
+z layer count=32, is 32=1
+dz/lambda=0.566666667
+32-layer theoretical coherent gain=15.051500 dB
+d_eq=0.013089969 m, d_eq/lambda=0.436332313
+bw_eq_65=2.637754449 deg (main baseline)
+bw_eq_32=5.445686605 deg (history-only proto14 comparison)
+Q=65 check passed.
+
+Theory positioning
+proto14 N_arc=32 is an old exploratory local-ULA aperture, not the current complete working array.
+The engineering working array is the 65-column sector selected dynamically by arr_cyl(cfg, azCtr_deg).
+Level 2 tests whether the full 65-column sector can be used through a real cylindrical subarray-manifold MUSIC model.
+Level 2 remains a 1D azimuth algorithm: 32 elevation layers are coherently combined and then compressed away.
+
+Route definitions
+route 1: level2_ula_root_music_65col_baseline | 65x32 -> 32-layer combining -> doa_root_music_array with d_eq
+route 2: level2_center_real_grid_music | FBSS En -> center-subarray real cylindrical grid-MUSIC
+route 3: level2_subarray_avg_real_grid_music_forward | FBSS En -> all forward FBSS subarrays real cylindrical grid-MUSIC
+route 4: level2_subarray_avg_real_grid_music_fb | FBSS En -> all forward/backward FBSS subarrays real cylindrical grid-MUSIC (main level-2 route)
+
+32-layer coherent-combining sanity: el_assumed_deg=0.000000, clean_gain_db=15.051500 dB, theory=15.051500 dB
+
+Sanity stage starts: sep=[5 7 10], snr=[20 24 28 30], Metkl=20, K_phi=28, angle step=0.0050 deg, ngrid=1056
+sanity K_phi=28, P_phi=38, subarray_span=50.625000 deg
+
+sanity brief summary at sep=10, snr=30
+  K=28 | level2_ula_root_music_65col_baseline                 | tol_abs=0.200, tol_rel=0.000, rmse=0.10157, peaks=2.000, lambda2=7.414, degraded=0.000
+  K=28 | level2_center_real_grid_music                        | tol_abs=0.050, tol_rel=0.000, rmse=0.06939, peaks=1.050, lambda2=7.414, degraded=0.950
+  K=28 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.414, degraded=1.000
+  K=28 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.414, degraded=1.000
+
+K_phi scan starts: sep=[7 10], snr=[24 28 30], Metkl=100, K_phi_list=[24 28 32 40 48 56], angle step=0.0050 deg, ngrid=1056
+kphi_scan K_phi=24, P_phi=42, subarray_span=43.125000 deg
+kphi_scan K_phi=28, P_phi=38, subarray_span=50.625000 deg
+kphi_scan K_phi=32, P_phi=34, subarray_span=58.125000 deg
+kphi_scan K_phi=40, P_phi=26, subarray_span=73.125000 deg
+kphi_scan K_phi=48, P_phi=18, subarray_span=88.125000 deg
+kphi_scan K_phi=56, P_phi=10, subarray_span=103.125000 deg
+
+kphi_scan brief summary at sep=10, snr=30
+  K=24 | level2_ula_root_music_65col_baseline                 | tol_abs=0.800, tol_rel=0.100, rmse=0.07471, peaks=2.000, lambda2=5.898, degraded=0.000
+  K=24 | level2_center_real_grid_music                        | tol_abs=0.310, tol_rel=0.170, rmse=0.06801, peaks=1.310, lambda2=5.898, degraded=0.690
+  K=24 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=5.898, degraded=1.000
+  K=24 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=5.898, degraded=1.000
+  K=28 | level2_ula_root_music_65col_baseline                 | tol_abs=0.420, tol_rel=0.000, rmse=0.09228, peaks=2.000, lambda2=7.456, degraded=0.000
+  K=28 | level2_center_real_grid_music                        | tol_abs=0.010, tol_rel=0.000, rmse=0.09453, peaks=1.010, lambda2=7.456, degraded=0.990
+  K=28 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.456, degraded=1.000
+  K=28 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.456, degraded=1.000
+  K=32 | level2_ula_root_music_65col_baseline                 | tol_abs=0.030, tol_rel=0.000, rmse=0.10603, peaks=2.000, lambda2=8.708, degraded=0.000
+  K=32 | level2_center_real_grid_music                        | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=8.708, degraded=1.000
+  K=32 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=8.708, degraded=1.000
+  K=32 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=8.708, degraded=1.000
+  K=40 | level2_ula_root_music_65col_baseline                 | tol_abs=0.000, tol_rel=0.000, rmse=0.11290, peaks=2.000, lambda2=9.426, degraded=0.000
+  K=40 | level2_center_real_grid_music                        | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=9.426, degraded=1.000
+  K=40 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=9.426, degraded=1.000
+  K=40 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=9.426, degraded=1.000
+  K=48 | level2_ula_root_music_65col_baseline                 | tol_abs=0.000, tol_rel=0.000, rmse=0.11618, peaks=2.000, lambda2=7.237, degraded=0.000
+  K=48 | level2_center_real_grid_music                        | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.237, degraded=1.000
+  K=48 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.237, degraded=1.000
+  K=48 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=7.237, degraded=1.000
+  K=56 | level2_ula_root_music_65col_baseline                 | tol_abs=0.000, tol_rel=0.000, rmse=0.11087, peaks=2.000, lambda2=3.431, degraded=0.000
+  K=56 | level2_center_real_grid_music                        | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=3.431, degraded=1.000
+  K=56 | level2_subarray_avg_real_grid_music_forward          | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=3.431, degraded=1.000
+  K=56 | level2_subarray_avg_real_grid_music_fb               | tol_abs=0.000, tol_rel=0.000, rmse=NaN, peaks=1.000, lambda2=3.431, degraded=1.000
+
+K_phi decision: best K_phi=24, score_main=0.000000, sep10_snr30_route4=0.000000, sep10_snr30_route1=0.800000, improvement=-0.800000
+K_phi decision notes: route 4 在 sep10/snr30 上仍然较弱，因此不执行 fullscan。
+Fullscan skipped: K_phi 扫描没有显示 route 4 相对 65 列 ULA Root-MUSIC 基线有明确改善。
+
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold.log
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\step8_6_level2_subarray_manifold_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\level2_route_compare_tol_sanity.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\level2_kphi_vs_tol_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\level2_kphi_vs_rmse_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_manifold\level2_spectrum_example_sep10_snr30.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二_65列真实圆柱子阵流形验证记录.md
