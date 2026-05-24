@@ -2094,3 +2094,291 @@ RMSE 也明显异常大，例如：
   - Toeplitz 投影是否该作用于别的协方差形式；
   - Root-MUSIC 的根选取规则是否需要针对 Toeplitz 后结构重写；
   - 或者是否应先做别的结构化预处理，再决定是否引入 Toeplitz。
+
+## Prototype 8：Unitary Root-MUSIC 数值稳定性增强
+
+### 本次新增
+
+新增脚本：
+
+- [space_smooth_music_B_unitary_root_music_prototype8.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/space_smooth_music_B_unitary_root_music_prototype8.m)
+- [unitary_matrix.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/unitary_matrix.m)
+- [doa_root_music_unitary_array.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/doa_root_music_unitary_array.m)
+- [doa_root_music_unitary_beamspace.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/doa_root_music_unitary_beamspace.m)
+
+新增结果目录：
+
+- [results_step8_routeB_unitary_root_music_proto8](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/results_step8_routeB_unitary_root_music_proto8)
+
+### 数值自检
+
+按 `第8步改进方向.md` 第八章 8.8.1 先完成两项硬自检：
+
+1. `unitary_matrix` 自检通过：
+   - `err_unitary = 1.670e-15`
+   - `err_imag = 4.465e-17`
+   - `err_sym = 0.000e+00`
+2. 端到端样本自检通过：
+   - `sep_factor = 9`
+   - `snr = 20 dB`
+   - `doa = [12.877744, 13.142885]`
+   - `max_imag_part_rel = 4.712e-17 < 1e-10`
+
+说明 `Q' * R * Q` 的实数化在阵元域 FBSS 协方差上成立。
+
+### 实验参数
+
+- `sep_factor_list = [7, 8, 9, 10]`
+- `snr_list = 14:2:28`
+- `Metkl = 200`
+- `T_snap = 260`
+- `tol_deg = 0.1`
+- `tol_rel_ratio = 0.25`
+- `base_seed = 20260525`
+- 5 条路线：
+  - `baseline_routeB_centerT_grid_music`
+  - `proto6_array_root_music`
+  - `proto6_beamspace_root_music`
+  - `proto8_unitary_array_root_music`
+  - `proto8_unitary_beamspace_root_music`
+
+### 8.8.2 公平性回归
+
+这一关通过。
+
+`SNR90_abs01` 回归结果为：
+
+- `baseline_routeB_centerT_grid_music`: `16 / 18 / 22 / 24 dB`
+- `proto6_array_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto6_beamspace_root_music`: `14 / 16 / 20 / 22 dB`
+
+与第八章要求的强制回归线完全一致，说明：
+
+- `base_seed = 20260525` 的同样本公平对照机制有效；
+- `baseline`、`proto6_array`、`proto6_beamspace` 没有因为新增 unitary 路线发生漂移；
+- 后续 proto8 结论可以建立在同一批 Monte Carlo 样本上。
+
+### 结果
+
+`SNR90_abs01` 结果如下：
+
+- `baseline_routeB_centerT_grid_music`: `16 / 18 / 22 / 24 dB`
+- `proto6_array_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto6_beamspace_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto8_unitary_array_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto8_unitary_beamspace_root_music`: `NaN / NaN / NaN / NaN`
+
+`SNR90_rel025` 结果如下：
+
+- `baseline_routeB_centerT_grid_music`: `16 / 18 / 22 / 24 dB`
+- `proto6_array_root_music`: `14 / 18 / 20 / 22 dB`
+- `proto6_beamspace_root_music`: `14 / 18 / 20 / 22 dB`
+- `proto8_unitary_array_root_music`: `14 / 18 / 20 / 22 dB`
+- `proto8_unitary_beamspace_root_music`: `NaN / NaN / NaN / NaN`
+
+门槛附近代表点显示，`proto8_unitary_array_root_music` 与 `proto6_array_root_music` 在当前实现下几乎完全等价：
+
+- `bw/7, 14 dB`
+  - proto6 array: `tol_abs01 = 0.995`, `tol_rel025 = 0.995`, `RMSE = 0.046205 deg`
+  - proto8 array: `tol_abs01 = 0.995`, `tol_rel025 = 0.995`, `RMSE = 0.046205 deg`
+- `bw/8, 16 dB`
+  - proto6 array: `tol_abs01 = 0.935`, `tol_rel025 = 0.855`, `RMSE = 0.053648 deg`
+  - proto8 array: `tol_abs01 = 0.935`, `tol_rel025 = 0.855`, `RMSE = 0.053648 deg`
+- `bw/9, 20 dB`
+  - proto6 array: `tol_abs01 = 0.990`, `tol_rel025 = 0.960`, `RMSE = 0.037769 deg`
+  - proto8 array: `tol_abs01 = 0.990`, `tol_rel025 = 0.960`, `RMSE = 0.037769 deg`
+- `bw/10, 22 dB`
+  - proto6 array: `tol_abs01 = 1.000`, `tol_rel025 = 0.940`, `RMSE = 0.035287 deg`
+  - proto8 array: `tol_abs01 = 1.000`, `tol_rel025 = 0.940`, `RMSE = 0.035287 deg`
+
+### 诊断判断
+
+1. 阵元域 unitary 版本数值上成立：
+   - `max(max_imag_mean) = 4.796e-17`
+   - `max cond relative diff = 5.225e-14`
+   - 满足 `max_imag_part_rel < 1e-10` 与 `cond_number_complex ~= cond_number_real` 的诊断要求。
+   - 实测 `cond(Rss)` 随 SNR 升高而增大；这与当前 `cond` 定义下噪声底下降、协方差更接近低秩矩阵的现象一致。因此本轮把 `cond_complex` 与 `cond_real` 的一致性作为 unitary 正确性判断，而不把 `cond` 单调方向作为性能收益证据。
+2. `proto8_unitary_array_root_music` 没有带来新的 `SNR90` 收益，也没有可见 RMSE 收益。
+   - 这符合理论预期：unitary 变换是酉相似变换，若数值条件本身没有成为瓶颈，结果应与原复数域 Root-MUSIC 基本等价。
+3. `proto8_unitary_beamspace_root_music` 失败。
+   - 典型样本中出现 `[13 deg 附近中心根 + 远端伪根]` 的结构，例如 `bw/7, 28 dB` 下输出约为 `[-78.3961, 13.0001]`；
+   - 这说明对当前 `centerT` 投影后的 `Rb` 再强行做 beamspace 域 FB 平均，会破坏小间隔双目标根结构；
+   - 该失败不影响 array unitary 的数值正确性，但说明当前 `Tk` 不是适合直接做 unitary beamspace Root-MUSIC 的实波束变换。
+
+### 结论
+
+按第八章 8.8.3 的 A/B/C 处置表：
+
+- `proto8_unitary_array_root_music` 归入 **B：温和**。
+  - 它与 `proto6_array_root_music` 的 `SNR90` 完全持平；
+  - RMSE 也几乎完全持平，而不是持续更低；
+  - 因此它只能作为「数值稳定性增强 / 实数化实现」附加证据保留，不能作为新的性能创新点。
+- `proto8_unitary_beamspace_root_music` 归入 **C：失败子路线**。
+  - 当前 beamspace unitary 版本的额外 FB 平均会引入系统性错根；
+  - 不应继续把这条 beamspace-unitary 路线作为主线推进。
+
+### 保留建议
+
+- **保留 `unitary_matrix.m` 与 `doa_root_music_unitary_array.m`**：
+  - 可作为论文中“Root-MUSIC 的实数化 / 数值稳定性增强”工程实现；
+  - 但结论应强调它与 proto6 array 等价，不宣称门槛收益。
+- **保留 `doa_root_music_unitary_beamspace.m` 与结果目录**：
+  - 作为失败证据保留；
+  - 后续若要重启 beamspace-unitary，应先重构 `Tk`，使其满足中心对称或实波束空间条件，而不是对当前 `Rb` 直接做 `J_b * conj(Rb) * J_b` 平均。
+- **当前主创新仍是 `Prototype 6: FBSS + Root-MUSIC`**：
+  - `Prototype 8` 没有推翻 proto6；
+  - 它只补充了一个数值实现方向，并说明当前场景下 unitary 实数化不是新的性能来源。
+
+## Prototype 9：Subspace-RELAX 迭代精细化
+
+### 本次新增
+
+新增脚本：
+
+- [space_smooth_music_B_subspace_relax_prototype9.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/space_smooth_music_B_subspace_relax_prototype9.m)
+- [doa_subspace_relax_root_music.m](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/doa_subspace_relax_root_music.m)
+
+新增结果目录：
+
+- [results_step8_routeB_subspace_relax_proto9](/E:/matlab_code/bishe_quanxi/stepwise_signal_model/steps/step_08_routeB_innovation/results_step8_routeB_subspace_relax_proto9)
+
+### 设计动机
+
+`Prototype 5a` 的 FFT-II 线失败核心在于：FFT 域做主峰对消后，残差次峰在小间隔相干双目标里不够稳定，导致初始化和迭代细化都难以可靠收敛。
+
+`Prototype 9` 将 RELAX 的“估计 -> 对消 -> 重估计”思路搬到更稳定的子空间链路上：
+
+1. 先用 `proto6_array_root_music` 得到双目标初值；
+2. 在阵元域快拍 `y` 上构造双目标 steering matrix；
+3. 用联合 LS 估计每个快拍的复幅度；
+4. 对消另一目标后，在残差快拍上重新跑 `Lc=1` 的 `doa_root_music_array`；
+5. 两目标交替更新，直到角度更新量收敛或达到最大迭代次数。
+
+### 与历史失败原型的区别
+
+| 原型 | 对消域 | 初值来源 | 是否破坏 FBSS 解相干前提 | 实际结果 |
+|---|---|---|---|---|
+| proto3 | beamspace 协方差 `Rb` | proto4 局部 MUSIC | 是 | `bw/8~bw/10` 基本失败 |
+| proto5a refined2 | FFT 域 Dirichlet 残差 | FFT 主峰 + 残差次峰 | 否，但残差次峰不稳定 | 远不及 Root-MUSIC reference |
+| proto7 | FBSS 后 Toeplitz 投影 | 不涉及对消 | 是 | 双目标被拖向中心，`tol_rate` 近似为 0 |
+| proto9 | 阵元域快拍 `y`，联合 LS 幅度估计 | proto6 Root-MUSIC | 否 | SNR90 与 proto6 持平，RMSE 微弱变化 |
+
+### Sanity Check
+
+按 9.4.4 先跑 30 dB 高 SNR 双目标 sanity check，assert 通过：
+
+- `theta_a = 12.86 deg`
+- `theta_b = 13.14 deg`
+- `proto6 init = [12.8559, 13.1312]`
+- `proto9 final = [12.8556, 13.1310]`
+- `outer_iter_used = 1`
+- `guard_applied = 0`
+
+最大绝对误差小于 `0.05 deg`，因此进入公平对比。
+
+### 实验参数
+
+- `sep_factor_list = [7, 8, 9, 10]`
+- `snr_list = 14:2:28`
+- `Metkl = 200`
+- `T_snap = 260`
+- `tol_deg = 0.1`
+- `tol_rel_ratio = 0.25`
+- `base_seed = 20260526`
+- `max_outer_iter = 6`
+- `angle_tol_stop_deg = 1e-3`
+- `min_sep_guard = 0.05`
+- 4 条路线：
+  - `baseline_routeB_centerT_grid_music`
+  - `proto6_array_root_music`
+  - `proto6_beamspace_root_music`
+  - `proto9_subspace_relax_root_music`
+
+### 9.6.2 公平性回归
+
+这一关通过。
+
+`SNR90_abs01` 三条对照路线复现为：
+
+- `baseline_routeB_centerT_grid_music`: `16 / 18 / 22 / 24 dB`
+- `proto6_array_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto6_beamspace_root_music`: `14 / 16 / 20 / 22 dB`
+
+说明本轮没有改坏噪声、seed、Route B true centerT、proto6 array 或 proto6 beamspace 的公平对照口径。
+
+### 结果
+
+`SNR90_abs01` 结果如下：
+
+- `baseline_routeB_centerT_grid_music`: `16 / 18 / 22 / 24 dB`
+- `proto6_array_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto6_beamspace_root_music`: `14 / 16 / 20 / 22 dB`
+- `proto9_subspace_relax_root_music`: `14 / 16 / 20 / 22 dB`
+
+`SNR90_rel025` 结果如下：
+
+- `baseline_routeB_centerT_grid_music`: `16 / 18 / 22 / 24 dB`
+- `proto6_array_root_music`: `14 / 18 / 20 / 22 dB`
+- `proto6_beamspace_root_music`: `14 / 18 / 20 / 22 dB`
+- `proto9_subspace_relax_root_music`: `14 / 18 / 20 / 22 dB`
+
+门槛代表点对比如下：
+
+- `bw/7, 14 dB`
+  - proto6 array: `tol_abs01 = 0.990`, `tol_rel025 = 0.990`, `RMSE = 0.046660 deg`
+  - proto9: `tol_abs01 = 0.995`, `tol_rel025 = 0.995`, `RMSE = 0.045822 deg`
+- `bw/8, 16 dB`
+  - proto6 array: `tol_abs01 = 0.935`, `tol_rel025 = 0.855`, `RMSE = 0.053590 deg`
+  - proto9: `tol_abs01 = 0.925`, `tol_rel025 = 0.865`, `RMSE = 0.053186 deg`
+- `bw/9, 20 dB`
+  - proto6 array: `tol_abs01 = 0.990`, `tol_rel025 = 0.960`, `RMSE = 0.037643 deg`
+  - proto9: `tol_abs01 = 0.990`, `tol_rel025 = 0.960`, `RMSE = 0.037305 deg`
+- `bw/10, 22 dB`
+  - proto6 array: `tol_abs01 = 1.000`, `tol_rel025 = 0.940`, `RMSE = 0.035152 deg`
+  - proto9: `tol_abs01 = 0.995`, `tol_rel025 = 0.935`, `RMSE = 0.035331 deg`
+
+在 `SNR >= 20 dB` 条件下，proto9 相对 proto6 array 的平均 RMSE 变化为：
+
+- `bw/7`: `-0.021%`
+- `bw/8`: `+0.066%`
+- `bw/9`: `-0.394%`
+- `bw/10`: `-0.310%`
+
+因此 RMSE 只有极弱变化，不满足 9.6.3 中标准 B 所说的 `3%~10%` 持续改善。
+
+### 迭代诊断与红线检查
+
+9.6.5 的 4 条失败红线全部通过：
+
+1. `max init_failed_rate = 0.000 < 10%`
+2. `max guard_applied_rate = 0.160 < 30%`
+3. proto9 的 `SNR90_abs01` 没有比 proto6 array 严格高两档；
+4. `mean_outer_iter` 范围为 `1.000 ~ 4.690`，不是所有档位都卡在 `max_outer_iter = 6`。
+
+更细的诊断：
+
+- `mean_outer_iter` 随 SNR 升高整体下降，高 SNR 下多数样本 1 轮即可停止；
+- `guard_applied_rate` 主要出现在小间隔、低 SNR：
+  - `bw/9, 14 dB`: `0.115`
+  - `bw/10, 14 dB`: `0.160`
+  - `bw/10, 16 dB`: `0.150`
+- `mean_final_residual_power` 随 SNR 升高单调下降，说明 LS 对消残差的能量趋势是合理的。
+
+### 结论
+
+按 9.6.3 的 A/B/C 表，本轮不属于 A，也没有触发 C 的失败条件。最接近的处置是 **B-：温和持平**：
+
+- `SNR90_abs01` 与 proto6 array 完全持平；
+- `SNR90_rel025` 与 proto6 array 完全持平；
+- `init_failed_rate = 0`，说明初值链路稳定；
+- 但 RMSE 没有达到 `3%~10%` 的持续改善，只有接近数值等价的微弱变化；
+- guard 在低 SNR 小间隔处仍有一定触发率，说明 RELAX 迭代在当前相干双目标模型下没有形成新的稳定收益。
+
+### 保留建议
+
+- **脚本和结果保留**：proto9 是一个重要的负向/平台证据，说明“在 proto6 Root-MUSIC 已经很稳的前提下，再叠加阵元域 RELAX 迭代并不会自动降低门槛”。
+- **不升级为主创新点**：当前主创新仍应是 `Prototype 6: FBSS + Root-MUSIC`。
+- **不建议继续沿固定 proto9 结构深挖**：除非后续明确改变目标函数，例如：
+  - 对单目标更新加局部角度约束；
+  - 用最大似然或残差谱准则替代单目标 Root-MUSIC 更新；
+  - 或者针对相干同频源重新设计幅度/相位参数化。
