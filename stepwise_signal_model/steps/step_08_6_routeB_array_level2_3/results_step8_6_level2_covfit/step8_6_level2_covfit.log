@@ -1,0 +1,56 @@
+Step 08.6 level 2 part 4: one-dimensional cylindrical covariance fitting
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_covfit
+First-part commit: 03c02c9
+Second-part commit: c217c0f
+Third-part commit: 694cae5
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+First-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_subarray_manifold.m
+Second-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_spectrum_diagnostics.m
+Third-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_subarray_selection.m
+Third-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\step8_6_level2_subarray_selection_summary.csv
+Third-part keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_subarray_selection\step8_6_level2_subarray_selection_keypoints.csv
+Third-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第三部分_子阵选择与加权谱验证记录.md
+Scope guard: level 2 covfit only. No fullscan, no level 3, no 2D az/el MUSIC, no PME/SBL/SPICE/DML.
+Covfit model: R_obs=R_FB; rank1 uses R=alpha*G_FB(theta1,theta2)+sigma2*I; Hermitian LS uses Rs=[c11,c12;conj(c12),c22] with PSD-projected score.
+Third-part loaded benchmark at K=20, sep=10, SNR=30: best route=center_real/min_den_fb/center_window_5_min_den tied, tol_abs01=0.420
+Third-part keypoints rows=288, record chars=2784
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, music_step=0.005000 deg, coarse_step=0.020000 deg, refine_step=0.005000 deg
+
+Routes
+  1: center_real
+  2: min_den_fb
+  3: covfit_rank1_equal_phase
+  4: covfit_hermitian_lsq_psd
+
+Sanity stage: K=20, sep=[7 10], SNR=60 dB, Metkl=1
+  sanity sep=7: center=[-0.1278 0.1322], min_den=[-0.1278 0.1322], rank1=[-0.1850 0.1850], herm=[-0.7800 0.0200], rank1_true_rank=1, herm_true_rank=1
+  sanity sep=10: center=[-0.0678 0.0672], min_den=[-0.0678 0.0672], rank1=[-0.1800 0.1800], herm=[-0.5950 -0.5400], rank1_true_rank=1, herm_true_rank=1
+
+K_phi=20, P_phi=46, coarse_candidates=9191, subarray_span=35.625000 deg
+  sep=7 finished for K=20, elapsed=120.3 s
+  sep=10 finished for K=20, elapsed=225.2 s
+
+K_phi=24, P_phi=42, coarse_candidates=9191, subarray_span=43.125000 deg
+  sep=7 finished for K=24, elapsed=331.6 s
+  sep=10 finished for K=24, elapsed=445.5 s
+
+Sanity pass: 1
+  sanity sep=7 rank1 doa=[-0.1850 0.1850], true=[-0.1884 0.1884], rank1_true_rank=1, hermitian_true_rank=1
+  sanity sep=10 rank1 doa=[-0.1800 0.1800], true=[-0.1319 0.1319], rank1_true_rank=1, hermitian_true_rank=1
+Diagnostic conclusion: 层次二协方差拟合有效。完全同相小间隔场景中，pair covariance fitting 比 MUSIC 峰搜索更适合。
+Next step: 围绕 rank1 equal-phase covfit 做更大规模 K/SNR 小扫描，仍不进入层次三。
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\step8_6_level2_covfit_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\step8_6_level2_covfit_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\step8_6_level2_covfit_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\covfit_objective_map_rank1_sep10_K20.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\covfit_objective_map_hermitian_sep10_K20.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\covfit_route_tol_compare_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\covfit_route_rmse_compare_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_covfit\covfit_objective_true_vs_best.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第四部分_一维圆柱协方差拟合验证记录.md
