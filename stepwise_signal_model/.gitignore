@@ -1,0 +1,5 @@
+# Local tool configuration
+.claude/
+
+# Generated experiment outputs; keep source scripts and docs in Git.
+steps/**/results_step*/
