@@ -1,0 +1,48 @@
+Step 08.6 level 2 part 6: rank1 equal-phase covfit final validation scan
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_covfit_finalscan
+Fifth-part commit: 5d7e3e8
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Fifth-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_covfit_scan.m
+Fifth-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\step8_6_level2_rank1_covfit_scan_summary.csv
+Fifth-part keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_scan\step8_6_level2_rank1_covfit_scan_keypoints.csv
+Fifth-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第五部分_rank1协方差拟合稳定性扫描记录.md
+Scope guard: level 2 rank1 covfit final validation only. No level 3, no 2D az/el MUSIC, no Hermitian LS optimization, no phase-scan covfit.
+Fifth-part loaded benchmark at K=28, sep=10, SNR=30: rank1 tol_abs01=1.000, abs sep error=0.03103 deg
+Fifth-part keypoints rows=51, record chars=2646
+Unified final grid: K=28, sep=[1 2 3 5 7 10], SNR=-4:2:20, Metkl=200.
+Low-SNR fine scan is the exact subset sep=[7 10], SNR=6:2:20; extra low SNR -4:2:6 is included in the same grid.
+All three routes are evaluated on the same noisy observations. Baseline key SNR list retained for reporting: [10 14 18 20].
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, music_step=0.005000 deg, coarse_step=0.020000 deg, refine_step=0.005000 deg
+rank1 pair search sep range=[0.050000, 2.657754] deg; base max=0.800000 deg, final-grid max theta_sep=2.637754 deg
+
+Routes
+  1: center_real
+  2: min_den_fb
+  3: covfit_rank1_equal_phase
+
+Unified final validation scan: low-SNR fine scan plus sep-factor full curve
+K_phi=28, P_phi=38, coarse_candidates=25545, subarray_span=50.625000 deg
+  sep=1 finished for K=28, elapsed=272.9 s
+  sep=2 finished for K=28, elapsed=675.5 s
+  sep=3 finished for K=28, elapsed=1140.0 s
+  sep=5 finished for K=28, elapsed=1622.6 s
+  sep=7 finished for K=28, elapsed=2102.2 s
+  sep=10 finished for K=28, elapsed=2537.4 s
+
+Diagnostic conclusion: rank1 covfit 显著优于现有所有层次二 MUSIC 方案，是第 8.6 步层次二主算法候选。
+Next step: 层次二内可围绕 rank1 covfit 做实现整理和论文表述；当前合成验证目标下不需要进入层次三。
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\rank1_final_snr90_vs_sep.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\rank1_final_tol_vs_snr_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\rank1_final_rmse_vs_snr_sep10.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\rank1_final_sep_bias_vs_snr.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\rank1_final_compare_music_baselines.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第六部分_rank1协方差拟合最终验证记录.md
