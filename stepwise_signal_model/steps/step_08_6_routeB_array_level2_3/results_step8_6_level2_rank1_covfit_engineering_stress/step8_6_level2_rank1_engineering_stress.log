@@ -1,0 +1,89 @@
+Step 08.6 level 2 part 7A: rank1 equal-phase covfit engineering stress test
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_engstress
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Formula doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步层次二和三公式推导.md
+Sixth-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_covfit_finalscan.m
+Sixth-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_summary.csv
+Sixth-part keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_keypoints.csv
+Sixth-part record file is absent in working tree; using overall level-2 record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二整体记录.md, chars=7624
+Scope guard: level 2 engineering stress test only. No level 3, no 2D az/el MUSIC, no complex-gain covfit, no phase-scan covfit, no constrained covariance fitting.
+Sixth-part benchmark: rank1 sep=10 SNR90_abs01 label=<= -4 dB, tol(-4 dB)=0.990, abs sep error(-4 dB)=0.05808 deg
+Sixth-part keypoints rows=140
+Stress grid: K_phi=28, sep_factor=10, SNR=[-4 0 4 8], Metkl=100, T_snap=260.
+Routes use the same noisy observation within each scenario/SNR/trial.
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, theta_sep(sep=10)=0.263775445 deg, target=[-0.131887722 0.131887722] deg
+rank1 pair search sep range=[0.050000, 0.800000] deg
+
+Routes
+  1: center_real
+  2: min_den_fb
+  3: covfit_rank1_equal_phase
+Stress cases=39, unique el_assumed=[0 0.5 1 2 5 10]
+  el_assumed=0.000 deg, coarse_candidates=9191
+  el_assumed=0.500 deg, coarse_candidates=9191
+  el_assumed=1.000 deg, coarse_candidates=9191
+  el_assumed=2.000 deg, coarse_candidates=9191
+  el_assumed=5.000 deg, coarse_candidates=9191
+  el_assumed=10.000 deg, coarse_candidates=9191
+
+Engineering stress scan
+  case 01/39 amplitude_ratio        beta_1             finished, elapsed=57.2 s
+  case 02/39 amplitude_ratio        beta_0p8           finished, elapsed=111.1 s
+  case 03/39 amplitude_ratio        beta_0p5           finished, elapsed=163.7 s
+  case 04/39 amplitude_ratio        beta_0p3           finished, elapsed=215.4 s
+  case 05/39 amplitude_ratio        beta_0p1           finished, elapsed=266.1 s
+  case 06/39 elevation_difference   elB_0              finished, elapsed=318.6 s
+  case 07/39 elevation_difference   elB_0p5            finished, elapsed=371.3 s
+  case 08/39 elevation_difference   elB_1              finished, elapsed=424.1 s
+  case 09/39 elevation_difference   elB_2              finished, elapsed=477.8 s
+  case 10/39 elevation_difference   elB_5              finished, elapsed=531.0 s
+  case 11/39 elevation_difference   elB_10             finished, elapsed=575.5 s
+  case 12/39 elevation_difference   elB_15             finished, elapsed=623.5 s
+  case 13/39 elevation_difference   elB_20             finished, elapsed=676.8 s
+  case 14/39 el_assumed_mismatch    el0_0              finished, elapsed=729.9 s
+  case 15/39 el_assumed_mismatch    el0_0p5            finished, elapsed=783.0 s
+  case 16/39 el_assumed_mismatch    el0_1              finished, elapsed=835.6 s
+  case 17/39 el_assumed_mismatch    el0_2              finished, elapsed=887.5 s
+  case 18/39 el_assumed_mismatch    el0_5              finished, elapsed=936.9 s
+  case 19/39 el_assumed_mismatch    el0_10             finished, elapsed=979.6 s
+  case 20/39 phase_offset           phase_0            finished, elapsed=1031.9 s
+  case 21/39 phase_offset           phase_5            finished, elapsed=1084.3 s
+  case 22/39 phase_offset           phase_15           finished, elapsed=1136.6 s
+  case 23/39 phase_offset           phase_30           finished, elapsed=1189.7 s
+  case 24/39 phase_offset           phase_60           finished, elapsed=1242.6 s
+  case 25/39 phase_offset           phase_90           finished, elapsed=1295.6 s
+  case 26/39 phase_offset           phase_120          finished, elapsed=1349.2 s
+  case 27/39 phase_offset           phase_150          finished, elapsed=1401.7 s
+  case 28/39 phase_offset           phase_180          finished, elapsed=1432.4 s
+  case 29/39 coherence_rho          rho_1              finished, elapsed=1485.1 s
+  case 30/39 coherence_rho          rho_0p99           finished, elapsed=1540.6 s
+  case 31/39 coherence_rho          rho_0p95           finished, elapsed=1596.2 s
+  case 32/39 coherence_rho          rho_0p9            finished, elapsed=1651.8 s
+  case 33/39 coherence_rho          rho_0p7            finished, elapsed=1707.3 s
+  case 34/39 coherence_rho          rho_0p5            finished, elapsed=1762.7 s
+  case 35/39 extreme_combo          case_A_beta0p5_el5_rho1_ph0 finished, elapsed=1816.6 s
+  case 36/39 extreme_combo          case_B_beta0p5_el10_rho1_ph30 finished, elapsed=1862.2 s
+  case 37/39 extreme_combo          case_C_beta0p8_el5_rho0p9_ph30 finished, elapsed=1920.4 s
+  case 38/39 extreme_combo          case_D_beta0p3_el10_rho0p9_ph60 finished, elapsed=1969.5 s
+  case 39/39 extreme_combo          case_E_beta1_el15_rho0p7_ph90 finished, elapsed=2018.8 s
+
+Engineering stress conclusion: 幅度比压力测试暴露 equal-amplitude 假设边界，需要 rank1 complex-gain covfit。
+Need complex-gain covfit: 是
+Need constrained covariance fitting: 否
+Need level 3: 是
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\step8_6_level2_rank1_engineering_stress_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\step8_6_level2_rank1_engineering_stress_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\step8_6_level2_rank1_engineering_stress_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\stress_amplitude_ratio_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\stress_elevation_sep_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\stress_el_assumed_mismatch_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\stress_phase_offset_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\stress_rho_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\stress_extreme_cases_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第七部分_rank1协方差拟合工程压力测试记录.md

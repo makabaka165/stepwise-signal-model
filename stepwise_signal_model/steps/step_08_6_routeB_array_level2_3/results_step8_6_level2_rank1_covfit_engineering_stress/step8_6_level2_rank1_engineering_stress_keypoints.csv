@@ -1,0 +1,333 @@
+stress_group,case_name,stress_value,beta,el_a_deg,el_b_deg,el_assumed_deg,phase_offset_deg,rho,route_name,K_phi,P_phi,sep_factor,theta_sep_deg,snr_db,raw_success_rate,tol_success_rate_abs01,tol_success_rate_rel025,rmse_deg,mean_pair_sep_error,mean_pair_center_error,snr90_abs01,snr90_abs01_label,snr90_rel025,snr90_rel025_label,failure_rate,model_mismatch_flag
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.98,0.89,0.04135346391,0.06577754449,0.0006,-4,<= -4 dB,0,0 dB,0.02,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,1,0.02211742984,0.03670407119,5e-05,-4,<= -4 dB,0,0 dB,0,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.0184924821,0.03022245551,0,-4,<= -4 dB,0,0 dB,0,false
+amplitude_ratio,beta_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01869936457,0.03158778643,0,-4,<= -4 dB,0,0 dB,0,false
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.93,0.79,0.04286502195,0.06125,0.014725,-4,<= -4 dB,0,0 dB,0.07,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.92,0.0321155767,0.04535,0.014975,-4,<= -4 dB,0,0 dB,0,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.98,0.02612680035,0.03487041991,0.014825,-4,<= -4 dB,0,0 dB,0,true
+amplitude_ratio,beta_0p8,0.8,0.8,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0.99,0.98,0.02692444862,0.03452245551,0.01495,-4,<= -4 dB,0,0 dB,0.01,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.84,0.42,0.060118309,0.0636244911,0.04415,4,4 dB,NaN,NaN,0.16,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.87,0.37,0.05987700993,0.06508263348,0.044075,4,4 dB,NaN,NaN,0.13,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0.95,0.53,0.05386478401,0.04853059789,0.04425,4,4 dB,NaN,NaN,0.05,true
+amplitude_ratio,beta_0p5,0.5,0.5,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0.92,0.65,0.05243311008,0.04198466907,0.043725,4,4 dB,NaN,NaN,0.08,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.56,0,0.08016918859,0.0581510178,0.071,NaN,NaN,NaN,NaN,0.44,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.61,0,0.07754635434,0.05001227753,0.07145,NaN,NaN,NaN,NaN,0.39,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0.56,0,0.0777202529,0.05365311736,0.07155,NaN,NaN,NaN,NaN,0.44,true
+amplitude_ratio,beta_0p3,0.3,0.3,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0.52,0,0.07792915461,0.05507557286,0.0717,NaN,NaN,NaN,NaN,0.48,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1196144322,0.08493975806,0.107575,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1141934271,0.05703568687,0.107975,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1128080196,0.04858466907,0.108225,NaN,NaN,NaN,NaN,1,true
+amplitude_ratio,beta_0p1,0.1,0.1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1117618018,0.04420916018,0.107925,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_0,0,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0.01,0,0,1.346619647,1.776224555,1.012245551,NaN,NaN,NaN,NaN,1,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.01,0,0,1.346619647,1.776224555,1.012245551,NaN,NaN,NaN,NaN,1,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.97,0.93,0.03425008416,0.05140407119,0.0009,-4,<= -4 dB,-4,<= -4 dB,0.03,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.98,0.02400409068,0.0373234733,0.000225,-4,<= -4 dB,-4,<= -4 dB,0,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01831951222,0.0283734733,0,-4,<= -4 dB,-4,<= -4 dB,0,false
+elevation_difference,elB_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01504560649,0.02523880423,0,-4,<= -4 dB,-4,<= -4 dB,0,false
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,center_real,28,38,10,0.2637754449,8,0.05,0.03,0.01,0.1369030724,0.120755089,0.0896526696,NaN,NaN,NaN,NaN,0.97,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.05,0.03,0.01,0.1369030724,0.120755089,0.0896526696,NaN,NaN,NaN,NaN,0.97,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.98,0.9,0.03849254075,0.06089694661,0.002125,-4,<= -4 dB,-4,<= -4 dB,0.02,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.98,0.0255645878,0.03952754449,0.001725,-4,<= -4 dB,-4,<= -4 dB,0,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.99,0.021005521,0.0325265267,0.0017,-4,<= -4 dB,-4,<= -4 dB,0,true
+elevation_difference,elB_0p5,0.5,1,0,0.5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01645005678,0.0262510178,0.0012,-4,<= -4 dB,-4,<= -4 dB,0,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,center_real,28,38,10,0.2637754449,-4,0.02,0,0,0.967541864,1.216224555,0.7477544493,8,8 dB,8,8 dB,1,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,center_real,28,38,10,0.2637754449,8,0.99,0.99,0.96,0.03327992469,0.02862084555,0.0245310586,8,8 dB,8,8 dB,0.01,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0.02,0,0,0.967541864,1.216224555,0.7477544493,8,8 dB,8,8 dB,1,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.99,0.99,0.96,0.0332900657,0.0285703405,0.02455631112,8,8 dB,8,8 dB,0.01,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.99,0.83,0.03976830114,0.06317245551,0.014275,-4,<= -4 dB,0,0 dB,0.01,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.98,0.02865759371,0.04029796441,0.01425,-4,<= -4 dB,0,0 dB,0,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.99,0.02406883476,0.02979491101,0.014525,-4,<= -4 dB,0,0 dB,0,true
+elevation_difference,elB_1,1,1,0,1,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,0.97,0.02669599995,0.03693880423,0.0147,-4,<= -4 dB,0,0 dB,0,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,center_real,28,38,10,0.2637754449,-4,0.03,0,0,0.2557266003,0.3478912217,0.1797455507,4,4 dB,8,8 dB,1,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,center_real,28,38,10,0.2637754449,8,1,1,0.99,0.03352612592,0.05472455507,0.01333231365,4,4 dB,8,8 dB,0,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0.03,0,0,0.2557266003,0.3478912217,0.1797455507,4,4 dB,8,8 dB,1,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,min_den_fb,28,38,10,0.2637754449,8,1,1,0.99,0.03359324528,0.05487455507,0.01335731365,4,4 dB,8,8 dB,0,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1239882847,0.08661940211,0.112425,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1177508946,0.05716838432,0.112475,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1159615212,0.04616634872,0.112525,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_2,2,1,0,2,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1151079489,0.03953676863,0.11245,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,center_real,28,38,10,0.2637754449,8,0.49,0.01,0,0.1966499918,0.07812373442,0.1806012065,NaN,NaN,NaN,NaN,0.99,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.5,0.01,0,0.1959457547,0.07858575084,0.1797942714,NaN,NaN,NaN,NaN,0.99,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1349428493,0.1216265907,0.11645,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1322365154,0.1172255729,0.116225,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1339005359,0.1281745551,0.116225,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_5,5,1,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1336836292,0.1289245551,0.1161,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,center_real,28,38,10,0.2637754449,8,0.24,0,0,1.368410951,1.887474555,0.964953884,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.24,0,0,1.368410951,1.887474555,0.964953884,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1534822717,0.1801754449,0.12305,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1555976016,0.1870254449,0.123575,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1564627531,0.1903254449,0.123725,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_10,10,1,0,10,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.157880561,0.1945254449,0.123975,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,center_real,28,38,10,0.2637754449,8,0.95,0,0,0.8483524068,1.138487713,0.6067455507,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.95,0,0,0.8483524068,1.138487713,0.6067455507,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1538087739,0.1939254449,0.118975,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1544086353,0.1949254449,0.119425,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1552615668,0.1975754449,0.11945,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_15,15,1,0,15,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1546087098,0.1960254449,0.119275,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,center_real,28,38,10,0.2637754449,8,0.06,0,0,0.3497793852,0.3203912217,0.2705014831,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.07,0,0,0.3657661317,0.3305102694,0.2897519069,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.176835864,0.2185245551,0.1368,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1787288009,0.2259745551,0.137175,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1823401033,0.2389245551,0.1371,NaN,NaN,NaN,NaN,1,true
+elevation_difference,elB_20,20,1,0,20,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.183664721,0.2435245551,0.137,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,1,0.88,0.04030523299,0.06407958009,0.00095,-4,<= -4 dB,0,0 dB,0,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.98,0.96,0.02856021904,0.04157143771,0.0001,-4,<= -4 dB,0,0 dB,0.02,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.99,0.02117065444,0.03386940211,0,-4,<= -4 dB,0,0 dB,0,false
+el_assumed_mismatch,el0_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01588102979,0.02701227753,0,-4,<= -4 dB,0,0 dB,0,false
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,center_real,28,38,10,0.2637754449,8,0.01,0,0,1.731916733,2.316224555,1.287754449,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,min_den_fb,28,38,10,0.2637754449,8,0.01,0,0,1.731916733,2.316224555,1.287754449,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.97,0.9,0.03837080173,0.0576265267,0.00075,-4,<= -4 dB,-4,<= -4 dB,0.03,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.97,0.0274773017,0.0431755089,0.0002,-4,<= -4 dB,-4,<= -4 dB,0,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.99,0.01939209834,0.03022041991,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+el_assumed_mismatch,el0_0p5,0.5,1,0,0,0.5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01822178921,0.03046329533,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.99,0.87,0.03972965706,0.0615,0.0007,-4,<= -4 dB,0,0 dB,0.01,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.99,0.95,0.02903106953,0.04320407119,5e-05,-4,<= -4 dB,0,0 dB,0.01,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.98,0.02422476214,0.0373489822,0,-4,<= -4 dB,0,0 dB,0,true
+el_assumed_mismatch,el0_1,1,1,0,0,1,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.02023264532,0.03406736652,0,-4,<= -4 dB,0,0 dB,0,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.89,0.66,0.05773117833,0.09693161568,0.003625,0,0 dB,4,4 dB,0.11,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.97,0.84,0.04484430896,0.07325,0.001275,0,0 dB,4,4 dB,0.03,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.96,0.03033649746,0.04792754449,0.000325,0,0 dB,4,4 dB,0,true
+el_assumed_mismatch,el0_2,2,1,0,0,2,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,0.99,0.02060370758,0.03264694661,0,0,0 dB,4,4 dB,0,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,min_den_fb,28,38,10,0.2637754449,-4,1,0,0,0.1242988028,0.2484254449,0.003741156827,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,min_den_fb,28,38,10,0.2637754449,8,1,0,0,0.124283184,0.2483754449,0.004050889867,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.51,0.21,0.09096119877,0.1651561068,0.010125,8,8 dB,NaN,NaN,0.49,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.69,0.37,0.07622961359,0.1357622136,0.006275,8,8 dB,NaN,NaN,0.31,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0.83,0.53,0.06607216118,0.1123867047,0.003725,8,8 dB,NaN,NaN,0.17,true
+el_assumed_mismatch,el0_5,5,1,0,0,5,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0.94,0.74,0.05332787627,0.08598874026,0.001275,8,8 dB,NaN,NaN,0.06,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,min_den_fb,28,38,10,0.2637754449,-4,1,0,0,0.1179344677,0.2352754449,0.007250889867,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,min_den_fb,28,38,10,0.2637754449,8,1,0,0,0.1180398261,0.2355254449,0.006715711893,NaN,NaN,NaN,NaN,1,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.04,0,0.1749134813,0.2626867047,0.073675,NaN,NaN,NaN,NaN,0.96,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.12,0.05,0.13937353,0.2334846691,0.034375,NaN,NaN,NaN,NaN,0.88,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0.15,0.05,0.1017646933,0.1940223915,0.01955,NaN,NaN,NaN,NaN,0.85,true
+el_assumed_mismatch,el0_10,10,1,0,0,10,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0.1,0,0.1006607307,0.198999936,0.0105,NaN,NaN,NaN,NaN,0.9,true
+phase_offset,phase_0,0,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+phase_offset,phase_0,0,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+phase_offset,phase_0,0,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+phase_offset,phase_0,0,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+phase_offset,phase_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.98,0.9,0.0405162726,0.0657255089,0.000575,-4,<= -4 dB,-4,<= -4 dB,0.02,false
+phase_offset,phase_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.97,0.02835681818,0.04535305339,0.00015,-4,<= -4 dB,-4,<= -4 dB,0,false
+phase_offset,phase_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0.99,0.99,0.02118920461,0.03289389322,0,-4,<= -4 dB,-4,<= -4 dB,0.01,false
+phase_offset,phase_0,0,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01764424509,0.02955922414,0,-4,<= -4 dB,-4,<= -4 dB,0,false
+phase_offset,phase_5,5,1,0,0,0,5,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_5,5,1,0,0,0,5,1,center_real,28,38,10,0.2637754449,8,0.01,0,0,1.491510474,1.976224555,1.117245551,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_5,5,1,0,0,0,5,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_5,5,1,0,0,0,5,1,min_den_fb,28,38,10,0.2637754449,8,0.01,0,0,1.491510474,1.976224555,1.117245551,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_5,5,1,0,0,0,5,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,1,0.93,0.03314434717,0.05025508899,0.00055,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_5,5,1,0,0,0,5,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.97,0.02346343202,0.03463059789,0.0002,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_5,5,1,0,0,0,5,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01756569492,0.02834694661,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_5,5,1,0,0,0,5,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01732589366,0.02968982203,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_15,15,1,0,0,0,15,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_15,15,1,0,0,0,15,1,center_real,28,38,10,0.2637754449,8,0.01,0,0,1.068449875,1.381224555,0.8152544493,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_15,15,1,0,0,0,15,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_15,15,1,0,0,0,15,1,min_den_fb,28,38,10,0.2637754449,8,0.01,0,0,1.068449875,1.381224555,0.8152544493,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_15,15,1,0,0,0,15,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.98,0.91,0.03781530034,0.05885,0.001425,-4,<= -4 dB,-4,<= -4 dB,0.02,true
+phase_offset,phase_15,15,1,0,0,0,15,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.98,0.02311378765,0.0351489822,0.0001,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_15,15,1,0,0,0,15,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01802330216,0.03036736652,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_15,15,1,0,0,0,15,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01672505973,0.02823269745,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_30,30,1,0,0,0,30,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_30,30,1,0,0,0,30,1,center_real,28,38,10,0.2637754449,8,0.19,0.16,0.1,0.0797604727,0.08639631022,0.03885596568,NaN,NaN,NaN,NaN,0.84,true
+phase_offset,phase_30,30,1,0,0,0,30,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_30,30,1,0,0,0,30,1,min_den_fb,28,38,10,0.2637754449,8,0.19,0.16,0.1,0.0797604727,0.08639631022,0.03885596568,NaN,NaN,NaN,NaN,0.84,true
+phase_offset,phase_30,30,1,0,0,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,1,0.92,0.03550800621,0.05665,0.000825,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_30,30,1,0,0,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.97,0.02648733062,0.0404744911,2.5e-05,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_30,30,1,0,0,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.02028175926,0.03284083982,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_30,30,1,0,0,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01849304977,0.03148575084,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_60,60,1,0,0,0,60,1,center_real,28,38,10,0.2637754449,-4,0.01,0,0,0.5791686052,0.6912245551,0.4647455507,8,8 dB,8,8 dB,1,true
+phase_offset,phase_60,60,1,0,0,0,60,1,center_real,28,38,10,0.2637754449,8,1,1,1,0.02649843055,0.03292544493,0.01581991101,8,8 dB,8,8 dB,0,true
+phase_offset,phase_60,60,1,0,0,0,60,1,min_den_fb,28,38,10,0.2637754449,-4,0.01,0,0,0.5791686052,0.6912245551,0.4647455507,8,8 dB,8,8 dB,1,true
+phase_offset,phase_60,60,1,0,0,0,60,1,min_den_fb,28,38,10,0.2637754449,8,1,1,1,0.02647020648,0.03277544493,0.01584491101,8,8 dB,8,8 dB,0,true
+phase_offset,phase_60,60,1,0,0,0,60,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.99,0.97,0.03094683292,0.04917754449,0.0011,-4,<= -4 dB,-4,<= -4 dB,0.01,true
+phase_offset,phase_60,60,1,0,0,0,60,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.98,0.02537499381,0.04034491101,0.0002,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_60,60,1,0,0,0,60,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.99,0.02294052517,0.0347244911,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_60,60,1,0,0,0,60,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01563984296,0.02551838432,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_90,90,1,0,0,0,90,1,center_real,28,38,10,0.2637754449,-4,0.08,0.06,0.06,0.08537840079,0.05906886123,0.0490625,0,0 dB,4,4 dB,0.94,true
+phase_offset,phase_90,90,1,0,0,0,90,1,center_real,28,38,10,0.2637754449,8,1,1,1,0.0140144413,0.01877035595,0.00670973304,0,0 dB,4,4 dB,0,true
+phase_offset,phase_90,90,1,0,0,0,90,1,min_den_fb,28,38,10,0.2637754449,-4,0.08,0.06,0.06,0.08535411839,0.05844386123,0.049375,0,0 dB,4,4 dB,0.94,true
+phase_offset,phase_90,90,1,0,0,0,90,1,min_den_fb,28,38,10,0.2637754449,8,1,1,1,0.01398783665,0.01862035595,0.006694911013,0,0 dB,4,4 dB,0,true
+phase_offset,phase_90,90,1,0,0,0,90,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.99,0.93,0.03682705842,0.05749592881,0.00085,-4,<= -4 dB,-4,<= -4 dB,0.01,true
+phase_offset,phase_90,90,1,0,0,0,90,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0.99,0.98,0.02635816587,0.04064083982,0.00025,-4,<= -4 dB,-4,<= -4 dB,0.01,true
+phase_offset,phase_90,90,1,0,0,0,90,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01946891602,0.03184083982,5e-05,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_90,90,1,0,0,0,90,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01826457855,0.03034083982,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+phase_offset,phase_120,120,1,0,0,0,120,1,center_real,28,38,10,0.2637754449,-4,0.98,0.97,0.85,0.03702830412,0.03785610429,0.02324589679,-4,<= -4 dB,0,0 dB,0.03,true
+phase_offset,phase_120,120,1,0,0,0,120,1,center_real,28,38,10,0.2637754449,8,1,1,1,0.009795710012,0.01460515295,0.00335553392,-4,<= -4 dB,0,0 dB,0,true
+phase_offset,phase_120,120,1,0,0,0,120,1,min_den_fb,28,38,10,0.2637754449,-4,0.98,0.97,0.85,0.03702830412,0.03785610429,0.02324589679,-4,<= -4 dB,0,0 dB,0.03,true
+phase_offset,phase_120,120,1,0,0,0,120,1,min_den_fb,28,38,10,0.2637754449,8,1,1,1,0.009800133026,0.01460515295,0.00335553392,-4,<= -4 dB,0,0 dB,0,true
+phase_offset,phase_120,120,1,0,0,0,120,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,1,0.87,0.04222732432,0.07190922414,0.000975,-4,<= -4 dB,0,0 dB,0,true
+phase_offset,phase_120,120,1,0,0,0,120,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.96,0.03992537139,0.07300311736,0.000125,-4,<= -4 dB,0,0 dB,0,true
+phase_offset,phase_120,120,1,0,0,0,120,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.96,0.03756537843,0.06785108176,0,-4,<= -4 dB,0,0 dB,0,true
+phase_offset,phase_120,120,1,0,0,0,120,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.03420845984,0.06285108176,0,-4,<= -4 dB,0,0 dB,0,true
+phase_offset,phase_150,150,1,0,0,0,150,1,center_real,28,38,10,0.2637754449,-4,1,0.88,0.35,0.07009902752,0.1345245551,0.009375444933,0,0 dB,NaN,NaN,0.12,true
+phase_offset,phase_150,150,1,0,0,0,150,1,center_real,28,38,10,0.2637754449,8,1,1,0.23,0.07034489231,0.1403245551,0.001586512773,0,0 dB,NaN,NaN,0,true
+phase_offset,phase_150,150,1,0,0,0,150,1,min_den_fb,28,38,10,0.2637754449,-4,1,0.88,0.35,0.07015490241,0.1346245551,0.009375444933,0,0 dB,NaN,NaN,0.12,true
+phase_offset,phase_150,150,1,0,0,0,150,1,min_den_fb,28,38,10,0.2637754449,8,1,1,0.23,0.07039702086,0.1404245551,0.00159160176,0,0 dB,NaN,NaN,0,true
+phase_offset,phase_150,150,1,0,0,0,150,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.03,0,0.1445988345,0.2853245551,0.00145,NaN,NaN,NaN,NaN,0.97,true
+phase_offset,phase_150,150,1,0,0,0,150,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1484573283,0.2947245551,0.00035,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_150,150,1,0,0,0,150,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1444285416,0.2878245551,0.0001,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_150,150,1,0,0,0,150,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1464850125,0.2923245551,0,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,center_real,28,38,10,0.2637754449,-4,1,0,0,0.5778915877,1.155524555,0.002021245813,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,center_real,28,38,10,0.2637754449,8,1,0,0,0.5779980343,1.155974555,0.0007929365601,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,min_den_fb,28,38,10,0.2637754449,-4,1,0,0,0.5778669992,1.155474555,0.002041156827,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,min_den_fb,28,38,10,0.2637754449,8,1,0,0,0.5779980343,1.155974555,0.0007929365601,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.269075163,0.5362245551,0.01805,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.2684389006,0.5362245551,0.00975,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.2682413901,0.5362245551,0.00605,NaN,NaN,NaN,NaN,1,true
+phase_offset,phase_180,180,1,0,0,0,180,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.2681719474,0.5362245551,0.0036,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_1,1,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,center_real,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.99,0.91,0.03802559414,0.0602489822,0.001,-4,<= -4 dB,-4,<= -4 dB,0.01,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.96,0.02324991198,0.0357510178,0.00015,-4,<= -4 dB,-4,<= -4 dB,0,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01991826602,0.03242041991,0,-4,<= -4 dB,-4,<= -4 dB,0,false
+coherence_rho,rho_1,1,1,0,0,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01747426904,0.03003269745,0,-4,<= -4 dB,-4,<= -4 dB,0,false
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,center_real,28,38,10,0.2637754449,8,0.03,0,0,1.635887546,2.179557888,1.217584816,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,min_den_fb,28,38,10,0.2637754449,8,0.03,0,0,1.633562112,2.176224555,1.21591815,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.97,0.9,0.03776540671,0.05755610678,0.000725,-4,<= -4 dB,-4,<= -4 dB,0.03,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.99,0.02601907013,0.0396255089,0.000125,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01853134713,0.03079592881,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p99,0.99,1,0,0,0,0,0.99,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01658906053,0.02751024194,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,center_real,28,38,10,0.2637754449,8,0.01,0,0,0.2798054224,0.2712245551,0.2447455507,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,min_den_fb,28,38,10,0.2637754449,8,0.01,0,0,0.2798054224,0.2712245551,0.2447455507,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.99,0.9,0.03957558267,0.06455,0.000925,-4,<= -4 dB,-4,<= -4 dB,0.01,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.99,0.02369474711,0.0377510178,0.0001,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01908660234,0.03117143771,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p95,0.95,1,0,0,0,0,0.95,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01752558242,0.02938167965,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,center_real,28,38,10,0.2637754449,8,0.02,0,0,0.2199743085,0.1562245551,0.1847455507,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,min_den_fb,28,38,10,0.2637754449,8,0.02,0,0,0.2199743085,0.1562245551,0.1847455507,NaN,NaN,NaN,NaN,1,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,1,0.91,0.03508156675,0.0556265267,0.0007,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,1,0.02516977583,0.04174796441,0.000225,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01923545965,0.02976736652,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p9,0.9,1,0,0,0,0,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01874052046,0.03073676863,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,center_real,28,38,10,0.2637754449,-4,0.01,0,0,1.015529152,1.301224555,0.7797455507,8,8 dB,NaN,NaN,1,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,center_real,28,38,10,0.2637754449,8,0.98,0.96,0.86,0.04281403958,0.05025295963,0.02522959184,8,8 dB,NaN,NaN,0.04,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,min_den_fb,28,38,10,0.2637754449,-4,0.01,0,0,1.015217362,1.306224555,0.7772455507,8,8 dB,NaN,NaN,1,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,min_den_fb,28,38,10,0.2637754449,8,0.98,0.96,0.86,0.042797194,0.05015091882,0.02528061224,8,8 dB,NaN,NaN,0.04,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0.98,0.94,0.034571312,0.0523265267,0.0008,-4,<= -4 dB,-4,<= -4 dB,0.02,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.95,0.02857352288,0.04334796441,7.5e-05,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,0.99,0.0202061429,0.03152245551,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p7,0.7,1,0,0,0,0,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,1,0.01734325145,0.02839592881,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,8,8 dB,8,8 dB,1,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,center_real,28,38,10,0.2637754449,8,1,1,1,0.0244826438,0.03537544493,0.01272544493,8,8 dB,8,8 dB,0,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,8,8 dB,8,8 dB,1,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,min_den_fb,28,38,10,0.2637754449,8,1,1,1,0.02445376291,0.03527544493,0.01277544493,8,8 dB,8,8 dB,0,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,1,0.94,0.03092497968,0.0467755089,0.00045,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,1,0.98,0.02672387688,0.0416755089,0.0001,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,1,1,0.01762629035,0.0279,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+coherence_rho,rho_0p5,0.5,1,0,0,0,0,0.5,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,1,0.99,0.01818393295,0.0285244911,0,-4,<= -4 dB,-4,<= -4 dB,0,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,center_real,28,38,10,0.2637754449,0,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,center_real,28,38,10,0.2637754449,4,0.02,0,0,1.308054781,1.816224555,0.9172455507,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,center_real,28,38,10,0.2637754449,8,0.04,0,0,0.5876032717,0.5399745551,0.5046294493,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,min_den_fb,28,38,10,0.2637754449,0,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,min_den_fb,28,38,10,0.2637754449,4,0.02,0,0,1.308054781,1.816224555,0.9172455507,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,min_den_fb,28,38,10,0.2637754449,8,0.04,0,0,0.5882181256,0.5412245551,0.5052544493,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1316056552,0.05839694661,0.126275,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1294936869,0.04966838432,0.125875,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1281021916,0.03761227753,0.12595,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_A_beta0p5_el5_rho1_ph0,1,0.5,0,5,0,0,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1282889877,0.03908676863,0.126025,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,center_real,28,38,10,0.2637754449,0,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,center_real,28,38,10,0.2637754449,4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,center_real,28,38,10,0.2637754449,8,0.07,0,0,1.436957804,1.976224555,1.002245551,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,min_den_fb,28,38,10,0.2637754449,0,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,min_den_fb,28,38,10,0.2637754449,4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,min_den_fb,28,38,10,0.2637754449,8,0.07,0,0,1.436957804,1.976224555,1.002245551,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1580082882,0.1751754449,0.1306,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1597442839,0.1819254449,0.130375,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1582433275,0.1766754449,0.13045,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_B_beta0p5_el10_rho1_ph30,2,0.5,0,10,0,30,1,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1590804462,0.1801254449,0.130275,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,center_real,28,38,10,0.2637754449,-4,0.01,0,0,1.533052,1.926224555,1.192754449,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,center_real,28,38,10,0.2637754449,0,0.02,0,0,1.752796389,2.241224555,1.347754449,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,center_real,28,38,10,0.2637754449,4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,center_real,28,38,10,0.2637754449,8,0.11,0,0,0.5032660712,0.4507700096,0.4377544493,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,min_den_fb,28,38,10,0.2637754449,-4,0.01,0,0,1.533052,1.926224555,1.192754449,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,min_den_fb,28,38,10,0.2637754449,0,0.02,0,0,1.75102806,2.238724555,1.346504449,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,min_den_fb,28,38,10,0.2637754449,4,0.01,0,0,0.8319466852,0.9362245551,0.6877544493,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,min_den_fb,28,38,10,0.2637754449,8,0.11,0,0,0.5036513004,0.4512245551,0.4379817221,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1179546725,0.08118778643,0.10795,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1169242277,0.08335515295,0.10725,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1176874539,0.09015209956,0.107325,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_C_beta0p8_el5_rho0p9_ph30,3,0.8,0,5,0,30,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1168680579,0.08605006397,0.107625,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,center_real,28,38,10,0.2637754449,0,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,center_real,28,38,10,0.2637754449,4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,center_real,28,38,10,0.2637754449,8,0.03,0,0,1.691442209,2.382891222,1.200578884,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,min_den_fb,28,38,10,0.2637754449,0,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,min_den_fb,28,38,10,0.2637754449,4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,min_den_fb,28,38,10,0.2637754449,8,0.03,0,0,1.691442209,2.382891222,1.200578884,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1592132185,0.1686754449,0.1332,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1579922241,0.1667254449,0.132725,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1551525659,0.1564754449,0.1327,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_D_beta0p3_el10_rho0p9_ph60,4,0.3,0,10,0,60,0.9,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1553577251,0.1577754449,0.13265,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,center_real,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,center_real,28,38,10,0.2637754449,0,0.01,0,0,1.220131561,1.701224555,0.8747455507,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,center_real,28,38,10,0.2637754449,4,0.18,0,0,0.7866079204,1.047057888,0.5548844396,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,center_real,28,38,10,0.2637754449,8,0.68,0,0,0.5046923968,0.6389451433,0.3671352565,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,min_den_fb,28,38,10,0.2637754449,-4,0,0,0,NaN,NaN,NaN,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,min_den_fb,28,38,10,0.2637754449,0,0.01,0,0,1.220131561,1.701224555,0.8747455507,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,min_den_fb,28,38,10,0.2637754449,4,0.18,0,0,0.7866079204,1.047057888,0.5548844396,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,min_den_fb,28,38,10,0.2637754449,8,0.68,0,0,0.5046923968,0.6389451433,0.3671352565,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,-4,1,0,0,0.1693077469,0.2017254449,0.135775,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,0,1,0,0,0.1687794749,0.2010754449,0.1354,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,4,1,0,0,0.1689833071,0.2013254449,0.135575,NaN,NaN,NaN,NaN,1,true
+extreme_combo,case_E_beta1_el15_rho0p7_ph90,5,1,0,15,0,90,0.7,covfit_rank1_equal_phase,28,38,10,0.2637754449,8,1,0,0,0.1694743851,0.2030254449,0.135575,NaN,NaN,NaN,NaN,1,true
