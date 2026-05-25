@@ -1,0 +1,56 @@
+Step 08.6 level 2 part 8: rank1 complex-gain covfit validation
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_complex_gain_covfit
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Formula doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步层次二和三公式推导.md
+Theory doc target: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二_广义相干协方差拟合模型说明.md
+Sixth-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_covfit_finalscan.m
+Sixth-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_summary.csv
+Sixth-part keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_finalscan\step8_6_level2_rank1_covfit_finalscan_keypoints.csv
+Sixth-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第六部分_rank1协方差拟合最终验证记录.md
+Seventh-part script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_engstress.m
+Seventh-part summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\step8_6_level2_rank1_engineering_stress_summary.csv
+Seventh-part keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_rank1_covfit_engineering_stress\step8_6_level2_rank1_engineering_stress_keypoints.csv
+Seventh-part record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第七部分_rank1协方差拟合工程压力测试记录.md
+Overall level-2 record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二整体记录.md, chars=15507
+Scope guard: level 2 only. No level 3, no 2D az/el MUSIC, no constrained covariance fitting, no fullscan.
+Sixth-part benchmark: rank1 sep=10 SNR90_abs01 label=<= -4 dB, tol(-4 dB)=0.990, abs sep error(-4 dB)=0.05808 deg
+Sixth-part keypoints rows=140
+Seventh-part benchmark: beta0.3 tol@8dB=0.520, beta0.1 tol@8dB=0.000, phase150 tol@8dB=0.000, phase180 tol@8dB=0.000
+Seventh-part keypoints rows=332
+Complex-gain grid: K_phi=28, sep_factor=10, SNR=[-4 0 4 8], Metkl=100, T_snap=260.
+beta_grid=[0.1 0.2 0.3 0.5 0.8 1 1.2 1.5 2]
+phi_grid_deg=[0 30 60 90 120 150 180]
+Routes use the same noisy observation within each scenario/SNR/trial.
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, theta_sep(sep=10)=0.263775445 deg, target=[-0.131887722 0.131887722] deg
+rank1 pair search sep range=[0.050000, 0.800000] deg
+
+Routes
+  1: center_real
+  2: min_den_fb
+  3: covfit_rank1_equal_phase
+  4: covfit_rank1_complex_gain_grid
+Stress cases=17, unique el_assumed=0
+  el_assumed=0.000 deg, coarse_candidates=9191
+
+Engineering stress scan
+  case 01/17 amplitude_ratio        beta_1             finished, elapsed=816.9 s
+  case 02/17 amplitude_ratio        beta_0p8           finished, elapsed=1592.2 s
+  case 03/17 amplitude_ratio        beta_0p5           finished, elapsed=2371.5 s
+  case 04/17 amplitude_ratio        beta_0p3           finished, elapsed=3042.0 s
+  case 05/17 amplitude_ratio        beta_0p1           finished, elapsed=3624.5 s
+  case 06/17 phase_offset           phase_0            finished, elapsed=4274.4 s
+  case 07/17 phase_offset           phase_30           finished, elapsed=4915.1 s
+  case 08/17 phase_offset           phase_60           finished, elapsed=5538.6 s
+  case 09/17 phase_offset           phase_90           finished, elapsed=6140.8 s
+  case 10/17 phase_offset           phase_120          finished, elapsed=6778.7 s
+  case 11/17 phase_offset           phase_150          finished, elapsed=7412.4 s
+  case 12/17 phase_offset           phase_180          finished, elapsed=7789.5 s
+  case 13/17 beta_phase_combo       case_1_beta0p3_phase60 finished, elapsed=8284.8 s
+  case 14/17 beta_phase_combo       case_2_beta0p3_phase150 finished, elapsed=8861.4 s
+  case 15/17 beta_phase_combo       case_3_beta0p5_phase150 finished, elapsed=9467.3 s
+  case 16/17 beta_phase_combo       case_4_beta0p1_phase0 finished, elapsed=9898.9 s
