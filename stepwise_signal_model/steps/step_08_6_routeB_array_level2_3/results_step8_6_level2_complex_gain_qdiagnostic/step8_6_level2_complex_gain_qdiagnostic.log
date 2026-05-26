@@ -1,0 +1,67 @@
+Step 08.6 level 2 part 9: complex-gain q diagnostics
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_complex_gain_qdiag
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Formula doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步层次二和三公式推导.md
+Part-8 script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_complex_gain_covfit.m
+Part-8 summary: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_covfit\step8_6_level2_complex_gain_covfit_summary.csv
+Part-8 keypoints: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_covfit\step8_6_level2_complex_gain_covfit_keypoints.csv
+Part-8 record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第八部分_complex_gain协方差拟合验证记录.md
+Part-7 script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_engstress.m
+Part-7 record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第七部分_rank1协方差拟合工程压力测试记录.md
+Part-6 script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_rank1_covfit_finalscan.m
+Overall level-2 record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二整体记录.md, chars=15507
+Scope guard: no V2, no level-3, no 2D az/el, no Q change, no fullscan.
+Part-8 baseline: beta0.3 tol@8dB=0.640, beta0.1 tol@8dB=0.500, phase150 tol@8dB=0.000, phase180 tol@8dB=0.000
+Part-8 keypoints rows=200
+Stage1 config: K_phi=28, sep_factor=10, SNR=8, Metkl=100, T_snap=260
+beta_grid=[0.1 0.2 0.3 0.5 0.8 1 1.2 1.5 2]
+phi_grid_deg=[0 30 60 90 120 150 180]
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+working phi first/last/span=-60.000000000 / 60.000000000 / 120.000000000 deg
+bw_eq_65=2.637754449 deg, theta_sep(sep=10)=0.263775445 deg, target=[-0.131887722 0.131887722] deg
+pair search sep range=[0.050000, 0.800000] deg
+
+Routes
+  1: covfit_rank1_equal_phase
+  2: complex_gain_grid_old
+  3: complex_gain_q_fixed_true
+  4: complex_gain_q1_forced
+  5: complex_gain_grid_with_fallback
+  6: complex_gain_normalized_grid
+  7: complex_gain_staged_search
+Diagnostic cases=10
+
+Stage-1 q diagnostics at SNR=8 dB
+  [snr8_sanity] case 01/10 beta_1                   finished, elapsed=212.9 s
+  [snr8_sanity] case 02/10 beta_0p8                 finished, elapsed=435.9 s
+  [snr8_sanity] case 03/10 beta_0p5                 finished, elapsed=665.4 s
+  [snr8_sanity] case 04/10 beta_0p3                 finished, elapsed=888.0 s
+  [snr8_sanity] case 05/10 beta_0p1                 finished, elapsed=1093.0 s
+  [snr8_sanity] case 06/10 phase_150                finished, elapsed=1318.7 s
+  [snr8_sanity] case 07/10 phase_180                finished, elapsed=1450.7 s
+  [snr8_sanity] case 08/10 case_1_beta0p3_phase60   finished, elapsed=1642.8 s
+  [snr8_sanity] case 09/10 case_2_beta0p3_phase150  finished, elapsed=1845.3 s
+  [snr8_sanity] case 10/10 case_5_beta0p1_phase90   finished, elapsed=2028.0 s
+
+Stage-2 skipped: no route clearly recovered at stage-1.
+
+Q-diagnostic conclusion: q_fixed_true 明显优于旧 q-grid，但仍未全面恢复，说明模型有一定解释力，当前主要瓶颈仍是 q 估计稳定性。
+q_fixed_true success: 否
+q1_forced equals equal_phase: 是
+old q-grid failure reproduced: 是
+normalized grid lowers boundary: 否
+staged search improves: 是
+fallback protects baseline: 否
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\step8_6_level2_complex_gain_qdiagnostic_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\step8_6_level2_complex_gain_qdiagnostic_keypoints.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\step8_6_level2_complex_gain_qdiagnostic_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\qdiag_route_compare_tol.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\qdiag_beta_hat_error.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\qdiag_phi_hat_error.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\qdiag_boundary_rate.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\qdiag_score_gap.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第九部分_complex_gain_q估计诊断记录.md
