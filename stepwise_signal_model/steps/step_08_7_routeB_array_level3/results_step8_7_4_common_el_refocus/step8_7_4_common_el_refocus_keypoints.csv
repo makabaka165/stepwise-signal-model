@@ -1,0 +1,16 @@
+keypoint,value,note
+B_l2_joint_ge5,0,level2 with wrong el_assumed
+B_elbank_joint_ge5,0.193333333333333,old el-bank baseline
+B_music2d_joint_ge5,0,2D MUSIC baseline
+B_common_old_joint_ge5,0.473333333333333,old common-el covfit
+B_refocus_power_joint_ge5,1,power refocus + layer2 rank1
+B_refocus_2dmusic_peak_joint_ge5,1,2D MUSIC peak refocus + layer2 rank1
+B_refocus_rank1_objective_joint_ge5,0.186666666666667,rank1 objective refocus + layer2 rank1
+B_oracle_joint_ge5,1,oracle el rank1 upper bound
+B_power_oracle_gap_ge5,0,oracle minus power refocus
+B_music_peak_oracle_gap_ge5,0,oracle minus music-peak refocus
+B_rank1_objective_oracle_gap_ge5,0.813333333333333,oracle minus rank1-objective refocus
+B_refocus_power_el_hat_abs_error_ge5,0,power el_hat abs error
+B_refocus_2dmusic_peak_el_hat_abs_error_ge5,0,2D MUSIC peak el_hat abs error
+B_refocus_rank1_objective_el_hat_abs_error_ge5,1.42333333333333,rank1 objective el_hat abs error
+B_rank1_objective_valley_width_el_ge5,5.01666666666667,rank1 objective el valley width

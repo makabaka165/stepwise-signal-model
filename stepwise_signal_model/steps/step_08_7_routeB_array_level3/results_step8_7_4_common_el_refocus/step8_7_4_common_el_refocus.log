@@ -1,0 +1,107 @@
+Step 08.7 part 4: common-el refocus + layer2 rank1 fallback validation
+Scope: estimate common elevation from raw 65x32 data, refocus layers, then reuse level2 rank1 fallback. No fullscan, no V2, no complex-gain q, no edits to step 8.6.
+Geometry: Q=65, Nel=32, theta_sep=0.263775445 deg.
+Run control: scenario B only, Metkl=50, SNR=[0 8 16], el_assumed=[0 2 5 10], T_snap=260.
+2D MUSIC K=[20,8], covfit K=[6,3], refocus_el_grid=57.
+Precomputing common-el old candidates: 5700
+Scenario B fairness block SNR=0 dB: el_true=[0 0], shared raw observations across el_assumed.
+Scenario B fairness block SNR=8 dB: el_true=[0 0], shared raw observations across el_assumed.
+Scenario B fairness block SNR=16 dB: el_true=[0 0], shared raw observations across el_assumed.
+SNR=0 el_assumed=0 level2_rank1_wrong_el_assumed                 joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=0 level2_el_bank_old                            joint=0.440 az=1.000 el=0.440 rmse=[0.0351 0.5600] reason=el_error
+SNR=0 el_assumed=0 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=0 common_el_covfit_old                          joint=0.320 az=0.320 el=1.000 rmse=[0.1559 0.0000] reason=az_error
+SNR=0 el_assumed=0 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=0 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=0 common_el_refocus_rank1_objective             joint=0.520 az=1.000 el=0.520 rmse=[0.0439 0.6450] reason=el_error
+SNR=0 el_assumed=0 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0339 0.3500] reason=ok
+SNR=0 el_assumed=2 level2_rank1_wrong_el_assumed                 joint=0.000 az=0.980 el=0.000 rmse=[0.0435 2.0000] reason=el_error
+SNR=0 el_assumed=2 level2_el_bank_old                            joint=0.440 az=1.000 el=0.440 rmse=[0.0351 0.5600] reason=el_error
+SNR=0 el_assumed=2 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=2 common_el_covfit_old                          joint=0.320 az=0.320 el=1.000 rmse=[0.1559 0.0000] reason=az_error
+SNR=0 el_assumed=2 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=2 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=2 common_el_refocus_rank1_objective             joint=0.520 az=1.000 el=0.520 rmse=[0.0439 0.6450] reason=el_error
+SNR=0 el_assumed=2 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0339 0.3500] reason=ok
+SNR=0 el_assumed=5 level2_rank1_wrong_el_assumed                 joint=0.000 az=0.680 el=0.000 rmse=[0.0779 5.0000] reason=az_error
+SNR=0 el_assumed=5 level2_el_bank_old                            joint=0.440 az=1.000 el=0.440 rmse=[0.0351 0.5600] reason=el_error
+SNR=0 el_assumed=5 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=5 common_el_covfit_old                          joint=0.320 az=0.320 el=1.000 rmse=[0.1559 0.0000] reason=az_error
+SNR=0 el_assumed=5 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=5 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=5 common_el_refocus_rank1_objective             joint=0.520 az=1.000 el=0.520 rmse=[0.0439 0.6450] reason=el_error
+SNR=0 el_assumed=5 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0339 0.3500] reason=ok
+SNR=0 el_assumed=10 level2_rank1_wrong_el_assumed                 joint=0.000 az=0.140 el=0.000 rmse=[0.1425 10.0000] reason=az_error
+SNR=0 el_assumed=10 level2_el_bank_old                            joint=0.440 az=1.000 el=0.440 rmse=[0.0351 0.5600] reason=el_error
+SNR=0 el_assumed=10 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=10 common_el_covfit_old                          joint=0.320 az=0.320 el=1.000 rmse=[0.1559 0.0000] reason=az_error
+SNR=0 el_assumed=10 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=10 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0290 0.0000] reason=ok
+SNR=0 el_assumed=10 common_el_refocus_rank1_objective             joint=0.520 az=1.000 el=0.520 rmse=[0.0439 0.6450] reason=el_error
+SNR=0 el_assumed=10 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0339 0.3500] reason=ok
+SNR=8 el_assumed=0 level2_rank1_wrong_el_assumed                 joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=0 level2_el_bank_old                            joint=0.120 az=1.000 el=0.120 rmse=[0.0242 1.3600] reason=el_error
+SNR=8 el_assumed=0 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=0 common_el_covfit_old                          joint=0.560 az=0.560 el=1.000 rmse=[0.1137 0.0000] reason=az_error
+SNR=8 el_assumed=0 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=0 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=0 common_el_refocus_rank1_objective             joint=0.040 az=1.000 el=0.040 rmse=[0.0255 1.6400] reason=el_error
+SNR=8 el_assumed=0 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0320 0.3500] reason=ok
+SNR=8 el_assumed=2 level2_rank1_wrong_el_assumed                 joint=0.000 az=1.000 el=0.000 rmse=[0.0350 2.0000] reason=el_error
+SNR=8 el_assumed=2 level2_el_bank_old                            joint=0.120 az=1.000 el=0.120 rmse=[0.0242 1.3600] reason=el_error
+SNR=8 el_assumed=2 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=2 common_el_covfit_old                          joint=0.560 az=0.560 el=1.000 rmse=[0.1137 0.0000] reason=az_error
+SNR=8 el_assumed=2 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=2 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=2 common_el_refocus_rank1_objective             joint=0.040 az=1.000 el=0.040 rmse=[0.0255 1.6400] reason=el_error
+SNR=8 el_assumed=2 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0320 0.3500] reason=ok
+SNR=8 el_assumed=5 level2_rank1_wrong_el_assumed                 joint=0.000 az=0.980 el=0.000 rmse=[0.0507 5.0000] reason=el_error
+SNR=8 el_assumed=5 level2_el_bank_old                            joint=0.120 az=1.000 el=0.120 rmse=[0.0242 1.3600] reason=el_error
+SNR=8 el_assumed=5 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=5 common_el_covfit_old                          joint=0.560 az=0.560 el=1.000 rmse=[0.1137 0.0000] reason=az_error
+SNR=8 el_assumed=5 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=5 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=5 common_el_refocus_rank1_objective             joint=0.040 az=1.000 el=0.040 rmse=[0.0255 1.6400] reason=el_error
+SNR=8 el_assumed=5 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0320 0.3500] reason=ok
+SNR=8 el_assumed=10 level2_rank1_wrong_el_assumed                 joint=0.000 az=0.360 el=0.000 rmse=[0.0964 10.0000] reason=az_error
+SNR=8 el_assumed=10 level2_el_bank_old                            joint=0.120 az=1.000 el=0.120 rmse=[0.0242 1.3600] reason=el_error
+SNR=8 el_assumed=10 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=10 common_el_covfit_old                          joint=0.560 az=0.560 el=1.000 rmse=[0.1137 0.0000] reason=az_error
+SNR=8 el_assumed=10 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=10 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0274 0.0000] reason=ok
+SNR=8 el_assumed=10 common_el_refocus_rank1_objective             joint=0.040 az=1.000 el=0.040 rmse=[0.0255 1.6400] reason=el_error
+SNR=8 el_assumed=10 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0320 0.3500] reason=ok
+SNR=16 el_assumed=0 level2_rank1_wrong_el_assumed                 joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=0 level2_el_bank_old                            joint=0.020 az=1.000 el=0.020 rmse=[0.0266 2.6400] reason=el_error
+SNR=16 el_assumed=0 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=0 common_el_covfit_old                          joint=0.540 az=0.540 el=1.000 rmse=[0.1223 0.0000] reason=az_error
+SNR=16 el_assumed=0 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=0 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=0 common_el_refocus_rank1_objective             joint=0.000 az=1.000 el=0.000 rmse=[0.0278 1.9850] reason=el_error
+SNR=16 el_assumed=0 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0373 0.2400] reason=ok
+SNR=16 el_assumed=2 level2_rank1_wrong_el_assumed                 joint=0.000 az=1.000 el=0.000 rmse=[0.0244 2.0000] reason=el_error
+SNR=16 el_assumed=2 level2_el_bank_old                            joint=0.020 az=1.000 el=0.020 rmse=[0.0266 2.6400] reason=el_error
+SNR=16 el_assumed=2 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=2 common_el_covfit_old                          joint=0.540 az=0.540 el=1.000 rmse=[0.1223 0.0000] reason=az_error
+SNR=16 el_assumed=2 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=2 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=2 common_el_refocus_rank1_objective             joint=0.000 az=1.000 el=0.000 rmse=[0.0278 1.9850] reason=el_error
+SNR=16 el_assumed=2 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0373 0.2400] reason=ok
+SNR=16 el_assumed=5 level2_rank1_wrong_el_assumed                 joint=0.000 az=1.000 el=0.000 rmse=[0.0569 5.0000] reason=el_error
+SNR=16 el_assumed=5 level2_el_bank_old                            joint=0.020 az=1.000 el=0.020 rmse=[0.0266 2.6400] reason=el_error
+SNR=16 el_assumed=5 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=5 common_el_covfit_old                          joint=0.540 az=0.540 el=1.000 rmse=[0.1223 0.0000] reason=az_error
+SNR=16 el_assumed=5 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=5 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=5 common_el_refocus_rank1_objective             joint=0.000 az=1.000 el=0.000 rmse=[0.0278 1.9850] reason=el_error
+SNR=16 el_assumed=5 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0373 0.2400] reason=ok
+SNR=16 el_assumed=10 level2_rank1_wrong_el_assumed                 joint=0.000 az=0.720 el=0.000 rmse=[0.0934 10.0000] reason=az_error
+SNR=16 el_assumed=10 level2_el_bank_old                            joint=0.020 az=1.000 el=0.020 rmse=[0.0266 2.6400] reason=el_error
+SNR=16 el_assumed=10 level3_2d_music                               joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=10 common_el_covfit_old                          joint=0.540 az=0.540 el=1.000 rmse=[0.1223 0.0000] reason=az_error
+SNR=16 el_assumed=10 common_el_refocus_power                       joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=10 common_el_refocus_2dmusic_peak                joint=1.000 az=1.000 el=1.000 rmse=[0.0261 0.0000] reason=ok
+SNR=16 el_assumed=10 common_el_refocus_rank1_objective             joint=0.000 az=1.000 el=0.000 rmse=[0.0278 1.9850] reason=el_error
+SNR=16 el_assumed=10 oracle_el_rank1_covfit                        joint=1.000 az=1.000 el=1.000 rmse=[0.0373 0.2400] reason=ok
+Finished in 242.95 sec.
+Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_4_common_el_refocus
