@@ -1,0 +1,60 @@
+Step 08.6 level 2 part 10: complex-gain identifiability analysis
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\space_smooth_music_B_cylindrical_level2_ident_analysis
+Modify direction doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步修改方向.md
+Formula doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步层次二和三公式推导.md
+Read record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第八部分_complex_gain协方差拟合验证记录.md
+Read record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第九部分_complex_gain_q估计诊断记录.md
+Read record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第七部分_rank1协方差拟合工程压力测试记录.md
+Read record: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第六部分_rank1协方差拟合最终验证记录.md
+Read result: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\step8_6_level2_complex_gain_qdiagnostic_summary.csv
+Read result: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_complex_gain_qdiagnostic\step8_6_level2_complex_gain_qdiagnostic_keypoints.csv
+Scope guard: no V2, no level-3, no Q change, no q-grid expansion, no fullscan.
+Part-9 summary rows=70, keypoints rows=70
+
+Geometry health check
+cfg.arr.Naz=192, cfg.arr.Nel=32, R=0.400000000 m, lambda=0.030000000 m
+dPhi=1.875000000 deg, dz/lambda=0.566666667, sectorHalf=60.000000000 deg, Q=65
+theta_sep(sep=10)=0.263775445 deg, target_theta=[-0.131887722 0.131887722] deg
+
+Scenario analysis
+  1/7 beta1_phase0: beta=1.000, phase=0.0 deg
+    qdiag old/qfixed/equal/staged = 0.220 / 1.000 / 1.000 / 0.980
+    pair_rank=13.5, q_rank=1.0, pair_valley_sep=0.5350, q_valley_beta=2.9500, q_valley_phi=180.0, gap=-8.80501e-07, competing=158
+    route=V0_equal_phase_mainline, model=是, q_est=否, weak=否, anti_phase=否
+  2/7 beta0p3_phase0: beta=0.300, phase=0.0 deg
+    qdiag old/qfixed/equal/staged = 0.230 / 0.890 / 0.550 / 0.440
+    pair_rank=20.5, q_rank=1.0, pair_valley_sep=0.5350, q_valley_beta=2.9500, q_valley_phi=180.0, gap=-7.57258e-07, competing=141
+    route=V1_needs_prior_or_regularization, model=是, q_est=否, weak=否, anti_phase=否
+  3/7 beta0p1_phase0: beta=0.100, phase=0.0 deg
+    qdiag old/qfixed/equal/staged = 0.060 / 0.380 / 0.000 / 0.150
+    pair_rank=14.0, q_rank=1.0, pair_valley_sep=0.5350, q_valley_beta=2.9500, q_valley_phi=180.0, gap=-1.43978e-06, competing=79
+    route=weak_target_boundary, model=否, q_est=否, weak=是, anti_phase=否
+  4/7 beta1_phase150: beta=1.000, phase=150.0 deg
+    qdiag old/qfixed/equal/staged = 0.000 / 0.000 / 0.000 / 0.000
+    pair_rank=1.0, q_rank=1462.0, pair_valley_sep=0.2850, q_valley_beta=2.9500, q_valley_phi=180.0, gap=-0.0474513, competing=149
+    route=anti_phase_boundary, model=否, q_est=否, weak=否, anti_phase=是
+  5/7 beta1_phase180: beta=1.000, phase=180.0 deg
+    qdiag old/qfixed/equal/staged = 0.000 / 0.000 / 0.000 / 0.000
+    pair_rank=16.0, q_rank=1.0, pair_valley_sep=0.5350, q_valley_beta=0.0000, q_valley_phi=0.0, gap=-0.000432298, competing=158
+    route=anti_phase_boundary, model=否, q_est=否, weak=否, anti_phase=是
+  6/7 beta0p3_phase60: beta=0.300, phase=60.0 deg
+    qdiag old/qfixed/equal/staged = 0.010 / 0.000 / 0.240 / 0.130
+    pair_rank=6.0, q_rank=347.0, pair_valley_sep=0.5350, q_valley_beta=2.9500, q_valley_phi=180.0, gap=-0.000571704, competing=141
+    route=task_split_required, model=否, q_est=否, weak=否, anti_phase=否
+  7/7 beta0p3_phase150: beta=0.300, phase=150.0 deg
+    qdiag old/qfixed/equal/staged = 0.020 / 0.000 / 0.000 / 0.000
+    pair_rank=7.5, q_rank=151.0, pair_valley_sep=0.5150, q_valley_beta=2.3946, q_valley_phi=180.0, gap=-0.00116506, competing=158
+    route=anti_phase_boundary, model=否, q_est=否, weak=否, anti_phase=是
+
+Generated files:
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\step8_6_level2_identifiability_summary.csv
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\step8_6_level2_identifiability_result.mat
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_pair_map_beta1_phase0.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_pair_map_beta0p3_phase0.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_pair_map_beta0p1_phase0.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_pair_map_phase150.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_q_map_beta0p3_phase0.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_q_map_phase150.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\results_step8_6_level2_identifiability_analysis\ident_route_decision_matrix.png
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二第十部分_complex_gain可辨识性与任务分流记录.md
+  E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_6_routeB_array_level2_3\第8.6步_层次二_模型可辨识性与任务分流说明.md

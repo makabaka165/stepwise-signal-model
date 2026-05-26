@@ -1,0 +1,8 @@
+scenario_name,beta_true,phase_true_deg,model_feasible_flag,q_estimation_feasible_flag,weak_target_flag,anti_phase_degenerate_flag,true_pair_rank_qfixed,true_q_rank_thetaf,valley_sep_width_qfixed,valley_center_width_qfixed,valley_beta_width_thetaf,valley_phi_width_thetaf,objective_gap_true_vs_best_wrong,num_competing_minima,qdiag_tol_old,qdiag_tol_qfixed,boundary_low_valley_flag,reciprocal_low_valley_flag,recommended_route
+beta1_phase0,1,0,1,0,0,0,13.5,1,0.535,0.06,2.95,180,-8.8050141173689e-07,158,0.22,1,1,1,V0_equal_phase_mainline
+beta0p3_phase0,0.3,0,1,0,0,0,20.5,1,0.535,0.25,2.95,180,-7.57257889724849e-07,141,0.23,0.89,1,1,V1_needs_prior_or_regularization
+beta0p1_phase0,0.1,0,0,0,1,0,14,1,0.535,0.295,2.95,180,-1.43977663473786e-06,79,0.06,0.38,1,1,weak_target_boundary
+beta1_phase150,1,150,0,0,0,1,1,1462,0.285,0.1,2.95,180,-0.0474513445096658,149,0,0,1,0,anti_phase_boundary
+beta1_phase180,1,180,0,0,0,1,16,1,0.535,0.065,0,0,-0.000432298269594402,158,0,0,1,1,anti_phase_boundary
+beta0p3_phase60,0.3,60,0,0,0,0,6,347,0.535,0.27,2.95,180,-0.000571704119648375,141,0.01,0,1,1,task_split_required
+beta0p3_phase150,0.3,150,0,0,0,1,7.5,151,0.515,0.3,2.39463312503351,180,-0.00116505829750079,158,0.02,0,1,0,anti_phase_boundary
