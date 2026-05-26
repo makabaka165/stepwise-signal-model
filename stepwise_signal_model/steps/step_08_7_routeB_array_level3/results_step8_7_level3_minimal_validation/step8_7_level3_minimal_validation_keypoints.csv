@@ -1,0 +1,8 @@
+keypoint,value,note
+A_elB_ge2_l2_mean_joint,0,level2 boundary for elevation difference
+A_elB_ge2_music_mean_joint,1,2D MUSIC at elevation-difference boundary
+A_elB_ge2_oracle_mean_joint,1,oracle 2D rank1 upper bound
+B_el0_ge5_l2_mean_joint,0,level2 boundary for el prior mismatch
+B_el0_ge5_elbank_mean_joint,0.191666666666667,multi-el synthesis baseline
+B_el0_ge5_music_mean_joint,0,2D MUSIC under el prior mismatch
+B_el0_ge5_oracle_mean_joint,1,oracle 2D rank1 under el prior mismatch

@@ -1,0 +1,142 @@
+Step 08.7 route-B array level 3 minimal validation
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\space_smooth_music_B_cylindrical_level3_minimal_validation
+Scope: proof-of-concept only; no fullscan, no V2 constrained covariance fitting, no complex-gain q optimization.
+Geometry: Q=65, Nel=32, lambda=0.030000000 m, bw_eq_65=2.637754449 deg, theta_sep=0.263775445 deg.
+Run control: Metkl=20, T_snap=260, SNR=[0 8 16], az_grid=61, el_grid=29, level3 K_phi=20, K_z=8.
+Scenario A case=elB_0 SNR=0 dB: el_true=[0.00 0.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.950 az=0.950 el=1.000 az_rmse=0.0258 el_rmse=0.0000 peaks=2.00 reason=ok
+  level2_el_bank_baseline                       joint=0.550 az=0.950 el=0.600 az_rmse=0.0254 el_rmse=0.4000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_0 SNR=8 dB: el_true=[0.00 0.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 az_rmse=0.0258 el_rmse=0.0000 peaks=2.00 reason=ok
+  level2_el_bank_baseline                       joint=0.100 az=0.950 el=0.100 az_rmse=0.0308 el_rmse=1.3000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0319 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_0 SNR=16 dB: el_true=[0.00 0.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 az_rmse=0.0242 el_rmse=0.0000 peaks=2.00 reason=ok
+  level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 az_rmse=0.0362 el_rmse=2.7500 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_1 SNR=0 dB: el_true=[0.00 1.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.900 el=0.000 az_rmse=0.0446 el_rmse=0.7071 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.000 az=0.650 el=0.000 az_rmse=0.0659 el_rmse=1.5374 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=1.000 az_rmse=0.0936 el_rmse=0.3536 peaks=5.00 reason=az_error
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_1 SNR=8 dB: el_true=[0.00 1.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.950 el=0.000 az_rmse=0.0347 el_rmse=0.7071 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.000 az=0.350 el=0.000 az_rmse=0.0769 el_rmse=1.6296 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=5.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_1 SNR=16 dB: el_true=[0.00 1.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 az_rmse=0.0340 el_rmse=0.7071 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.000 az=0.450 el=0.000 az_rmse=0.0902 el_rmse=1.8743 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=5.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_2 SNR=0 dB: el_true=[0.00 2.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1220 el_rmse=1.4142 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1372 el_rmse=1.9073 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=5.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_2 SNR=8 dB: el_true=[0.00 2.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1196 el_rmse=1.4142 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.200 el=0.000 az_rmse=0.1061 el_rmse=2.7664 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=5.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_2 SNR=16 dB: el_true=[0.00 2.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1195 el_rmse=1.4142 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.350 el=0.000 az_rmse=0.0996 el_rmse=4.5612 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=5.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_5 SNR=0 dB: el_true=[0.00 5.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1389 el_rmse=3.5355 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1327 el_rmse=3.5026 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_5 SNR=8 dB: el_true=[0.00 5.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1402 el_rmse=3.5355 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1379 el_rmse=4.0408 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_5 SNR=16 dB: el_true=[0.00 5.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1350 el_rmse=3.5355 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1359 el_rmse=4.5748 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_10 SNR=0 dB: el_true=[0.00 10.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1411 el_rmse=7.0711 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1546 el_rmse=6.9076 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0102 el_rmse=0.0000 peaks=2.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0102 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_10 SNR=8 dB: el_true=[0.00 10.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1407 el_rmse=7.0711 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1448 el_rmse=7.0484 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0102 el_rmse=0.0000 peaks=2.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario A case=elB_10 SNR=16 dB: el_true=[0.00 10.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.000 el=0.000 az_rmse=0.1407 el_rmse=7.0711 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.000 el=0.000 az_rmse=0.1430 el_rmse=7.1521 peaks=2.00 reason=az_error
+  level3_2d_fbss_music_grid                     joint=1.000 az=1.000 el=1.000 az_rmse=0.0102 el_rmse=0.0000 peaks=2.00 reason=ok
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_0 SNR=0 dB: el_true=[0.00 0.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=0.950 az=0.950 el=1.000 az_rmse=0.0282 el_rmse=0.0000 peaks=2.00 reason=ok
+  level2_el_bank_baseline                       joint=0.400 az=0.900 el=0.400 az_rmse=0.0308 el_rmse=0.6000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_0 SNR=8 dB: el_true=[0.00 0.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 az_rmse=0.0246 el_rmse=0.0000 peaks=2.00 reason=ok
+  level2_el_bank_baseline                       joint=0.100 az=1.000 el=0.100 az_rmse=0.0284 el_rmse=1.3000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0319 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_0 SNR=16 dB: el_true=[0.00 0.00], level2_el_assumed=0.00
+  level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 az_rmse=0.0211 el_rmse=0.0000 peaks=2.00 reason=ok
+  level2_el_bank_baseline                       joint=0.000 az=0.950 el=0.000 az_rmse=0.0316 el_rmse=3.1500 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_2 SNR=0 dB: el_true=[0.00 0.00], level2_el_assumed=2.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.950 el=0.000 az_rmse=0.0551 el_rmse=2.0000 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.500 az=0.950 el=0.500 az_rmse=0.0308 el_rmse=0.5000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_2 SNR=8 dB: el_true=[0.00 0.00], level2_el_assumed=2.00
+  level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 az_rmse=0.0418 el_rmse=2.0000 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.150 az=0.900 el=0.200 az_rmse=0.0330 el_rmse=1.1500 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_2 SNR=16 dB: el_true=[0.00 0.00], level2_el_assumed=2.00
+  level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 az_rmse=0.0306 el_rmse=2.0000 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 az_rmse=0.0194 el_rmse=2.1500 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0081 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_5 SNR=0 dB: el_true=[0.00 0.00], level2_el_assumed=5.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.600 el=0.000 az_rmse=0.0782 el_rmse=5.0000 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.550 az=0.900 el=0.600 az_rmse=0.0384 el_rmse=0.4000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_5 SNR=8 dB: el_true=[0.00 0.00], level2_el_assumed=5.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.900 el=0.000 az_rmse=0.0527 el_rmse=5.0000 peaks=2.00 reason=el_error
+  level2_el_bank_baseline                       joint=0.100 az=1.000 el=0.100 az_rmse=0.0376 el_rmse=1.3000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_5 SNR=16 dB: el_true=[0.00 0.00], level2_el_assumed=5.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.700 el=0.000 az_rmse=0.0683 el_rmse=5.0000 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=0.950 el=0.000 az_rmse=0.0342 el_rmse=2.6500 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_10 SNR=0 dB: el_true=[0.00 0.00], level2_el_assumed=10.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.100 el=0.000 az_rmse=0.1369 el_rmse=10.0000 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.350 az=1.000 el=0.350 az_rmse=0.0316 el_rmse=0.6500 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_10 SNR=8 dB: el_true=[0.00 0.00], level2_el_assumed=10.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.100 el=0.000 az_rmse=0.1007 el_rmse=10.0000 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.150 az=1.000 el=0.150 az_rmse=0.0290 el_rmse=1.3000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Scenario B case=el0_10 SNR=16 dB: el_true=[0.00 0.00], level2_el_assumed=10.00
+  level2_rank1_fallback_baseline                joint=0.000 az=0.100 el=0.000 az_rmse=0.1066 el_rmse=10.0000 peaks=2.00 reason=az_error
+  level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 az_rmse=0.0195 el_rmse=2.7000 peaks=2.00 reason=el_error
+  level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 az_rmse=NaN el_rmse=NaN peaks=1.00 reason=insufficient_peak_or_pair
+  level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 az_rmse=0.0119 el_rmse=0.0000 peaks=2.00 reason=ok
+Finished in 111.44 sec.
+Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_level3_minimal_validation
