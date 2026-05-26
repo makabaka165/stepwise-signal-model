@@ -1,0 +1,84 @@
+Step 08.7 part 3: common-el 2D rank1 covfit stability and fairness validation
+Scope: scenario-B fairness, center/sep search, objective landscape. No fullscan, no V2, no complex-gain q, no edits to step 8.6.
+Geometry: Q=65, Nel=32, theta_sep=0.263775445 deg.
+Run control: scenario B only, Metkl=50, SNR=[0 8 16], el_assumed=[0 2 5 10], T_snap=260.
+2D MUSIC K=[20,8], covfit K=[6,3]. Center/sep coarse grid: azc=21 sep=76 el=29, topN=5.
+Precomputing common-el old candidates: 5700
+Precomputing center/sep coarse candidates: 46284
+Scenario B fairness block SNR=0 dB: el_true=[0 0], shared raw observations across el_assumed.
+Scenario B fairness block SNR=8 dB: el_true=[0 0], shared raw observations across el_assumed.
+Scenario B fairness block SNR=16 dB: el_true=[0 0], shared raw observations across el_assumed.
+SNR=0 el_assumed=0 level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 rmse=[0.0367 0.0000] reason=ok
+SNR=0 el_assumed=0 level2_el_bank_baseline                       joint=0.540 az=1.000 el=0.540 rmse=[0.0334 0.4600] reason=el_error
+SNR=0 el_assumed=0 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=0 level3_common_el_rank1_covfit_old             joint=0.220 az=0.220 el=1.000 rmse=[0.1791 0.0000] reason=az_error
+SNR=0 el_assumed=0 level3_common_el_rank1_covfit_centersep       joint=0.160 az=0.160 el=1.000 rmse=[0.1850 0.0000] reason=az_error
+SNR=0 el_assumed=0 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0334 0.3300] reason=ok
+SNR=0 el_assumed=2 level2_rank1_fallback_baseline                joint=0.000 az=0.980 el=0.000 rmse=[0.0459 2.0000] reason=el_error
+SNR=0 el_assumed=2 level2_el_bank_baseline                       joint=0.540 az=1.000 el=0.540 rmse=[0.0334 0.4600] reason=el_error
+SNR=0 el_assumed=2 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=2 level3_common_el_rank1_covfit_old             joint=0.220 az=0.220 el=1.000 rmse=[0.1791 0.0000] reason=az_error
+SNR=0 el_assumed=2 level3_common_el_rank1_covfit_centersep       joint=0.160 az=0.160 el=1.000 rmse=[0.1850 0.0000] reason=az_error
+SNR=0 el_assumed=2 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0334 0.3300] reason=ok
+SNR=0 el_assumed=5 level2_rank1_fallback_baseline                joint=0.000 az=0.700 el=0.000 rmse=[0.0827 5.0000] reason=az_error
+SNR=0 el_assumed=5 level2_el_bank_baseline                       joint=0.540 az=1.000 el=0.540 rmse=[0.0334 0.4600] reason=el_error
+SNR=0 el_assumed=5 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=5 level3_common_el_rank1_covfit_old             joint=0.220 az=0.220 el=1.000 rmse=[0.1791 0.0000] reason=az_error
+SNR=0 el_assumed=5 level3_common_el_rank1_covfit_centersep       joint=0.160 az=0.160 el=1.000 rmse=[0.1850 0.0000] reason=az_error
+SNR=0 el_assumed=5 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0334 0.3300] reason=ok
+SNR=0 el_assumed=10 level2_rank1_fallback_baseline                joint=0.000 az=0.140 el=0.000 rmse=[0.1357 10.0000] reason=az_error
+SNR=0 el_assumed=10 level2_el_bank_baseline                       joint=0.540 az=1.000 el=0.540 rmse=[0.0334 0.4600] reason=el_error
+SNR=0 el_assumed=10 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=0 el_assumed=10 level3_common_el_rank1_covfit_old             joint=0.220 az=0.220 el=1.000 rmse=[0.1791 0.0000] reason=az_error
+SNR=0 el_assumed=10 level3_common_el_rank1_covfit_centersep       joint=0.160 az=0.160 el=1.000 rmse=[0.1850 0.0000] reason=az_error
+SNR=0 el_assumed=10 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0334 0.3300] reason=ok
+SNR=8 el_assumed=0 level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 rmse=[0.0243 0.0000] reason=ok
+SNR=8 el_assumed=0 level2_el_bank_baseline                       joint=0.180 az=1.000 el=0.180 rmse=[0.0250 1.2200] reason=el_error
+SNR=8 el_assumed=0 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=0 level3_common_el_rank1_covfit_old             joint=0.520 az=0.520 el=1.000 rmse=[0.1309 0.0000] reason=az_error
+SNR=8 el_assumed=0 level3_common_el_rank1_covfit_centersep       joint=0.420 az=0.420 el=1.000 rmse=[0.1367 0.0000] reason=az_error
+SNR=8 el_assumed=0 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0333 0.3100] reason=ok
+SNR=8 el_assumed=2 level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 rmse=[0.0366 2.0000] reason=el_error
+SNR=8 el_assumed=2 level2_el_bank_baseline                       joint=0.180 az=1.000 el=0.180 rmse=[0.0250 1.2200] reason=el_error
+SNR=8 el_assumed=2 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=2 level3_common_el_rank1_covfit_old             joint=0.520 az=0.520 el=1.000 rmse=[0.1309 0.0000] reason=az_error
+SNR=8 el_assumed=2 level3_common_el_rank1_covfit_centersep       joint=0.420 az=0.420 el=1.000 rmse=[0.1367 0.0000] reason=az_error
+SNR=8 el_assumed=2 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0333 0.3100] reason=ok
+SNR=8 el_assumed=5 level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 rmse=[0.0541 5.0000] reason=el_error
+SNR=8 el_assumed=5 level2_el_bank_baseline                       joint=0.180 az=1.000 el=0.180 rmse=[0.0250 1.2200] reason=el_error
+SNR=8 el_assumed=5 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=5 level3_common_el_rank1_covfit_old             joint=0.520 az=0.520 el=1.000 rmse=[0.1309 0.0000] reason=az_error
+SNR=8 el_assumed=5 level3_common_el_rank1_covfit_centersep       joint=0.420 az=0.420 el=1.000 rmse=[0.1367 0.0000] reason=az_error
+SNR=8 el_assumed=5 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0333 0.3100] reason=ok
+SNR=8 el_assumed=10 level2_rank1_fallback_baseline                joint=0.000 az=0.340 el=0.000 rmse=[0.0936 10.0000] reason=az_error
+SNR=8 el_assumed=10 level2_el_bank_baseline                       joint=0.180 az=1.000 el=0.180 rmse=[0.0250 1.2200] reason=el_error
+SNR=8 el_assumed=10 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=8 el_assumed=10 level3_common_el_rank1_covfit_old             joint=0.520 az=0.520 el=1.000 rmse=[0.1309 0.0000] reason=az_error
+SNR=8 el_assumed=10 level3_common_el_rank1_covfit_centersep       joint=0.420 az=0.420 el=1.000 rmse=[0.1367 0.0000] reason=az_error
+SNR=8 el_assumed=10 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0333 0.3100] reason=ok
+SNR=16 el_assumed=0 level2_rank1_fallback_baseline                joint=1.000 az=1.000 el=1.000 rmse=[0.0248 0.0000] reason=ok
+SNR=16 el_assumed=0 level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 rmse=[0.0306 2.5400] reason=el_error
+SNR=16 el_assumed=0 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=0 level3_common_el_rank1_covfit_old             joint=0.500 az=0.500 el=1.000 rmse=[0.1194 0.0000] reason=az_error
+SNR=16 el_assumed=0 level3_common_el_rank1_covfit_centersep       joint=0.580 az=0.580 el=1.000 rmse=[0.1045 0.0000] reason=az_error
+SNR=16 el_assumed=0 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0350 0.1900] reason=ok
+SNR=16 el_assumed=2 level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 rmse=[0.0287 2.0000] reason=el_error
+SNR=16 el_assumed=2 level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 rmse=[0.0306 2.5400] reason=el_error
+SNR=16 el_assumed=2 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=2 level3_common_el_rank1_covfit_old             joint=0.500 az=0.500 el=1.000 rmse=[0.1194 0.0000] reason=az_error
+SNR=16 el_assumed=2 level3_common_el_rank1_covfit_centersep       joint=0.580 az=0.580 el=1.000 rmse=[0.1045 0.0000] reason=az_error
+SNR=16 el_assumed=2 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0350 0.1900] reason=ok
+SNR=16 el_assumed=5 level2_rank1_fallback_baseline                joint=0.000 az=1.000 el=0.000 rmse=[0.0554 5.0000] reason=el_error
+SNR=16 el_assumed=5 level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 rmse=[0.0306 2.5400] reason=el_error
+SNR=16 el_assumed=5 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=5 level3_common_el_rank1_covfit_old             joint=0.500 az=0.500 el=1.000 rmse=[0.1194 0.0000] reason=az_error
+SNR=16 el_assumed=5 level3_common_el_rank1_covfit_centersep       joint=0.580 az=0.580 el=1.000 rmse=[0.1045 0.0000] reason=az_error
+SNR=16 el_assumed=5 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0350 0.1900] reason=ok
+SNR=16 el_assumed=10 level2_rank1_fallback_baseline                joint=0.000 az=0.680 el=0.000 rmse=[0.0940 10.0000] reason=az_error
+SNR=16 el_assumed=10 level2_el_bank_baseline                       joint=0.000 az=1.000 el=0.000 rmse=[0.0306 2.5400] reason=el_error
+SNR=16 el_assumed=10 level3_2d_fbss_music_grid                     joint=0.000 az=0.000 el=0.000 rmse=[NaN NaN] reason=insufficient_peak_or_pair
+SNR=16 el_assumed=10 level3_common_el_rank1_covfit_old             joint=0.500 az=0.500 el=1.000 rmse=[0.1194 0.0000] reason=az_error
+SNR=16 el_assumed=10 level3_common_el_rank1_covfit_centersep       joint=0.580 az=0.580 el=1.000 rmse=[0.1045 0.0000] reason=az_error
+SNR=16 el_assumed=10 level3_oracle_el_rank1_covfit_upper_bound     joint=1.000 az=1.000 el=1.000 rmse=[0.0350 0.1900] reason=ok
+Finished in 608.18 sec.
+Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_level3_common_el_stability

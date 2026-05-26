@@ -1,0 +1,18 @@
+keypoint,value,note
+B_l2_joint_ge5,0,level2 el prior mismatch
+B_elbank_joint_ge5,0.24,multi-el synthesis baseline
+B_music2d_joint_ge5,0,2D MUSIC under same-el coherence
+B_common_old_joint_ge5,0.413333333333333,old az1/az2/elc common-el covfit
+B_common_centersep_joint_ge5,0.386666666666667,center/sep common-el covfit
+B_oracle_joint_ge5,1,oracle upper bound
+B_centersep_oracle_gap_ge5,0.613333333333333,oracle minus center/sep
+B_old_to_centersep_gain_ge5,-0.0266666666666667,center/sep minus old
+level3_depends_on_el_assumed_flag,0,fairness check flag
+common_el_result_variance_across_el_assumed,0,max variance across el_assumed
+music2d_result_variance_across_el_assumed,0,max variance across el_assumed
+oracle_result_variance_across_el_assumed,0,max variance across el_assumed
+true_objective_rank,186,landscape true candidate rank
+objective_gap_true_vs_best,1.25815619728789e-06,true minus best normalized objective
+valley_width_az_sep,0.1,near-min az-sep valley width
+valley_width_el_c,0,near-min el-c valley width
+num_competing_minima,99,near-min competing minima count
