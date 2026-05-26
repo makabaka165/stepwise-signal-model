@@ -1,0 +1,12 @@
+keypoint,value,note
+A_elB_ge2_l2_joint,0,level2 large elevation boundary
+A_elB_ge2_music_joint,1,2D MUSIC large elevation
+A_elB_ge2_common_joint,0,common-el covfit under unequal el
+A_elB_ge2_pair_local_joint,1,pair-el local covfit
+A_elB_ge2_oracle_joint,1,oracle upper bound
+B_el0_ge5_l2_joint,0,level2 el prior mismatch
+B_el0_ge5_elbank_joint,0.191666666666667,el-bank baseline
+B_el0_ge5_music_joint,0,2D MUSIC same-el coherent
+B_el0_ge5_common_joint,0.666666666666667,common-el non-oracle covfit
+B_el0_ge5_oracle_joint,1,oracle upper bound
+B_el0_ge5_common_oracle_gap,0.333333333333333,oracle minus common-el
