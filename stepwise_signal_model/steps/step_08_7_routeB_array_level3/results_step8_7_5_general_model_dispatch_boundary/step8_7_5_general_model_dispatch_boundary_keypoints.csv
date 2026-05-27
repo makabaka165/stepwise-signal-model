@@ -1,0 +1,15 @@
+keypoint,value,note
+rho_music_joint_rho1,0,MUSIC joint at fully coherent rho=1
+rho_music_joint_rho0p7,0.333333333333333,MUSIC joint at rho=0.7
+rho_music_peak_rho0p7,1.33333333333333,MUSIC peak count at rho=0.7
+beta_rank1_joint_beta1,1,rank1 joint at beta=1
+beta_rank1_joint_beta0p3,0.453333333333333,rank1 joint at weak target beta=0.3
+beta_weak_boundary_rate_beta0p3,1,dispatch weak-target boundary rate at beta=0.3
+phase_rank1_joint_phase0,1,rank1 joint at phase=0
+phase_rank1_joint_phase150,0,rank1 joint at phase=150
+phase_anti_boundary_rate_phase150,1,dispatch anti-phase boundary rate at phase=150
+large_el_2dmusic_joint_el5_clean,1,2D MUSIC joint at el_b=5 beta=1 phase=0 rho=1
+large_el_pair_covfit_joint_el5_clean,1,pair-local covfit joint at el_b=5 clean coherent case
+large_el_2dmusic_joint_el10_hard,1,2D MUSIC joint at hardest large-el case
+dispatch_success_all,0.83969696969697,recommended route mean joint success across scenarios
+dispatch_low_confidence_all,0.181818181818182,recommended route low-confidence rate

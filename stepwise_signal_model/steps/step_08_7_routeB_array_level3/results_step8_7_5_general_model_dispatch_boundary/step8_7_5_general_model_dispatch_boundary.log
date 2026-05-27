@@ -1,0 +1,469 @@
+Step 08.7 part 5: general source model dispatch-boundary validation
+Scope: validate route dispatch rules under beta/phase/rho/elevation boundaries. No fullscan, no V2, no complex-gain q, no 4D search, no edits to step 8.6 or prior step 8.7 outputs.
+Geometry: Q=65, Nel=32, theta_sep=0.263775445 deg.
+Run control: Metkl=50, SNR=[0 8 16], T_snap=260, sep_factor=10.
+2D MUSIC K=[20,8], pair-local covfit K=[6,3], refocus_el_grid=29.
+Scenario count=66. Groups: rho scan, beta scan, phase scan, large elevation general cases.
+Scenario 01/66 group=rho_scan case=rho_1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 02/66 group=rho_scan case=rho_1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 03/66 group=rho_scan case=rho_1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 04/66 group=rho_scan case=rho_0.99 SNR=0 beta=1 phase=0.0 rho=0.99 el=[0.0 0.0].
+Scenario 05/66 group=rho_scan case=rho_0.99 SNR=8 beta=1 phase=0.0 rho=0.99 el=[0.0 0.0].
+Scenario 06/66 group=rho_scan case=rho_0.99 SNR=16 beta=1 phase=0.0 rho=0.99 el=[0.0 0.0].
+Scenario 07/66 group=rho_scan case=rho_0.9 SNR=0 beta=1 phase=0.0 rho=0.9 el=[0.0 0.0].
+Scenario 08/66 group=rho_scan case=rho_0.9 SNR=8 beta=1 phase=0.0 rho=0.9 el=[0.0 0.0].
+Scenario 09/66 group=rho_scan case=rho_0.9 SNR=16 beta=1 phase=0.0 rho=0.9 el=[0.0 0.0].
+Scenario 10/66 group=rho_scan case=rho_0.7 SNR=0 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 11/66 group=rho_scan case=rho_0.7 SNR=8 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 12/66 group=rho_scan case=rho_0.7 SNR=16 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 13/66 group=rho_scan case=rho_0.5 SNR=0 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 14/66 group=rho_scan case=rho_0.5 SNR=8 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 15/66 group=rho_scan case=rho_0.5 SNR=16 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 16/66 group=beta_scan case=beta_1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 17/66 group=beta_scan case=beta_1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 18/66 group=beta_scan case=beta_1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 19/66 group=beta_scan case=beta_0.8 SNR=0 beta=0.8 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 20/66 group=beta_scan case=beta_0.8 SNR=8 beta=0.8 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 21/66 group=beta_scan case=beta_0.8 SNR=16 beta=0.8 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 22/66 group=beta_scan case=beta_0.5 SNR=0 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 23/66 group=beta_scan case=beta_0.5 SNR=8 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 24/66 group=beta_scan case=beta_0.5 SNR=16 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 25/66 group=beta_scan case=beta_0.3 SNR=0 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 26/66 group=beta_scan case=beta_0.3 SNR=8 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 27/66 group=beta_scan case=beta_0.3 SNR=16 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 28/66 group=beta_scan case=beta_0.1 SNR=0 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 29/66 group=beta_scan case=beta_0.1 SNR=8 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 30/66 group=beta_scan case=beta_0.1 SNR=16 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 31/66 group=phase_scan case=phase_0 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 32/66 group=phase_scan case=phase_0 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 33/66 group=phase_scan case=phase_0 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 34/66 group=phase_scan case=phase_60 SNR=0 beta=1 phase=60.0 rho=1 el=[0.0 0.0].
+Scenario 35/66 group=phase_scan case=phase_60 SNR=8 beta=1 phase=60.0 rho=1 el=[0.0 0.0].
+Scenario 36/66 group=phase_scan case=phase_60 SNR=16 beta=1 phase=60.0 rho=1 el=[0.0 0.0].
+Scenario 37/66 group=phase_scan case=phase_90 SNR=0 beta=1 phase=90.0 rho=1 el=[0.0 0.0].
+Scenario 38/66 group=phase_scan case=phase_90 SNR=8 beta=1 phase=90.0 rho=1 el=[0.0 0.0].
+Scenario 39/66 group=phase_scan case=phase_90 SNR=16 beta=1 phase=90.0 rho=1 el=[0.0 0.0].
+Scenario 40/66 group=phase_scan case=phase_120 SNR=0 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 41/66 group=phase_scan case=phase_120 SNR=8 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 42/66 group=phase_scan case=phase_120 SNR=16 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 43/66 group=phase_scan case=phase_150 SNR=0 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 44/66 group=phase_scan case=phase_150 SNR=8 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 45/66 group=phase_scan case=phase_150 SNR=16 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 46/66 group=phase_scan case=phase_180 SNR=0 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 47/66 group=phase_scan case=phase_180 SNR=8 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 48/66 group=phase_scan case=phase_180 SNR=16 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 49/66 group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 50/66 group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 51/66 group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 52/66 group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 53/66 group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 54/66 group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 55/66 group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 56/66 group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 57/66 group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 58/66 group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 59/66 group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 60/66 group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 61/66 group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 62/66 group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 63/66 group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 64/66 group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Scenario 65/66 group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Scenario 66/66 group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+group=rho_scan case=rho_1              SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_1              SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1              SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.99           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.99           SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=16 route=level2_music_or_center_real      joint=0.640 rec_success=0.640 weak=0.000 anti=0.000 low=0.000 peak=1.64 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.9            SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.9            SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=16 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.7            SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7            SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=8 route=level2_music_or_center_real      joint=0.600 rec_success=0.600 weak=0.000 anti=0.000 low=0.000 peak=1.64 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=8 route=dispatch_recommended_route       joint=0.960 rec_success=0.960 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=16 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=rho_scan case=rho_0.5            SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5            SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_1             SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1             SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=0 route=level2_rank1_fallback            joint=0.920 rec_success=0.920 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=0 route=common_el_refocus_power_rank1    joint=0.920 rec_success=0.920 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=0 route=dispatch_recommended_route       joint=0.920 rec_success=0.920 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=8 route=level2_rank1_fallback            joint=0.960 rec_success=0.960 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=8 route=common_el_refocus_power_rank1    joint=0.960 rec_success=0.960 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=8 route=dispatch_recommended_route       joint=0.960 rec_success=0.960 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=16 route=level2_rank1_fallback            joint=0.980 rec_success=0.980 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=16 route=common_el_refocus_power_rank1    joint=0.980 rec_success=0.980 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.8           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.8           SNR=16 route=dispatch_recommended_route       joint=0.980 rec_success=0.980 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=beta_scan case=beta_0.5           SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=0 route=level2_rank1_fallback            joint=0.780 rec_success=0.780 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=0 route=common_el_refocus_power_rank1    joint=0.780 rec_success=0.780 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=0 route=dispatch_recommended_route       joint=0.780 rec_success=0.780 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=8 route=level2_rank1_fallback            joint=0.700 rec_success=0.700 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=8 route=common_el_refocus_power_rank1    joint=0.700 rec_success=0.700 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=8 route=dispatch_recommended_route       joint=0.700 rec_success=0.700 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=16 route=level2_rank1_fallback            joint=0.760 rec_success=0.760 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=16 route=common_el_refocus_power_rank1    joint=0.760 rec_success=0.760 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.5           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5           SNR=16 route=dispatch_recommended_route       joint=0.760 rec_success=0.760 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=0 route=level2_rank1_fallback            joint=0.380 rec_success=0.380 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=0 route=common_el_refocus_power_rank1    joint=0.380 rec_success=0.380 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=0 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=1.000 anti=0.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=8 route=level2_rank1_fallback            joint=0.460 rec_success=0.460 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=8 route=common_el_refocus_power_rank1    joint=0.460 rec_success=0.460 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=8 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=1.000 anti=0.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=16 route=level2_rank1_fallback            joint=0.520 rec_success=0.520 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=16 route=common_el_refocus_power_rank1    joint=0.520 rec_success=0.520 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.3           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3           SNR=16 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=1.000 anti=0.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.1           SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.1           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=0 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=1.000 anti=0.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.1           SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.1           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=8 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=1.000 anti=0.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.1           SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=beta_scan case=beta_0.1           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1           SNR=16 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=1.000 anti=0.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_0            SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0            SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=8 route=level2_music_or_center_real      joint=0.680 rec_success=0.680 weak=0.000 anti=0.000 low=0.000 peak=1.72 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=8 route=dispatch_recommended_route       joint=0.960 rec_success=0.960 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=16 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_60           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_60           SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=0 route=level2_music_or_center_real      joint=0.060 rec_success=0.060 weak=0.000 anti=0.000 low=0.000 peak=1.08 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=0 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=0 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=0 route=dispatch_recommended_route       joint=0.980 rec_success=0.980 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=8 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=16 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_90           SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_90           SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=0 route=level2_music_or_center_real      joint=0.920 rec_success=0.920 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=0 route=level2_rank1_fallback            joint=0.900 rec_success=0.900 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=0 route=common_el_refocus_power_rank1    joint=0.900 rec_success=0.900 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120          SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120          SNR=0 route=dispatch_recommended_route       joint=0.920 rec_success=0.920 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=8 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=8 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=8 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120          SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120          SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=16 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=16 route=level2_rank1_fallback            joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=16 route=common_el_refocus_power_rank1    joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_120          SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120          SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120          SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_150          SNR=0 route=level2_music_or_center_real      joint=0.640 rec_success=0.640 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_150          SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_150          SNR=0 route=dispatch_recommended_route       joint=0.640 rec_success=0.640 weak=0.000 anti=1.000 low=1.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=8 route=level2_music_or_center_real      joint=0.860 rec_success=0.860 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_150          SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_150          SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_150          SNR=8 route=dispatch_recommended_route       joint=0.860 rec_success=0.860 weak=0.000 anti=1.000 low=1.000 peak=2.00 reason=ok
+group=phase_scan case=phase_150          SNR=16 route=level2_music_or_center_real      joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=phase_scan case=phase_150          SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_150          SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_150          SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_150          SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=1.000 peak=2.00 reason=ok
+group=phase_scan case=phase_180          SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_180          SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_180          SNR=0 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=0 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=0 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=0.000 anti=1.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_180          SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_180          SNR=8 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=8 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=8 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=0.000 anti=1.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_180          SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=phase_scan case=phase_180          SNR=16 route=level3_2d_music                  joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=16 route=pair_el_local_covfit             joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180          SNR=16 route=dispatch_recommended_route       joint=0.000 rec_success=0.000 weak=0.000 anti=1.000 low=1.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=5.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.98 reason=el_error
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=5.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=el_error
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=5.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.26 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.98 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=level2_music_or_center_real      joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=1.00 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=level2_rank1_fallback            joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=az_error
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 rec_success=0.000 weak=0.000 anti=0.000 low=0.000 peak=NaN reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=level3_2d_music                  joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=pair_el_local_covfit             joint=1.000 rec_success=1.000 weak=0.000 anti=0.000 low=0.000 peak=2.00 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=dispatch_recommended_route       joint=1.000 rec_success=1.000 weak=0.000 anti=1.000 low=0.000 peak=2.00 reason=ok
+Finished in 815.09 sec.
