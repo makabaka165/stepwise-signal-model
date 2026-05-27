@@ -1,0 +1,40 @@
+keypoint,value,note
+oracle_dispatch_success_all,0.798039215686275,oracle-label dispatch mean joint success
+observable_dispatch_success_all,0.73202614379085,observable dispatch mean joint success
+observable_vs_oracle_gap_all,-0.0660130718954248,observable minus oracle success gap
+route_agreement_rate_all,0.588888888888889,observable and oracle route agreement
+low_confidence_rate_all,0.239869281045752,observable low-confidence rate
+boundary_unreliable_rate_all,0.0895424836601307,observable boundary-unreliable rate
+false_high_confidence_rate_all,0,observable false high-confidence rate
+false_medium_high_confidence_rate_all,0.0503267973856209,observable false medium/high-confidence rate
+boundary_missed_rate_all,0,observable missed-boundary rate
+rho_scan_observable_success,0.814814814814815,observable success on rho scan
+beta_scan_observable_success,0.397222222222222,observable success on beta scan
+phase_scan_observable_success,0.602777777777778,observable success on phase scan
+large_el_observable_success,1,observable success on large-el cases
+rho_scan_false_high,0,false-high rate on rho scan
+beta_scan_false_high,0,false-high rate on beta scan
+phase_scan_false_high,0,false-high rate on phase scan
+large_el_false_high,0,false-high rate on large-el cases
+rho_scan_boundary_missed,0,boundary-missed rate on rho scan
+beta_scan_boundary_missed,0,boundary-missed rate on beta scan
+phase_scan_boundary_missed,0,boundary-missed rate on phase scan
+large_el_boundary_missed,0,boundary-missed rate on large-el cases
+beta03_low_confidence_rate,0.366666666666667,low-confidence rate at beta=0.3
+phase150_low_confidence_rate,0.444444444444444,low-confidence rate at phase=150
+large_el_caseB_observable_success,1,observable success on clean large-el case
+large_el_caseF_observable_success,1,observable success on hardest representative case
+refocus_computed_all_scenarios_flag,1,common-el refocus route computed for every scenario-SNR case
+num_cases_refocus_available,51,scenario-SNR cases with computed common-el refocus output
+num_cases_refocus_selected,14,scenario-SNR cases whose observable dispatch selected common-el refocus
+orig_observable_dispatch_success_all,0.728104575163399,part-6 observable dispatch success
+orig_observable_vs_oracle_gap_all,-0.0699346405228758,part-6 observable-oracle gap
+orig_route_agreement_rate_all,0.589542483660131,part-6 route agreement
+orig_low_confidence_rate_all,0.220261437908497,part-6 low-confidence rate
+orig_false_high_confidence_rate_all,0.0679738562091503,part-6 false-high rate
+orig_boundary_missed_rate_all,0.0568627450980392,part-6 boundary-missed rate
+delta_observable_dispatch_success_all,0.00392156862745063,6B minus part-6 observable success
+delta_observable_vs_oracle_gap_all,0.00392156862745097,6B minus part-6 observable-oracle gap
+delta_low_confidence_rate_all,0.0196078431372546,6B minus part-6 low-confidence rate
+delta_false_high_confidence_rate_all,-0.0679738562091503,6B minus part-6 false-high rate
+delta_boundary_missed_rate_all,-0.0568627450980392,6B minus part-6 boundary-missed rate
