@@ -1,0 +1,421 @@
+Step 08.7 part 6: observable-dispatch engineering demo
+Scope: compare oracle-label dispatch with observable dispatch. Observable dispatch does not use beta/phase/rho/el_true/el_diff as inputs. No fullscan, no V2, no complex-gain q, no 4D search, no edits to step 8.6 or prior step 8.7 outputs.
+Geometry: Q=65, Nel=32, theta_sep=0.263775445 deg.
+Run control: Metkl=30, SNR=[0 8 16], T_snap=260, sep_factor=10.
+Metkl is reduced from 50 to 30 because part 5 already covered the boundary trend and part 6 only validates dispatch feasibility.
+2D MUSIC K=[20,8], pair-local covfit K=[6,3], refocus_el_grid=29.
+Scenario count=51. Groups: reduced rho scan, beta scan, phase scan, large elevation general cases.
+Scenario 01/51 group=rho_scan case=rho_1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 02/51 group=rho_scan case=rho_1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 03/51 group=rho_scan case=rho_1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 04/51 group=rho_scan case=rho_0.7 SNR=0 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 05/51 group=rho_scan case=rho_0.7 SNR=8 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 06/51 group=rho_scan case=rho_0.7 SNR=16 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 07/51 group=rho_scan case=rho_0.5 SNR=0 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 08/51 group=rho_scan case=rho_0.5 SNR=8 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 09/51 group=rho_scan case=rho_0.5 SNR=16 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 10/51 group=beta_scan case=beta_1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 11/51 group=beta_scan case=beta_1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 12/51 group=beta_scan case=beta_1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 13/51 group=beta_scan case=beta_0.5 SNR=0 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 14/51 group=beta_scan case=beta_0.5 SNR=8 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 15/51 group=beta_scan case=beta_0.5 SNR=16 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 16/51 group=beta_scan case=beta_0.3 SNR=0 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 17/51 group=beta_scan case=beta_0.3 SNR=8 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 18/51 group=beta_scan case=beta_0.3 SNR=16 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 19/51 group=beta_scan case=beta_0.1 SNR=0 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 20/51 group=beta_scan case=beta_0.1 SNR=8 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 21/51 group=beta_scan case=beta_0.1 SNR=16 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 22/51 group=phase_scan case=phase_0 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 23/51 group=phase_scan case=phase_0 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 24/51 group=phase_scan case=phase_0 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 25/51 group=phase_scan case=phase_120 SNR=0 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 26/51 group=phase_scan case=phase_120 SNR=8 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 27/51 group=phase_scan case=phase_120 SNR=16 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 28/51 group=phase_scan case=phase_150 SNR=0 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 29/51 group=phase_scan case=phase_150 SNR=8 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 30/51 group=phase_scan case=phase_150 SNR=16 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 31/51 group=phase_scan case=phase_180 SNR=0 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 32/51 group=phase_scan case=phase_180 SNR=8 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 33/51 group=phase_scan case=phase_180 SNR=16 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 34/51 group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 35/51 group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 36/51 group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 37/51 group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 38/51 group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 39/51 group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 40/51 group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 41/51 group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 42/51 group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 43/51 group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 44/51 group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 45/51 group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 46/51 group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 47/51 group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 48/51 group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 49/51 group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Scenario 50/51 group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Scenario 51/51 group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+group=rho_scan case=rho_1                        SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=0 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=0 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=0 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=8 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=8 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=8 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=8 route=observable_dispatch              joint=0.500 oracle=1.000 obs=0.500 agree=0.500 low=0.500 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=16 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=16 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=16 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_1                        SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_1                        SNR=16 route=observable_dispatch              joint=0.400 oracle=1.000 obs=0.400 agree=0.400 low=0.600 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=0 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=0 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=0 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=0 route=observable_dispatch              joint=0.933 oracle=1.000 obs=0.933 agree=0.000 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=8 route=level2_music_or_center_real      joint=0.033 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=8 route=level2_rank1_fallback            joint=1.000 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=8 route=common_el_refocus_power_rank1    joint=1.000 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=8 route=level3_2d_music                  joint=0.000 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=8 route=oracle_label_dispatch            joint=0.967 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=8 route=observable_dispatch              joint=0.533 oracle=0.967 obs=0.533 agree=0.000 low=0.467 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=16 route=level2_music_or_center_real      joint=1.000 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=16 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=16 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=16 route=level3_2d_music                  joint=0.633 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=16 route=pair_el_local_covfit             joint=0.567 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.7                      SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.7                      SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=0.733 low=0.167 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5                      SNR=0 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=0 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=0 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5                      SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5                      SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=0.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=8 route=level2_music_or_center_real      joint=0.667 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5                      SNR=8 route=level2_rank1_fallback            joint=1.000 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=8 route=common_el_refocus_power_rank1    joint=1.000 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=8 route=level3_2d_music                  joint=0.000 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5                      SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=rho_scan case=rho_0.5                      SNR=8 route=oracle_label_dispatch            joint=0.967 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=8 route=observable_dispatch              joint=0.967 oracle=0.967 obs=0.967 agree=0.300 low=0.100 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=level2_music_or_center_real      joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=rho_scan case=rho_0.5                      SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=0.767 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=0 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=0 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=0 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=0 route=observable_dispatch              joint=0.933 oracle=1.000 obs=0.933 agree=0.933 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=8 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=8 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=8 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=8 route=observable_dispatch              joint=0.233 oracle=1.000 obs=0.233 agree=0.233 low=0.767 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=16 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=16 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=16 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_1                       SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_1                       SNR=16 route=observable_dispatch              joint=0.333 oracle=1.000 obs=0.333 agree=0.333 low=0.667 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=0 route=level2_rank1_fallback            joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=0 route=common_el_refocus_power_rank1    joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=0 route=level3_2d_music                  joint=0.000 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=0 route=oracle_label_dispatch            joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=0 route=observable_dispatch              joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=8 route=level2_rank1_fallback            joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=8 route=common_el_refocus_power_rank1    joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=8 route=level3_2d_music                  joint=0.000 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=8 route=oracle_label_dispatch            joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=8 route=observable_dispatch              joint=0.767 oracle=0.767 obs=0.767 agree=1.000 low=0.000 false_high=0.233 boundary_missed=0.000 reason=az_error
+group=beta_scan case=beta_0.5                     SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=16 route=level2_rank1_fallback            joint=0.900 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_0.5                     SNR=16 route=common_el_refocus_power_rank1    joint=0.900 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_0.5                     SNR=16 route=level3_2d_music                  joint=0.000 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.5                     SNR=16 route=oracle_label_dispatch            joint=0.900 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_0.5                     SNR=16 route=observable_dispatch              joint=0.900 oracle=0.900 obs=0.900 agree=1.000 low=0.000 false_high=0.100 boundary_missed=0.000 reason=ok
+group=beta_scan case=beta_0.3                     SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=0 route=level2_rank1_fallback            joint=0.367 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=az_error
+group=beta_scan case=beta_0.3                     SNR=0 route=common_el_refocus_power_rank1    joint=0.367 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=az_error
+group=beta_scan case=beta_0.3                     SNR=0 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=0 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=0 route=observable_dispatch              joint=0.100 oracle=0.000 obs=0.100 agree=0.000 low=0.467 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=8 route=level2_rank1_fallback            joint=0.500 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=az_error
+group=beta_scan case=beta_0.3                     SNR=8 route=common_el_refocus_power_rank1    joint=0.500 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=az_error
+group=beta_scan case=beta_0.3                     SNR=8 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=8 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=8 route=observable_dispatch              joint=0.367 oracle=0.000 obs=0.367 agree=0.000 low=0.233 false_high=0.400 boundary_missed=0.400 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=16 route=level2_rank1_fallback            joint=0.433 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=az_error
+group=beta_scan case=beta_0.3                     SNR=16 route=common_el_refocus_power_rank1    joint=0.433 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=az_error
+group=beta_scan case=beta_0.3                     SNR=16 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=16 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.3                     SNR=16 route=observable_dispatch              joint=0.367 oracle=0.000 obs=0.367 agree=0.000 low=0.133 false_high=0.500 boundary_missed=0.500 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=0 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=0 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=0 route=observable_dispatch              joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.567 false_high=0.433 boundary_missed=0.433 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=8 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=8 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=8 route=observable_dispatch              joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.700 false_high=0.300 boundary_missed=0.300 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=az_error
+group=beta_scan case=beta_0.1                     SNR=16 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=16 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=insufficient_peak_or_pair
+group=beta_scan case=beta_0.1                     SNR=16 route=observable_dispatch              joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=0.633 false_high=0.367 boundary_missed=0.367 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=0 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=0 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=0 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=0 route=observable_dispatch              joint=0.967 oracle=1.000 obs=0.967 agree=0.967 low=0.033 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=8 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=8 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=8 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=8 route=observable_dispatch              joint=0.633 oracle=1.000 obs=0.633 agree=0.633 low=0.367 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=16 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=16 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=16 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_0                      SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_0                      SNR=16 route=observable_dispatch              joint=0.300 oracle=1.000 obs=0.300 agree=0.300 low=0.700 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120                    SNR=0 route=level2_music_or_center_real      joint=1.000 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=0 route=level2_rank1_fallback            joint=0.933 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=0 route=common_el_refocus_power_rank1    joint=0.933 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=0 route=level3_2d_music                  joint=0.000 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120                    SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_120                    SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=0.533 low=0.067 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=level2_music_or_center_real      joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=level2_rank1_fallback            joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=common_el_refocus_power_rank1    joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=0.567 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=level2_music_or_center_real      joint=1.000 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=level2_rank1_fallback            joint=0.967 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=common_el_refocus_power_rank1    joint=0.967 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_120                    SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=0.867 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=phase_scan case=phase_150                    SNR=0 route=level2_music_or_center_real      joint=0.500 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=0 route=level3_2d_music                  joint=0.567 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=0 route=pair_el_local_covfit             joint=0.200 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=0 route=oracle_label_dispatch            joint=0.500 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=0 route=observable_dispatch              joint=0.467 oracle=0.500 obs=0.467 agree=0.000 low=0.567 false_high=0.267 boundary_missed=0.267 reason=az_error
+group=phase_scan case=phase_150                    SNR=8 route=level2_music_or_center_real      joint=0.833 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=ok
+group=phase_scan case=phase_150                    SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=az_error
+group=phase_scan case=phase_150                    SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=az_error
+group=phase_scan case=phase_150                    SNR=8 route=level3_2d_music                  joint=0.867 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=ok
+group=phase_scan case=phase_150                    SNR=8 route=pair_el_local_covfit             joint=0.133 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=az_error
+group=phase_scan case=phase_150                    SNR=8 route=oracle_label_dispatch            joint=0.833 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=ok
+group=phase_scan case=phase_150                    SNR=8 route=observable_dispatch              joint=0.733 oracle=0.833 obs=0.733 agree=0.000 low=0.300 false_high=0.133 boundary_missed=0.133 reason=az_error
+group=phase_scan case=phase_150                    SNR=16 route=level2_music_or_center_real      joint=1.000 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=ok
+group=phase_scan case=phase_150                    SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=az_error
+group=phase_scan case=phase_150                    SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=az_error
+group=phase_scan case=phase_150                    SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=ok
+group=phase_scan case=phase_150                    SNR=16 route=pair_el_local_covfit             joint=0.200 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=az_error
+group=phase_scan case=phase_150                    SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=ok
+group=phase_scan case=phase_150                    SNR=16 route=observable_dispatch              joint=0.933 oracle=1.000 obs=0.933 agree=0.000 low=0.033 false_high=0.067 boundary_missed=0.067 reason=ok
+group=phase_scan case=phase_180                    SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=phase_scan case=phase_180                    SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=phase_scan case=phase_180                    SNR=0 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=0 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=0 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=0 route=observable_dispatch              joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=phase_scan case=phase_180                    SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=phase_scan case=phase_180                    SNR=8 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=8 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=8 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=8 route=observable_dispatch              joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=phase_scan case=phase_180                    SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=phase_scan case=phase_180                    SNR=16 route=level3_2d_music                  joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=16 route=pair_el_local_covfit             joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=16 route=oracle_label_dispatch            joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=phase_scan case=phase_180                    SNR=16 route=observable_dispatch              joint=0.000 oracle=0.000 obs=0.000 agree=0.000 low=1.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=el_error
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=el_error
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=A_el2_beta1_phase0_rho1      SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=B_el5_beta1_phase0_rho1      SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=C_el5_beta05_phase0_rho1     SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=D_el5_beta1_phase180_rho1    SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=E_el5_beta1_phase0_rho07     SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=level2_music_or_center_real      joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=level2_rank1_fallback            joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=az_error
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=common_el_refocus_power_rank1    joint=0.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=insufficient_peak_or_pair
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=level3_2d_music                  joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=pair_el_local_covfit             joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=oracle_label_dispatch            joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 route=observable_dispatch              joint=1.000 oracle=1.000 obs=1.000 agree=1.000 low=0.000 false_high=0.000 boundary_missed=0.000 reason=ok
+Finished in 894.29 sec.
+Writing summary table.
+Writing keypoints table.
+Writing MAT result.
+Writing record document.
+Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_6_observable_dispatch_demo
