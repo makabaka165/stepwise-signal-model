@@ -1,4 +1,11 @@
-﻿clc
+% Step 8.7 Part 7B final runtime validation script.
+% This script implements true lazy cascade execution and wall-clock timing.
+% It keeps only routes needed for the final engineering runtime chain:
+% level2 MUSIC, common-el refocus, level2 rank1 fallback,
+% 2D MUSIC, and pair-local refinement.
+% Earlier exploratory routes are preserved in their own stage scripts.
+
+clc
 clear
 close all
 
@@ -34,7 +41,11 @@ part7_keypoints_tbl = readtable(part7_keypoints_csv_path, 'TextType', 'string');
 part7_summary_tbl = readtable(part7_summary_csv_path, 'TextType', 'string');
 part6b_keypoints_tbl = readtable(part6b_keypoints_csv_path, 'TextType', 'string');
 
-result_dir = fullfile(script_dir, 'results_step8_7_7b_lazy_runtime_wallclock');
+result_tag = getenv('STEP87_RESULT_TAG');
+if isempty(result_tag)
+    result_tag = '';
+end
+result_dir = fullfile(script_dir, ['results_step8_7_7b_lazy_runtime_wallclock' char(result_tag)]);
 if ~exist(result_dir, 'dir')
     mkdir(result_dir);
 end
@@ -47,9 +58,14 @@ summary_csv_path = fullfile(result_dir, 'step8_7_7b_lazy_runtime_wallclock_summa
 keypoints_csv_path = fullfile(result_dir, 'step8_7_7b_lazy_runtime_wallclock_keypoints.csv');
 trial_csv_path = fullfile(result_dir, 'step8_7_7b_lazy_runtime_wallclock_trial_runtime.csv');
 mat_path = fullfile(result_dir, 'step8_7_7b_lazy_runtime_wallclock_result.mat');
-record_doc_path = fullfile(script_dir, '第8.7步_7B_真实lazy级联运行时间验证记录.md');
+if isempty(result_tag)
+    record_doc_path = fullfile(script_dir, '第8.7步_7B_真实lazy级联运行时间验证记录.md');
+else
+    record_doc_path = fullfile(script_dir, ['第8.7步_7B_真实lazy级联运行时间验证记录' char(result_tag) '.md']);
+end
 
 log_msg(fid_log, 'Step 08.7 part 7B: true lazy cascade wall-clock runtime validation');
+log_msg(fid_log, 'Result tag: "%s". Result directory: %s.', char(result_tag), result_dir);
 log_msg(fid_log, 'Scope: run a real full-route wall-clock baseline and a real lazy cascade. Lazy mode does not call untriggered downstream route functions.');
 log_msg(fid_log, 'Constraints: no new DOA algorithm, no V2, no complex-gain q, no weak-target SIC, no anti-phase derivative, no 4D search, no new fullscan, no edits to step 8.6 or part-7 outputs.');
 log_msg(fid_log, 'Part-7 cascade gate is preserved. Because part 7 uses common-el refocus as a safety gate for low-cost early-stop, lazy mode computes refocus before allowing level2/refocus/rank1 low-cost stops.');
@@ -59,6 +75,10 @@ sep_factor = 10;
 snr_list = [0, 8, 16];
 Metkl = 30;
 quick_mode = false;
+if strcmpi(getenv('STEP87_QUICK_MODE'), '1')
+    Metkl = 3;
+    quick_mode = true;
+end
 T_snap = 260;
 Lc = 2;
 K_phi_level2 = 20;
@@ -260,55 +280,6 @@ function sc = make_dispatch_scenario_local(group, case_name, snr_db, el_true, be
     sc.anti_phase_flag = min(abs(phi_deg - 180), abs(phi_deg + 180)) <= 30 || phi_deg >= 150;
 end
 
-function scenarios = build_scenarios_local(snr_list)
-    scenarios = struct([]);
-    idx = 0;
-    el_b_list = [0, 1, 2, 5, 10];
-    for ib = 1:numel(el_b_list)
-        for is = 1:numel(snr_list)
-            idx = idx + 1;
-            scenarios(idx).stage = 'A';
-            scenarios(idx).group = 'legacy_A';
-            scenarios(idx).case_name = sprintf('elB_%g', el_b_list(ib));
-            scenarios(idx).el_true = [0, el_b_list(ib)];
-            scenarios(idx).el_assumed = 0;
-            scenarios(idx).snr_db = snr_list(is);
-            scenarios(idx).el_b = el_b_list(ib);
-            scenarios(idx).el_mismatch = 0;
-            scenarios(idx).el_diff = el_b_list(ib);
-            scenarios(idx).beta = 1;
-            scenarios(idx).phi_deg = 0;
-            scenarios(idx).rho = 1;
-            scenarios(idx).large_el_flag = scenarios(idx).el_diff >= 2;
-            scenarios(idx).common_el_flag = scenarios(idx).el_diff < 0.5;
-            scenarios(idx).weak_target_flag = false;
-            scenarios(idx).anti_phase_flag = false;
-        end
-    end
-    el_assumed_list = [0, 2, 5, 10];
-    for ie = 1:numel(el_assumed_list)
-        for is = 1:numel(snr_list)
-            idx = idx + 1;
-            scenarios(idx).stage = 'B';
-            scenarios(idx).group = 'legacy_B';
-            scenarios(idx).case_name = sprintf('el0_%g', el_assumed_list(ie));
-            scenarios(idx).el_true = [0, 0];
-            scenarios(idx).el_assumed = el_assumed_list(ie);
-            scenarios(idx).snr_db = snr_list(is);
-            scenarios(idx).el_b = 0;
-            scenarios(idx).el_mismatch = el_assumed_list(ie);
-            scenarios(idx).el_diff = 0;
-            scenarios(idx).beta = 1;
-            scenarios(idx).phi_deg = 0;
-            scenarios(idx).rho = 1;
-            scenarios(idx).large_el_flag = false;
-            scenarios(idx).common_el_flag = true;
-            scenarios(idx).weak_target_flag = false;
-            scenarios(idx).anti_phase_flag = false;
-        end
-    end
-end
-
 function y_clean_2d = make_clean_cylindrical_observations_general_local( ...
     X3d, Y3d, Z3d, A_ref_2d, lambda, theta_a, theta_b, el_a, el_b, beta, phi_deg, rho, s1, v)
     rho = min(max(rho, 0), 1);
@@ -387,23 +358,6 @@ function result = run_level2_rank1_route_local( ...
     result.failure_reason = failure_reason_pair_local(result.az_est, result.el_est, min_sep, max_sep);
 end
 
-function result = run_level2_el_bank_route_local( ...
-    y_noisy_2d, Z3d, lambda, el_bank, cache_map, az_grid, K_phi, theta_true, min_sep, max_sep)
-    best = [];
-    for ie = 1:numel(el_bank)
-        y_combined = combine_layers_level2_local(y_noisy_2d, Z3d, lambda, cache_map(ie).el);
-        Rfb = level2_fbss_cov_local(y_combined, K_phi);
-        now = score_level2_cache_local(Rfb, cache_map(ie), az_grid, theta_true);
-        now.el_est = [cache_map(ie).el, cache_map(ie).el];
-        if isempty(best) || now.objective_best < best.objective_best
-            best = now;
-        end
-    end
-    result = best;
-    result.peak_count = 2;
-    result.failure_reason = failure_reason_pair_local(result.az_est, result.el_est, min_sep, max_sep);
-end
-
 function result = score_level2_cache_local(Rfb, cache, az_grid, theta_true)
     score = score_rank1_all_local(Rfb, cache.precomp);
     [best_score, best_idx] = min(score);
@@ -447,66 +401,6 @@ function result = run_common_el_refocus_power_route_local( ...
     result.el_grid = el_grid;
 end
 
-function result = run_common_el_refocus_music_peak_route_local( ...
-    y_noisy_2d, Z3d, lambda, music_result, music_cache, cache_map, az_grid, K_phi, theta_true, min_sep, max_sep)
-    [~, idx] = max(music_result.spectrum(:));
-    [~, ie] = ind2sub(size(music_result.spectrum), idx);
-    el_hat = music_cache.el_grid(ie);
-    result = run_level2_rank1_route_local( ...
-        y_noisy_2d, Z3d, lambda, el_hat, cache_map, az_grid, K_phi, theta_true, min_sep, max_sep);
-    result.el_hat = el_hat;
-    result.el_est = [el_hat, el_hat];
-    result.el_common_est = el_hat;
-    result.el_selection_method = "2dmusic_peak";
-    result.focused_power_peak_sharpness = NaN;
-    result.lambda1_peak_sharpness = NaN;
-    result.rank1_objective_valley_width_el = NaN;
-    result.rank1_objective_selected_el_rank = NaN;
-end
-
-function result = run_common_el_refocus_rank1_objective_route_local( ...
-    y_noisy_2d, Z3d, lambda, el_grid, cache_map, az_grid, K_phi, theta_true, min_sep, max_sep)
-    n = numel(el_grid);
-    objective_curve = zeros(1, n);
-    margin_curve = zeros(1, n);
-    route_results = cell(1, n);
-    for ie = 1:n
-        y_combined = combine_layers_level2_local(y_noisy_2d, Z3d, lambda, el_grid(ie));
-        Rfb = level2_fbss_cov_local(y_combined, K_phi);
-        now = score_level2_cache_local(Rfb, cache_map(ie), az_grid, theta_true);
-        now.el_est = [el_grid(ie), el_grid(ie)];
-        now.peak_count = 2;
-        now.failure_reason = failure_reason_pair_local(now.az_est, now.el_est, min_sep, max_sep);
-        objective_curve(ie) = now.objective_best;
-        margin_curve(ie) = now.objective_margin;
-        route_results{ie} = now;
-    end
-    [~, idx] = min(objective_curve);
-    el_hat = el_grid(idx);
-    result = route_results{idx};
-    result.el_hat = el_hat;
-    result.el_est = [el_hat, el_hat];
-    result.el_common_est = el_hat;
-    result.el_selection_method = "rank1_objective";
-    result.focused_power_peak_sharpness = NaN;
-    result.lambda1_peak_sharpness = NaN;
-    result.rank1_objective_valley_width_el = objective_valley_width_local(el_grid, objective_curve);
-    result.rank1_objective_selected_el_rank = 1 + sum(objective_curve < objective_curve(idx));
-    result.objective_curve = objective_curve;
-    result.margin_curve = margin_curve;
-    result.el_grid = el_grid;
-end
-
-function example = make_refocus_curve_example_local(power_result, objective_result)
-    example = struct();
-    example.valid = true;
-    example.el_grid = power_result.el_grid;
-    example.power_curve = power_result.power_curve;
-    example.lambda1_curve = power_result.lambda1_curve;
-    example.objective_curve = objective_result.objective_curve;
-    example.margin_curve = objective_result.margin_curve;
-end
-
 function sharpness = peak_sharpness_local(curve)
     curve = real(curve(:));
     [mx, idx] = max(curve);
@@ -514,17 +408,6 @@ function sharpness = peak_sharpness_local(curve)
     tmp(idx) = -inf;
     second = max(tmp);
     sharpness = (mx - second) / max(abs(mx), eps);
-end
-
-function width = objective_valley_width_local(el_grid, objective_curve)
-    best = min(objective_curve);
-    thresh = best + max(1e-6, 0.02 * max(best, eps));
-    vals = el_grid(objective_curve <= thresh);
-    if isempty(vals)
-        width = NaN;
-    else
-        width = max(vals) - min(vals);
-    end
 end
 
 function y_combined = combine_layers_level2_local(y_2d, Z3d, lambda, el_assumed_deg)
@@ -635,27 +518,6 @@ function Rfb = level3_fbss_cov_selected_from_observation_local(y_2d, K_phi, K_z,
     Rfb = 0.5 * (Rfb + Rfb');
 end
 
-function result = run_level3_common_el_rank1_covfit_local( ...
-    Rfb, X3d, Y3d, Z3d, A_ref_2d, lambda, candidates, K_phi, K_z, p_sel, r_sel, theta_true, el_true)
-    scores = zeros(size(candidates, 1), 1);
-    for ic = 1:size(candidates, 1)
-        th = candidates(ic, 1:2);
-        elc = candidates(ic, 3);
-        G = build_level3_rank1_model_fbss_selected_local( ...
-            X3d, Y3d, Z3d, A_ref_2d, lambda, th, [elc, elc], 1, 0, K_phi, K_z, p_sel, r_sel);
-        scores(ic) = solve_covfit_score_local(Rfb, G);
-    end
-    [best_score, best_idx] = min(scores);
-    true_like_idx = nearest_common_candidate_local(candidates, theta_true, mean(el_true));
-    true_score = scores(true_like_idx);
-    best = candidates(best_idx, :);
-    result = make_result_local(sort(best(1:2)), [best(3), best(3)], 2, best_score, true_score, 'ok');
-    result.el_common_est = best(3);
-    result.objective_true_rank = 1 + sum(scores < true_score);
-    result.objective_example = struct('el_grid', unique(candidates(:, 3)).', ...
-        'score_by_el', best_score_by_el_local(candidates, scores), 'valid', false);
-end
-
 function result = run_level3_pair_el_local_rank1_covfit_local( ...
     Rfb, music_result, X3d, Y3d, Z3d, A_ref_2d, lambda, K_phi, K_z, p_sel, r_sel, theta_true, el_true, min_sep, max_sep)
     if any(~isfinite(music_result.az_est)) || music_result.peak_count < 2
@@ -685,26 +547,6 @@ function result = run_level3_pair_el_local_rank1_covfit_local( ...
     result.pair_sep_est = diff(sort(result.az_est));
     result.finite_output_flag = all(isfinite(result.az_est)) && all(isfinite(result.el_est));
     result.pair_local_confidence_proxy = result.score_gap_ratio / max(1 + result.residual_norm, eps);
-end
-
-function result = run_level3_oracle_rank1_route_local( ...
-    Rfb, X3d, Y3d, Z3d, A_ref_2d, lambda, theta_true, el_true, beta, phi_deg, K_phi, K_z, p_sel, r_sel, min_sep, max_sep)
-    candidates = make_oracle_local_pairs_local(theta_true, el_true, min_sep, max_sep);
-    scores = zeros(size(candidates, 1), 1);
-    for ic = 1:size(candidates, 1)
-        G = build_level3_rank1_model_fbss_selected_local( ...
-            X3d, Y3d, Z3d, A_ref_2d, lambda, candidates(ic, 1:2), candidates(ic, 3:4), ...
-            beta, phi_deg, K_phi, K_z, p_sel, r_sel);
-        scores(ic) = solve_covfit_score_local(Rfb, G);
-    end
-    [best_score, best_idx] = min(scores);
-    true_idx = nearest_pair_el_candidate_local(candidates, theta_true, el_true);
-    true_score = scores(true_idx);
-    best = candidates(best_idx, :);
-    result = make_result_local(sort(best(1:2)), best(3:4), 2, best_score, true_score, 'ok');
-    [result.az_est, order] = sort(best(1:2));
-    result.el_est = best(2 + order);
-    result.objective_true_rank = 1 + sum(scores < true_score);
 end
 
 function Gfb = build_level3_rank1_model_fbss_selected_local( ...
@@ -758,150 +600,6 @@ function [p_sel, r_sel] = make_selected_2d_subarray_positions_local(Q, Nel, K_ph
     r_sel = r_all(r_sel);
 end
 
-function candidates = make_common_el_candidates_local(az_grid, el_grid, min_sep, max_sep)
-    pairs = make_pair_candidates_local(az_grid, min_sep, max_sep);
-    candidates = zeros(size(pairs, 1) * numel(el_grid), 3);
-    count = 0;
-    for ie = 1:numel(el_grid)
-        n = size(pairs, 1);
-        candidates(count+1:count+n, :) = [az_grid(pairs), repmat(el_grid(ie), n, 1)];
-        count = count + n;
-    end
-end
-
-function candidates = make_centersep_candidates_local(az_center_grid, az_sep_grid, el_grid, min_sep, max_sep)
-    candidates = zeros(numel(az_center_grid) * numel(az_sep_grid) * numel(el_grid), 5);
-    count = 0;
-    for ia = 1:numel(az_center_grid)
-        for isep = 1:numel(az_sep_grid)
-            az_sep = az_sep_grid(isep);
-            if az_sep < min_sep || az_sep > max_sep
-                continue
-            end
-            th = [az_center_grid(ia) - az_sep/2, az_center_grid(ia) + az_sep/2];
-            for ie = 1:numel(el_grid)
-                count = count + 1;
-                candidates(count, :) = [th, el_grid(ie), az_center_grid(ia), az_sep];
-            end
-        end
-    end
-    candidates = candidates(1:count, :);
-end
-
-function precomp = precompute_level3_rank1_candidate_bases_local( ...
-    X3d, Y3d, Z3d, A_ref_2d, lambda, candidates, K_phi, K_z, p_sel, r_sel)
-    K = K_phi * K_z;
-    Nc = size(candidates, 1);
-    L = 2 * K * K;
-    g_basis = zeros(L, Nc, 'single');
-    gg = zeros(Nc, 1);
-    gi = zeros(Nc, 1);
-    ivec = matrix_to_realvec_local(eye(K));
-    ii = real(ivec' * ivec);
-    for ic = 1:Nc
-        G = build_level3_rank1_model_fbss_selected_direct_local( ...
-            X3d, Y3d, Z3d, A_ref_2d, lambda, candidates(ic, 1:2), ...
-            [candidates(ic, 3), candidates(ic, 3)], 1, 0, K_phi, K_z, p_sel, r_sel);
-        v = matrix_to_realvec_local(G);
-        g_basis(:, ic) = single(v);
-        gg(ic) = real(v' * v);
-        gi(ic) = real(v' * ivec);
-    end
-    precomp = struct('g_basis', g_basis, 'gg', gg, 'gi', gi, 'ivec', single(ivec), 'ii', ii);
-end
-
-function result = run_level3_common_el_rank1_covfit_precomp_local(Rfb, candidates, precomp, theta_true, el_true)
-    scores = score_rank1_all_local(Rfb, precomp);
-    [best_score, best_idx] = min(scores);
-    true_like_idx = nearest_common_candidate_local(candidates, theta_true, mean(el_true));
-    true_score = scores(true_like_idx);
-    best = candidates(best_idx, :);
-    result = make_result_local(sort(best(1:2)), [best(3), best(3)], 2, best_score, true_score, 'ok');
-    result.el_common_est = best(3);
-    result.objective_true_rank = 1 + sum(scores < true_score);
-end
-
-function result = run_level3_common_el_centersep_covfit_local( ...
-    Rfb, coarse_candidates, coarse_precomp, X3d, Y3d, Z3d, A_ref_2d, lambda, ...
-    K_phi, K_z, p_sel, r_sel, theta_true, el_true, topN, min_sep, max_sep)
-    coarse_scores = score_rank1_all_local(Rfb, coarse_precomp);
-    [coarse_best_score, coarse_best_idx] = min(coarse_scores);
-    [~, ord] = sort(coarse_scores, 'ascend');
-    ord = ord(1:min(topN, numel(ord)));
-
-    refine_candidates = zeros(0, 5);
-    for ii = 1:numel(ord)
-        c0 = coarse_candidates(ord(ii), 4);
-        s0 = coarse_candidates(ord(ii), 5);
-        e0 = coarse_candidates(ord(ii), 3);
-        azc_grid = c0-0.04:0.01:c0+0.04;
-        sep_grid = s0-0.04:0.005:s0+0.04;
-        el_grid = e0-1:0.25:e0+1;
-        now = make_centersep_candidates_local(azc_grid, sep_grid, el_grid, min_sep, max_sep);
-        refine_candidates = [refine_candidates; now]; %#ok<AGROW>
-    end
-    refine_candidates = unique(round(refine_candidates * 1e6) / 1e6, 'rows');
-
-    refine_scores = inf(size(refine_candidates, 1), 1);
-    for ic = 1:size(refine_candidates, 1)
-        G = build_level3_rank1_model_fbss_selected_direct_local( ...
-            X3d, Y3d, Z3d, A_ref_2d, lambda, refine_candidates(ic, 1:2), ...
-            [refine_candidates(ic, 3), refine_candidates(ic, 3)], 1, 0, K_phi, K_z, p_sel, r_sel);
-        refine_scores(ic) = solve_covfit_score_local(Rfb, G);
-    end
-    [refine_best_score, refine_best_idx] = min(refine_scores);
-    if refine_best_score < coarse_best_score
-        best_score = refine_best_score;
-        best = refine_candidates(refine_best_idx, :);
-        all_scores_for_rank = [coarse_scores; refine_scores];
-    else
-        best_score = coarse_best_score;
-        best = coarse_candidates(coarse_best_idx, :);
-        all_scores_for_rank = coarse_scores;
-    end
-
-    G_true = build_level3_rank1_model_fbss_selected_direct_local( ...
-        X3d, Y3d, Z3d, A_ref_2d, lambda, theta_true, [mean(el_true), mean(el_true)], ...
-        1, 0, K_phi, K_z, p_sel, r_sel);
-    true_score = solve_covfit_score_local(Rfb, G_true);
-    result = make_result_local(sort(best(1:2)), [best(3), best(3)], 2, best_score, true_score, 'ok');
-    result.el_common_est = best(3);
-    result.objective_true_rank = 1 + sum(all_scores_for_rank < true_score);
-end
-
-function Gfb = build_level3_rank1_model_fbss_selected_direct_local( ...
-    X3d, Y3d, Z3d, A_ref_2d, lambda, theta_pair, el_pair, beta, phi_deg, K_phi, K_z, p_sel, r_sel)
-    q = beta * exp(1j * deg2rad(phi_deg));
-    K = K_phi * K_z;
-    G = complex(zeros(K, K));
-    count = 0;
-    for ip = 1:numel(p_sel)
-        for ir = 1:numel(r_sel)
-            p = p_sel(ip);
-            r = r_sel(ir);
-            a1 = steering_2d_subarray_local(X3d, Y3d, Z3d, A_ref_2d, lambda, theta_pair(1), el_pair(1), p, r, K_phi, K_z);
-            a2 = steering_2d_subarray_local(X3d, Y3d, Z3d, A_ref_2d, lambda, theta_pair(2), el_pair(2), p, r, K_phi, K_z);
-            c = a1 / max(norm(a1), eps) + q * a2 / max(norm(a2), eps);
-            G = G + c * c';
-            count = count + 1;
-        end
-    end
-    G = G / count;
-    J = kron(fliplr(eye(K_z)), fliplr(eye(K_phi)));
-    Gfb = 0.5 * (G + J * conj(G) * J);
-    Gfb = 0.5 * (Gfb + Gfb');
-end
-
-function a = steering_2d_subarray_local(X3d, Y3d, Z3d, A_ref_2d, lambda, az_deg, el_deg, p, r, K_phi, K_z)
-    xs = X3d(p:p+K_phi-1, r:r+K_z-1);
-    ys = Y3d(p:p+K_phi-1, r:r+K_z-1);
-    zs = Z3d(p:p+K_phi-1, r:r+K_z-1);
-    ref = A_ref_2d(p:p+K_phi-1, r:r+K_z-1);
-    phase = xs * (cosd(el_deg) * cosd(az_deg)) + ...
-        ys * (cosd(el_deg) * sind(az_deg)) + zs * sind(el_deg);
-    a = conj(ref(:)) .* exp(-1j * 2*pi / lambda * phase(:));
-end
-
 function candidates = make_pair_el_local_candidates_local(az_est, el_est, min_sep, max_sep)
     az1 = az_est(1) + [-0.04, 0, 0.04];
     az2 = az_est(2) + [-0.04, 0, 0.04];
@@ -927,46 +625,10 @@ function candidates = make_pair_el_local_candidates_local(az_est, el_est, min_se
     candidates = candidates(1:count, :);
 end
 
-function candidates = make_oracle_local_pairs_local(theta_true, el_true, min_sep, max_sep)
-    az_offsets = [-0.04, -0.02, 0, 0.02, 0.04];
-    el_offsets = [-0.5, 0, 0.5];
-    candidates = zeros(numel(az_offsets)^2 * numel(el_offsets)^2, 4);
-    count = 0;
-    for a1 = 1:numel(az_offsets)
-        for a2 = 1:numel(az_offsets)
-            th = sort([theta_true(1) + az_offsets(a1), theta_true(2) + az_offsets(a2)]);
-            sep = diff(th);
-            if sep < min_sep || sep > max_sep
-                continue
-            end
-            for e1 = 1:numel(el_offsets)
-                for e2 = 1:numel(el_offsets)
-                    count = count + 1;
-                    candidates(count, :) = [th, el_true(1)+el_offsets(e1), el_true(2)+el_offsets(e2)];
-                end
-            end
-        end
-    end
-    candidates = candidates(1:count, :);
-end
-
-function idx = nearest_common_candidate_local(candidates, theta_true, el_true)
-    d = sum((candidates(:, 1:2) - theta_true).^2, 2) + (candidates(:, 3) - el_true).^2;
-    [~, idx] = min(d);
-end
-
 function idx = nearest_pair_el_candidate_local(candidates, theta_true, el_true)
     truth = [theta_true(:).', el_true(:).'];
     d = sum((candidates - truth).^2, 2);
     [~, idx] = min(d);
-end
-
-function score_by_el = best_score_by_el_local(candidates, scores)
-    elv = unique(candidates(:, 3)).';
-    score_by_el = zeros(size(elv));
-    for i = 1:numel(elv)
-        score_by_el(i) = min(scores(candidates(:, 3) == elv(i)));
-    end
 end
 
 function peaks = find_2d_peaks_local(P, az_axis, el_axis, Lc)
@@ -1102,58 +764,6 @@ function [lambda1, lambda2, lambda_noise_mean, lambda2_over_noise, lambda2_over_
     lambda2_over_noise = lambda2 / max(lambda_noise_mean, eps);
     lambda2_over_lambda1 = lambda2 / max(lambda1, eps);
     effective_rank_proxy = (sum(evals)^2) / max(sum(evals.^2), eps);
-end
-
-function result = apply_oracle_dispatch_rule_local(sc, route_map)
-    music_ok = route_map.music.peak_count >= 2 && all(isfinite(route_map.music.az_est));
-    music_single = route_map.music.peak_count < 2 || ~all(isfinite(route_map.music.az_est));
-    music2d_ok = route_map.level3_2d_music.peak_count >= 2 && all(isfinite(route_map.level3_2d_music.az_est));
-    pair_ok = all(isfinite(route_map.pair_el_local_covfit.az_est));
-
-    if sc.large_el_flag && pair_ok
-        selected = route_map.pair_el_local_covfit;
-        selected.recommended_route = "pair_el_local_covfit";
-        selected.confidence_flag = confidence_with_boundary_local(sc);
-        selected.failure_reason = "ok";
-    elseif sc.large_el_flag && music2d_ok
-        selected = route_map.level3_2d_music;
-        selected.recommended_route = "level3_2d_music";
-        selected.confidence_flag = confidence_with_boundary_local(sc);
-        selected.failure_reason = "ok";
-    elseif sc.weak_target_flag
-        selected = make_boundary_result_local(route_map, 'weak_target_boundary', 'low', 'weak_target_boundary', true, false);
-    elseif sc.anti_phase_flag
-        selected = make_boundary_result_local(route_map, 'anti_phase_boundary', 'low', 'anti_phase_boundary', false, true);
-    elseif sc.rho < 1 && music_ok
-        selected = route_map.music;
-        selected.recommended_route = "level2_music_or_center_real";
-        selected.confidence_flag = "high";
-        selected.failure_reason = "ok";
-    elseif sc.common_el_flag && sc.rho >= 0.99 && music_single
-        selected = route_map.common_el_refocus_rank1;
-        selected.recommended_route = "common_el_refocus_power_rank1";
-        selected.confidence_flag = "high";
-        selected.failure_reason = "ok";
-    elseif music_ok
-        selected = route_map.music;
-        selected.recommended_route = "level2_music_or_center_real";
-        selected.confidence_flag = "medium";
-        selected.failure_reason = "ok";
-    elseif all(isfinite(route_map.rank1_fallback.az_est))
-        selected = route_map.rank1_fallback;
-        selected.recommended_route = "level2_rank1_fallback";
-        selected.confidence_flag = "medium";
-        selected.failure_reason = "music_single_rank1_fallback";
-    else
-        selected = make_boundary_result_local(route_map, 'low_confidence', 'low', 'no_reliable_route', false, false);
-    end
-    if selected.recommended_route == ""
-        selected.recommended_route = "low_confidence";
-    end
-    selected.weak_target_boundary_flag = sc.weak_target_flag || strcmp(selected.recommended_route, "weak_target_boundary");
-    selected.anti_phase_boundary_flag = sc.anti_phase_flag || strcmp(selected.recommended_route, "anti_phase_boundary");
-    selected.low_confidence_flag = strcmp(selected.confidence_flag, "low") || strcmp(selected.recommended_route, "low_confidence");
-    result = selected;
 end
 
 function result = apply_observable_dispatch_rule_local(route_map, min_sep, max_sep)
@@ -1375,14 +985,6 @@ end
 
 function tf = is_sep_edge_local(sep, min_sep, max_sep, edge_margin)
     tf = ~isfinite(sep) || sep <= (min_sep + edge_margin) || sep >= (max_sep - edge_margin);
-end
-
-function confidence = confidence_with_boundary_local(sc)
-    if sc.weak_target_flag || sc.anti_phase_flag
-        confidence = "medium";
-    else
-        confidence = "high";
-    end
 end
 
 function result = make_boundary_result_local(route_map, route_name, confidence, reason, weak_flag, anti_flag)
@@ -3273,7 +2875,8 @@ function write_lazy_record_doc_local(record_doc_path, keypoints_tbl, result_dir,
     fprintf(fid, '## 范围\n\n');
     fprintf(fid, '- 脚本：`space_smooth_music_B_cylindrical_level3_lazy_runtime_wallclock.m`\n');
     fprintf(fid, '- 短名 runner：`space_smooth_music_B_cylindrical_level3_lazy_runtime.m`\n');
-    fprintf(fid, '- 结果目录：`results_step8_7_7b_lazy_runtime_wallclock/`\n');
+    [~, result_dir_name] = fileparts(result_dir);
+    fprintf(fid, '- 结果目录：`%s/`\n', result_dir_name);
     fprintf(fid, '- 场景：复用第 6B/第 7 部分 reduced scenario set。\n');
     fprintf(fid, '- Monte Carlo：Metkl=%d，quick_mode=%d，SNR=[0,8,16]，T_snap=260。\n', Metkl, quick_mode);
     fprintf(fid, '- warm-up：正式统计前执行 1 个 warm-up trial，不计入 runtime 统计。\n');

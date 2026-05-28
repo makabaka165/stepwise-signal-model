@@ -1,0 +1,66 @@
+Step 08.7 part 7B: true lazy cascade wall-clock runtime validation
+Result tag: "_cleanup_check". Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_7b_lazy_runtime_wallclock_cleanup_check.
+Scope: run a real full-route wall-clock baseline and a real lazy cascade. Lazy mode does not call untriggered downstream route functions.
+Constraints: no new DOA algorithm, no V2, no complex-gain q, no weak-target SIC, no anti-phase derivative, no 4D search, no new fullscan, no edits to step 8.6 or part-7 outputs.
+Part-7 cascade gate is preserved. Because part 7 uses common-el refocus as a safety gate for low-cost early-stop, lazy mode computes refocus before allowing level2/refocus/rank1 low-cost stops.
+Geometry: Q=65, Nel=32, theta_sep=0.263775445 deg.
+Run control: Metkl=3, quick_mode=1, SNR=[0 8 16], T_snap=260, sep_factor=10.
+Timing excludes plotting and file I/O. Per-route timing uses tic/toc around each route function.
+Scenario count=51. Reused from part 6B/7 reduced set.
+Running one warm-up trial. Warm-up is not included in runtime statistics.
+Warm-up finished.
+Scenario 01/51 group=rho_scan case=rho_1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 02/51 group=rho_scan case=rho_1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 03/51 group=rho_scan case=rho_1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 04/51 group=rho_scan case=rho_0.7 SNR=0 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 05/51 group=rho_scan case=rho_0.7 SNR=8 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 06/51 group=rho_scan case=rho_0.7 SNR=16 beta=1 phase=0.0 rho=0.7 el=[0.0 0.0].
+Scenario 07/51 group=rho_scan case=rho_0.5 SNR=0 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 08/51 group=rho_scan case=rho_0.5 SNR=8 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 09/51 group=rho_scan case=rho_0.5 SNR=16 beta=1 phase=0.0 rho=0.5 el=[0.0 0.0].
+Scenario 10/51 group=beta_scan case=beta_1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 11/51 group=beta_scan case=beta_1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 12/51 group=beta_scan case=beta_1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 13/51 group=beta_scan case=beta_0.5 SNR=0 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 14/51 group=beta_scan case=beta_0.5 SNR=8 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 15/51 group=beta_scan case=beta_0.5 SNR=16 beta=0.5 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 16/51 group=beta_scan case=beta_0.3 SNR=0 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 17/51 group=beta_scan case=beta_0.3 SNR=8 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 18/51 group=beta_scan case=beta_0.3 SNR=16 beta=0.3 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 19/51 group=beta_scan case=beta_0.1 SNR=0 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 20/51 group=beta_scan case=beta_0.1 SNR=8 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 21/51 group=beta_scan case=beta_0.1 SNR=16 beta=0.1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 22/51 group=phase_scan case=phase_0 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 23/51 group=phase_scan case=phase_0 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 24/51 group=phase_scan case=phase_0 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 0.0].
+Scenario 25/51 group=phase_scan case=phase_120 SNR=0 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 26/51 group=phase_scan case=phase_120 SNR=8 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 27/51 group=phase_scan case=phase_120 SNR=16 beta=1 phase=120.0 rho=1 el=[0.0 0.0].
+Scenario 28/51 group=phase_scan case=phase_150 SNR=0 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 29/51 group=phase_scan case=phase_150 SNR=8 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 30/51 group=phase_scan case=phase_150 SNR=16 beta=1 phase=150.0 rho=1 el=[0.0 0.0].
+Scenario 31/51 group=phase_scan case=phase_180 SNR=0 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 32/51 group=phase_scan case=phase_180 SNR=8 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 33/51 group=phase_scan case=phase_180 SNR=16 beta=1 phase=180.0 rho=1 el=[0.0 0.0].
+Scenario 34/51 group=large_el case=A_el2_beta1_phase0_rho1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 35/51 group=large_el case=A_el2_beta1_phase0_rho1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 36/51 group=large_el case=A_el2_beta1_phase0_rho1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 2.0].
+Scenario 37/51 group=large_el case=B_el5_beta1_phase0_rho1 SNR=0 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 38/51 group=large_el case=B_el5_beta1_phase0_rho1 SNR=8 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 39/51 group=large_el case=B_el5_beta1_phase0_rho1 SNR=16 beta=1 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 40/51 group=large_el case=C_el5_beta05_phase0_rho1 SNR=0 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 41/51 group=large_el case=C_el5_beta05_phase0_rho1 SNR=8 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 42/51 group=large_el case=C_el5_beta05_phase0_rho1 SNR=16 beta=0.5 phase=0.0 rho=1 el=[0.0 5.0].
+Scenario 43/51 group=large_el case=D_el5_beta1_phase180_rho1 SNR=0 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 44/51 group=large_el case=D_el5_beta1_phase180_rho1 SNR=8 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 45/51 group=large_el case=D_el5_beta1_phase180_rho1 SNR=16 beta=1 phase=180.0 rho=1 el=[0.0 5.0].
+Scenario 46/51 group=large_el case=E_el5_beta1_phase0_rho07 SNR=0 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 47/51 group=large_el case=E_el5_beta1_phase0_rho07 SNR=8 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 48/51 group=large_el case=E_el5_beta1_phase0_rho07 SNR=16 beta=1 phase=0.0 rho=0.7 el=[0.0 5.0].
+Scenario 49/51 group=large_el case=F_el10_beta05_phase180_rho07 SNR=0 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Scenario 50/51 group=large_el case=F_el10_beta05_phase180_rho07 SNR=8 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Scenario 51/51 group=large_el case=F_el10_beta05_phase180_rho07 SNR=16 beta=0.5 phase=180.0 rho=0.7 el=[0.0 10.0].
+Runtime loops finished in 160.25 sec.
+Writing trial, summary, keypoints and MAT outputs.
+Rendering plots.
+Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_7b_lazy_runtime_wallclock_cleanup_check
