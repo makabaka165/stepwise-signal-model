@@ -1,0 +1,28 @@
+keypoint,value,note
+saved_full6b_success_all,0.73202614379085,saved part-6B observable dispatch success
+recomputed_full6b_success_all,0.73202614379085,recomputed full dispatch success under part-7 runtime script
+cascade_dispatch_success_all,0.731372549019608,cascade dispatch mean joint success
+cascade_vs_saved_full_gap_all,-0.000653594771242161,cascade success minus saved 6B full dispatch success
+cascade_vs_recomputed_full_gap_all,-0.00065359477124183,cascade success minus recomputed full dispatch success
+route_agreement_with_6b_all,0.988235294117647,cascade route agreement with full 6B observable dispatch
+low_confidence_rate_all,0.228104575163399,cascade low-confidence rate
+boundary_unreliable_rate_all,0.0777777777777778,cascade boundary-unreliable rate
+false_high_confidence_rate_all,0,cascade false high-confidence rate
+false_medium_high_confidence_rate_all,0.0620915032679739,cascade false medium/high-confidence rate
+boundary_missed_rate_all,0,cascade boundary-missed rate
+mean_routes_evaluated_all,3.40849673202614,mean routes evaluated by cascade
+mean_estimated_cost_all,12.1267973856209,mean estimated cascade cost unit
+mean_full_dispatch_cost_all,17.8300653594771,mean estimated full dispatch cost unit
+cost_reduction_vs_full_dispatch_all,0.355282991988169,estimated cost reduction versus full dispatch
+heavy_route_trigger_rate_all,0.581045751633987,cascade heavy-route trigger rate
+music2d_trigger_rate_all,0.581045751633987,cascade 2D MUSIC trigger rate
+pair_local_trigger_rate_all,0.352941176470588,cascade pair-local trigger rate
+early_stop_rate_all,0.445751633986928,cascade early-stop rate
+rho_scan_cascade_success,0.814814814814815,cascade success on rho scan
+beta_scan_cascade_success,0.397222222222222,cascade success on beta scan
+phase_scan_cascade_success,0.6,cascade success on phase scan
+large_el_cascade_success,1,cascade success on large-el cases
+rho_scan_false_high,0,rho-scan false-high rate
+beta_scan_false_high,0,beta-scan false-high rate
+phase_scan_false_high,0,phase-scan false-high rate
+large_el_false_high,0,large-el false-high rate
