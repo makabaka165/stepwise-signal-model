@@ -1,0 +1,66 @@
+[2026-05-29 08:04:56] Step 8.7 part 8: local steering template equivalence + 7B lazy route consistency.
+[2026-05-29 08:04:56] Scope: validate template steering before FPGA migration. No FPGA, no fixed point, no threshold changes.
+[2026-05-29 08:04:56] Run control: Metkl=20 quick_mode=0 centers=[0 15 30 60 120] route_centers=[0 30 60].
+[2026-05-29 08:04:56] Grid: Delta az=[-0.6:0.02:0.6] n=61, el=[-2:0.5:12] n=29.
+[2026-05-29 08:04:56] Geometry: Q=65 Nel=32 theta_sep=0.263775445 deg.
+[2026-05-29 08:04:56] Running steering equivalence sweep.
+[2026-05-29 08:05:12] Steering exact: max aligned err=1.509e-14 min coh=0.999999999999988 pass=1.
+[2026-05-29 08:05:12] Steering canonical: max aligned err=1.576e-14 min coh=0.999999999999989 pass=1.
+[2026-05-29 08:05:12] Route consistency template mode: template_canonical.
+[2026-05-29 08:05:12] Running 7B lazy route consistency with template mode template_canonical.
+[2026-05-29 08:05:20] Route center=0 scenario=common_el_clean SNR=0 Metkl=20.
+[2026-05-29 08:05:26] Route center=0 scenario=common_el_clean SNR=8 Metkl=20.
+[2026-05-29 08:05:37] Route center=0 scenario=common_el_clean SNR=16 Metkl=20.
+[2026-05-29 08:05:56] Route center=0 scenario=rho_0p7 SNR=0 Metkl=20.
+[2026-05-29 08:06:02] Route center=0 scenario=rho_0p7 SNR=8 Metkl=20.
+[2026-05-29 08:06:15] Route center=0 scenario=rho_0p7 SNR=16 Metkl=20.
+[2026-05-29 08:06:21] Route center=0 scenario=beta_0p3 SNR=0 Metkl=20.
+[2026-05-29 08:06:36] Route center=0 scenario=beta_0p3 SNR=8 Metkl=20.
+[2026-05-29 08:06:45] Route center=0 scenario=beta_0p3 SNR=16 Metkl=20.
+[2026-05-29 08:06:50] Route center=0 scenario=phase_150 SNR=0 Metkl=20.
+[2026-05-29 08:07:01] Route center=0 scenario=phase_150 SNR=8 Metkl=20.
+[2026-05-29 08:07:10] Route center=0 scenario=phase_150 SNR=16 Metkl=20.
+[2026-05-29 08:07:16] Route center=0 scenario=large_el_clean SNR=0 Metkl=20.
+[2026-05-29 08:07:42] Route center=0 scenario=large_el_clean SNR=8 Metkl=20.
+[2026-05-29 08:08:07] Route center=0 scenario=large_el_clean SNR=16 Metkl=20.
+[2026-05-29 08:08:33] Route center=0 scenario=large_el_hard SNR=0 Metkl=20.
+[2026-05-29 08:08:38] Route center=0 scenario=large_el_hard SNR=8 Metkl=20.
+[2026-05-29 08:08:42] Route center=0 scenario=large_el_hard SNR=16 Metkl=20.
+[2026-05-29 08:08:55] Route center=30 scenario=common_el_clean SNR=0 Metkl=20.
+[2026-05-29 08:09:01] Route center=30 scenario=common_el_clean SNR=8 Metkl=20.
+[2026-05-29 08:09:16] Route center=30 scenario=common_el_clean SNR=16 Metkl=20.
+[2026-05-29 08:09:40] Route center=30 scenario=rho_0p7 SNR=0 Metkl=20.
+[2026-05-29 08:09:44] Route center=30 scenario=rho_0p7 SNR=8 Metkl=20.
+[2026-05-29 08:09:56] Route center=30 scenario=rho_0p7 SNR=16 Metkl=20.
+[2026-05-29 08:10:05] Route center=30 scenario=beta_0p3 SNR=0 Metkl=20.
+[2026-05-29 08:10:18] Route center=30 scenario=beta_0p3 SNR=8 Metkl=20.
+[2026-05-29 08:10:27] Route center=30 scenario=beta_0p3 SNR=16 Metkl=20.
+[2026-05-29 08:10:31] Route center=30 scenario=phase_150 SNR=0 Metkl=20.
+[2026-05-29 08:10:40] Route center=30 scenario=phase_150 SNR=8 Metkl=20.
+[2026-05-29 08:10:46] Route center=30 scenario=phase_150 SNR=16 Metkl=20.
+[2026-05-29 08:10:55] Route center=30 scenario=large_el_clean SNR=0 Metkl=20.
+[2026-05-29 08:11:21] Route center=30 scenario=large_el_clean SNR=8 Metkl=20.
+[2026-05-29 08:11:47] Route center=30 scenario=large_el_clean SNR=16 Metkl=20.
+[2026-05-29 08:12:13] Route center=30 scenario=large_el_hard SNR=0 Metkl=20.
+[2026-05-29 08:12:17] Route center=30 scenario=large_el_hard SNR=8 Metkl=20.
+[2026-05-29 08:12:22] Route center=30 scenario=large_el_hard SNR=16 Metkl=20.
+[2026-05-29 08:12:35] Route center=60 scenario=common_el_clean SNR=0 Metkl=20.
+[2026-05-29 08:12:41] Route center=60 scenario=common_el_clean SNR=8 Metkl=20.
+[2026-05-29 08:12:57] Route center=60 scenario=common_el_clean SNR=16 Metkl=20.
+[2026-05-29 08:13:17] Route center=60 scenario=rho_0p7 SNR=0 Metkl=20.
+[2026-05-29 08:13:22] Route center=60 scenario=rho_0p7 SNR=8 Metkl=20.
+[2026-05-29 08:13:36] Route center=60 scenario=rho_0p7 SNR=16 Metkl=20.
+[2026-05-29 08:13:44] Route center=60 scenario=beta_0p3 SNR=0 Metkl=20.
+[2026-05-29 08:13:56] Route center=60 scenario=beta_0p3 SNR=8 Metkl=20.
+[2026-05-29 08:14:06] Route center=60 scenario=beta_0p3 SNR=16 Metkl=20.
+[2026-05-29 08:14:12] Route center=60 scenario=phase_150 SNR=0 Metkl=20.
+[2026-05-29 08:14:21] Route center=60 scenario=phase_150 SNR=8 Metkl=20.
+[2026-05-29 08:14:29] Route center=60 scenario=phase_150 SNR=16 Metkl=20.
+[2026-05-29 08:14:37] Route center=60 scenario=large_el_clean SNR=0 Metkl=20.
+[2026-05-29 08:15:03] Route center=60 scenario=large_el_clean SNR=8 Metkl=20.
+[2026-05-29 08:15:29] Route center=60 scenario=large_el_clean SNR=16 Metkl=20.
+[2026-05-29 08:15:55] Route center=60 scenario=large_el_hard SNR=0 Metkl=20.
+[2026-05-29 08:16:01] Route center=60 scenario=large_el_hard SNR=8 Metkl=20.
+[2026-05-29 08:16:05] Route center=60 scenario=large_el_hard SNR=16 Metkl=20.
+[2026-05-29 08:16:10] Rendering plots.
+[2026-05-29 08:16:19] Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\results_step8_7_8_template_equivalence.

@@ -1,0 +1,20 @@
+keypoint,value,note
+exact_template_max_rel_err_aligned,1.50850285379726e-14,max aligned error direct vs center-specific local template
+exact_template_min_coherence,0.999999999999988,min coherence direct vs center-specific local template
+canonical_template_max_rel_err_aligned,1.57640861705018e-14,max aligned error direct vs canonical local template
+canonical_template_min_coherence,0.999999999999989,min coherence direct vs canonical local template
+canonical_geometry_max_rel_err,9.34780685773675e-17,max local geometry relative error against azCtr=0 template
+full_steering_pass_flag,1,exact local full steering pass
+music2d_subarray_pass_flag,1,exact local 2D MUSIC center-subarray steering pass
+pairlocal_subarray_pass_flag,1,exact local pair-local selected subarray steering pass
+level2_combined_pass_flag,1,exact local level2 combined steering pass
+canonical_reuse_pass_flag,1,canonical reusable template pass
+overall_route_agreement,0.994444444444444,direct/template lazy route agreement
+overall_confidence_agreement,1,direct/template confidence agreement
+template_success_gap,0,template success minus direct success
+template_false_high,0,template false-high-confidence rate
+template_boundary_missed,0,template boundary-missed rate
+max_az_est_diff,3.5527136788005e-15,max direct/template az estimate difference
+max_el_est_diff,0,max direct/template el estimate difference
+recommended_fpga_template_strategy,canonical_local_template,recommended FPGA template strategy
+route_consistency_pass_flag,1,7B lazy direct/template route consistency pass
