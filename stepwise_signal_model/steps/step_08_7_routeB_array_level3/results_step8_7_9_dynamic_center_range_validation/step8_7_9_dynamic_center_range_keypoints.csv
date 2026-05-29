@@ -1,0 +1,24 @@
+keypoint,value,note
+column_spacing_deg,1.875,actual adjacent column spacing from arr_cyl XY coordinates
+half_column_spacing_deg,0.9375,single-target nearest-column half spacing
+coverage_R06_pair_center,0.2,Part A pair-center coverage at R=0.6
+coverage_R10_pair_center,0.5,Part A pair-center coverage at R=1.0
+coverage_R15_pair_center,0.9,Part A pair-center coverage at R=1.5
+coverage_R20_pair_center,1,Part A pair-center coverage at R=2.0
+coverage_R06_strong_center,0.25,Part A strong-target coverage at R=0.6
+coverage_R10_strong_center,0.65,Part A strong-target coverage at R=1.0
+coverage_R15_strong_center,0.85,Part A strong-target coverage at R=1.5
+coverage_R20_strong_center,0.95,Part A strong-target coverage at R=2.0
+recommended_template_R_deg,2,recommended canonical template coverage for current d_max<=0.8 DOA validation
+recommended_runtime_default_R_deg,1.5,recommended MATLAB/runtime default local sweep
+recommended_runtime_expand_R_deg,2,recommended low-confidence adaptive expansion sweep
+template_size_MB_int16_R20,3.5577392578125,type-1 int16 complex template size at R=2.0
+compute_ratio_R20_vs_R06,3.29508196721311,2D MUSIC grid ratio R=2.0 vs R=0.6
+R06_success_overall,0.155172413793103,Part C overall lazy success at R=0.6
+R10_success_overall,0.251724137931034,Part C overall lazy success at R=1.0
+R15_success_overall,0.424137931034483,Part C overall lazy success at R=1.5
+R20_success_overall,0.437931034482759,Part C overall lazy success at R=2.0
+R06_false_high,0,Part C false-high at R=0.6
+R20_false_high,0,Part C false-high at R=2.0
+weak_target_boundary_preserved_flag,1,weak beta=0.3 remains protected by low confidence/boundary behavior
+large_el_branch_preserved_flag,1,large-el reference branch remains successful and safe
