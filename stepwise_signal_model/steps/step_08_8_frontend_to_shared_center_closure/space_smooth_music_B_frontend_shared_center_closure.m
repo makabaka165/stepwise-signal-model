@@ -22,7 +22,7 @@ addpath(fullfile(project_dir, 'core', 'config'));
 cfg_base = sim_cfg();
 cfg88 = make_step88_cfg_local(cfg_base);
 
-result_dir = fullfile(script_dir, 'results_step8_8_frontend_shared_center_closure');
+result_dir = fullfile(script_dir, 'results_step8_8_frontend_shared_center_closure_state_cleanup_check');
 if ~exist(result_dir, 'dir')
     mkdir(result_dir);
 end
@@ -59,6 +59,7 @@ end
 log_msg_local(fid_log, 'Scope: frontend LFM/PC/MTD/CFAR/coarse angle to Step 8.7 shared-center lazy cascade.');
 log_msg_local(fid_log, 'No dual-center, no fixed point, no FPGA, no V2, no weak-target SIC, no anti-phase derivative.');
 log_msg_local(fid_log, 'Step 8.7 lazy route thresholds are copied from part 7B and not changed.');
+log_msg_local(fid_log, 'State cleanup output directory is used; original Step 8.8 result directory is not overwritten.');
 
 [array_geom, pc_model] = init_frontend_models_local(cfg88);
 log_msg_local(fid_log, 'Array: Naz=%d, Nel=%d, selected work columns=%d, column spacing=%.6f deg.', ...
@@ -114,6 +115,7 @@ end
 elapsed_sec = toc(tic_all);
 trial_rows = trial_rows(1:row_idx);
 trial_tbl = struct2table([trial_rows{:}]);
+trial_tbl.Properties.UserData.recommended_frontend_policy = cfg88.recommended_frontend_policy;
 summary_tbl = build_step88_summary_table_local(trial_tbl);
 keypoints_tbl = build_step88_keypoints_local(trial_tbl, summary_tbl, Metkl, quick_mode, cfg88);
 
@@ -166,6 +168,11 @@ function cfg88 = make_step88_cfg_local(cfg)
     cfg88.coarseScanAz_deg = -4:0.02:4;
     cfg88.coarsePeakMergeThreshold_deg = min(1.5, cfg88.columnSpacingDeg);
     cfg88.coarsePeakProminenceThreshold = 0.45;
+    cfg88.weakSecondaryProminenceFloor = 0.20;
+    cfg88.recommended_frontend_policy = "single coarse peak -> shared_center_enhancement; " + ...
+        "two close coarse peaks -> merge_candidate_or_future_validation; " + ...
+        "two separated coarse peaks -> front-end multi-target branch / out-of-scope; " + ...
+        "weak secondary peak -> low-confidence secondary candidate";
     cfg88.dAzThreeBeam_deg = 1.24;
     cfg88.dUThreeBeam = 0.02921876244;
     cfg88.dElThreeBeam_deg = asind(min(max(sind(0) + cfg88.dUThreeBeam, -1), 1));
@@ -325,7 +332,8 @@ end
 function [frontend_out, pc_like, diag] = run_frontend_chain_local(sc, cfg88, array_geom, pc_model)
     [Y_clean_full, Y_noisy_full, noise_sigma2] = make_observation_snapshot_local(sc, cfg88, array_geom);
     coarse_cols = work_columns_from_az_local(cfg88.frontendSectorCenterAz_deg, cfg88.coarseTempColumns, array_geom.phiCol);
-    [coarseAz0, coarseMetric, coarsePeakCount, coarseWidth, coarseProm, coarsePower] = ...
+    [coarseAz0, coarseMetric, coarsePeakCount, coarseWidth, coarseProm, coarsePeakSepDeg, ...
+        secondPeakProminence, rawCoarsePeakCount, closeMergeCandidateFlag, coarsePower] = ...
         coarse_az_beamformer_local(Y_noisy_full, coarse_cols, cfg88, array_geom);
 
     preliminary_cols = work_columns_from_az_local(coarseAz0, cfg88.workColumns, array_geom.phiCol);
@@ -360,6 +368,10 @@ function [frontend_out, pc_like, diag] = run_frontend_chain_local(sc, cfg88, arr
     [selectedCenterColumn, selectedCenterAz] = nearest_column_local(coarseAz, array_geom.phiCol);
     selectedWorkColumns = work_columns_from_center_col_local(selectedCenterColumn, cfg88.workColumns, cfg88.Naz);
     two_out = coarsePeakCount > 1;
+    [frontend_state, in_scope_shared_center_flag, out_of_scope_reason, ...
+        merge_candidate_flag, weak_secondary_candidate_flag, selected_center_valid_flag] = ...
+        classify_frontend_state_local(coarsePeakCount, coarsePeakSepDeg, secondPeakProminence, ...
+        closeMergeCandidateFlag, cfar_detected, selectedCenterColumn, cfg88);
 
     frontend_out = struct();
     frontend_out.rangeIdx = rangeIdx;
@@ -370,6 +382,9 @@ function [frontend_out, pc_like, diag] = run_frontend_chain_local(sc, cfg88, arr
     frontend_out.coarseEl_deg = coarseEl;
     frontend_out.coarseMetric = coarseMetric;
     frontend_out.peakCountCoarse = coarsePeakCount;
+    frontend_out.coarsePeakSep_deg = coarsePeakSepDeg;
+    frontend_out.secondPeakProminence = secondPeakProminence;
+    frontend_out.rawCoarsePeakCount = rawCoarsePeakCount;
     frontend_out.coarsePeakWidth = coarseWidth;
     frontend_out.coarsePeakProminence = coarseProm;
     frontend_out.selectedCenterColumn = selectedCenterColumn;
@@ -379,6 +394,12 @@ function [frontend_out, pc_like, diag] = run_frontend_chain_local(sc, cfg88, arr
     frontend_out.cfarBestMetric = cfarBestMetric;
     frontend_out.cfar_detected_flag = cfar_detected;
     frontend_out.two_coarse_peaks_out_of_scope = two_out;
+    frontend_out.frontend_state = frontend_state;
+    frontend_out.in_scope_shared_center_flag = in_scope_shared_center_flag;
+    frontend_out.out_of_scope_reason = out_of_scope_reason;
+    frontend_out.merge_candidate_flag = merge_candidate_flag;
+    frontend_out.weak_secondary_candidate_flag = weak_secondary_candidate_flag;
+    frontend_out.selected_center_valid_flag = selected_center_valid_flag;
     frontend_out.cfarAlpha = alpha;
     frontend_out.cfarThresholdMap = thrMap;
     frontend_out.cfarRawRangeIdx = rawRIdx;
@@ -435,7 +456,8 @@ function a = steer_raw_array_local(X, Y, Z, lambda, az_deg, el_deg)
     a = exp(-1j * k * phase);
 end
 
-function [coarseAz, coarseMetric, peakCount, peakWidth, peakProminence, P] = ...
+function [coarseAz, coarseMetric, peakCount, peakWidth, peakProminence, peakSepDeg, ...
+    secondPeakProminence, rawPeakCount, closeMergeCandidateFlag, P] = ...
     coarse_az_beamformer_local(Y_full, cols, cfg88, array_geom)
     X = array_geom.X(cols, :);
     Y = array_geom.Y(cols, :);
@@ -452,25 +474,40 @@ function [coarseAz, coarseMetric, peakCount, peakWidth, peakProminence, P] = ...
     end
     [coarseMetric, idx] = max(P);
     coarseAz = cfg88.coarseScanAz_deg(idx);
-    [peakCount, peakWidth, peakProminence] = coarse_peak_metrics_local( ...
+    [peakCount, peakWidth, peakProminence, peakSepDeg, secondPeakProminence, ...
+        rawPeakCount, closeMergeCandidateFlag] = coarse_peak_metrics_local( ...
         cfg88.coarseScanAz_deg, P, cfg88.coarsePeakMergeThreshold_deg, cfg88.coarsePeakProminenceThreshold);
 end
 
-function [peakCount, width, prominence] = coarse_peak_metrics_local(axis, P, mergeThresh, promThresh)
+function [peakCount, width, prominence, peakSepDeg, secondPeakProminence, rawPeakCount, closeMergeCandidateFlag] = ...
+    coarse_peak_metrics_local(axis, P, mergeThresh, promThresh)
     P = real(P(:)).';
     axis = axis(:).';
     [pmax, imax] = max(P);
-    idx = [];
+    idx_all = [];
     for i = 2:numel(P)-1
-        if P(i) >= P(i-1) && P(i) >= P(i+1) && P(i) >= promThresh * pmax
-            idx(end+1) = i; %#ok<AGROW>
+        if P(i) >= P(i-1) && P(i) >= P(i+1)
+            idx_all(end+1) = i; %#ok<AGROW>
         end
     end
+    if isempty(idx_all)
+        idx_all = imax;
+    end
+    [~, ord_all] = sort(P(idx_all), 'descend');
+    idx_all = idx_all(ord_all);
+    rawPeakCount = numel(idx_all);
+    if numel(idx_all) >= 2
+        peakSepDeg = abs(axis(idx_all(1)) - axis(idx_all(2)));
+        secondPeakProminence = P(idx_all(2)) / max(P(idx_all(1)), eps);
+    else
+        peakSepDeg = NaN;
+        secondPeakProminence = 0;
+    end
+
+    idx = idx_all(P(idx_all) >= promThresh * pmax);
     if isempty(idx)
         idx = imax;
     end
-    [~, ord] = sort(P(idx), 'descend');
-    idx = idx(ord);
     kept = [];
     for i = 1:numel(idx)
         if isempty(kept) || all(abs(axis(idx(i)) - axis(kept)) > mergeThresh)
@@ -489,6 +526,40 @@ function [peakCount, width, prominence] = coarse_peak_metrics_local(axis, P, mer
     else
         width = NaN;
     end
+    closeMergeCandidateFlag = rawPeakCount >= 2 && peakSepDeg < mergeThresh && secondPeakProminence >= promThresh;
+end
+
+function [frontend_state, in_scope_shared_center_flag, out_of_scope_reason, ...
+    merge_candidate_flag, weak_secondary_candidate_flag, selected_center_valid_flag] = ...
+    classify_frontend_state_local(coarsePeakCount, coarsePeakSepDeg, secondPeakProminence, ...
+    closeMergeCandidateFlag, cfar_detected, selectedCenterColumn, cfg88)
+    selected_center_valid_flag = cfar_detected && isfinite(selectedCenterColumn);
+    merge_candidate_flag = closeMergeCandidateFlag;
+    weak_secondary_candidate_flag = cfar_detected && coarsePeakCount == 1 && ...
+        isfinite(coarsePeakSepDeg) && coarsePeakSepDeg >= cfg88.coarsePeakMergeThreshold_deg && ...
+        secondPeakProminence >= cfg88.weakSecondaryProminenceFloor && ...
+        secondPeakProminence < cfg88.coarsePeakProminenceThreshold;
+
+    if ~selected_center_valid_flag
+        frontend_state = "no_valid_coarse_peak";
+        out_of_scope_reason = "cfar_not_detected_or_invalid_center";
+    elseif coarsePeakCount >= 2 && isfinite(coarsePeakSepDeg) && coarsePeakSepDeg < cfg88.coarsePeakMergeThreshold_deg
+        frontend_state = "two_close_peaks_merge_candidate";
+        out_of_scope_reason = "";
+    elseif coarsePeakCount >= 2
+        frontend_state = "two_separated_peaks_out_of_scope";
+        out_of_scope_reason = "multi_coarse_peak_out_of_scope";
+    elseif merge_candidate_flag
+        frontend_state = "two_close_peaks_merge_candidate";
+        out_of_scope_reason = "";
+    else
+        frontend_state = "single_peak_in_scope";
+        out_of_scope_reason = "";
+    end
+
+    in_scope_shared_center_flag = selected_center_valid_flag && ...
+        (frontend_state == "single_peak_in_scope" || frontend_state == "two_close_peaks_merge_candidate") && ...
+        coarsePeakCount <= 1;
 end
 
 function [rdCube, vAxis, W, locAz, locEl] = make_frontend_five_beam_rd_local( ...
@@ -847,6 +918,15 @@ function row = make_trial_row_local(sc, imc, frontend_out, enhance_in, result, t
     row.true_el1 = sc.el1;
     row.true_el2 = sc.el2;
     row.coarse_peak_count = frontend_out.peakCountCoarse;
+    row.raw_coarse_peak_count = frontend_out.rawCoarsePeakCount;
+    row.coarse_peak_sep_deg = frontend_out.coarsePeakSep_deg;
+    row.second_peak_prominence = frontend_out.secondPeakProminence;
+    row.frontend_state = frontend_out.frontend_state;
+    row.in_scope_shared_center_flag = frontend_out.in_scope_shared_center_flag;
+    row.out_of_scope_reason = frontend_out.out_of_scope_reason;
+    row.merge_candidate_flag = frontend_out.merge_candidate_flag;
+    row.weak_secondary_candidate_flag = frontend_out.weak_secondary_candidate_flag;
+    row.selected_center_valid_flag = frontend_out.selected_center_valid_flag;
     row.coarseAz = frontend_out.coarseAz_deg;
     row.coarseEl = frontend_out.coarseEl_deg;
     row.selectedCenterAz = frontend_out.selectedCenterAz_deg;
@@ -901,7 +981,8 @@ end
 
 function row = make_summary_row_step88_local(T, mask, name)
     idx = find(mask);
-    in_scope = mask & T.cfar_detected_flag & ~T.two_coarse_peaks_out_of_scope;
+    in_scope = mask & logical(T.in_scope_shared_center_flag);
+    out_scope = mask & ~logical(T.in_scope_shared_center_flag);
     route_dist = distribution_string_local(T.route_used(mask));
     row = struct();
     row.scenario_name = string(name);
@@ -910,6 +991,13 @@ function row = make_summary_row_step88_local(T, mask, name)
     row.single_coarse_peak_rate = mean(double(T.coarse_peak_count(mask) == 1), 'omitnan');
     row.two_coarse_peak_rate = mean(double(T.two_coarse_peaks_out_of_scope(mask)), 'omitnan');
     row.two_coarse_peak_out_of_scope_rate = row.two_coarse_peak_rate;
+    row.single_peak_in_scope_rate = mean(double(T.frontend_state(mask) == "single_peak_in_scope"), 'omitnan');
+    row.two_close_peaks_merge_candidate_rate = mean(double(T.frontend_state(mask) == "two_close_peaks_merge_candidate"), 'omitnan');
+    row.two_separated_peaks_out_of_scope_rate = mean(double(T.frontend_state(mask) == "two_separated_peaks_out_of_scope"), 'omitnan');
+    row.weak_secondary_candidate_rate = mean(double(T.weak_secondary_candidate_flag(mask)), 'omitnan');
+    row.multi_coarse_peak_total_rate = row.two_close_peaks_merge_candidate_rate + row.two_separated_peaks_out_of_scope_rate;
+    row.in_scope_shared_center_rate = mean(double(T.in_scope_shared_center_flag(mask)), 'omitnan');
+    row.out_of_scope_rate = 1 - row.in_scope_shared_center_rate;
     row.center_selection_success_rate = mean(double(T.center_selection_success(mask)), 'omitnan');
     row.both_inside_R15_rate = mean(double(T.both_inside_R15(mask)), 'omitnan');
     row.both_inside_R20_rate = mean(double(T.both_inside_R20(mask)), 'omitnan');
@@ -930,9 +1018,22 @@ function row = make_summary_row_step88_local(T, mask, name)
         row.mean_runtime = NaN;
         row.p90_runtime = NaN;
     end
+    if any(in_scope)
+        row.false_high_rate_in_scope = mean(double(T.false_high(in_scope)), 'omitnan');
+        row.boundary_missed_rate_in_scope = mean(double(T.boundary_missed(in_scope)), 'omitnan');
+    else
+        row.false_high_rate_in_scope = NaN;
+        row.boundary_missed_rate_in_scope = NaN;
+    end
+    if any(out_scope)
+        row.false_high_rate_out_of_scope = mean(double(T.false_high(out_scope)), 'omitnan');
+    else
+        row.false_high_rate_out_of_scope = NaN;
+    end
     row.mean_abs_center_error_to_pair_center = mean(abs(T.center_error_to_pair_center(mask)), 'omitnan');
     row.mean_abs_center_error_to_strong_target = mean(abs(T.center_error_to_strong_target(mask)), 'omitnan');
     row.route_distribution = route_dist;
+    row.recommended_frontend_policy = string(T.Properties.UserData.recommended_frontend_policy);
 end
 
 function keypoints_tbl = build_step88_keypoints_local(T, S, Metkl, quick_mode, cfg88)
@@ -950,6 +1051,16 @@ function keypoints_tbl = build_step88_keypoints_local(T, S, Metkl, quick_mode, c
     rows = add_kp_local(rows, 'cfar_detection_rate_overall', overall.cfar_detection_rate, 'overall CFAR detection rate');
     rows = add_kp_local(rows, 'single_coarse_peak_rate_overall', overall.single_coarse_peak_rate, 'overall unresolved coarse cluster rate');
     rows = add_kp_local(rows, 'two_coarse_peak_rate_overall', overall.two_coarse_peak_rate, 'overall two coarse peaks out-of-scope rate');
+    rows = add_kp_local(rows, 'single_peak_in_scope_rate', overall.single_peak_in_scope_rate, 'frontend_state single_peak_in_scope rate');
+    rows = add_kp_local(rows, 'two_close_peaks_merge_candidate_rate', overall.two_close_peaks_merge_candidate_rate, 'frontend close-peak merge-candidate rate');
+    rows = add_kp_local(rows, 'two_separated_peaks_out_of_scope_rate', overall.two_separated_peaks_out_of_scope_rate, 'frontend separated multi-peak out-of-scope rate');
+    rows = add_kp_local(rows, 'weak_secondary_candidate_rate', overall.weak_secondary_candidate_rate, 'weak or unstable secondary coarse-peak candidate rate');
+    rows = add_kp_local(rows, 'multi_coarse_peak_total_rate', overall.multi_coarse_peak_total_rate, 'two-close plus two-separated coarse-peak state rate');
+    rows = add_kp_local(rows, 'in_scope_shared_center_rate', overall.in_scope_shared_center_rate, 'frontend states routed into shared-center enhancement');
+    rows = add_kp_local(rows, 'out_of_scope_rate', overall.out_of_scope_rate, 'frontend states not routed into shared-center enhancement');
+    rows = add_kp_local(rows, 'false_high_rate_in_scope', overall.false_high_rate_in_scope, 'high-confidence wrong output rate on in-scope trials');
+    rows = add_kp_local(rows, 'boundary_missed_rate_in_scope', overall.boundary_missed_rate_in_scope, 'boundary missed rate on in-scope trials');
+    rows = add_kp_local(rows, 'false_high_rate_out_of_scope', overall.false_high_rate_out_of_scope, 'false-high rate on out-of-scope trials');
     rows = add_kp_local(rows, 'center_selection_success_rate_overall', overall.center_selection_success_rate, 'selected center coverage success');
     rows = add_kp_local(rows, 'both_inside_R15_rate_overall', overall.both_inside_R15_rate, 'both targets within runtime R=1.5');
     rows = add_kp_local(rows, 'both_inside_R20_rate_overall', overall.both_inside_R20_rate, 'both targets within expansion R=2.0');
@@ -980,6 +1091,7 @@ function keypoints_tbl = build_step88_keypoints_local(T, S, Metkl, quick_mode, c
     rows = add_kp_local(rows, 'frontend_to_step87_interface_pass_flag', double(interface_pass), 'interface closure safety flag');
     rows = add_kp_local(rows, 'proceed_to_fixed_point_flag', double(proceed_fixed), 'whether shared-center mainline may proceed to fixed-point quantization');
     rows = add_kp_local(rows, 'fixed_point_blocker', cfg88.fixed_point_blocker_default + double(~proceed_fixed), '0 means no closure blocker; 1 means review closure metrics first');
+    rows = add_kp_local(rows, 'recommended_frontend_policy', NaN, cfg88.recommended_frontend_policy);
     keypoints_tbl = cell2table(rows, 'VariableNames', {'keypoint', 'value', 'note'});
 end
 
@@ -1107,77 +1219,125 @@ function write_interface_doc_local(path_out, cfg88)
     fid = fopen(path_out, 'w', 'n', 'UTF-8');
     cleaner = onCleanup(@() safe_fclose_local(fid));
     fprintf(fid, '# 第8.8步 前端到第8.7接口定义\n\n');
-    fprintf(fid, '## 1. 前端输出 frontend_out\n\n');
-    fprintf(fid, '第 5/6 步前端输出以下字段：`rangeIdx`、`dopplerIdx`、`range_m`、`velocity_mps`、`coarseAz_deg`、`coarseEl_deg`、`coarseMetric`、`peakCountCoarse`、`coarsePeakWidth`、`coarsePeakProminence`、`selectedCenterColumn`、`selectedCenterAz_deg`、`selectedWorkColumns`、`cfarCount`、`cfarBestMetric`。\n\n');
+    fprintf(fid, '## 1. 默认适用场景\n\n');
+    fprintf(fid, '第 8.8 默认处理 `single coarse peak / unresolved local cluster`：前端在某个距离-多普勒单元或局部角域中检测到一个粗峰，该粗峰可能对应一个真实目标，也可能包含两个相干或近邻空间分量。系统以该粗峰方位吸附最近实际阵元列，选择 65 列工作子阵，再进入第 8.7 shared-center lazy cascade。\n\n');
+    fprintf(fid, '若角度粗扫描已经出现两个稳定粗峰，则该场景不进入本文默认 shared-center 主线，而标记为 `multi-coarse-peak / out-of-scope`，交给前端多目标分支、上层跟踪、后续 CPI 调度或未来工作。本轮只标记状态，不实现 dual-center。\n\n');
+    fprintf(fid, '## 2. 前端输出 frontend_out\n\n');
+    fprintf(fid, '第 5/6 步前端输出以下基础字段：`rangeIdx`、`dopplerIdx`、`range_m`、`velocity_mps`、`coarseAz_deg`、`coarseEl_deg`、`coarseMetric`、`peakCountCoarse`、`coarsePeakWidth`、`coarsePeakProminence`、`selectedCenterColumn`、`selectedCenterAz_deg`、`selectedWorkColumns`、`cfarCount`、`cfarBestMetric`。\n\n');
     fprintf(fid, '- `rangeIdx / dopplerIdx` 来自 MTD + CFAR。\n');
     fprintf(fid, '- `coarseAz / coarseEl` 来自低成本粗方位 beamformer 和检测单元上的三波束比幅。\n');
     fprintf(fid, '- `selectedCenterColumn` 是 `coarseAz` 吸附到最近实际阵元列后的中心列。\n');
     fprintf(fid, '- `selectedWorkColumns` 是中心列左右各 32 列，总共 65 列，按圆柱阵列周期回绕。\n\n');
-    fprintf(fid, '## 2. 第8.7 shared-center 输入 enhance_in\n\n');
+    fprintf(fid, '第 8.8 状态整理新增字段：`coarse_peak_sep_deg`、`second_peak_prominence`、`frontend_state`、`in_scope_shared_center_flag`、`out_of_scope_reason`、`merge_candidate_flag`、`weak_secondary_candidate_flag`、`selected_center_valid_flag`。\n\n');
+    fprintf(fid, '## 3. 前端状态机\n\n');
+    fprintf(fid, '状态集合为：`single_peak_in_scope`、`two_close_peaks_merge_candidate`、`two_separated_peaks_out_of_scope`、`weak_secondary_candidate`、`no_valid_coarse_peak`。\n\n');
+    fprintf(fid, '- `single_peak_in_scope`：`coarse_peak_count == 1`，默认进入 shared-center 增强测角。\n');
+    fprintf(fid, '- `two_close_peaks_merge_candidate`：粗峰间隔小于 `merge_threshold`，当前只作为合并候选或未来验证状态；若原粗峰合并逻辑已经把它视作单粗峰，则仍可沿原 shared-center 路径验证。\n');
+    fprintf(fid, '- `two_separated_peaks_out_of_scope`：粗峰间隔不小于 `merge_threshold`，表示前端已有多目标迹象，不进入默认 shared-center 主线。\n');
+    fprintf(fid, '- `weak_secondary_candidate`：第二粗峰弱或不稳定，只作为低置信二级候选标签，不作为高置信双目标输出依据。\n');
+    fprintf(fid, '- `no_valid_coarse_peak`：CFAR 未形成有效检测或中心列无效。\n\n');
+    fprintf(fid, '`merge_threshold = min(1.5 deg, column_spacing_deg)`，当前 `column_spacing_deg = %.3f deg`，因此 `merge_threshold = %.3f deg`。\n\n', cfg88.columnSpacingDeg, cfg88.coarsePeakMergeThreshold_deg);
+    fprintf(fid, '## 4. 第8.7 shared-center 输入 enhance_in\n\n');
     fprintf(fid, '第 8.7 shared-center 增强测角输入：`Y_work`、`thetaCenter_deg`、`elAssumed_deg`、`rangeIdx`、`dopplerIdx`、`R_runtime_default_deg`、`R_runtime_expand_deg`、`template_R_deg`、`cfg`、`arrayInfo`。\n\n');
     fprintf(fid, '- `R_runtime_default_deg = %.1f deg`\n', cfg88.R_runtime_default_deg);
     fprintf(fid, '- `R_runtime_expand_deg = %.1f deg`\n', cfg88.R_runtime_expand_deg);
     fprintf(fid, '- `template_R_deg = %.1f deg`\n', cfg88.template_R_deg);
     fprintf(fid, '- `Y_work` 的尺寸为 `65 x 32 x T_snap`，本轮 `T_snap=Np=%d`。\n\n', cfg88.Np);
-    fprintf(fid, '## 3. Y_work 构造\n\n');
+    fprintf(fid, '## 5. Y_work 构造\n\n');
     fprintf(fid, '本轮优先使用 MTD 前慢时间快拍。理论形式为：\n\n');
     fprintf(fid, '`Y_elem(:, p) = pcCube(:, rangeIdx, p)`\n\n');
     fprintf(fid, '若目标有 Doppler，则按检测到的 Doppler bin 做去旋：\n\n');
     fprintf(fid, '`Y_elem(:, p) = pcCube(:, rangeIdx, p) * exp(-j*2*pi*fd_hat*tSlow(p))`\n\n');
     fprintf(fid, '随后按 `selectedWorkColumns` 抽取 65 列，并 reshape 为 `Y_work = [65, 32, T_snap]`。本轮脚本为节省运行时间，保存的是检测距离单元的阵元级快拍 `pc_like.Y_full_range`，它等价于 `pcCube(:, rangeIdx, :)`；完整全阵版本只需把该快拍替换为实际 `pcCube` 抽取。\n\n');
-    fprintf(fid, '## 4. 一次观测双空间分量模型\n\n');
+    fprintf(fid, '## 6. 一次观测双空间分量模型\n\n');
     fprintf(fid, '两个空间分量属于同一次观测、同一 CPI、同一距离-多普勒单元中的叠加：\n\n');
     fprintf(fid, '`x(t) = a(theta1, el1) s1(t) + a(theta2, el2) s2(t) + n(t)`\n\n');
     fprintf(fid, '`s2(t) = beta * exp(j*phi) * (rho*s1(t) + sqrt(1-rho^2)*v(t))`\n\n');
     fprintf(fid, '- `rho=1` 表示完全相干，`rho<1` 表示部分相干。\n');
     fprintf(fid, '- `beta` 表示幅度比，`phi` 表示固定相位差。\n');
     fprintf(fid, '- 前端 LFM/脉压/MTD 将叠加信号定位到一个 RD 检测单元。\n');
-    fprintf(fid, '- 第 8.7 只作为该检测单元内的 shared-center 增强测角模块。\n');
+    fprintf(fid, '- 第 8.7 只作为该检测单元内的 shared-center 增强测角模块。\n\n');
+    fprintf(fid, '## 7. 推荐前端策略\n\n');
+    fprintf(fid, '- single coarse peak -> shared_center_enhancement\n');
+    fprintf(fid, '- two close coarse peaks -> merge_candidate_or_future_validation\n');
+    fprintf(fid, '- two separated coarse peaks -> front-end multi-target branch / out-of-scope\n');
+    fprintf(fid, '- weak secondary peak -> low-confidence secondary candidate\n');
 end
 
 function write_record_doc_local(path_out, keypoints_tbl, summary_tbl, result_dir, elapsed_sec, Metkl, quick_mode)
     fid = fopen(path_out, 'w', 'n', 'UTF-8');
     cleaner = onCleanup(@() safe_fclose_local(fid));
     if quick_mode
-        fprintf(fid, '# 第8.8步 前端检测到shared-center增强测角接口与闭环验证记录（quick mode）\n\n');
+        fprintf(fid, '# 第8.8步 前端检测到shared-center增强测角接口与闭环验证记录（quick mode，仅 smoke test）\n\n');
     else
         fprintf(fid, '# 第8.8步 前端检测到shared-center增强测角接口与闭环验证记录\n\n');
     end
     fprintf(fid, '## 范围\n\n');
     fprintf(fid, '- 脚本：`space_smooth_music_B_frontend_shared_center_closure.m`\n');
     fprintf(fid, '- 短名 runner：`frontend_shared_center_closure.m`\n');
-    fprintf(fid, '- 结果目录：`%s`\n', result_dir);
+    fprintf(fid, '- 状态整理检查结果目录：`%s`\n', result_dir);
+    fprintf(fid, '- 原始结果目录 `results_step8_8_frontend_shared_center_closure/` 未覆盖。\n');
     fprintf(fid, '- Metkl=%d，quick_mode=%d。\n', Metkl, quick_mode);
-    fprintf(fid, '- 本轮不是 FPGA、不是定点量化、不是 dual-center、不是 V2，也不修改第 8.7 第 7B 主线阈值。\n\n');
+    if quick_mode
+        fprintf(fid, '- quick mode 仅用于 smoke test，不作为正式统计结论。\n');
+    end
+    fprintf(fid, '- 本轮只做文档和状态机输出整理，不改第 8.7 lazy cascade，不改阈值，不改第 8.8 数据生成、CFAR 或 coarse detector 主逻辑。\n\n');
     fprintf(fid, '## 主链路定位\n\n');
     fprintf(fid, '- 第 1/2 步的 LFM 和脉压负责距离维压缩。\n');
     fprintf(fid, '- 第 5 步的 MTD/CFAR 负责检测距离-多普勒单元。\n');
     fprintf(fid, '- 第 6 步的三波束比幅负责提供 coarse az/el。\n');
     fprintf(fid, '- 第 8.7 只作为某个检测单元内的 shared-center 增强测角模块。\n\n');
+    fprintf(fid, '## 默认适用场景\n\n');
+    fprintf(fid, '第 8.8 默认处理的是 `single coarse peak / unresolved local cluster`：前端在某个距离-多普勒单元或局部角域中检测到一个粗峰，该粗峰可能对应一个真实目标，也可能包含两个相干或近邻空间分量。系统以该粗峰方位吸附最近实际阵元列，选择 65 列工作子阵，再进入第 8.7 shared-center lazy cascade。\n\n');
+    fprintf(fid, '如果角度粗扫描已经出现两个稳定粗峰，则该场景不进入本文默认 shared-center 主线，而标记为 `multi-coarse-peak / out-of-scope`，交给前端多目标分支、上层跟踪、后续 CPI 调度或未来工作。本轮不做 dual-center，也不把 two coarse peaks 强行塞入 shared-center。\n\n');
+    fprintf(fid, '## 前端状态机\n\n');
+    fprintf(fid, '- `single_peak_in_scope`：单粗峰，默认进入 shared-center 增强测角。\n');
+    fprintf(fid, '- `two_close_peaks_merge_candidate`：双粗峰距离小于 `merge_threshold`，只作为合并候选或未来验证状态；若原脚本已有合并逻辑，则保持原 shared-center 验证路径。\n');
+    fprintf(fid, '- `two_separated_peaks_out_of_scope`：双粗峰距离大于等于 `merge_threshold`，作为前端多目标迹象标记，不进入默认 shared-center 主线。\n');
+    fprintf(fid, '- `weak_secondary_candidate`：第二峰弱或不稳定，仅作为低置信二级候选标签。\n');
+    fprintf(fid, '- `no_valid_coarse_peak`：CFAR 未形成有效检测或中心列无效。\n\n');
+    fprintf(fid, '`merge_threshold = min(1.5 deg, column_spacing_deg)`，当前为 1.5 deg。\n\n');
+    fprintf(fid, '## two coarse peaks 论文说明\n\n');
+    fprintf(fid, '本轮第 8.8 正式结果中 two coarse peak out-of-scope rate 约为 0.083。该比例不高，但需要明确算法适用边界。本文默认增强测角链路只对 `single coarse peak / unresolved local cluster` 启动；two coarse peaks 表示前端角度粗检测已具有多目标迹象，当前不强行并入 shared-center 主线。\n\n');
+    fprintf(fid, '## weak target 标签说明\n\n');
+    fprintf(fid, 'weak target 场景中当前 false-high=0，说明未出现高置信错误输出；但 low-confidence 标记并不总是稳定触发，因此弱目标仍作为边界场景，后续可优化 failure_reason / confidence calibration。该现象不应解释为选列失败。\n\n');
     fprintf(fid, '## Keypoints\n\n');
     fprintf(fid, '| keypoint | value | note |\n|---|---:|---|\n');
     for i = 1:height(keypoints_tbl)
         fprintf(fid, '| %s | %.6g | %s |\n', keypoints_tbl.keypoint(i), keypoints_tbl.value(i), keypoints_tbl.note(i));
     end
     fprintf(fid, '\n## Scenario summary\n\n');
-    fprintf(fid, '| scenario | CFAR | single coarse | two coarse | R15 | R20 | success | false-high | boundary-missed | low-conf |\n');
-    fprintf(fid, '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|\n');
+    fprintf(fid, '| scenario | CFAR | single coarse | two coarse | in-scope | out-scope | R15 | R20 | success | false-high | boundary-missed | low-conf |\n');
+    fprintf(fid, '|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|\n');
     for i = 1:height(summary_tbl)
-        fprintf(fid, '| %s | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |\n', ...
+        fprintf(fid, '| %s | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |\n', ...
             summary_tbl.scenario_name(i), summary_tbl.cfar_detection_rate(i), summary_tbl.single_coarse_peak_rate(i), ...
-            summary_tbl.two_coarse_peak_rate(i), summary_tbl.both_inside_R15_rate(i), summary_tbl.both_inside_R20_rate(i), ...
+            summary_tbl.two_coarse_peak_rate(i), summary_tbl.in_scope_shared_center_rate(i), summary_tbl.out_of_scope_rate(i), ...
+            summary_tbl.both_inside_R15_rate(i), summary_tbl.both_inside_R20_rate(i), ...
             summary_tbl.step87_success_rate(i), summary_tbl.false_high_rate(i), summary_tbl.boundary_missed_rate(i), ...
             summary_tbl.low_confidence_rate(i));
+    end
+    fprintf(fid, '\n## Frontend state summary\n\n');
+    fprintf(fid, '| scenario | single_peak_in_scope | two_close_merge_candidate | two_separated_out_of_scope | weak_secondary_candidate | multi_coarse_total | false_high_in_scope | boundary_missed_in_scope | false_high_out_scope |\n');
+    fprintf(fid, '|---|---:|---:|---:|---:|---:|---:|---:|---:|\n');
+    for i = 1:height(summary_tbl)
+        fprintf(fid, '| %s | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f | %.3f |\n', ...
+            summary_tbl.scenario_name(i), summary_tbl.single_peak_in_scope_rate(i), ...
+            summary_tbl.two_close_peaks_merge_candidate_rate(i), summary_tbl.two_separated_peaks_out_of_scope_rate(i), ...
+            summary_tbl.weak_secondary_candidate_rate(i), summary_tbl.multi_coarse_peak_total_rate(i), ...
+            summary_tbl.false_high_rate_in_scope(i), summary_tbl.boundary_missed_rate_in_scope(i), ...
+            summary_tbl.false_high_rate_out_of_scope(i));
     end
     fprintf(fid, '\n## 判断\n\n');
     fh = keypoint_value_from_table_local(keypoints_tbl, 'false_high_rate_overall');
     bm = keypoint_value_from_table_local(keypoints_tbl, 'boundary_missed_rate_overall');
     iface = keypoint_value_from_table_local(keypoints_tbl, 'frontend_to_step87_interface_pass_flag');
     if iface == 1 && fh == 0 && bm == 0
-        fprintf(fid, '结论：前端检测到第 8.7 shared-center 增强测角接口基本闭合。弱目标边界保持 false-high=0，但当前观测量不总是降为 low confidence；近反相边界主要由 two-coarse-peaks out-of-scope、low_confidence 或 boundary_unreliable 保护。本轮不解决弱目标和近反相问题。\n\n');
+        fprintf(fid, '结论：前端检测到第 8.7 shared-center 增强测角接口基本闭合。默认主线仍是 `single coarse peak / unresolved local cluster`。two coarse peaks 明确作为 out-of-scope 或 merge candidate 状态标记，不触发 dual-center。弱目标边界保持 false-high=0，但当前观测量不总是降为 low confidence；近反相边界主要由 two-coarse-peaks out-of-scope、low_confidence 或 boundary_unreliable 保护。本轮不解决弱目标和近反相问题。\n\n');
     else
         fprintf(fid, '结论：接口已跑通，但需要优先复核 CFAR、粗峰或安全指标后再进入后续工程阶段。\n\n');
     end
+    fprintf(fid, '推荐前端策略：single coarse peak -> shared_center_enhancement；two close coarse peaks -> merge_candidate_or_future_validation；two separated coarse peaks -> front-end multi-target branch / out-of-scope；weak secondary peak -> low-confidence secondary candidate。\n\n');
     fprintf(fid, '- elapsed_sec=%.2f\n', elapsed_sec);
 end
 
