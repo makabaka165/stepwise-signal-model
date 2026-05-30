@@ -1,0 +1,11 @@
+[2026-05-30 10:20:09] Step 8.9B shared-center fixed-point sensitivity diagnostics
+[2026-05-30 10:20:09] use_existing_step89_results=1
+[2026-05-30 10:20:09] targeted_rerun_used=0 (not_needed_existing_step89_trial_fields_sufficient_for_offline_diagnostics)
+[2026-05-30 10:20:09] Input Step 8.9 trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9_shared_center_fixed_point_validation\results_step8_9_shared_center_fixed_point_validation\step8_9_shared_center_fixed_point_trial.csv
+[2026-05-30 10:20:09] No edits to Step 8.7 / Step 8.8 / Step 8.9 original files or result directories.
+[2026-05-30 10:20:14] Rows loaded from Step 8.9 trial CSV: 10080
+[2026-05-30 10:20:14] Diagnostic rows written: 10080
+[2026-05-30 10:20:14] In-scope base trials: 1320
+[2026-05-30 10:20:14] Recommended action: mixed_precision_coeff_high
+[2026-05-30 10:20:33] Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9b_shared_center_fixed_point_diagnostics\results_step8_9b_fixed_point_sensitivity_diagnostics
+[2026-05-30 10:20:33] Record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9b_shared_center_fixed_point_diagnostics\第8.9B步_shared-center定点量化敏感性分解诊断记录.md

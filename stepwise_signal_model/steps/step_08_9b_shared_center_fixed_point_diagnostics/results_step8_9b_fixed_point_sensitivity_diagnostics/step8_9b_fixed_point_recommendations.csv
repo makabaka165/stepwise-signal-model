@@ -1,0 +1,5 @@
+diagnosis_category,evidence,recommended_action,next_validation_needed,priority
+coeff_dominant_sensitivity,"coeff_int16 route agreement 0.880 < ywork_int16 0.953; coeff/combined max az diff remains large.",mixed_precision_coeff_high,Validate Y_work int16 with int24/mixed route-specific steering/template coefficients.,1
+core_route_quantization_not_closed,"combined_int24 output_equivalent 0.942, high-conf equivalent NaN, max az diff 0.760 deg.",mixed_precision_validation_before_fpga,Do not enter FPGA kernel design; diagnose sensitive routes and candidate ties first.,1
+safety_preserved,"false-high=0 and boundary-missed=0 for all in-scope quantized modes.",keep_safety_gate_unchanged,Continue diagnostics without relaxing safety gates.,3
+sensitive_focus_set,"Most sensitive scenario=single_target_sanity, route=low_confidence, confidence=low under combined_int24.",target_next_validation_on_sensitive_subset,Run mixed-precision validation on the sensitive scenario/route/confidence subset first.,2

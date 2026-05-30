@@ -1,0 +1,28 @@
+keypoint,value,note
+total_trials_loaded,10080,mode-expanded rows loaded from Step 8.9 trial CSV
+total_in_scope_trials,1320,base in-scope trials
+combined_int16_route_agreement,0.871969696969697,route agreement vs double
+combined_int16_output_equivalent_rate,0.83030303030303,regular output equivalence rate
+combined_int18_route_agreement,0.912878787878788,route agreement vs double
+combined_int18_output_equivalent_rate,0.874242424242424,regular output equivalence rate
+combined_int24_route_agreement,0.959090909090909,route agreement vs double
+combined_int24_output_equivalent_rate,0.941666666666667,regular output equivalence rate
+combined_int16_output_equivalent_strict_rate,0.762878787878788,strict output equivalence rate
+combined_int24_output_equivalent_strict_rate,0.925757575757576,strict output equivalence rate
+combined_int16_high_conf_output_equivalent_rate,NaN,not applicable: no double high-confidence in-scope samples in Step 8.9
+combined_int24_high_conf_output_equivalent_rate,NaN,not applicable: no double high-confidence in-scope samples in Step 8.9
+coeff_int16_route_agreement,0.88030303030303,coeff-only int16 route agreement
+ywork_int16_route_agreement,0.953030303030303,Y_work-only int16 route agreement
+coeff_vs_ywork_dominant_source,NaN,coeff_int16_only_more_sensitive
+worst_case_max_az_diff_int16,0.94,combined_int16 max az diff
+worst_case_max_az_diff_int24,0.76,combined_int24 max az diff
+worst_case_main_scenario,NaN,close_coherent_pair
+route_most_sensitive,NaN,low_confidence
+scenario_most_sensitive,NaN,single_target_sanity
+confidence_most_sensitive,NaN,low
+false_high_any_mode,0,any in-scope false-high among all modes
+boundary_missed_any_mode,0,any in-scope boundary-missed among all modes
+recommended_action,NaN,mixed_precision_coeff_high
+next_step_recommendation,NaN,run Step 8.9C mixed-precision validation on coeff-high / route-sensitive subset
+proceed_to_mixed_precision_validation_flag,1,1 means diagnose mixed precision next
+proceed_to_fpga_kernel_design_flag,0,1 means hardware kernel design can start
