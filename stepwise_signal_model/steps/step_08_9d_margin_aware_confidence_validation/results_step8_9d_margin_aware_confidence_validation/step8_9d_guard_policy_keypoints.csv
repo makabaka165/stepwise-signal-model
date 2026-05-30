@@ -1,0 +1,26 @@
+keypoint,value,note
+total_targeted_trials,159,targeted replay base trials
+replay_exact_flag,1,same scenario/base_seed/MC seed rule as Step 8.9C
+best_guard_policy,NaN,rank1_tie_guard_tau_0.0001
+best_guard_safe_equivalent_rate,0.685534591194969,safe-equivalent rate
+best_guard_core_safe_equivalent_rate,0.730434782608696,core safe-equivalent rate
+best_guard_output_equivalent_rate,0.553459119496855,output-equivalent after guard
+best_guard_success_rate,0.691823899371069,success after guard on targeted replay
+best_guard_success_loss,0,success loss vs no guard on targeted replay
+best_guard_false_high,0,false-high after guard
+best_guard_boundary_missed,0,boundary-missed after guard
+best_guard_low_confidence_rate,0.0566037735849057,low-confidence after guard
+best_guard_guard_trigger_rate,0,guard trigger rate
+best_guard_max_core_az_diff,0.76,max core az diff after guard
+best_guard_p95_az_diff,0.340000000000001,p95 az diff after guard
+guard_caught_worst_case_rate,0,caught worst-case rate
+rank1_tie_guard_effective_flag,0,rank1 guard reaches effectiveness criteria
+music_peak_guard_effective_flag,0,music guard reaches effectiveness criteria
+refocus_margin_guard_effective_flag,0,refocus guard reaches effectiveness criteria
+boundary_proxy_guard_effective_flag,0,boundary proxy guard reaches effectiveness criteria
+baseline_max_core_az_diff,0.76,no-guard max core az diff
+baseline_safe_equivalent_rate,0.685534591194969,no-guard safe-equivalent
+proceed_to_guarded_mixed_precision_full_validation_flag,0,1 means run full guarded validation next
+proceed_to_fpga_kernel_design_flag,0,never proceed directly to FPGA from targeted guard validation
+next_step_recommendation,NaN,continue margin design / proxy calibration before full validation
+blocker_if_any,NaN,guard_policy_not_closed

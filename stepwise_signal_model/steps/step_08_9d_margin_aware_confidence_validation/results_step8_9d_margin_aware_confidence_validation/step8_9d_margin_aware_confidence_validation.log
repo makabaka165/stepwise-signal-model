@@ -1,0 +1,23 @@
+[2026-05-30 12:30:55] Step 8.9D margin-aware confidence / candidate tie guard validation
+[2026-05-30 12:30:55] Stage A: loaded Step 8.9C trial rows=15840, worst-case rows=500.
+[2026-05-30 12:30:55] Stage B: targeted_replay=1, full_rerun=0, targeted_trials=159, replay_modes=6, mode_trials=954.
+[2026-05-30 12:30:55] Replay modes: double_baseline, y16_coeff24_all, y32float_coeff24, y16_coeff32float, float32_all, y16_rank1_2d_coeff24_rest16
+[2026-05-30 12:30:55] exact_same_trial_replication_flag=1. targeted replay uses the same Step 8.9C scenario order, base_seed, and MC seed rule; original Step 8.9C result directory is read-only input.
+[2026-05-30 12:30:55] No edits to Step 8.7 / Step 8.8 / Step 8.9C original files or result directories.
+[2026-05-30 12:30:55] Array: Naz=192, Nel=32, selected work columns=65, column spacing=1.875000 deg.
+[2026-05-30 12:30:55] Pulse model: Np=32, nRange=96, rangeIdxTruth=48, velocity=45.000 m/s.
+[2026-05-30 12:30:55] Replaying target 1/159: trial_id=109, scenario=close_coherent_pair, SNR=16, mc=19, source=worst50_y16_coeff24_all.
+[2026-05-30 12:30:56] Building Step 8.7 context for selected center 0.000000 deg, grid points=151, pair candidates=4917.
+[2026-05-30 12:32:30] Replaying target 25/159: trial_id=997, scenario=weak_target_boundary, SNR=16, mc=7, source=worst50_y16_coeff24_all.
+[2026-05-30 12:32:38] Replaying target 50/159: trial_id=306, scenario=close_coherent_pair, SNR=8, mc=6, source=worst50_y16_coeff24_all.
+[2026-05-30 12:32:47] Replaying target 75/159: trial_id=200, scenario=close_coherent_pair, SNR=8, mc=20, source=close_coherent_top_azdiff50.
+[2026-05-30 12:33:05] Replaying target 100/159: trial_id=322, scenario=close_coherent_pair, SNR=8, mc=22, source=boundary_rank1_flip.
+[2026-05-30 12:33:21] Replaying target 125/159: trial_id=207, scenario=close_coherent_pair, SNR=8, mc=27, source=stable_control50.
+[2026-05-30 12:33:32] Replaying target 150/159: trial_id=744, scenario=medium_beta_pair, SNR=8, mc=24, source=stable_control50.
+[2026-05-30 12:33:38] Replaying target 159/159: trial_id=356, scenario=close_coherent_pair, SNR=16, mc=26, source=stable_control50.
+[2026-05-30 12:33:40] Targeted replay finished in 162.97 sec.
+[2026-05-30 12:33:40] Best guard policy: rank1_tie_guard_tau_0.0001
+[2026-05-30 12:33:40] Writing CSV/MAT outputs.
+[2026-05-30 12:33:41] Rendering plots.
+[2026-05-30 12:33:59] Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9d_margin_aware_confidence_validation\results_step8_9d_margin_aware_confidence_validation
+[2026-05-30 12:33:59] Record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9d_margin_aware_confidence_validation\第8.9D步_margin-aware置信度与candidate-tie-guard验证记录.md

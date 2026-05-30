@@ -1,0 +1,2 @@
+candidate_policy,pass_flag,evidence,recommended_action,next_validation,blocker_if_any
+rank1_tie_guard_tau_0.0001,0,safe=0.686 core_safe=0.730 max_core_az=0.760 p95_az=0.340 success_loss=0.000 low_inc=0.000,guard_not_effective,return to coefficient representation or objective normalization,margin_proxy_not_sufficient
