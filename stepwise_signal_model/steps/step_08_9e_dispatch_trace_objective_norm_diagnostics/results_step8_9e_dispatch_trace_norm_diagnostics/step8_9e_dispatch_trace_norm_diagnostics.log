@@ -1,0 +1,23 @@
+[2026-05-30 15:57:16] Step 8.9E dispatch trace and objective normalization diagnostics
+[2026-05-30 15:57:16] Stage A: loaded Step 8.9C trial rows=15840, worst-case rows=500; Step 8.9D replay rows=954, worst-case rows=80.
+[2026-05-30 15:57:16] Stage B: targeted_replay=1, full_rerun=0, targeted_trials=150, replay_modes=5, mode_trials=750.
+[2026-05-30 15:57:16] Replay modes: double_baseline, y16_coeff24_all, y32float_coeff24, y16_coeff32float, float32_all
+[2026-05-30 15:57:16] exact_same_trial_replication_flag=1. targeted replay uses the same Step 8.9C scenario order, base_seed, and MC seed rule; Step 8.9C/8.9D result directories are read-only inputs.
+[2026-05-30 15:57:16] No edits to Step 8.7 / Step 8.8 / Step 8.9C / Step 8.9D original files or result directories.
+[2026-05-30 15:57:16] Array: Naz=192, Nel=32, selected work columns=65, column spacing=1.875000 deg.
+[2026-05-30 15:57:16] Pulse model: Np=32, nRange=96, rangeIdxTruth=48, velocity=45.000 m/s.
+[2026-05-30 15:57:16] Replaying target 1/150: trial_id=109, scenario=close_coherent_pair, SNR=16, mc=19, source=step89c_worst80.
+[2026-05-30 15:57:17] Building Step 8.7 context for selected center 0.000000 deg, grid points=151, pair candidates=4917.
+[2026-05-30 15:58:52] Replaying target 25/150: trial_id=997, scenario=weak_target_boundary, SNR=16, mc=7, source=step89c_worst80.
+[2026-05-30 15:59:02] Replaying target 50/150: trial_id=306, scenario=close_coherent_pair, SNR=8, mc=6, source=step89c_worst80.
+[2026-05-30 15:59:10] Replaying target 75/150: trial_id=160, scenario=close_coherent_pair, SNR=16, mc=10, source=step89d_uncaught_worst.
+[2026-05-30 15:59:31] Replaying target 100/150: trial_id=203, scenario=close_coherent_pair, SNR=8, mc=23, source=boundary_rank1_flip.
+[2026-05-30 15:59:50] Replaying target 125/150: trial_id=1109, scenario=near_antiphase_boundary, SNR=8, mc=29, source=stable_control50.
+[2026-05-30 16:00:00] Replaying target 150/150: trial_id=1045, scenario=weak_target_boundary, SNR=8, mc=25, source=topup_top_azdiff_to_150.
+[2026-05-30 16:00:02] Targeted replay finished in 163.65 sec.
+[2026-05-30 16:00:02] Most common first divergent stage: refocus
+[2026-05-30 16:00:02] Recommended next action: improve_observable_metrics_or_revisit_route_objective
+[2026-05-30 16:00:02] Writing CSV/MAT outputs.
+[2026-05-30 16:00:02] Rendering plots.
+[2026-05-30 16:00:15] Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9e_dispatch_trace_objective_norm_diagnostics\results_step8_9e_dispatch_trace_norm_diagnostics
+[2026-05-30 16:00:15] Record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9e_dispatch_trace_objective_norm_diagnostics\第8.9E步_dispatch判据追踪与objective归一化诊断记录.md

@@ -1,0 +1,25 @@
+keypoint,value,note
+total_targeted_trials,150,targeted replay base trials
+replay_exact_flag,1,same scenario/base_seed/MC seed rule as Step 8.9C
+main_flip_route_pair,NaN,low_confidence->level2_rank1_fallback
+most_common_first_divergent_stage,NaN,refocus
+most_common_first_divergent_metric,NaN,refocus_rank1_score_gap_ratio
+worst_case_first_divergent_stage,NaN,refocus
+worst_case_first_divergent_metric,NaN,refocus_rank1_pair_sep_est
+threshold_crossing_rate_y16_coeff24,0.466666666666667,y16_coeff24 first divergent metric crossing rate
+near_threshold_rate_y16_coeff24,1,any traced metric distance <= 10 percent
+objective_scale_drift_detected_flag,0,
+residual_scale_drift_detected_flag,0,
+score_gap_scale_drift_detected_flag,1,
+normalization_candidate_found_flag,0,
+best_normalization_policy,NaN,candidate_norm_normalized
+hysteresis_candidate_found_flag,0,
+best_tau_uncertain,0.03,
+best_hysteresis_safe_equivalent,1,
+best_hysteresis_success_loss,0.266666666666667,
+best_hysteresis_max_core_az_diff,0.04,
+recommended_next_action,NaN,improve_observable_metrics_or_revisit_route_objective
+proceed_to_objective_normalization_validation_flag,0,
+proceed_to_hysteresis_guard_validation_flag,0,
+proceed_to_fpga_kernel_design_flag,0,diagnostic step only; no direct FPGA entry
+blocker_if_any,NaN,dispatch_trace_not_closed

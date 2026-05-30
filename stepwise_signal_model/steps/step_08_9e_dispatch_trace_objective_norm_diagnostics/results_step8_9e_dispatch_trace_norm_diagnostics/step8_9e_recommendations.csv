@@ -1,0 +1,2 @@
+diagnosis,evidence,recommended_action,next_validation,priority,blocker_if_any
+current_metrics_partially_explain_dispatch_flip,top_stage=refocus top_metric=refocus_rank1_score_gap_ratio threshold_crossing_max=0.273 near_threshold_max=1.000 scale_drift=1,improve_observable_metrics_or_revisit_route_objective,instrument sharper dispatch observables before changing mainline,high,dispatch_trace_not_closed

@@ -1,0 +1,6 @@
+first_divergent_stage,first_divergent_metric,count,ratio,mean_abs_az_diff,max_abs_az_diff,output_equivalent_rate,false_high,boundary_missed
+none,,77,0.513333333333333,0.0233766233766234,0.04,1,0,0
+refocus,refocus_rank1_score_gap_ratio,36,0.24,0.468571428571428,0.72,0,0,0
+output_only,az_est_diff_vs_double,29,0.193333333333333,0.0848275862068965,0.2,0,0,0
+refocus,refocus_rank1_pair_sep_est,5,0.0333333333333333,0.68,0.76,0,0,0
+boundary,boundary_score_if_any,3,0.02,0.06,0.12,0.666666666666667,0,0

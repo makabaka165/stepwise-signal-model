@@ -1,0 +1,6 @@
+norm_policy,crossing_before,crossing_after,scale_ratio_error_before,scale_ratio_error_after,recommended_flag
+baseline_raw,70,70,1.37305240904263,1.37305240904263,0
+trace_normalized_residual,70,70,0.136515098860398,0.136515289258328,0
+fro_normalized_objective,70,70,0.136515098860398,0.136515296126856,0
+scale_invariant_score_gap,70,70,1.37305240904263,1.37305240904263,0
+candidate_norm_normalized,70,70,0.136515098860398,0.136515098860398,0
