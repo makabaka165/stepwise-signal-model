@@ -1,0 +1,65 @@
+[2026-05-29 22:11:53] Step 8.9 shared-center fixed-point influence validation
+[2026-05-29 22:11:53] quick_mode=0, Metkl=30, base_trials=1440, mode_trials=10080, SNR=[8 16]
+[2026-05-29 22:11:53] Quant modes: double_baseline, float32_all, coeff_int16_only, ywork_int16_only, combined_int16, combined_int18, combined_int24
+[2026-05-29 22:11:53] Default Y_work Doppler mode from Step 8.8B: no_derotation.
+[2026-05-29 22:11:53] Scope: same frontend_out and selected 65-column work array; only finite-wordlength representation changes.
+[2026-05-29 22:11:53] No dual-center, no FPGA HDL, no bit-true EVD, no V2, no weak-target SIC, no anti-phase derivative.
+[2026-05-29 22:11:53] Step 8.7 lazy route thresholds are copied from part 7B and not changed.
+[2026-05-29 22:11:53] Original Step 8.7/8.8/8.8B result directories are not overwritten.
+[2026-05-29 22:11:53] Array: Naz=192, Nel=32, selected work columns=65, column spacing=1.875000 deg.
+[2026-05-29 22:11:53] Pulse model: Np=32, nRange=96, rangeIdxTruth=48, velocity=45.000 m/s.
+[2026-05-29 22:11:53] Doppler axis retained for interface fields: fdAxis uses fftshift order, default derotation_mode=none.
+[2026-05-29 22:11:53] Scenario 01/48: single_target_sanity, SNR=8, target_count=1, sep=NaN, beta=1, phase=0.0, el=[0.0 NaN].
+[2026-05-29 22:11:54] Building Step 8.7 context for selected center 0.000000 deg, grid points=151, pair candidates=4917.
+[2026-05-29 22:13:29] Scenario 02/48: single_target_sanity, SNR=16, target_count=1, sep=NaN, beta=1, phase=0.0, el=[0.0 NaN].
+[2026-05-29 22:13:56] Scenario 03/48: close_coherent_pair, SNR=8, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:14:23] Scenario 04/48: close_coherent_pair, SNR=16, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:14:59] Scenario 05/48: close_coherent_pair, SNR=8, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:15:17] Scenario 06/48: close_coherent_pair, SNR=16, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:15:47] Scenario 07/48: close_coherent_pair, SNR=8, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:16:11] Scenario 08/48: close_coherent_pair, SNR=16, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:16:47] Scenario 09/48: close_coherent_pair, SNR=8, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:17:02] Scenario 10/48: close_coherent_pair, SNR=16, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:17:26] Scenario 11/48: close_coherent_pair, SNR=8, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:17:39] Scenario 12/48: close_coherent_pair, SNR=16, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:17:58] Scenario 13/48: close_coherent_pair, SNR=8, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:18:22] Scenario 14/48: close_coherent_pair, SNR=16, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:18:46] Scenario 15/48: close_coherent_pair, SNR=8, target_count=2, sep=0.800000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:19:00] Scenario 16/48: close_coherent_pair, SNR=16, target_count=2, sep=0.800000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:19:13] Scenario 17/48: close_coherent_pair, SNR=8, target_count=2, sep=0.800000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:19:25] Scenario 18/48: close_coherent_pair, SNR=16, target_count=2, sep=0.800000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:19:36] Scenario 19/48: close_coherent_pair, SNR=8, target_count=2, sep=0.800000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:19:48] Scenario 20/48: close_coherent_pair, SNR=16, target_count=2, sep=0.800000, beta=1, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:20:03] Scenario 21/48: medium_beta_pair, SNR=8, target_count=2, sep=0.500000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:20:17] Scenario 22/48: medium_beta_pair, SNR=16, target_count=2, sep=0.500000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:20:29] Scenario 23/48: medium_beta_pair, SNR=8, target_count=2, sep=0.500000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:20:44] Scenario 24/48: medium_beta_pair, SNR=16, target_count=2, sep=0.500000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:20:55] Scenario 25/48: medium_beta_pair, SNR=8, target_count=2, sep=0.500000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:21:07] Scenario 26/48: medium_beta_pair, SNR=16, target_count=2, sep=0.500000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:21:19] Scenario 27/48: medium_beta_pair, SNR=8, target_count=2, sep=0.800000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:21:35] Scenario 28/48: medium_beta_pair, SNR=16, target_count=2, sep=0.800000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:21:55] Scenario 29/48: medium_beta_pair, SNR=8, target_count=2, sep=0.800000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:22:28] Scenario 30/48: medium_beta_pair, SNR=16, target_count=2, sep=0.800000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:23:26] Scenario 31/48: medium_beta_pair, SNR=8, target_count=2, sep=0.800000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:23:43] Scenario 32/48: medium_beta_pair, SNR=16, target_count=2, sep=0.800000, beta=0.5, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:24:00] Scenario 33/48: weak_target_boundary, SNR=8, target_count=2, sep=0.500000, beta=0.3, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:24:15] Scenario 34/48: weak_target_boundary, SNR=16, target_count=2, sep=0.500000, beta=0.3, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:24:26] Scenario 35/48: weak_target_boundary, SNR=8, target_count=2, sep=0.800000, beta=0.3, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:24:38] Scenario 36/48: weak_target_boundary, SNR=16, target_count=2, sep=0.800000, beta=0.3, phase=0.0, el=[0.0 0.0].
+[2026-05-29 22:24:49] Scenario 37/48: near_antiphase_boundary, SNR=8, target_count=2, sep=0.500000, beta=1, phase=150.0, el=[0.0 0.0].
+[2026-05-29 22:25:00] Scenario 38/48: near_antiphase_boundary, SNR=16, target_count=2, sep=0.500000, beta=1, phase=150.0, el=[0.0 0.0].
+[2026-05-29 22:25:11] Scenario 39/48: near_antiphase_boundary, SNR=8, target_count=2, sep=0.800000, beta=1, phase=150.0, el=[0.0 0.0].
+[2026-05-29 22:26:01] Scenario 40/48: near_antiphase_boundary, SNR=16, target_count=2, sep=0.800000, beta=1, phase=150.0, el=[0.0 0.0].
+[2026-05-29 22:26:51] Scenario 41/48: near_antiphase_boundary, SNR=8, target_count=2, sep=0.500000, beta=1, phase=180.0, el=[0.0 0.0].
+[2026-05-29 22:26:55] Scenario 42/48: near_antiphase_boundary, SNR=16, target_count=2, sep=0.500000, beta=1, phase=180.0, el=[0.0 0.0].
+[2026-05-29 22:26:58] Scenario 43/48: near_antiphase_boundary, SNR=8, target_count=2, sep=0.800000, beta=1, phase=180.0, el=[0.0 0.0].
+[2026-05-29 22:27:02] Scenario 44/48: near_antiphase_boundary, SNR=16, target_count=2, sep=0.800000, beta=1, phase=180.0, el=[0.0 0.0].
+[2026-05-29 22:27:05] Scenario 45/48: large_el_pair, SNR=8, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 5.0].
+[2026-05-29 22:28:09] Scenario 46/48: large_el_pair, SNR=16, target_count=2, sep=0.263775, beta=1, phase=0.0, el=[0.0 5.0].
+[2026-05-29 22:29:07] Scenario 47/48: large_el_pair, SNR=8, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 5.0].
+[2026-05-29 22:30:15] Scenario 48/48: large_el_pair, SNR=16, target_count=2, sep=0.500000, beta=1, phase=0.0, el=[0.0 5.0].
+[2026-05-29 22:31:15] Runtime loops finished in 1159.80 sec.
+[2026-05-29 22:31:15] Writing CSV/MAT outputs.
+[2026-05-29 22:31:16] Rendering plots.
+[2026-05-29 22:31:28] Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9_shared_center_fixed_point_validation\results_step8_9_shared_center_fixed_point_validation
+[2026-05-29 22:31:28] Record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9_shared_center_fixed_point_validation\第8.9步_shared-center主线定点量化影响验证记录.md

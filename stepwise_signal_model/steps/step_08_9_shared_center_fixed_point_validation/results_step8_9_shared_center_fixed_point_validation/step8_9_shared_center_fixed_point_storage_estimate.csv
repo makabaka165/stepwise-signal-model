@@ -1,0 +1,17 @@
+object_name,format,num_complex,bits_per_complex,total_bits,total_MB,BRAM36_equivalent,comment
+2d_music_center_subarray_template,float32_complex,932640,64,59688960,7.115478515625,1620,K_phi_music*K_z_music*Delta*el_grid
+2d_music_center_subarray_template,int16_complex,932640,32,29844480,3.5577392578125,810,K_phi_music*K_z_music*Delta*el_grid
+2d_music_center_subarray_template,int18_complex,932640,36,33575040,4.00245666503906,911,K_phi_music*K_z_music*Delta*el_grid
+2d_music_center_subarray_template,int24_complex,932640,48,44766720,5.33660888671875,1215,K_phi_music*K_z_music*Delta*el_grid
+level2_combined_steering_template,float32_complex,84420,64,5402880,0.644073486328125,147,K_phi_level2*Delta*el_bank
+level2_combined_steering_template,int16_complex,84420,32,2701440,0.322036743164062,74,K_phi_level2*Delta*el_bank
+level2_combined_steering_template,int18_complex,84420,36,3039120,0.36229133605957,83,K_phi_level2*Delta*el_bank
+level2_combined_steering_template,int24_complex,84420,48,4052160,0.483055114746094,110,K_phi_level2*Delta*el_bank
+refocus_elevation_weight_table,float32_complex,928,64,59392,0.007080078125,2,Nel*elRefocusGrid
+refocus_elevation_weight_table,int16_complex,928,32,29696,0.0035400390625,1,Nel*elRefocusGrid
+refocus_elevation_weight_table,int18_complex,928,36,33408,0.0039825439453125,1,Nel*elRefocusGrid
+refocus_elevation_weight_table,int24_complex,928,48,44544,0.00531005859375,2,Nel*elRefocusGrid
+optional_full_65x32_template,float32_complex,12124320,64,775956480,92.501220703125,21050,65*32*Delta*el_grid
+optional_full_65x32_template,int16_complex,12124320,32,387978240,46.2506103515625,10525,65*32*Delta*el_grid
+optional_full_65x32_template,int18_complex,12124320,36,436475520,52.0319366455078,11841,65*32*Delta*el_grid
+optional_full_65x32_template,int24_complex,12124320,48,581967360,69.3759155273438,15787,65*32*Delta*el_grid
