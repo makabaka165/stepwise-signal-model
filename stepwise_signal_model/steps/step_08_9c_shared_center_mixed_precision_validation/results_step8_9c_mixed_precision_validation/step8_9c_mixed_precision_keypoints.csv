@@ -1,0 +1,24 @@
+keypoint,value,note
+Metkl,30,Monte Carlo trials per scenario-SNR case
+quick_mode_flag,0,1 means quick smoke test only
+total_base_trials,1440,base trials before mixed-mode expansion
+total_mode_trials,15840,trial rows after mixed-mode expansion
+best_mode_by_output_equivalent,NaN,y16_coeff24_all
+best_mode_by_storage,NaN,y16_rank1_coeff24_rest16
+y16_coeff24_all_output_equivalent,0.928030303030303,regular output equivalence
+y16_coeff24_all_core_output_equivalent,0.911111111111111,core scenario output equivalence
+y16_coeff24_all_route_agreement,0.950757575757576,route agreement vs double
+y16_coeff24_all_confidence_agreement,0.950757575757576,confidence agreement vs double
+y16_coeff24_all_false_high,0,false-high rate
+y16_coeff24_all_boundary_missed,0,boundary-missed rate
+y16_rank1_2d_coeff24_rest16_output_equivalent,0.926515151515152,regular output equivalence
+y16_rank1_2d_coeff24_rest16_core_output_equivalent,0.909722222222222,core scenario output equivalence
+best_mode_p95_az_diff,0.04,p95 az diff vs double for best mode
+best_mode_max_core_az_diff,0.76,max core scenario az diff vs double for best mode
+best_mode_storage_MB,7.11542129516602,estimated coefficient/template storage
+mixed_precision_pass_flag,0,1 means at least one mixed mode meets Step 8.9C pass criteria
+recommended_fixed_point_architecture,NaN,not_recommended_until_mixed_precision_closes
+proceed_to_fpga_kernel_design_flag,0,1 means FPGA kernel design can start after this numerical validation
+proceed_to_mc100_flag,0,1 means MC=100 confirmation is recommended next
+next_step_recommendation,NaN,add margin-aware confidence / candidate tie guard or raise route-specific coefficient precision
+blocker_if_any,NaN,mixed_precision_not_closed
