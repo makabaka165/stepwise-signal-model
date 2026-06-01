@@ -40,6 +40,24 @@ run('steps/step_09_shared_center_innovation_route/run_final_shared_center_valida
 out = shared_center_enhanced_doa(frontend_out, raw_cube, array_geom, cfg);
 ```
 
+## Supplementary validation
+
+`run_final_shared_center_validation.m` 是 interface-level smoke test，只验证文件、接口、65 列 shared-center 选阵、`Y_work` 形状和前端拒判是否跑通。正式统计验证由下面的补充实验给出：
+
+```matlab
+run('steps/step_09_shared_center_innovation_route/run_step09_formal_monte_carlo.m')
+run('steps/step_09_shared_center_innovation_route/run_step09_vs_step87_consistency_check.m')
+run('steps/step_09_shared_center_innovation_route/run_step09_ablation_study.m')
+run('steps/step_09_shared_center_innovation_route/run_step09_all_supplementary_experiments.m')
+```
+
+- formal MC 直接调用 `shared_center_enhanced_doa()`，覆盖 SNR、角间隔、相干度、幅度比、俯仰差、粗角误差和边界场景。
+- Step09-vs-Step87 consistency 用于检查新目录是否只是对 8.7 / 8.8 主线的结构化整理；若旧 8.7 不是可调用函数，则明确记录 blocker，并以 Step 09 formal MC 作为最终统计依据。
+- ablation study 比较 `music_only`、`music_plus_rank1`、`music_plus_2d`、`full_step09` 和 `full_without_rejector`，用于说明 rank1 fallback、local 2D refinement、confidence/boundary rejector 的必要性。
+- optional learning 不属于默认主线，只作为 future work 的 route/confidence calibration 候选。
+
+默认快速模式为 `Metkl = 30`、`SNR = [8, 16]`。可通过环境变量 `STEP09_MC_MODE=quick|formal|stress` 切换 formal MC / 总入口的运行规模。
+
 ## 不解决的问题
 
 - 不解决全场任意多目标分辨。

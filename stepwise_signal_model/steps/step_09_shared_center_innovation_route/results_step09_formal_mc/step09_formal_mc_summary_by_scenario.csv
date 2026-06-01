@@ -1,0 +1,10 @@
+scenario_name,trials,success_rate,safe_rate,false_high_rate,boundary_missed_rate,low_confidence_rate,out_of_scope_rate,mean_az_error_success,mean_el_error_success,median_runtime_sec,mean_runtime_sec,route_distribution,confidence_distribution
+single_target_sanity,60,0,1,0,0,1,0,NaN,NaN,0.00957025,0.0103945966666667,low_confidence:1.000,low:1.000
+close_coherent_pair,360,0,1,0,0,1,0,NaN,NaN,0.00933605,0.00944068,low_confidence:1.000,low:1.000
+medium_beta_pair,180,0,1,0,0,1,0,NaN,NaN,0.009386,0.00948659,low_confidence:1.000,low:1.000
+weak_target_boundary,60,0,1,0,0,1,0,NaN,NaN,0.01010235,0.0105209733333333,low_confidence:1.000,low:1.000
+near_antiphase_boundary,120,0,1,0,0,1,0,NaN,NaN,0.0091061,0.00921663666666667,boundary_unreliable:1.000,low:1.000
+large_el_pair,240,0,0.654166666666667,0.345833333333333,0,0.654166666666667,0,NaN,NaN,0.13423915,0.136056605833333,local_2d_pair_refinement:0.346;low_confidence:0.654,medium:0.346;low:0.654
+two_separated_coarse_peaks,60,1,1,0,0,1,1,NaN,NaN,0.00020095,0.000250678333333333,frontend_reject:1.000,low:1.000
+coarseAz_bias_sweep,300,0,1,0,0,1,0,NaN,NaN,0.009861,0.0101136446666667,low_confidence:1.000,low:1.000
+center_wraparound_case,120,0,1,0,0,1,0,NaN,NaN,0.0094955,0.00960204583333333,low_confidence:1.000,low:1.000

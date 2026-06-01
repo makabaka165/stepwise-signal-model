@@ -1,5 +1,5 @@
 scenario,frontend_state,route_name,status,confidence,az_est,el_est,selectedCenterColumn,Y_work_shape,reject_reason
-close_coherent_unresolved_cluster,single_peak_in_scope,common_el_rank1_refocus,success,medium,[-0.25 0.25],[0 0],1,[65 32 12],
+close_coherent_unresolved_cluster,single_peak_in_scope,low_confidence,rejected,low,[],[],1,[65 32 12],single/merged MUSIC peak with rank-1-like covariance; music evidence is too weak for coherent pair fallback; not_evaluated
 large_elevation_pair,single_peak_in_scope,local_2d_pair_refinement,success,medium,[-0.28 0.28],[0 5],1,[65 32 12],
 near_antiphase_boundary,single_peak_in_scope,boundary_unreliable,rejected,low,[],[],1,[65 32 12],boundary evidence has higher priority than success
 two_separated_coarse_peaks,two_separated_peaks_out_of_scope,frontend_reject,rejected,low,[],[],NaN,[],front-end resolved two separated coarse peaks; route is out of current scope

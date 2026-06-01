@@ -1,0 +1,19 @@
+keypoint,value,note
+music_only_close_coherent_success,"0",close coherent success
+music_plus_rank1_close_coherent_success,"0",close coherent success
+rank1_gain_close_coherent,"0",rank1 gain
+music_plus_rank1_large_el_success,"0",large-el success without 2-D refinement
+music_plus_2d_large_el_success,"0",large-el success
+full_step09_large_el_success,"0",large-el success
+twoD_gain_large_el,"0",2D gain relative to no-2D mode
+full_without_rejector_false_high,"0.42857",false-high without rejector
+full_step09_false_high,"0.021429",false-high with rejector
+rejector_false_high_reduction,"0.40714",rejector reduction
+full_without_rejector_boundary_missed,"0.14286",boundary missed without rejector
+full_step09_boundary_missed,"0",boundary missed with rejector
+rejector_boundary_missed_reduction,"0.14286",rejector reduction
+full_step09_success_rate,"0.14286",overall full Step 09
+full_step09_safe_rate,"0.97857",overall full Step 09
+full_step09_low_confidence_rate,"0.97857",overall full Step 09
+ablation_pass_flag,"0",pass/fail
+blocker_if_any,"rank1_gain_close_coherent_low,local_2d_gain_large_el_low,full_step09_false_high_gt_0p01",comma-separated blocker list

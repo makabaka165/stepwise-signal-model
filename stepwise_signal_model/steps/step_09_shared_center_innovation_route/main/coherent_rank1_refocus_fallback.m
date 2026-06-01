@@ -26,6 +26,12 @@ if ~isfield(music_info, 'rank1_like') || ~music_info.rank1_like
     coherent_info.reason = 'covariance is not rank-1-like enough for coherent fallback';
     return
 end
+if ~isfield(music_info, 'peak_count') || music_info.peak_count < 2
+    if ~isfield(music_info, 'peak2_ratio') || music_info.peak2_ratio < cfg.coherent_music_peak2_ratio_min
+        coherent_info.reason = 'music evidence is too weak for coherent pair fallback';
+        return
+    end
+end
 
 Xsnap = reshape(Y_work, [], size(Y_work, 3));
 if norm(Xsnap, 'fro') <= eps
@@ -90,6 +96,7 @@ function cfg = defaults_local(cfg)
     cfg = set_default_local(cfg, 'fallback_sep_step_deg', 0.05);
     cfg = set_default_local(cfg, 'coherent_min_projection_score', 0.70);
     cfg = set_default_local(cfg, 'coherent_min_score_margin', 1e-4);
+    cfg = set_default_local(cfg, 'coherent_music_peak2_ratio_min', 0.15);
     cfg = set_default_local(cfg, 'frontend_unresolved_cluster', true);
     cfg = set_default_local(cfg, 'need_2d_refinement', false);
     cfg = set_default_local(cfg, 'boundary_unreliable_flag', false);

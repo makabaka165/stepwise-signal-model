@@ -24,20 +24,34 @@ cfg.need_2d_refinement = getfield_default_local( ...
     frontend_out, 'need_2d_refinement', cfg.need_2d_refinement);
 cfg.boundary_unreliable_flag = getfield_default_local( ...
     frontend_out, 'boundary_unreliable_flag', cfg.boundary_unreliable_flag);
+if ~cfg.enable_rejector
+    cfg.boundary_unreliable_flag = false;
+end
 
 selected = shared_center_select_subarray(frontend_out.coarseAz, array_geom, cfg);
 Y_work = build_y_work_from_frontend(raw_cube, frontend_out, selected, cfg);
 
-music_info = local_cylindrical_music_test(Y_work, selected, array_geom, cfg);
-if music_info.is_two_peak_resolvable && music_info.confidence_ok && ~music_info.need_2d_refinement
+if cfg.enable_music
+    music_info = local_cylindrical_music_test(Y_work, selected, array_geom, cfg);
+else
+    music_info = struct('valid', false, 'is_two_peak_resolvable', false, ...
+        'confidence_ok', false, 'need_2d_refinement', false, ...
+        'az_est', [], 'el_est', [], 'reason', 'music_disabled');
+end
+if cfg.enable_music && music_info.is_two_peak_resolvable && ...
+        music_info.confidence_ok && ~music_info.need_2d_refinement
     out = make_route_output_local('music_two_peak', 'success', 'high', ...
         music_info.az_est, music_info.el_est, frontend_out, selected, Y_work, ...
         music_info, struct(), struct(), cfg);
     return
 end
 
-coherent_info = coherent_rank1_refocus_fallback(Y_work, selected, array_geom, music_info, cfg);
-if coherent_info.valid && coherent_info.confidence_ok
+coherent_info = struct('valid', false, 'confidence_ok', false, ...
+    'az_est', [], 'el_est', [], 'reason', 'rank1_fallback_disabled');
+if cfg.enable_rank1_fallback
+    coherent_info = coherent_rank1_refocus_fallback(Y_work, selected, array_geom, music_info, cfg);
+end
+if cfg.enable_rank1_fallback && coherent_info.valid && coherent_info.confidence_ok
     out = make_route_output_local('common_el_rank1_refocus', 'success', 'medium', ...
         coherent_info.az_est, coherent_info.el_est, frontend_out, selected, Y_work, ...
         music_info, coherent_info, struct(), cfg);
@@ -46,7 +60,7 @@ end
 
 pair2d_info = struct('valid', false, 'confidence_ok', false, ...
     'az_est', [], 'el_est', [], 'reason', 'not_evaluated');
-if music_info.need_2d_refinement
+if cfg.enable_2d_refinement && music_info.need_2d_refinement
     pair2d_info = local_2d_pair_refinement(Y_work, selected, array_geom, cfg);
     if pair2d_info.valid && pair2d_info.confidence_ok
         out = make_route_output_local('local_2d_pair_refinement', 'success', 'medium', ...
@@ -56,7 +70,12 @@ if music_info.need_2d_refinement
     end
 end
 
-out = confidence_boundary_rejector(music_info, coherent_info, pair2d_info, cfg);
+if cfg.enable_rejector
+    out = confidence_boundary_rejector(music_info, coherent_info, pair2d_info, cfg);
+else
+    out = make_no_rejector_output_local(frontend_out, selected, Y_work, ...
+        music_info, coherent_info, pair2d_info, cfg);
+end
 out.frontend_state = char(state);
 out.selected = selected;
 out.selectedCenterColumn = selected.selectedCenterColumn;
@@ -77,6 +96,10 @@ function cfg = normalize_cfg_local(cfg)
     cfg = set_default_local(cfg, 'frontend_unresolved_cluster', true);
     cfg = set_default_local(cfg, 'need_2d_refinement', false);
     cfg = set_default_local(cfg, 'boundary_unreliable_flag', false);
+    cfg = set_default_local(cfg, 'enable_music', true);
+    cfg = set_default_local(cfg, 'enable_rank1_fallback', true);
+    cfg = set_default_local(cfg, 'enable_2d_refinement', true);
+    cfg = set_default_local(cfg, 'enable_rejector', true);
 end
 
 function cfg = set_default_local(cfg, name, value)
@@ -136,6 +159,33 @@ function out = make_route_output_local(route_name, status, confidence, az_est, e
     out.music_info = music_info;
     out.coherent_info = coherent_info;
     out.pair2d_info = pair2d_info;
+end
+
+function out = make_no_rejector_output_local(frontend_out, selected, Y_work, ...
+    music_info, coherent_info, pair2d_info, cfg)
+
+    if isfield(pair2d_info, 'az_est') && ~isempty(pair2d_info.az_est)
+        out = make_route_output_local('no_rejector_2d_candidate', 'success', 'medium', ...
+            pair2d_info.az_est, pair2d_info.el_est, frontend_out, selected, Y_work, ...
+            music_info, coherent_info, pair2d_info, cfg);
+    elseif isfield(coherent_info, 'az_est') && ~isempty(coherent_info.az_est)
+        out = make_route_output_local('no_rejector_rank1_candidate', 'success', 'medium', ...
+            coherent_info.az_est, coherent_info.el_est, frontend_out, selected, Y_work, ...
+            music_info, coherent_info, pair2d_info, cfg);
+    elseif isfield(music_info, 'az_est') && ~isempty(music_info.az_est)
+        out = make_route_output_local('no_rejector_music_candidate', 'success', 'medium', ...
+            music_info.az_est, music_info.el_est, frontend_out, selected, Y_work, ...
+            music_info, coherent_info, pair2d_info, cfg);
+    elseif isfield(music_info, 'peak_az') && ~isempty(music_info.peak_az)
+        out = make_route_output_local('no_rejector_music_peak', 'success', 'medium', ...
+            music_info.peak_az(1), cfg.coarseEl, frontend_out, selected, Y_work, ...
+            music_info, coherent_info, pair2d_info, cfg);
+    else
+        out = make_route_output_local('no_rejector_empty_candidate', 'success', 'medium', ...
+            selected.centerAz, cfg.coarseEl, frontend_out, selected, Y_work, ...
+            music_info, coherent_info, pair2d_info, cfg);
+    end
+    out.reject_reason = 'rejector_disabled_for_ablation';
 end
 
 function value = getfield_default_local(s, name, default_value)

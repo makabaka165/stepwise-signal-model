@@ -7,19 +7,16 @@ end
 cfg = defaults_local(cfg);
 
 Xsnap = reshape(Y_work, [], size(Y_work, 3));
-R = (Xsnap * Xsnap') / max(1, size(Xsnap, 2));
-R = (R + R') / 2;
-[V, D] = eig(R);
-[evals, order] = sort(real(diag(D)), 'descend');
-V = V(:, order);
-nSrc = min([cfg.num_sources, size(V, 2) - 1]);
+Nsnap = max(1, size(Xsnap, 2));
+% Compact SVD gives the same signal subspace needed by MUSIC without
+% forming a 2080 x 2080 covariance eigendecomposition for every MC trial.
+[U, S, ~] = svd(Xsnap, 'econ');
+evals = real(diag(S)).^2 / Nsnap;
+nSrc = min([cfg.num_sources, size(U, 2)]);
 if nSrc < 1
     nSrc = 1;
 end
-En = V(:, nSrc + 1:end);
-if isempty(En)
-    En = zeros(size(V, 1), 1);
-end
+Us = U(:, 1:nSrc);
 
 az_center = selected.centerAz;
 az_axis = (az_center - cfg.az_grid_half_span_deg):cfg.az_grid_step_deg:(az_center + cfg.az_grid_half_span_deg);
@@ -27,7 +24,7 @@ el0 = cfg.coarseEl;
 P = zeros(size(az_axis));
 for i = 1:numel(az_axis)
     a = steering_vector_local(selected, array_geom, az_axis(i), el0);
-    den = real(sum(abs(En' * a).^2));
+    den = real(1 - sum(abs(Us' * a).^2));
     P(i) = 1 / max(den, eps);
 end
 P = P ./ max(P);

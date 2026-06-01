@@ -1,0 +1,27 @@
+keypoint,value,note
+run_mode,"quick",formal MC run mode
+rng_seed_base,"902091",base seed; each trial stores rng_seed
+Metkl,"30",Monte Carlo trials per scenario/SNR case
+SNR_list,"[8 16]",SNR_dB values
+total_trials,"1500",trial rows
+Q_work_columns,"65",shared-center work columns
+Y_work_shape_default,"65 x 32 x Np",default formal MC cube extraction
+default_derotation_mode,"none",default is no Doppler de-rotation
+overall_success_rate,"0.04",overall
+overall_safe_rate,"0.94467",overall
+overall_false_high_rate,"0.055333",overall
+overall_boundary_missed_rate,"0",overall
+overall_low_confidence_rate,"0.94467",overall
+single_target_false_split_rate,"0",single target
+close_coherent_success_rate,"0",close coherent pair
+medium_beta_success_rate,"0",medium beta pair
+weak_target_false_high_rate,"0",weak target boundary
+near_antiphase_false_high_rate,"0",near anti-phase boundary
+near_antiphase_boundary_missed_rate,"0",near anti-phase boundary
+large_el_success_rate,"0",large elevation pair
+two_separated_out_of_scope_reject_rate,"1",frontend out-of-scope reject
+coarseAz_bias_success_min,"0",min success across coarseAz_error sweep
+coarseAz_bias_success_max,"0",max success across coarseAz_error sweep
+center_wraparound_pass_flag,"1",selected columns valid at wrap boundary
+formal_mc_pass_flag,"0",formal MC pass/fail
+blocker_if_any,"overall_false_high_rate_gt_0p01,close_coherent_success_low,large_el_success_low",comma-separated blocker list; none if pass

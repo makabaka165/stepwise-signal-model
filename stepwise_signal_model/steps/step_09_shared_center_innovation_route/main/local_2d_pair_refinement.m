@@ -16,19 +16,14 @@ if cfg.boundary_unreliable_flag
 end
 
 Xsnap = reshape(Y_work, [], size(Y_work, 3));
-R = (Xsnap * Xsnap') / max(1, size(Xsnap, 2));
-R = (R + R') / 2;
-[V, D] = eig(R);
-[~, order] = sort(real(diag(D)), 'descend');
-V = V(:, order);
-nSrc = min([cfg.num_sources, size(V, 2) - 1]);
+% Compact SVD avoids repeated full covariance EVD in formal MC runs while
+% preserving the signal subspace used by the local 2-D MUSIC spectrum.
+[U, ~, ~] = svd(Xsnap, 'econ');
+nSrc = min([cfg.num_sources, size(U, 2)]);
 if nSrc < 1
     nSrc = 1;
 end
-En = V(:, nSrc + 1:end);
-if isempty(En)
-    En = zeros(size(V, 1), 1);
-end
+Us = U(:, 1:nSrc);
 
 az_axis = (selected.centerAz - cfg.az_grid_half_span_deg):cfg.az_grid_step_deg:(selected.centerAz + cfg.az_grid_half_span_deg);
 el_axis = (cfg.coarseEl - cfg.el_grid_half_span_deg):cfg.el_grid_step_deg:(cfg.coarseEl + cfg.el_grid_half_span_deg);
@@ -36,7 +31,7 @@ P = zeros(numel(el_axis), numel(az_axis));
 for ie = 1:numel(el_axis)
     for ia = 1:numel(az_axis)
         a = steering_vector_local(selected, array_geom, az_axis(ia), el_axis(ie));
-        den = real(sum(abs(En' * a).^2));
+        den = real(1 - sum(abs(Us' * a).^2));
         P(ie, ia) = 1 / max(den, eps);
     end
 end
