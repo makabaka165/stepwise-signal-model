@@ -1,0 +1,10 @@
+scenario_name,total_trials,light_success_rate,ref_success_rate,success_gain_ref_minus_light,light_false_high_rate,ref_false_high_rate,light_boundary_missed_rate,ref_boundary_missed_rate,ref_reject_rate,light_route_distribution,ref_route_distribution
+overall,80,0.25,0.25,0,0,0,0,0,0.875,low_confidence:0.625;boundary_unreliable:0.125;local_2d_pair_refinement:0.125;frontend_reject:0.125,boundary_unreliable:0.312;low_confidence:0.438;local_2d_pair_refinement:0.125;frontend_reject:0.125
+single_target_sanity,10,0,0,0,0,0,0,0,1,low_confidence:1.000,boundary_unreliable:0.300;low_confidence:0.700
+close_coherent_pair,10,0,0,0,0,0,0,0,1,low_confidence:1.000,low_confidence:0.800;boundary_unreliable:0.200
+medium_beta_pair,10,0,0,0,0,0,0,0,1,low_confidence:1.000,boundary_unreliable:0.400;low_confidence:0.600
+weak_target_boundary,10,0,0,0,0,0,0,0,1,low_confidence:1.000,low_confidence:0.600;boundary_unreliable:0.400
+near_antiphase_boundary,10,0,0,0,0,0,0,0,1,boundary_unreliable:1.000,boundary_unreliable:1.000
+large_el_pair,10,1,1,0,0,0,0,0,0,local_2d_pair_refinement:1.000,local_2d_pair_refinement:1.000
+two_separated_coarse_peaks,10,1,1,0,0,0,0,0,1,frontend_reject:1.000,frontend_reject:1.000
+center_wraparound_case,10,0,0,0,0,0,0,0,1,low_confidence:1.000,boundary_unreliable:0.200;low_confidence:0.800

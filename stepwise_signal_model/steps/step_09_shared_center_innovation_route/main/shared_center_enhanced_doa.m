@@ -31,6 +31,19 @@ end
 selected = shared_center_select_subarray(frontend_out.coarseAz, array_geom, cfg);
 Y_work = build_y_work_from_frontend(raw_cube, frontend_out, selected, cfg);
 
+if strcmp(cfg.backend_mode, 'step87_reference')
+    out = step87_reference_backend(Y_work, frontend_out, selected, array_geom, cfg);
+    out.method = 'shared-center MUSIC enhanced DOA';
+    out.backend_mode = 'step87_reference';
+    out.frontend_state = char(state);
+    out.selected = selected;
+    out.selectedCenterColumn = selected.selectedCenterColumn;
+    out.selectedWorkColumns = selected.selectedWorkColumns;
+    out.Y_work_shape = size(Y_work);
+    out.derotation_mode = cfg.derotation_mode;
+    return
+end
+
 if cfg.enable_music
     music_info = local_cylindrical_music_test(Y_work, selected, array_geom, cfg);
 else
@@ -85,6 +98,7 @@ out.derotation_mode = cfg.derotation_mode;
 out.music_info = music_info;
 out.coherent_info = coherent_info;
 out.pair2d_info = pair2d_info;
+out.backend_mode = 'step09_light';
 end
 
 function cfg = normalize_cfg_local(cfg)
@@ -100,6 +114,12 @@ function cfg = normalize_cfg_local(cfg)
     cfg = set_default_local(cfg, 'enable_rank1_fallback', true);
     cfg = set_default_local(cfg, 'enable_2d_refinement', true);
     cfg = set_default_local(cfg, 'enable_rejector', true);
+    cfg = set_default_local(cfg, 'backend_mode', 'step09_light');
+    allowed_backend = {'step09_light', 'step87_reference'};
+    if ~ismember(char(cfg.backend_mode), allowed_backend)
+        error('shared_center_enhanced_doa:InvalidBackendMode', ...
+            'cfg.backend_mode must be step09_light or step87_reference.');
+    end
 end
 
 function cfg = set_default_local(cfg, name, value)
@@ -122,6 +142,7 @@ function out = make_reject_output_local(frontend_out, state)
     out.selectedWorkColumns = [];
     out.Y_work_shape = [];
     out.derotation_mode = 'none';
+    out.backend_mode = 'frontend_reject';
 end
 
 function reason = frontend_reject_reason_local(state)

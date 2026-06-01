@@ -1,0 +1,19 @@
+keypoint,value,note
+step87_backend_callable,1,bridge callable flag
+total_trials,80,bridge trial rows
+light_success_rate,0.25,step09_light
+ref_success_rate,0.25,step87_reference
+success_gain_ref_minus_light,0,reference minus light success
+light_false_high_rate,0,step09_light
+ref_false_high_rate,0,step87_reference
+light_boundary_missed_rate,0,step09_light
+ref_boundary_missed_rate,0,step87_reference
+close_coherent_light_success,0,close coherent
+close_coherent_ref_success,0,close coherent
+large_el_light_success,1,large elevation
+large_el_ref_success,1,large elevation
+near_antiphase_ref_false_high,0,near anti-phase
+weak_target_ref_false_high,0,weak target
+two_separated_ref_reject_rate,1,out-of-scope reject rate
+bridge_pass_flag,0,pass/fail
+blocker_if_any,bridge_threshold_failed,bridge blocker

@@ -58,6 +58,23 @@ run('steps/step_09_shared_center_innovation_route/run_step09_all_supplementary_e
 
 默认快速模式为 `Metkl = 30`、`SNR = [8, 16]`。可通过环境变量 `STEP09_MC_MODE=quick|formal|stress` 切换 formal MC / 总入口的运行规模。
 
+## Backend mode
+
+```matlab
+cfg.backend_mode = 'step09_light';      % lightweight reimplementation, diagnostic only
+cfg.backend_mode = 'step87_reference';  % verified Step 8.7 cascade backend, if bridge passes
+```
+
+Bridge validation:
+
+```matlab
+run('steps/step_09_shared_center_innovation_route/run_step09_step87_backend_bridge_validation.m')
+```
+
+Step09 light backend 已经暴露 blocker；Step87 backend bridge 用于确认最终实现是否应采用 8.7 verified cascade。它不改变 Step 09 的论文创新点，只改变算法后端实现。
+
+当前 bridge 结果为 callable 但未通过：large-el 场景已由 reference backend 恢复，close-coherent 场景仍未获得增益，因此后续 formal MC 暂不建议直接改用 `backend_mode='step87_reference'`。
+
 ## 不解决的问题
 
 - 不解决全场任意多目标分辨。
