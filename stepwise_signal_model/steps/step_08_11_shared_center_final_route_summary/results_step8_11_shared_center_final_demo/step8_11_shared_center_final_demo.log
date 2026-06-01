@@ -1,0 +1,21 @@
+[2026-06-01 11:05:45] Step 8.11 shared-center final route demo
+[2026-06-01 11:05:46] Metkl=10. This is a demo-only run, not formal MC.
+[2026-06-01 11:05:46] No new algorithm, no fixed-point validation, no dual-center, no Step 8.10 optimization.
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\docs\STEP_MAP.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\README.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_05_joint_2d_mtd\demo_joint_2d_mtd.m
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_06_three_beam_angle\demo_three_beam_angle_standalone.m
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\第8.7步_层次三与观测量工程分流总结报告.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\第8.7步_7B_真实lazy级联运行时间验证记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_7_routeB_array_level3\space_smooth_music_B_cylindrical_level3_lazy_runtime_wallclock.m
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_8_frontend_to_shared_center_closure\第8.8步_前端到第8.7接口定义.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_8_frontend_to_shared_center_closure\第8.8步_前端检测到shared-center增强测角接口与闭环验证记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_8_frontend_to_shared_center_closure\第8.8B步_Ywork多普勒补偿接口验证记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9_shared_center_fixed_point_validation\第8.9步_shared-center主线定点量化影响验证记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9b_shared_center_fixed_point_diagnostics\第8.9B步_shared-center定点量化敏感性分解诊断记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9c_shared_center_mixed_precision_validation\第8.9C步_shared-center混合精度定点验证记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9d_margin_aware_confidence_validation\第8.9D步_margin-aware置信度与candidate-tie-guard验证记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_9e_dispatch_trace_objective_norm_diagnostics\第8.9E步_dispatch判据追踪与objective归一化诊断记录.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_10_unified_model_selection_validation\第8.10步_统一模型选择公式与流程说明.md
+[2026-06-01 11:05:46] FOUND reference: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_10_unified_model_selection_validation\第8.10步_统一模型选择增强测角验证记录.md
+[2026-06-01 11:05:59] Outputs written to E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_08_11_shared_center_final_route_summary\results_step8_11_shared_center_final_demo

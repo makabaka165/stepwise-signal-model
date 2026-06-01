@@ -1,0 +1,41 @@
+scenario,target_count,route_used,confidence,success,false_high,boundary_missed,selectedCenterAz,estimate,truth,failure_reason
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.250 0.250], el=[0 0]","az=[-0.250 0.250], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,low_confidence,low,0,0,0,0,"low_confidence","weak or anti-phase pair",weak_target_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 0]","az=[-0.132 0.132], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,boundary_unreliable,low,0,0,0,0,"low_confidence","weak or anti-phase pair",near_antiphase_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,common_el_refocus_power_rank1,medium,1,0,0,0,"az=[-0.250 0.250], el=[0 0]","az=[-0.250 0.250], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,low_confidence,low,0,0,0,0,"low_confidence","weak or anti-phase pair",weak_target_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 0]","az=[-0.132 0.132], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,boundary_unreliable,low,0,0,0,0,"low_confidence","weak or anti-phase pair",near_antiphase_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.250 0.250], el=[0 0]","az=[-0.250 0.250], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,low_confidence,low,0,0,0,0,"low_confidence","weak or anti-phase pair",weak_target_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,common_el_refocus_power_rank1,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 0]","az=[-0.132 0.132], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,boundary_unreliable,low,0,0,0,0,"low_confidence","weak or anti-phase pair",near_antiphase_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.250 0.250], el=[0 0]","az=[-0.250 0.250], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,low_confidence,low,0,0,0,0,"low_confidence","weak or anti-phase pair",weak_target_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 0]","az=[-0.132 0.132], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,boundary_unreliable,low,0,0,0,0,"low_confidence","weak or anti-phase pair",near_antiphase_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,common_el_refocus_power_rank1,medium,1,0,0,0,"az=[-0.250 0.250], el=[0 0]","az=[-0.250 0.250], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,low_confidence,low,0,0,0,0,"low_confidence","weak or anti-phase pair",weak_target_boundary
+single_target_sanity,1,level2_music_or_center_real,medium,1,0,0,0,"az=0.00, el=0.00","az=0.00, el=0.00",ok
+close_coherent_pair,2,level2_rank1_fallback,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 0]","az=[-0.132 0.132], el=[0 0]",ok
+large_el_pair,2,pair_el_local_covfit,medium,1,0,0,0,"az=[-0.132 0.132], el=[0 5]","az=[-0.132 0.132], el=[0 5]",ok
+boundary_case,2,boundary_unreliable,low,0,0,0,0,"low_confidence","weak or anti-phase pair",near_antiphase_boundary

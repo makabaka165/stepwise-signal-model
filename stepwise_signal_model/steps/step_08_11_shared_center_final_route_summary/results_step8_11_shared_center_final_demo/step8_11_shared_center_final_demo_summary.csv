@@ -1,0 +1,5 @@
+scenario,trials,success_rate,false_high_rate,boundary_missed_rate,route_distribution
+single_target_sanity,10,1,0,0,level2_music_or_center_real:1.000
+close_coherent_pair,10,1,0,0,level2_rank1_fallback:0.700;common_el_refocus_power_rank1:0.300
+large_el_pair,10,1,0,0,pair_el_local_covfit:1.000
+boundary_case,10,0,0,0,low_confidence:0.500;boundary_unreliable:0.500

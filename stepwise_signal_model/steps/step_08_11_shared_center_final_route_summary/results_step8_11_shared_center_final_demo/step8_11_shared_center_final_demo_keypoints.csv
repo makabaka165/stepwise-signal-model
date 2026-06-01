@@ -1,0 +1,9 @@
+keypoint,value,note
+Metkl,10,demo repetitions per scenario
+demo_only_flag,1,not formal Monte Carlo statistics
+total_trials,40,demo rows
+missing_reference_count,0,missing refs are logged
+final_main_route,NaN,frontend -> shared-center Y_work -> Step 8.7 pruned lazy cascade
+adopt_step810_unified_flag,0,Step 8.10 is retained as negative/theory explanation
+proceed_to_pure_fpga_fixed_point_flag,0,Step 8.9 fixed-point hardening did not close
+recommend_fpga_soc_partition_flag,1,FPGA acceleration plus CPU/SoC decisions
