@@ -1,0 +1,27 @@
+keypoint,value,note
+Metkl,30,Monte Carlo trials per scenario-SNR case
+quick_mode_flag,0,1 means quick trend only
+total_trials,1500,all trials
+in_scope_trials,1376,shared-center trials
+unified_success_overall,0.0850290697674419,in-scope default threshold
+cascade_success_overall,0.494186046511628,same Y_work cascade baseline
+success_gap_unified_vs_cascade,-0.409156976744186,unified minus cascade
+unified_false_high,0.222383720930233,default threshold
+unified_boundary_missed,0.0363372093023256,default threshold
+cascade_false_high,0,cascade baseline
+cascade_boundary_missed,0,cascade baseline
+single_target_H1_rate,0,single target model distribution
+close_coherent_H2_rate,0.0685185185185185,close coherent model distribution
+large_el_H3_rate,0,large elevation model distribution
+weak_target_boundary_rate,0.791666666666667,weak target H0 rate
+antiphase_boundary_rate,0,near anti-phase H0 rate
+unified_runtime_mean,0.608230973837209,seconds
+cascade_runtime_mean,0.14080893125,seconds
+threshold_default_pass_flag,0,validation safety for default thresholds
+threshold_sweep_best_pass_flag,0,validation safety for calibration-selected thresholds
+recommended_final_route,NaN,keep_cascade
+adopt_unified_model_selection_flag,0,1 means replace cascade
+blocker_if_any,NaN,unified_model_selection_not_safe
+no_true_angle_assisted_selection_flag,1,truth is only used for validation
+H2_concentrated_coherent_gain_flag,1,rank-1 coherent concentrated gain is used
+H3_candidate_only_no_truth_flag,1,H3 candidates come from projection peaks
