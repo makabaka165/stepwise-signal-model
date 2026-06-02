@@ -90,3 +90,15 @@ Step09 light backend 已经暴露 blocker；Step87 backend bridge 用于确认�
 - Step 8.8B 验证 `no_derotation`、`derotation_minus`、`derotation_plus` 输出一致，因此默认不启用 Doppler de-rotation。
 - Step 8.9 降级为硬件量化敏感性和 FPGA/SoC 分工边界证据，不作为纯 FPGA 定点成功结果。
 - Step 8.10 降级为 negative result，不进入最终 route selection。
+
+## Backend Decision Status
+
+Run the focused gate-alignment decision experiment with:
+
+```matlab
+run('steps/step_09_shared_center_innovation_route/run_step09_common_el_gate_alignment.m')
+```
+
+Current decision: Gate 2 (`rank1_refocus_consensus_gate`) recovered close-coherent success (`0.87333`) but failed the safety rule because `overall_false_high_rate = 0.034722` and `single_target_false_split_rate = 0.83333`.
+
+Final recommendation: freeze Step09 backend tuning and use the original Step8.7 verified lazy cascade as the final backend evidence. Step09 remains the interface/documentation layer and `step87_reference` is not promoted to the default backend.

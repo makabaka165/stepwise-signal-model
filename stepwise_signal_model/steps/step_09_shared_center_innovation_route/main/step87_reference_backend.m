@@ -45,7 +45,7 @@ try
         backend_cache.level2_cache_map, ...
         backend_cache.level2_refocus_cache_map, backend_cache.music_cache, ...
         backend_cache.p_sel, backend_cache.r_sel, ...
-        cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+        cfg.min_pair_sep_deg, cfg.max_pair_sep_deg, cfg);
 
     out = make_standard_output_local(result, cfg, timing);
 catch ME
@@ -72,11 +72,20 @@ function cfg = defaults_local(cfg, frontend_out, selected, array_geom)
     cfg = set_default_local(cfg, 'K_phi_covfit', min(6, selected.Q - 1));
     cfg = set_default_local(cfg, 'K_z_covfit', min(3, selected.Nel - 1));
     cfg = set_default_local(cfg, 'Lc', 2);
+    cfg = set_default_local(cfg, 'common_el_gate_mode', 'current_common_el_proxy');
+    cfg = set_default_local(cfg, 'rank1_refocus_pair_agree_tol_deg', 0.12);
     cfg.K_phi_level2 = max(2, cfg.K_phi_level2);
     cfg.K_phi_music = max(2, cfg.K_phi_music);
     cfg.K_z_music = max(2, cfg.K_z_music);
     cfg.K_phi_covfit = max(2, cfg.K_phi_covfit);
     cfg.K_z_covfit = max(2, cfg.K_z_covfit);
+    allowed_gate_modes = {'current_common_el_proxy', ...
+        'rank1_reliable_without_common_el_proxy', ...
+        'rank1_refocus_consensus_gate'};
+    if ~ismember(char(cfg.common_el_gate_mode), allowed_gate_modes)
+        error('step87_reference_backend:InvalidCommonElGateMode', ...
+            'cfg.common_el_gate_mode must be one of the supported gate modes.');
+    end
 end
 
 function Y_step87 = adapt_step09_y_work_to_step87_local(Y_work, A_ref_2d)
@@ -225,6 +234,20 @@ function debug_info = build_debug_info_local(result, cfg, timing)
 
     debug_info.low_cost_boundary_flag = low_cost_boundary_flag;
     debug_info.boundary_unreliable_flag = boundary_unreliable_flag;
+    debug_info.common_el_gate_mode = string(cfg.common_el_gate_mode);
+    debug_info.rank1_refocus_pair_agree_tol_deg = cfg.rank1_refocus_pair_agree_tol_deg;
+    debug_info.rank1_refocus_pair_error_deg = pair_error_swap_invariant_local( ...
+        getfield_default_local(rank1, 'az_est', [NaN, NaN]), ...
+        getfield_default_local(refocus, 'az_est', [NaN, NaN]));
+    debug_info.rank1_without_common_el_gate_pass = rank1_without_common_el_gate_pass_local( ...
+        rank1, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg, low_cost_boundary_flag);
+    debug_info.rank1_refocus_consensus_gate_pass = rank1_refocus_consensus_gate_pass_local( ...
+        rank1, refocus, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg, ...
+        low_cost_boundary_flag, cfg.rank1_refocus_pair_agree_tol_deg);
+    debug_info.selected_common_el_gate_pass = selected_common_el_gate_pass_local( ...
+        string(cfg.common_el_gate_mode), common_el_proxy_flag, rank1, refocus, ...
+        cfg.min_pair_sep_deg, cfg.max_pair_sep_deg, low_cost_boundary_flag, ...
+        cfg.rank1_refocus_pair_agree_tol_deg);
     debug_info.final_step87_route = string(getfield_default_local(result, 'recommended_route', ''));
     debug_info.final_confidence_flag = string(getfield_default_local(result, 'confidence_flag', ''));
     debug_info.final_failure_reason = string(getfield_default_local(result, 'failure_reason', ''));
@@ -347,7 +370,7 @@ function [result, timing] = run_lazy_cascade_local( ...
     y_noisy_2d, X3d, Y3d, Z3d, A_ref_2d, lambda, el_assumed, ...
     az_grid, el_refocus_grid, K_phi_level2, K_phi_music, K_z_music, ...
     K_phi_covfit, K_z_covfit, Lc, level2_cache_map, ...
-    level2_refocus_cache_map, music_cache, p_sel, r_sel, min_sep, max_sep)
+    level2_refocus_cache_map, music_cache, p_sel, r_sel, min_sep, max_sep, cfg)
 
     timing = init_timing_local();
     t_all = tic;
@@ -377,7 +400,8 @@ function [result, timing] = run_lazy_cascade_local( ...
     low_cost_boundary_partial = is_low_cost_boundary_proxy_from_partial_local( ...
         music, rank1, refocus, min_sep, max_sep);
 
-    if is_level2_music_reliable_local(music, min_sep, max_sep) && common_el_proxy
+    if is_level2_music_reliable_local(music, min_sep, max_sep) && ...
+            current_common_el_proxy_gate_pass_local(string(cfg.common_el_gate_mode), common_el_proxy)
         result = music;
         result.recommended_route = "level2_music_or_center_real";
         if is_level2_music_high_confidence_local(music, route_map, min_sep, max_sep)
@@ -391,7 +415,8 @@ function [result, timing] = run_lazy_cascade_local( ...
     end
 
     if is_refocus_route_reliable_local(refocus, min_sep, max_sep) && ...
-            ~low_cost_boundary_partial && common_el_proxy
+            ~low_cost_boundary_partial && ...
+            current_common_el_proxy_gate_pass_local(string(cfg.common_el_gate_mode), common_el_proxy)
         result = refocus;
         result.recommended_route = "common_el_refocus_power_rank1";
         result.confidence_flag = "medium";
@@ -411,11 +436,13 @@ function [result, timing] = run_lazy_cascade_local( ...
         music, rank1, refocus, min_sep, max_sep);
 
     if is_rank1_route_reliable_local(rank1, min_sep, max_sep) && ...
-            ~low_cost_boundary && common_el_proxy
+            selected_common_el_gate_pass_local(string(cfg.common_el_gate_mode), ...
+            common_el_proxy, rank1, refocus, min_sep, max_sep, low_cost_boundary, ...
+            cfg.rank1_refocus_pair_agree_tol_deg)
         result = rank1;
-        result.recommended_route = "level2_rank1_fallback";
+        result.recommended_route = selected_rank1_route_name_local(string(cfg.common_el_gate_mode));
         result.confidence_flag = "medium";
-        result.failure_reason = "music_single_rank1_fallback";
+        result.failure_reason = selected_rank1_failure_reason_local(string(cfg.common_el_gate_mode));
         timing = finish_timing_local(timing, t_all, 3, true, route_map);
         return
     end
@@ -1024,6 +1051,97 @@ function tf = is_strong_common_el_proxy_local(music, refocus)
         abs(el_hat - el_assumed) <= 0.75 && refocus_sharp >= 0.075;
 end
 
+function tf = current_common_el_proxy_gate_pass_local(mode, common_el_proxy)
+    switch char(mode)
+        case {'current_common_el_proxy', ...
+                'rank1_reliable_without_common_el_proxy', ...
+                'rank1_refocus_consensus_gate'}
+            tf = common_el_proxy;
+        otherwise
+            tf = false;
+    end
+end
+
+function tf = selected_common_el_gate_pass_local(mode, common_el_proxy, rank1, refocus, ...
+    min_sep, max_sep, low_cost_boundary, agree_tol_deg)
+    switch char(mode)
+        case 'current_common_el_proxy'
+            tf = common_el_proxy && ~low_cost_boundary;
+        case 'rank1_reliable_without_common_el_proxy'
+            tf = rank1_without_common_el_gate_pass_local(rank1, min_sep, max_sep, low_cost_boundary);
+        case 'rank1_refocus_consensus_gate'
+            tf = rank1_refocus_consensus_gate_pass_local(rank1, refocus, ...
+                min_sep, max_sep, low_cost_boundary, agree_tol_deg);
+        otherwise
+            tf = false;
+    end
+end
+
+function tf = rank1_without_common_el_gate_pass_local(rank1, min_sep, max_sep, low_cost_boundary)
+    tf = is_rank1_route_reliable_local(rank1, min_sep, max_sep) && ...
+        pair_finite_and_sep_valid_local(rank1, min_sep, max_sep) && ...
+        ~low_cost_boundary;
+end
+
+function tf = rank1_refocus_consensus_gate_pass_local(rank1, refocus, min_sep, ...
+    max_sep, low_cost_boundary, agree_tol_deg)
+    pair_err = pair_error_swap_invariant_local( ...
+        getfield_default_local(rank1, 'az_est', [NaN, NaN]), ...
+        getfield_default_local(refocus, 'az_est', [NaN, NaN]));
+    tf = is_rank1_route_reliable_local(rank1, min_sep, max_sep) && ...
+        is_refocus_route_reliable_local(refocus, min_sep, max_sep) && ...
+        pair_finite_and_sep_valid_local(rank1, min_sep, max_sep) && ...
+        pair_finite_and_sep_valid_local(refocus, min_sep, max_sep) && ...
+        ~low_cost_boundary && isfinite(pair_err) && pair_err <= agree_tol_deg;
+end
+
+function tf = pair_finite_and_sep_valid_local(result, min_sep, max_sep)
+    az_est = getfield_default_local(result, 'az_est', [NaN, NaN]);
+    el_est = getfield_default_local(result, 'el_est', [NaN, NaN]);
+    sep = getfield_default_local(result, 'pair_sep_est', NaN);
+    if ~isfinite(sep) && numel(az_est) >= 2 && all(isfinite(az_est(1:2)))
+        sep = abs(diff(sort(az_est(1:2))));
+    end
+    tf = numel(az_est) >= 2 && numel(el_est) >= 2 && ...
+        all(isfinite(az_est(1:2))) && all(isfinite(el_est(1:2))) && ...
+        isfinite(sep) && sep >= min_sep && sep <= max_sep;
+end
+
+function err = pair_error_swap_invariant_local(pair_a, pair_b)
+    err = NaN;
+    if numel(pair_a) < 2 || numel(pair_b) < 2
+        return
+    end
+    pair_a = pair_a(1:2);
+    pair_b = pair_b(1:2);
+    if any(~isfinite(pair_a)) || any(~isfinite(pair_b))
+        return
+    end
+    direct = mean(abs(wrap180_local(pair_a(:).' - pair_b(:).')));
+    swapped = mean(abs(wrap180_local(pair_a(:).' - fliplr(pair_b(:).'))));
+    err = min(direct, swapped);
+end
+
+function route_name = selected_rank1_route_name_local(mode)
+    switch char(mode)
+        case 'rank1_refocus_consensus_gate'
+            route_name = "common_el_refocus_power_rank1";
+        otherwise
+            route_name = "level2_rank1_fallback";
+    end
+end
+
+function reason = selected_rank1_failure_reason_local(mode)
+    switch char(mode)
+        case 'rank1_refocus_consensus_gate'
+            reason = "rank1_refocus_consensus_gate";
+        case 'rank1_reliable_without_common_el_proxy'
+            reason = "rank1_without_common_el_proxy";
+        otherwise
+            reason = "music_single_rank1_fallback";
+    end
+end
+
 function tf = has_route_conflict_local(route_map)
     az_list = {};
     route_fields = {'music', 'rank1_fallback', 'common_el_refocus_rank1', ...
@@ -1425,4 +1543,8 @@ function out = ternary_local(cond, a, b)
     else
         out = b;
     end
+end
+
+function x = wrap180_local(x)
+    x = mod(x + 180, 360) - 180;
 end

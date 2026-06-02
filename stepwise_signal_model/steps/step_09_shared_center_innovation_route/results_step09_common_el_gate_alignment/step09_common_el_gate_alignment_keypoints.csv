@@ -1,0 +1,24 @@
+keypoint,value,note
+total_trials,"4320",trial rows across all gate modes
+Metkl,"30",Monte Carlo trials per scenario point
+gate_modes,"current_common_el_proxy,rank1_reliable_without_common_el_proxy,rank1_refocus_consensus_gate",tested gate modes
+current_close_coherent_success_rate,"0",Gate 0 current common-el proxy
+gate1_close_coherent_success_rate,"0.87333",rank1 without common-el proxy
+gate2_close_coherent_success_rate,"0.87333",rank1/refocus consensus gate
+gate2_close_improvement_over_current,"0.87333",Gate 2 minus Gate 0
+gate1_overall_false_high_rate,"0.034722",safety diagnostic
+gate2_overall_false_high_rate,"0.034722",must be <= 0.01
+gate2_weak_false_high_rate,"0",must be <= 0.01
+gate2_near_antiphase_false_high_rate,"0",must be <= 0.01
+gate2_near_antiphase_boundary_missed_rate,"0",diagnostic
+gate2_single_target_false_split_rate,"0.83333",must be <= 0.01
+gate2_two_separated_reject_out_of_scope_rate,"1",must be >= 0.99
+current_common_el_proxy_pass_rate,"0",current common-el proxy pass
+gate2_rank1_route_reliable_rate,"0.80972",rank1 route reliable
+gate2_rank1_refocus_consensus_gate_pass_rate,"0.73681",shadow/selected gate pass
+gate2_truth_rank1_top3_rate,"0.55556",truth-only diagnostic
+gate2_truth_refocus_top3_rate,"0.54792",truth-only diagnostic
+gate_alignment_pass_flag,"0",Gate 2 pass/fail
+main_blocker_type,"gate_alignment_failed_false_high",rule-based blocker classification
+blocker_if_any,"gate_alignment_failed_false_high",rule-based blocker
+final_recommendation,"freeze_step09_backend_use_step87_verified_lazy_cascade",decision

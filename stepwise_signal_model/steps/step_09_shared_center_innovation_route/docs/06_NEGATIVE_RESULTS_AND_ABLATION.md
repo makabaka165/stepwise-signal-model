@@ -23,3 +23,7 @@
 ## Step 8.9 fixed-point
 
 定位为硬件边界分析。定点影响未闭合，不作为纯 FPGA 定点实现成功结果。
+
+## Step09 common-el gate alignment negative result
+
+Gate 2 (`rank1_refocus_consensus_gate`) is a negative result for backend adoption. It improves close-coherent recovery (`0.87333`) but violates the safety pass rule with `overall_false_high_rate = 0.034722` and `single_target_false_split_rate = 0.83333`. Therefore Step09 backend tuning is frozen; do not add threshold tuning, dual-center, V2/complex-gain, Step8.10 unified model selection, or learning to force this route through.
