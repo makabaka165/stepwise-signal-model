@@ -67,8 +67,8 @@ Modes: `music_only`, `music_plus_rank1`, `music_plus_2d`, `full_step09`, `full_w
 
 ## Figures
 
-- `../results_step09_ablation/ablation_success_by_scenario.png`
-- `../results_step09_ablation/ablation_false_high_by_scenario.png`
-- `../results_step09_ablation/ablation_boundary_missed_by_scenario.png`
-- `../results_step09_ablation/ablation_runtime_by_mode.png`
-- `../results_step09_ablation/ablation_low_confidence_by_mode.png`
+- `../archive/diagnostic_results/results_step09_ablation/ablation_success_by_scenario.png`
+- `../archive/diagnostic_results/results_step09_ablation/ablation_false_high_by_scenario.png`
+- `../archive/diagnostic_results/results_step09_ablation/ablation_boundary_missed_by_scenario.png`
+- `../archive/diagnostic_results/results_step09_ablation/ablation_runtime_by_mode.png`
+- `../archive/diagnostic_results/results_step09_ablation/ablation_low_confidence_by_mode.png`

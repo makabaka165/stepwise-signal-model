@@ -30,7 +30,7 @@ The bridge validation compares both backend modes on the same Step 09 synthetic 
 - `two_separated_coarse_peaks`
 - `center_wraparound_case`
 
-The bridge outputs trial CSV, summary CSV, keypoints CSV, and a markdown report under `results_step09_step87_backend_bridge/`.
+The bridge outputs trial CSV, summary CSV, keypoints CSV, and a markdown report under `archive/diagnostic_results/results_step09_step87_backend_bridge/`.
 
 Current quick bridge result:
 

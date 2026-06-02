@@ -1,0 +1,12 @@
+keypoint,value,note
+final_algorithm_backend,step8_7_verified_lazy_cascade,performance backend
+final_interface_layer,step09_shared_center_interface,thesis-facing interface
+adopt_step09_light_backend,0,formal MC failed
+adopt_step09_step87_bridge_backend,0,bridge/gate not adopted
+adopt_common_el_gate_alignment,0,false-high and single-target split failed
+adopt_step810_unified_model_selection,0,negative result
+adopt_learning_assisted_route,0,future work only
+use_step87_results_for_performance_claims,1,verified historical result
+use_step09_supplementary_as_negative_evidence,1,route decision evidence
+next_phase,thesis_writing_and_figure_preparation,no more backend tuning
+

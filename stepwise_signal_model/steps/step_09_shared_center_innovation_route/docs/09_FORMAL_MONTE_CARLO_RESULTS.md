@@ -53,12 +53,12 @@
 
 ## Figures
 
-- `../results_step09_formal_mc/step09_success_vs_snr.png`
-- `../results_step09_formal_mc/step09_false_high_vs_snr.png`
-- `../results_step09_formal_mc/step09_route_distribution.png`
-- `../results_step09_formal_mc/step09_low_confidence_boundary_rates.png`
-- `../results_step09_formal_mc/step09_coarseAz_bias_sweep.png`
-- `../results_step09_formal_mc/step09_runtime_distribution.png`
+- `../archive/diagnostic_results/results_step09_formal_mc/step09_success_vs_snr.png`
+- `../archive/diagnostic_results/results_step09_formal_mc/step09_false_high_vs_snr.png`
+- `../archive/diagnostic_results/results_step09_formal_mc/step09_route_distribution.png`
+- `../archive/diagnostic_results/results_step09_formal_mc/step09_low_confidence_boundary_rates.png`
+- `../archive/diagnostic_results/results_step09_formal_mc/step09_coarseAz_bias_sweep.png`
+- `../archive/diagnostic_results/results_step09_formal_mc/step09_runtime_distribution.png`
 
 ## Conclusion
 

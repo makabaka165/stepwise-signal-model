@@ -1,0 +1,15 @@
+keypoint,value,note
+source_path,steps/step_08_7_routeB_array_level3/results_step8_7_7b_lazy_runtime_wallclock_cleanup_check,existing Step8.7 cleanup-check result
+full_success_rate_all,0.764705882352941,full route success
+lazy_success_rate_all,0.764705882352941,lazy cascade success
+lazy_vs_full_success_gap_all,0,no success loss versus full route
+lazy_false_high_confidence_rate_all,0,safety metric
+lazy_boundary_missed_rate_all,0,safety metric
+lazy_low_confidence_rate_all,0.209150326797386,conservative low-confidence output
+lazy_boundary_unreliable_rate_all,0.0915032679738562,boundary unreliable output
+mean_runtime_reduction_all,0.376998770503756,lazy runtime reduction
+execution_rate_2dmusic_all,0.562091503267974,heavy 2D MUSIC execution rate
+execution_rate_pair_local_all,0.352941176470588,pair-local execution rate
+early_stop_rate_all,0.790849673202614,lazy early stop rate
+large_el_lazy_success_rate,1,large elevation group success
+

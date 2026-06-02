@@ -1,0 +1,14 @@
+keypoint,value,note
+source_path,steps/step_08_10_unified_model_selection_validation/results_step8_10_unified_model_selection_validation,existing Step8.10 result
+unified_success_overall,0.0850290697674419,in-scope default threshold
+cascade_success_overall,0.494186046511628,same Y_work cascade baseline
+success_gap_unified_vs_cascade,-0.409156976744186,unified minus cascade
+unified_false_high,0.222383720930233,default threshold false-high
+unified_boundary_missed,0.0363372093023256,default threshold boundary missed
+cascade_false_high,0,cascade baseline
+cascade_boundary_missed,0,cascade baseline
+threshold_default_pass_flag,0,default thresholds did not pass
+threshold_sweep_best_pass_flag,0,calibration sweep did not pass
+adopt_unified_model_selection_flag,0,not final route
+blocker_if_any,unified_model_selection_not_safe,negative route blocker
+

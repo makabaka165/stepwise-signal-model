@@ -2,7 +2,7 @@
 
 This note records a focused diagnostic run for Step 09 close-coherent and medium-beta cases using `cfg.backend_mode = 'step87_reference'`. It does not modify thresholds, default backend selection, or the thesis route.
 
-Result directory: `E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_09_shared_center_innovation_route\results_step09_close_coherent_gate_diagnostics`.
+Result directory: `E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_09_shared_center_innovation_route\archive\diagnostic_results\results_step09_close_coherent_gate_diagnostics`.
 
 ## Answers
 

@@ -1,5 +1,5 @@
 keypoint,value,note
-decision_source,E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_09_shared_center_innovation_route\results_step09_common_el_gate_alignment,common-el gate alignment output directory
+decision_source,E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_09_shared_center_innovation_route\archive\diagnostic_results\results_step09_common_el_gate_alignment,archived common-el gate alignment output directory
 gate_alignment_pass_flag,0,Gate 2 pass/fail
 blocker_if_any,gate_alignment_failed_false_high,failure blocker
 final_recommendation,freeze_step09_backend_use_step87_verified_lazy_cascade,final fallback decision

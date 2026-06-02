@@ -20,7 +20,7 @@ end
 function result = run_formal_mc_local(script_dir, run_mode)
     t_start = tic;
     addpath(fullfile(script_dir, 'main'));
-    result_dir = fullfile(script_dir, 'results_step09_formal_mc');
+    result_dir = fullfile(script_dir, 'archive', 'diagnostic_results', 'results_step09_formal_mc');
     ensure_dir_local(result_dir);
     rng_seed_base = 902091;
     [Metkl, snr_list] = mode_settings_local(run_mode, 'formal_mc');
@@ -71,7 +71,7 @@ end
 function result = run_consistency_local(script_dir, run_mode)
     t_start = tic;
     addpath(fullfile(script_dir, 'main'));
-    result_dir = fullfile(script_dir, 'results_step09_vs_step87_consistency');
+    result_dir = fullfile(script_dir, 'archive', 'diagnostic_results', 'results_step09_vs_step87_consistency');
     ensure_dir_local(result_dir);
     rng_seed_base = 902187;
     [Metkl, snr_list] = mode_settings_local(run_mode, 'consistency');
@@ -129,7 +129,7 @@ end
 function result = run_ablation_local(script_dir, run_mode)
     t_start = tic;
     addpath(fullfile(script_dir, 'main'));
-    result_dir = fullfile(script_dir, 'results_step09_ablation');
+    result_dir = fullfile(script_dir, 'archive', 'diagnostic_results', 'results_step09_ablation');
     ensure_dir_local(result_dir);
     rng_seed_base = 902333;
     [Metkl, snr_list] = mode_settings_local(run_mode, 'ablation');
@@ -852,12 +852,12 @@ function write_formal_report_local(script_dir, ~, keypoints_tbl, summary_tbl, ru
     fprintf(fid, '\n## Scenario Summary\n\n');
     write_table_preview_md_local(fid, summary_tbl, 40);
     fprintf(fid, '\n## Figures\n\n');
-    fprintf(fid, '- `../results_step09_formal_mc/step09_success_vs_snr.png`\n');
-    fprintf(fid, '- `../results_step09_formal_mc/step09_false_high_vs_snr.png`\n');
-    fprintf(fid, '- `../results_step09_formal_mc/step09_route_distribution.png`\n');
-    fprintf(fid, '- `../results_step09_formal_mc/step09_low_confidence_boundary_rates.png`\n');
-    fprintf(fid, '- `../results_step09_formal_mc/step09_coarseAz_bias_sweep.png`\n');
-    fprintf(fid, '- `../results_step09_formal_mc/step09_runtime_distribution.png`\n\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_formal_mc/step09_success_vs_snr.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_formal_mc/step09_false_high_vs_snr.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_formal_mc/step09_route_distribution.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_formal_mc/step09_low_confidence_boundary_rates.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_formal_mc/step09_coarseAz_bias_sweep.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_formal_mc/step09_runtime_distribution.png`\n\n');
     if keypoint_value_local(keypoints_tbl, 'formal_mc_pass_flag') == 1
         fprintf(fid, '## Conclusion\n\nStep 09 formal MC supports the final shared-center MUSIC enhanced DOA route under the tested local unresolved-cluster scope.\n');
     else
@@ -889,11 +889,11 @@ function write_ablation_report_local(script_dir, result_dir, keypoints_tbl, summ
     fprintf(fid, '\n## Summary\n\n');
     write_table_preview_md_local(fid, summary_tbl, 80);
     fprintf(fid, '\n## Figures\n\n');
-    fprintf(fid, '- `../results_step09_ablation/ablation_success_by_scenario.png`\n');
-    fprintf(fid, '- `../results_step09_ablation/ablation_false_high_by_scenario.png`\n');
-    fprintf(fid, '- `../results_step09_ablation/ablation_boundary_missed_by_scenario.png`\n');
-    fprintf(fid, '- `../results_step09_ablation/ablation_runtime_by_mode.png`\n');
-    fprintf(fid, '- `../results_step09_ablation/ablation_low_confidence_by_mode.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_ablation/ablation_success_by_scenario.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_ablation/ablation_false_high_by_scenario.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_ablation/ablation_boundary_missed_by_scenario.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_ablation/ablation_runtime_by_mode.png`\n');
+    fprintf(fid, '- `../archive/diagnostic_results/results_step09_ablation/ablation_low_confidence_by_mode.png`\n');
     copyfile(report_path, fullfile(script_dir, 'docs', '11_ABLATION_STUDY_RESULTS.md'));
 end
 

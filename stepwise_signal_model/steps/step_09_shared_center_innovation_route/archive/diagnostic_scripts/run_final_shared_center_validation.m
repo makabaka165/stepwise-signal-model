@@ -4,23 +4,25 @@
 clc
 clear
 
-script_dir = fileparts(mfilename('fullpath'));
-if isempty(script_dir)
-    script_dir = pwd;
+archive_script_dir = fileparts(mfilename('fullpath'));
+if isempty(archive_script_dir)
+    archive_script_dir = pwd;
 end
+script_dir = fullfile(archive_script_dir, '..', '..');
 addpath(fullfile(script_dir, 'main'));
+addpath(fullfile(script_dir, 'archive', 'backend_attempts'));
 
-run(fullfile(script_dir, 'run_final_shared_center_demo.m'));
+run(fullfile(script_dir, 'archive', 'diagnostic_scripts', 'run_final_shared_center_demo.m'));
 
 required_files = {
     fullfile(script_dir, 'README.md')
-    fullfile(script_dir, 'main', 'shared_center_enhanced_doa.m')
+    fullfile(script_dir, 'archive', 'backend_attempts', 'shared_center_enhanced_doa.m')
     fullfile(script_dir, 'main', 'shared_center_select_subarray.m')
     fullfile(script_dir, 'main', 'build_y_work_from_frontend.m')
-    fullfile(script_dir, 'main', 'local_cylindrical_music_test.m')
-    fullfile(script_dir, 'main', 'coherent_rank1_refocus_fallback.m')
-    fullfile(script_dir, 'main', 'local_2d_pair_refinement.m')
-    fullfile(script_dir, 'main', 'confidence_boundary_rejector.m')
+    fullfile(script_dir, 'archive', 'backend_attempts', 'local_cylindrical_music_test.m')
+    fullfile(script_dir, 'archive', 'backend_attempts', 'coherent_rank1_refocus_fallback.m')
+    fullfile(script_dir, 'archive', 'backend_attempts', 'local_2d_pair_refinement.m')
+    fullfile(script_dir, 'archive', 'backend_attempts', 'confidence_boundary_rejector.m')
     fullfile(script_dir, 'results', 'final_keypoints.csv')
     fullfile(script_dir, 'results', 'final_summary.csv')
     fullfile(script_dir, 'results', 'final_route_flowchart.png')

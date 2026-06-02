@@ -5,11 +5,13 @@
 % Main algorithm change: none; this script orchestrates validation only.
 
 default_run_mode = 'quick';
-script_dir = fileparts(mfilename('fullpath'));
-if isempty(script_dir)
-    script_dir = pwd;
+archive_script_dir = fileparts(mfilename('fullpath'));
+if isempty(archive_script_dir)
+    archive_script_dir = pwd;
 end
+script_dir = fullfile(archive_script_dir, '..', '..');
 addpath(fullfile(script_dir, 'main'));
+addpath(fullfile(script_dir, 'archive', 'backend_attempts'));
 
 run_mode = resolve_run_mode_local('STEP09_MC_MODE', default_run_mode);
 rows = {};
@@ -52,7 +54,7 @@ catch ME
 end
 
 overview_tbl = struct2table([rows{:}]);
-overview_path = fullfile(script_dir, 'results_step09_supplementary_overview.csv');
+overview_path = fullfile(script_dir, 'archive', 'diagnostic_results', 'results_step09_supplementary_overview.csv');
 writetable(overview_tbl, overview_path);
 write_overview_report_local(fullfile(script_dir, 'docs', '13_SUPPLEMENTARY_EXPERIMENT_OVERVIEW.md'), ...
     overview_tbl, run_mode);
@@ -103,7 +105,7 @@ function write_overview_report_local(report_path, T, run_mode)
     fid = fopen(report_path, 'w');
     cleanup = onCleanup(@() fclose(fid));
     fprintf(fid, '# Supplementary Experiment Overview\n\n');
-    fprintf(fid, '- run_mode: `%s`\n- overview_csv: `../results_step09_supplementary_overview.csv`\n\n', run_mode);
+    fprintf(fid, '- run_mode: `%s`\n- overview_csv: `../archive/diagnostic_results/results_step09_supplementary_overview.csv`\n\n', run_mode);
     fprintf(fid, '| experiment_name | status | pass_flag | blocker_if_any | result_dir | elapsed_sec |\n');
     fprintf(fid, '|---|---|---:|---|---|---:|\n');
     for i = 1:height(T)

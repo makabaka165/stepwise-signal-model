@@ -13,13 +13,15 @@
 clc
 clear
 
-script_dir = fileparts(mfilename('fullpath'));
-if isempty(script_dir)
-    script_dir = pwd;
+archive_script_dir = fileparts(mfilename('fullpath'));
+if isempty(archive_script_dir)
+    archive_script_dir = pwd;
 end
+script_dir = fullfile(archive_script_dir, '..', '..');
 addpath(fullfile(script_dir, 'main'));
+addpath(fullfile(script_dir, 'archive', 'backend_attempts'));
 
-result_dir = fullfile(script_dir, 'results_step09_common_el_gate_alignment');
+result_dir = fullfile(script_dir, 'archive', 'diagnostic_results', 'results_step09_common_el_gate_alignment');
 if ~exist(result_dir, 'dir')
     mkdir(result_dir);
 end

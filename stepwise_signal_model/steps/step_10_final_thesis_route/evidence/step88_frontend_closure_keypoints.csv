@@ -1,0 +1,13 @@
+keypoint,value,note
+source_path,steps/step_08_8_frontend_to_shared_center_closure/results_step8_8_frontend_shared_center_closure_state_cleanup_check,existing Step8.8 closure result
+cfar_detection_rate_overall,1,overall CFAR detection rate
+single_coarse_peak_rate_overall,0.916666666666667,unresolved coarse cluster rate
+two_coarse_peak_rate_overall,0.0833333333333333,two separated coarse peak out-of-scope rate
+in_scope_shared_center_rate,0.916666666666667,frontend states routed into shared-center enhancement
+out_of_scope_rate,0.0833333333333334,frontend states not routed into shared-center enhancement
+false_high_rate_in_scope,0,high-confidence wrong output on in-scope trials
+boundary_missed_rate_in_scope,0,boundary missed on in-scope trials
+center_selection_success_rate_overall,0.916666666666667,center coverage success
+frontend_to_step87_interface_pass_flag,1,interface closure safety flag
+default_derotation_mode,none,inherited no-derotation route
+

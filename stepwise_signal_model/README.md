@@ -639,3 +639,32 @@ s_m(t) = A \cdot \exp\left(j\pi K (t-\tau_m)^2\right)
 \cdot \operatorname{rect}\left(\frac{t-\tau_m}{T_p}\right)
 \cdot \exp\left(-j\frac{4\pi R_m}{\lambda}\right)
 $$
+# Current Final Thesis Route
+
+The current thesis-facing route is documented in:
+
+```text
+steps/step_10_final_thesis_route/
+```
+
+Final route:
+
+```text
+Frontend detection / coarse angle
+-> shared-center 65-column local work subarray
+-> Y_work construction
+-> Step8.7 verified lazy cascade backend
+-> confidence / boundary output
+-> FPGA/SoC implementation boundary
+```
+
+Current Step positioning:
+
+- Step8.7: verified lazy cascade backend and final performance evidence.
+- Step8.8: frontend-to-shared-center closure evidence.
+- Step8.9: hardware boundary and fixed-point limitation evidence.
+- Step8.10: negative unified model selection evidence.
+- Step9: archived diagnostics and thesis-interface notes, not a final backend.
+- Step10: final thesis route, evidence tables, figure list, and defense materials.
+
+Do not continue Step09 backend tuning for the final thesis route. The next phase is thesis writing and figure preparation.

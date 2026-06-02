@@ -1,0 +1,15 @@
+keypoint,value,note
+source_path,steps/step_09_shared_center_innovation_route/archive/diagnostic_results/results_step09_common_el_gate_alignment,archived Step09 gate-alignment decision
+gate_alignment_pass_flag,0,Gate 2 pass/fail
+gate2_close_coherent_success_rate,0.87333,close-coherent recovery
+gate2_overall_false_high_rate,0.034722,must be <= 0.01 for adoption
+gate2_single_target_false_split_rate,0.83333,must be <= 0.01 for adoption
+gate2_weak_false_high_rate,0,weak target false-high
+gate2_near_antiphase_false_high_rate,0,near anti-phase false-high
+gate2_two_separated_reject_out_of_scope_rate,1,out-of-scope reject rate
+current_common_el_proxy_pass_rate,0,current proxy pass rate
+gate2_rank1_route_reliable_rate,0.80972,rank1 route reliable rate
+main_blocker_type,gate_alignment_failed_false_high,rule-based blocker
+blocker_if_any,gate_alignment_failed_false_high,final Step09 blocker
+final_recommendation,freeze_step09_backend_use_step87_verified_lazy_cascade,final fallback decision
+

@@ -5,11 +5,13 @@
 % Main algorithm change: none; this script only calls the public Step 09 entry.
 
 default_run_mode = 'quick';
-script_dir = fileparts(mfilename('fullpath'));
-if isempty(script_dir)
-    script_dir = pwd;
+archive_script_dir = fileparts(mfilename('fullpath'));
+if isempty(archive_script_dir)
+    archive_script_dir = pwd;
 end
+script_dir = fullfile(archive_script_dir, '..', '..');
 addpath(fullfile(script_dir, 'main'));
+addpath(fullfile(script_dir, 'archive', 'backend_attempts'));
 
 run_mode = resolve_run_mode_local('STEP09_MC_MODE', default_run_mode);
 result = step09_experiment_utils('run_formal_mc', script_dir, run_mode);

@@ -39,3 +39,34 @@
 - 方位规则：测扇区中心参考方位波束的 `3 dB` 宽度，并将其作为 `dAz`。
 - 俯仰规则：在 `u = sin(theta)` 域直接测扇区中心参考俯仰波束的 `3 dB` 宽度，并将其作为 `dU`。
 - 网格排布规则：方位和俯仰波束网格都先测扇区中心参考波束宽度，再从各自扫描边界的左侧开始按固定间隔排布。
+# Current Final Route Map
+
+The final thesis-facing route is now:
+
+```text
+Frontend detection / coarse angle
+-> shared-center 65-column local work subarray
+-> Y_work construction
+-> Step8.7 verified lazy cascade backend
+-> confidence / boundary output
+-> FPGA/SoC implementation boundary
+```
+
+Current Step positioning:
+
+| Step | Current role |
+| --- | --- |
+| Step8.7 | verified lazy cascade backend and final performance evidence |
+| Step8.8 | frontend closure evidence |
+| Step8.9 | hardware boundary evidence |
+| Step8.10 | negative unified model selection evidence |
+| Step9 | archived diagnostics / thesis interface notes |
+| Step10 | final thesis route |
+
+Step10 path:
+
+```text
+steps/step_10_final_thesis_route/
+```
+
+Step09 is no longer a backend tuning mainline.

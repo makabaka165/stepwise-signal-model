@@ -1,0 +1,17 @@
+keypoint,value,note
+source_path,steps/step_08_9_shared_center_fixed_point_validation/results_step8_9_shared_center_fixed_point_validation,existing Step8.9 fixed-point result
+double_success,0.484090909090909,double baseline success
+combined_int16_route_agreement,0.871969696969697,route agreement versus double
+combined_int18_route_agreement,0.912878787878788,route agreement versus double
+combined_int24_route_agreement,0.959090909090909,route agreement versus double
+combined_int16_false_high,0,false-high rate
+combined_int18_false_high,0,false-high rate
+combined_int24_false_high,0,false-high rate
+combined_int16_boundary_missed,0,boundary-missed rate
+combined_int18_boundary_missed,0,boundary-missed rate
+combined_int24_boundary_missed,0,boundary-missed rate
+recommended_fixed_point_format,not_recommended,no candidate promoted
+fixed_point_pass_flag,0,fixed-point influence validation did not pass
+fixed_point_blocker_if_any,quantization_not_closed,hardware boundary blocker
+proceed_to_fpga_kernel_design_flag,0,do not claim completed FPGA fixed-point backend
+

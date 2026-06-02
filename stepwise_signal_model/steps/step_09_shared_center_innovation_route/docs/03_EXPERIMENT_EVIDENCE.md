@@ -74,6 +74,6 @@
 
 ## Step09 common-el gate alignment decision
 
-Source: `steps/step_09_shared_center_innovation_route/results_step09_common_el_gate_alignment/`.
+Source: `steps/step_09_shared_center_innovation_route/archive/diagnostic_results/results_step09_common_el_gate_alignment/`.
 
 The focused Gate 2 experiment did not pass the final backend adoption rule. `rank1_refocus_consensus_gate` recovered close-coherent success to `0.87333`, but safety failed: `overall_false_high_rate = 0.034722` and `single_target_false_split_rate = 0.83333`. The final recommendation is to freeze Step09 backend tuning and keep the original Step8.7 verified lazy cascade as the final backend evidence.

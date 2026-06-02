@@ -20,7 +20,7 @@ Commit `d4d025d` showed that the Step09 `step87_reference` backend is callable a
 - Gate 1, `rank1_reliable_without_common_el_proxy`: rank1 can pass when rank1 reliability, finite pair, separation, and boundary guards pass, without using the common-el proxy.
 - Gate 2, `rank1_refocus_consensus_gate`: rank1 can pass only when rank1 and refocus are both reliable, both pairs are valid, boundary guards pass, and swap-invariant pair disagreement is <= `0.12 deg`.
 
-Result directory: `E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_09_shared_center_innovation_route\results_step09_common_el_gate_alignment`.
+Result directory: `E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_09_shared_center_innovation_route\archive\diagnostic_results\results_step09_common_el_gate_alignment`.
 
 ## Result
 

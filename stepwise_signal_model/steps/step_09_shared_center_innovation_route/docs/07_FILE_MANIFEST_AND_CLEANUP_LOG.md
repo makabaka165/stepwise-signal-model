@@ -1,57 +1,75 @@
-# 文件清单与清理记录
+# File Manifest And Cleanup Log
 
-本次整理采用“新增 Step 09 主线目录、历史目录保留为证据来源”的方式执行。已有 8.x 目录中存在用户未提交改动，因此不对历史文件做物理删除；删除动作仅表示从 Step 09 主线说明和最终算法流程中删除。
+Step09 is now frozen as archived diagnostics and thesis-interface notes. The final thesis route is documented in:
 
-## keep
+```text
+steps/step_10_final_thesis_route/
+```
 
-| 路径 | 处理 | 理由 |
-|---|---|---|
-| `README.md` | keep | Step 09 主线说明 |
-| `run_final_shared_center_demo.m` | keep | 最终 demo 入口 |
-| `run_final_shared_center_validation.m` | keep | 最终 validation 入口 |
-| `main/shared_center_enhanced_doa.m` | keep | 主算法入口 |
-| `main/shared_center_select_subarray.m` | keep | shared-center 65 列选阵 |
-| `main/build_y_work_from_frontend.m` | keep | 前端检测单元到 Y_work |
-| `main/local_cylindrical_music_test.m` | keep | 局部圆柱阵 MUSIC 判别 |
-| `main/coherent_rank1_refocus_fallback.m` | keep | common-el rank1 fallback |
-| `main/local_2d_pair_refinement.m` | keep | 二维失配局部 refinement |
-| `main/confidence_boundary_rejector.m` | keep | 低置信/边界拒判 |
-| `results/final_keypoints.csv` | keep | 最终关键指标 |
-| `results/final_summary.csv` | keep | demo 输出摘要 |
-| `results/final_route_flowchart.png` | keep | 主线流程图 |
-| `results/final_frontend_interface.png` | keep | 前端接口图 |
-| `results/final_scenario_examples.png` | keep | 场景示例图 |
+## Mainline Retained In Step09
 
-## rewrite
+| path | handling | reason |
+| --- | --- | --- |
+| `README.md` | keep | archived Step09 positioning and pointers to Step10 |
+| `main/shared_center_select_subarray.m` | keep | shared-center 65-column interface demonstration |
+| `main/build_y_work_from_frontend.m` | keep | frontend detection cell to `Y_work` construction demonstration |
+| `docs/17_FINAL_BACKEND_DECISION.md` | keep | final Step09 negative decision |
+| `docs/18_FALLBACK_TO_STEP87_FINAL_DECISION.md` | keep | fallback to Step8.7 decision |
+| `docs/19_FINAL_THESIS_ROUTE_SUMMARY.md` | keep | thesis route summary |
+| `results_step09_final_decision.csv` | keep | compact final decision evidence |
 
-| 来源 | 新位置 | 处理 |
-|---|---|---|
-| Step 8.11 final summary 文档口径 | `README.md`, `docs/00_ROUTE_POSITIONING.md` | rewrite 为 Step 09 论文/答辩主线 |
-| Step 8.7/8.8/8.9/8.10 结果表 | `docs/03_EXPERIMENT_EVIDENCE.md`, `results/final_keypoints.csv` | rewrite 为最终证据链 |
-| Step 8.8 接口说明 | `docs/02_FRONTEND_INTERFACE.md` | rewrite 为前端状态机 |
-| Step 8.9 硬件结论 | `docs/04_HARDWARE_FPGA_SOC_BOUNDARY.md` | rewrite 为硬件边界 |
+## Archived Diagnostic Scripts
 
-## archive
+| original role | archive location |
+| --- | --- |
+| final shared-center demo | `archive/diagnostic_scripts/run_final_shared_center_demo.m` |
+| final shared-center validation | `archive/diagnostic_scripts/run_final_shared_center_validation.m` |
+| formal MC | `archive/diagnostic_scripts/run_step09_formal_monte_carlo.m` |
+| Step09-vs-Step87 consistency | `archive/diagnostic_scripts/run_step09_vs_step87_consistency_check.m` |
+| ablation | `archive/diagnostic_scripts/run_step09_ablation_study.m` |
+| supplementary experiment driver | `archive/diagnostic_scripts/run_step09_all_supplementary_experiments.m` |
+| Step87 bridge validation | `archive/diagnostic_scripts/run_step09_step87_backend_bridge_validation.m` |
+| close-coherent diagnostics | `archive/diagnostic_scripts/run_step09_close_coherent_gate_diagnostics.m` |
+| common-el gate alignment | `archive/diagnostic_scripts/run_step09_common_el_gate_alignment.m` |
 
-| 内容 | archive 定位 |
-|---|---|
-| Step 8.7 lazy cascade、common-el refocus、pair-local refinement | `archive/step87_original_notes/` |
-| Step 8.8 frontend closure 和 Step 8.8B de-rotation | `archive/step88_interface_notes/` |
-| Step 8.9 / 8.9B / 8.9C fixed-point diagnostics | `archive/step89_fixed_point_boundary/` |
-| Step 8.10 unified model selection | `archive/step810_unified_negative/` |
+## Archived Backend Attempts
 
-## delete from mainline
+| original path | archive location | reason |
+| --- | --- | --- |
+| `main/shared_center_enhanced_doa.m` | `archive/backend_attempts/shared_center_enhanced_doa.m` | Step09-light/bridge entry; not final backend |
+| `main/step87_reference_backend.m` | `archive/backend_attempts/step87_reference_backend.m` | Step09 bridge backend; diagnostic only |
+| `main/step09_experiment_utils.m` | `archive/backend_attempts/step09_experiment_utils.m` | supplementary experiment utility |
+| `main/local_cylindrical_music_test.m` | `archive/backend_attempts/local_cylindrical_music_test.m` | helper for Step09-light backend |
+| `main/coherent_rank1_refocus_fallback.m` | `archive/backend_attempts/coherent_rank1_refocus_fallback.m` | helper for Step09-light backend |
+| `main/local_2d_pair_refinement.m` | `archive/backend_attempts/local_2d_pair_refinement.m` | helper for Step09-light backend |
+| `main/confidence_boundary_rejector.m` | `archive/backend_attempts/confidence_boundary_rejector.m` | helper for Step09-light backend |
 
-| 内容 | 处理 | 理由 |
-|---|---|---|
-| dual-center | delete from mainline | 当前主线只处理 single coarse peak / unresolved local cluster |
-| complex-gain / V2 | delete from mainline | 未来一般相干源扩展，不进入最终算法 |
-| weak target solving | delete from mainline | 只做 low-confidence / boundary protection |
-| near anti-phase solving | delete from mainline | 只做 boundary_unreliable / low-confidence |
-| Step 8.10 unified model selection | delete from mainline | false-high 过高且 success 明显低于 cascade |
-| Step 8.9 fixed-point hardening | delete from mainline | 定点未闭合，只作为硬件边界证据 |
-| Step 8.8B Doppler de-rotation | delete from mainline | 三种模式输出一致，默认不启用 |
+## Archived Diagnostic Results
 
-## physical delete
+| result group | archive location |
+| --- | --- |
+| formal MC | `archive/diagnostic_results/results_step09_formal_mc/` |
+| ablation | `archive/diagnostic_results/results_step09_ablation/` |
+| Step09-vs-Step87 consistency | `archive/diagnostic_results/results_step09_vs_step87_consistency/` |
+| Step87 bridge | `archive/diagnostic_results/results_step09_step87_backend_bridge/` |
+| close-coherent diagnostics | `archive/diagnostic_results/results_step09_close_coherent_gate_diagnostics/` |
+| common-el gate alignment | `archive/diagnostic_results/results_step09_common_el_gate_alignment/` |
 
-本次未物理删除历史文件。原因：现有工程已有未提交改动，且历史结果仍是 Step 09 文档证据来源。物理清理应在论文主线冻结后另开一次只处理 archive/obsolete artifacts 的操作。
+## Removed From Mainline Positioning
+
+The following remain as archived evidence or future-work notes only:
+
+- Step09-light backend;
+- Step09-Step87 bridge backend;
+- common-el gate alignment;
+- dual-center routes;
+- complex-gain / V2 variants;
+- weak-target forced solving;
+- near anti-phase forced solving;
+- Step8.10 unified model selection;
+- pure FPGA fixed-point backend claim.
+
+## Physical Delete
+
+None. No files were physically deleted in this cleanup. Historical artifacts were moved into archive paths or superseded by Step10 documentation.
+
