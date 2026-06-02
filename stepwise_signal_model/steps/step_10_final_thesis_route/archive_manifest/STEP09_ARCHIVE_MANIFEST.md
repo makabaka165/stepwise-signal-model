@@ -4,9 +4,9 @@ Step09 is retained as archived diagnostics and thesis-interface notes. It is not
 
 ## Retained Evidence
 
-- `docs/17_FINAL_BACKEND_DECISION.md`: final Step09 backend decision evidence.
-- `docs/18_FALLBACK_TO_STEP87_FINAL_DECISION.md`: fallback decision to Step8.7.
-- `docs/19_FINAL_THESIS_ROUTE_SUMMARY.md`: final thesis positioning summary.
+- `archive/negative_reports/17_FINAL_BACKEND_DECISION.md`: final Step09 backend decision evidence.
+- `archive/negative_reports/18_FALLBACK_TO_STEP87_FINAL_DECISION.md`: fallback decision to Step8.7.
+- `archive/negative_reports/19_FINAL_THESIS_ROUTE_SUMMARY.md`: final thesis positioning summary.
 - `results_step09_final_decision.csv`: compact final decision table.
 - `archive/diagnostic_results/results_step09_common_el_gate_alignment/step09_common_el_gate_alignment_keypoints.csv`: common-el gate alignment keypoints.
 
@@ -53,6 +53,13 @@ Step09 is retained as archived diagnostics and thesis-interface notes. It is not
 | `archive/diagnostic_results/results_step09_step87_backend_bridge/` | bridge diagnostics |
 | `archive/diagnostic_results/results_step09_close_coherent_gate_diagnostics/` | close-coherent gate diagnostics |
 | `archive/diagnostic_results/results_step09_common_el_gate_alignment/` | final gate-alignment negative decision |
+| `archive/diagnostic_results/results_step09_final_smoke_validation/` | old Step09 smoke/demo outputs; not final backend evidence |
+| `archive/diagnostic_results/results_step09_supplementary_overview.csv` | supplementary archived diagnostic overview |
 
 No files were physically deleted in this cleanup. Large trial CSVs and PNGs are retained under archive for reproducibility, but they are not final thesis mainline outputs.
 
+For the current Step09-local manifest, see:
+
+```text
+../../step_09_shared_center_innovation_route/archive/manifest/STEP09_ARCHIVE_MANIFEST.md
+```

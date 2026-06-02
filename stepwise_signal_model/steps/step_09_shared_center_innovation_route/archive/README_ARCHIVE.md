@@ -1,8 +1,14 @@
-# Archive
+# Step09 Archive
 
-本目录只保存旧路线的证据定位，不把旧路线重新抬回 Step 09 主线。
+This directory keeps historical Step09 diagnostics and negative evidence. Do not move these files back into the Step09 mainline unless a future-work branch intentionally reopens backend research.
 
-- `step87_original_notes/`：剪枝 cascade、common-el refocus、rank1 fallback、pair-local refinement 的证据来源。
-- `step88_interface_notes/`：前端状态机、shared-center 接口闭环、Doppler de-rotation 无收益结论。
-- `step89_fixed_point_boundary/`：定点量化敏感性和 FPGA/SoC 边界。
-- `step810_unified_negative/`：统一模型选择负结果。
+Archive groups:
+
+- `diagnostic_scripts/`: reproduction scripts for negative / diagnostic evidence only.
+- `backend_attempts/`: frozen Step09-light and bridge backend attempts, not final implementations.
+- `diagnostic_results/`: keypoints, reports, summaries, trials, and figures for archived diagnostics.
+- `negative_reports/`: old Step09 docs and final decision reports retained as historical evidence.
+- `manifest/`: keep / archive / delete records for this cleanup.
+- `step87_original_notes/`, `step88_interface_notes/`, `step89_fixed_point_boundary/`, `step810_unified_negative/`: historical cross-step notes that support the final route decision.
+
+Final backend evidence remains Step8.7 verified lazy cascade. Step09 is only archived diagnostics and thesis-interface notes.

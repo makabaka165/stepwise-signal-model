@@ -1,23 +1,17 @@
-# Archived Step09 Diagnostics And Thesis-Interface Notes
+# Archived Step09 Diagnostics and Thesis Interface Notes
 
-Step09 is now frozen as an archived diagnostics and interface-positioning layer. It is not the final algorithm backend.
+Step09 is now an archived diagnostics and thesis-interface note set. It is not a backend tuning mainline and it is not the final algorithm backend.
 
-Final thesis route:
-
-```text
-../step_10_final_thesis_route/
-```
-
-Final backend decision:
+## Current Status
 
 - Step09 backend tuning is frozen.
-- Step09-light is not final.
-- Step87 bridge inside Step09 is diagnostic only.
+- Step09-light backend is not adopted.
+- Step09-Step87 bridge is diagnostic only.
 - common-el gate alignment is not adopted.
-- Final backend evidence is the original Step8.7 verified lazy cascade.
-- Step09 retains value as shared-center interface framing and negative route-decision evidence.
+- Final backend evidence is Step8.7 verified lazy cascade.
+- Final thesis route is documented in [../step_10_final_thesis_route/](../step_10_final_thesis_route/).
 
-The final thesis route is:
+Final thesis route:
 
 ```text
 Frontend detection / coarse angle
@@ -28,89 +22,76 @@ Frontend detection / coarse angle
 -> FPGA/SoC implementation boundary
 ```
 
-## Retained Interface Notes
+## Why Step09 Is Archived
 
-The following files remain in `main/` only as interface demonstrations:
+Step09 is retained to record negative / diagnostic evidence:
+
+- Step09-light formal MC did not pass.
+- Ablation exposed backend weakness.
+- Step09-Step87 bridge was callable but not adopted.
+- Close-coherent diagnostics showed common-el gate mismatch.
+- Common-el gate alignment improved close-coherent success but failed safety due to false-high / single-target false split.
+- Therefore Step09 backend tuning is frozen.
+
+## What Remains Useful
+
+- Shared-center interface concept.
+- `Y_work` construction concept.
+- Negative evidence.
+- Route decision evidence.
+- Thesis framing support.
+
+Retained interface files:
 
 - `main/shared_center_select_subarray.m`
 - `main/build_y_work_from_frontend.m`
 
-They document the shared-center handoff:
+These files demonstrate the 65-column shared-center handoff and local `Y_work` construction. They are not a final backend implementation.
+
+## What Is Not Final
+
+- Step09-light is not final.
+- Step87 bridge inside Step09 is not final.
+- Common-el gate alignment is not final.
+- Step09 backend code is not final.
+- Step11 ML is not part of the Step09 final route.
+
+## Final Route Location
+
+Use the final thesis route in:
 
 ```text
-selectedCenterColumn = argmin_k |wrap180(phiCol(k) - coarseAz)|
-selectedWorkColumns = selectedCenterColumn + [-32, ..., 0, ..., +32]
-Y_work in C^(65 x 32 x Np)
-```
-
-## Retained Decision Evidence
-
-- `docs/17_FINAL_BACKEND_DECISION.md`
-- `docs/18_FALLBACK_TO_STEP87_FINAL_DECISION.md`
-- `docs/19_FINAL_THESIS_ROUTE_SUMMARY.md`
-- `results_step09_final_decision.csv`
-- `archive/diagnostic_results/results_step09_common_el_gate_alignment/step09_common_el_gate_alignment_keypoints.csv`
-
-The final Step09 decision is:
-
-```text
-gate_alignment_pass_flag = 0
-blocker_if_any = gate_alignment_failed_false_high
-final_recommendation = freeze_step09_backend_use_step87_verified_lazy_cascade
-```
-
-Gate 2 recovered close-coherent success to `0.87333`, but safety failed:
-
-```text
-overall_false_high_rate = 0.034722
-single_target_false_split_rate = 0.83333
+../step_10_final_thesis_route/
 ```
 
 ## Archived Diagnostic Commands
 
-These commands are retained only for reproducibility of negative / diagnostic evidence. They are not part of the final thesis route.
+These commands are kept for reproducibility only. Do not run them as part of the final thesis route.
 
 ```matlab
 run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_formal_monte_carlo.m')
 run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_vs_step87_consistency_check.m')
 run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_ablation_study.m')
+run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_all_supplementary_experiments.m')
 run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_step87_backend_bridge_validation.m')
 run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_close_coherent_gate_diagnostics.m')
 run('steps/step_09_shared_center_innovation_route/archive/diagnostic_scripts/run_step09_common_el_gate_alignment.m')
 ```
 
-Archived groups:
+## Archive Map
 
-- formal MC;
-- ablation;
-- Step09-vs-Step87 consistency;
-- Step87 bridge;
-- close coherent diagnostics;
-- common-el gate alignment.
+- `docs/`: current Step09 positioning notes only.
+- `archive/diagnostic_scripts/`: retained scripts for reproducing negative / diagnostic evidence.
+- `archive/backend_attempts/`: frozen Step09 backend attempts.
+- `archive/diagnostic_results/`: archived result bundles and key evidence.
+- `archive/negative_reports/`: old Step09 reports retained as evidence, not mainline docs.
+- `archive/manifest/`: Step09 keep/archive/delete manifest.
+- `results_step09_final_decision.csv`: compact final decision evidence retained at Step09 root.
 
-## Archived Backend Attempts
-
-Step09 backend attempt files were moved to:
-
-```text
-archive/backend_attempts/
-```
-
-They are retained to explain the route decision, not to define the final backend. The final backend remains Step8.7 verified lazy cascade.
-
-## Archived Diagnostic Results
-
-Step09 diagnostic outputs were moved to:
+## Final Decision
 
 ```text
-archive/diagnostic_results/
+final_recommendation = freeze_step09_backend_use_step87_verified_lazy_cascade
 ```
 
-These results should be cited as supplementary negative evidence only. Final performance claims should cite Step8.7 and Step8.8 evidence through `../step_10_final_thesis_route/`.
-
-## Do Not Continue Here
-
-Do not continue Step09 threshold tuning, common-el gate variants, learning-assisted calibration, dual-center modeling, V2/complex-gain routes, or Step8.10 unified model selection as part of the final thesis route.
-
-Recommended next phase: thesis writing, figure preparation, and defense material cleanup.
-
+Do not continue Step09 threshold tuning, common-el gate variants, learning-assisted calibration, dual-center modeling, V2/complex-gain routes, or Step8.10 unified model selection inside the final thesis route.
