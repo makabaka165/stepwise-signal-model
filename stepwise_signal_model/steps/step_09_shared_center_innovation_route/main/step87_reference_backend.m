@@ -166,9 +166,151 @@ function out = make_standard_output_local(result, cfg, timing)
     out.reject_reason = char(getfield_default_local(result, 'failure_reason', ''));
     out.backend_callable = true;
     out.blocker_if_any = 'none';
-    out.debug_info = struct('step87_route', step87_route, ...
-        'raw_result', result, 'timing', timing, ...
-        'coarseEl_used', cfg.coarseEl);
+    out.debug_info = build_debug_info_local(result, cfg, timing);
+end
+
+function debug_info = build_debug_info_local(result, cfg, timing)
+    route_map = getfield_default_local(timing, 'route_map', make_empty_route_map_local());
+    music = route_map.music;
+    rank1 = route_map.rank1_fallback;
+    refocus = route_map.common_el_refocus_rank1;
+
+    common_el_proxy_flag = is_strong_common_el_proxy_local(music, refocus);
+    low_cost_boundary_flag = is_low_cost_boundary_proxy_from_partial_local( ...
+        music, rank1, refocus, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+    boundary_unreliable_flag = is_boundary_unreliable_local( ...
+        route_map, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+
+    debug_info = struct();
+    debug_info.step87_route = string(getfield_default_local(result, 'recommended_route', ''));
+    debug_info.raw_result = result;
+    debug_info.timing = timing;
+    debug_info.coarseEl_used = cfg.coarseEl;
+
+    debug_info.music_peak_count = getfield_default_local(music, 'peak_count', NaN);
+    debug_info.music_peak_sep_deg = getfield_default_local(music, 'peak_separation_az', NaN);
+    debug_info.music_peak2_ratio = getfield_default_local(music, 'peak_prominence_ratio', NaN);
+    debug_info.music_reliable_flag = is_level2_music_reliable_local( ...
+        music, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+    debug_info.music_failure_reason = string(getfield_default_local(music, 'failure_reason', 'not_available'));
+
+    debug_info.refocus_best_az_pair = pair_or_nan_local(getfield_default_local(refocus, 'az_est', [NaN, NaN]));
+    debug_info.refocus_score = getfield_default_local(refocus, 'objective_best', NaN);
+    debug_info.refocus_score_gap = getfield_default_local(refocus, 'score_gap_ratio', NaN);
+    debug_info.refocus_peak_sharpness = min( ...
+        getfield_default_local(refocus, 'focused_power_peak_sharpness', NaN), ...
+        getfield_default_local(refocus, 'lambda1_peak_sharpness', NaN));
+    debug_info.refocus_route_reliable = is_refocus_route_reliable_local( ...
+        refocus, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+    debug_info.common_el_proxy_flag = common_el_proxy_flag;
+    debug_info.common_el_proxy_failure_reason = common_el_proxy_failure_reason_local(music, refocus);
+    debug_info.refocus_topk_candidates = getfield_default_local(refocus, 'topk_candidates', struct([]));
+    [debug_info.refocus_topk_az_pairs, debug_info.refocus_topk_scores, ...
+        debug_info.refocus_topk_score_gap] = topk_candidate_arrays_local( ...
+        debug_info.refocus_topk_candidates);
+    debug_info.refocus_power_topk_el = getfield_default_local(refocus, 'refocus_power_topk_el', struct([]));
+
+    debug_info.rank1_best_az_pair = pair_or_nan_local(getfield_default_local(rank1, 'az_est', [NaN, NaN]));
+    debug_info.rank1_score = getfield_default_local(rank1, 'objective_best', NaN);
+    debug_info.rank1_score_gap = getfield_default_local(rank1, 'score_gap_ratio', NaN);
+    debug_info.rank1_residual = getfield_default_local(rank1, 'residual_norm', NaN);
+    debug_info.rank1_route_reliable = is_rank1_route_reliable_local( ...
+        rank1, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+    debug_info.rank1_failure_reason = rank1_failure_reason_local( ...
+        rank1, cfg.min_pair_sep_deg, cfg.max_pair_sep_deg);
+    debug_info.rank1_topk_candidates = getfield_default_local(rank1, 'topk_candidates', struct([]));
+    [debug_info.rank1_topk_az_pairs, debug_info.rank1_topk_scores, ...
+        debug_info.rank1_topk_score_gap] = topk_candidate_arrays_local( ...
+        debug_info.rank1_topk_candidates);
+
+    debug_info.low_cost_boundary_flag = low_cost_boundary_flag;
+    debug_info.boundary_unreliable_flag = boundary_unreliable_flag;
+    debug_info.final_step87_route = string(getfield_default_local(result, 'recommended_route', ''));
+    debug_info.final_confidence_flag = string(getfield_default_local(result, 'confidence_flag', ''));
+    debug_info.final_failure_reason = string(getfield_default_local(result, 'failure_reason', ''));
+end
+
+function pair = pair_or_nan_local(value)
+    pair = [NaN, NaN];
+    if isnumeric(value) && numel(value) >= 2
+        pair = value(1:2);
+        pair = pair(:).';
+    end
+end
+
+function [az_pairs, scores, gaps] = topk_candidate_arrays_local(candidates)
+    az_pairs = zeros(0, 2);
+    scores = [];
+    gaps = [];
+    if ~isstruct(candidates) || isempty(candidates)
+        return
+    end
+    n = numel(candidates);
+    az_pairs = NaN(n, 2);
+    scores = NaN(n, 1);
+    gaps = NaN(n, 1);
+    for i = 1:n
+        az_pairs(i, :) = pair_or_nan_local(getfield_default_local(candidates(i), 'az_pair', [NaN, NaN]));
+        scores(i) = getfield_default_local(candidates(i), 'score', NaN);
+        gaps(i) = getfield_default_local(candidates(i), 'score_gap_ratio', NaN);
+    end
+end
+
+function reason = common_el_proxy_failure_reason_local(music, refocus)
+    if is_strong_common_el_proxy_local(music, refocus)
+        reason = "ok";
+        return
+    end
+    el_music = getfield_default_local(music, 'el_est', [NaN, NaN]);
+    el_assumed = mean(el_music(isfinite(el_music)), 'omitnan');
+    if ~isfinite(el_assumed)
+        el_assumed = 0;
+    end
+    el_hat = getfield_default_local(refocus, 'el_hat', NaN);
+    refocus_sharp = min(getfield_default_local(refocus, 'focused_power_peak_sharpness', NaN), ...
+        getfield_default_local(refocus, 'lambda1_peak_sharpness', NaN));
+    if ~isfinite(el_hat)
+        reason = "refocus_el_nonfinite";
+    elseif abs(el_hat - el_assumed) > 0.75
+        reason = "common_el_proxy_el_mismatch";
+    elseif ~isfinite(refocus_sharp)
+        reason = "refocus_sharpness_nonfinite";
+    elseif refocus_sharp < 0.075
+        reason = "refocus_sharpness_below_proxy_gate";
+    else
+        reason = "common_el_proxy_failed";
+    end
+end
+
+function reason = rank1_failure_reason_local(rank1, min_sep, max_sep)
+    if is_rank1_route_reliable_local(rank1, min_sep, max_sep)
+        reason = "ok";
+        return
+    end
+    az_est = getfield_default_local(rank1, 'az_est', [NaN, NaN]);
+    el_est = getfield_default_local(rank1, 'el_est', [NaN, NaN]);
+    sep = getfield_default_local(rank1, 'pair_sep_est', NaN);
+    residual = getfield_default_local(rank1, 'residual_norm', NaN);
+    gap = getfield_default_local(rank1, 'score_gap_ratio', NaN);
+    if any(~isfinite(az_est)) || any(~isfinite(el_est))
+        reason = "nonfinite_pair";
+    elseif ~isfinite(sep)
+        reason = "pair_sep_nonfinite";
+    elseif sep < min_sep
+        reason = "pair_sep_too_small";
+    elseif sep > max_sep
+        reason = "pair_sep_too_large";
+    elseif ~isfinite(residual)
+        reason = "rank1_residual_nonfinite";
+    elseif residual >= 2e-3
+        reason = "rank1_residual_too_high";
+    elseif ~isfinite(gap)
+        reason = "rank1_score_gap_nonfinite";
+    elseif gap < 2e-3
+        reason = "rank1_score_gap_too_small";
+    else
+        reason = string(getfield_default_local(rank1, 'failure_reason', 'rank1_unreliable'));
+    end
 end
 
 function route_name = map_route_name_local(step87_route)
@@ -371,10 +513,12 @@ function result = run_common_el_refocus_power_route_local( ...
     n = numel(el_grid);
     power_curve = zeros(1, n);
     lambda1_curve = zeros(1, n);
+    Rfb_curve = cell(1, n);
     for ie = 1:n
         y_combined = combine_layers_level2_local(y_noisy_2d, Z3d, lambda, el_grid(ie));
         power_curve(ie) = mean(abs(y_combined(:)).^2);
         Rfb = level2_fbss_cov_local(y_combined, K_phi);
+        Rfb_curve{ie} = Rfb;
         lambda1_curve(ie) = max(real(eig(0.5 * (Rfb + Rfb'))));
     end
     [~, idx] = max(power_curve);
@@ -387,6 +531,9 @@ function result = run_common_el_refocus_power_route_local( ...
     result.el_selection_method = "focused_power";
     result.focused_power_peak_sharpness = peak_sharpness_local(power_curve);
     result.lambda1_peak_sharpness = peak_sharpness_local(lambda1_curve);
+    result.refocus_power_topk_el = topk_el_local(power_curve, el_grid, 5);
+    result.topk_candidates = make_refocus_topk_candidates_local( ...
+        Rfb_curve, cache_map, el_grid, az_grid, result.refocus_power_topk_el);
 end
 
 function result = score_level2_cache_local(Rfb, cache, az_grid)
@@ -396,6 +543,8 @@ function result = score_level2_cache_local(Rfb, cache, az_grid)
     pair_idx = cache.precomp.candidate_pairs(best_idx, :);
     result = make_result_local(sort(az_grid(pair_idx)), [NaN, NaN], 2, ...
         best_score, 'ok');
+    result.topk_candidates = make_rank1_topk_candidates_local(score, ...
+        cache.precomp.candidate_pairs, az_grid, 5);
     result.score_gap_abs = score2 - best_score;
     result.score_gap_ratio = (score2 - best_score) / max(best_score, eps);
     result.residual_norm = best_score;
@@ -966,9 +1115,79 @@ function result = make_result_local(az_est, el_est, peak_count, objective_best, 
     result.lambda2_over_noise = NaN;
     result.lambda2_over_lambda1 = NaN;
     result.effective_rank_proxy = NaN;
+    result.topk_candidates = struct([]);
+    result.refocus_power_topk_el = [];
     result.recommended_route = "";
     result.confidence_flag = "";
     result.low_confidence_flag = false;
+end
+
+function topk = make_rank1_topk_candidates_local(score, candidate_pairs, az_grid, k)
+    score = score(:);
+    if isempty(score)
+        topk = struct([]);
+        return
+    end
+    [scores_sorted, ord] = sort(score, 'ascend');
+    n = min(k, numel(scores_sorted));
+    topk = repmat(struct('rank', NaN, 'score', NaN, 'score_gap_ratio', NaN, ...
+        'az_pair', [NaN, NaN], 'pair_sep_deg', NaN), n, 1);
+    best = scores_sorted(1);
+    for i = 1:n
+        idx = ord(i);
+        pair_idx = candidate_pairs(idx, :);
+        az_pair = sort(az_grid(pair_idx));
+        topk(i).rank = i;
+        topk(i).score = scores_sorted(i);
+        topk(i).score_gap_ratio = (scores_sorted(i) - best) / max(best, eps);
+        topk(i).az_pair = az_pair(:).';
+        topk(i).pair_sep_deg = diff(az_pair);
+    end
+end
+
+function topk_el = topk_el_local(curve, el_grid, k)
+    curve = curve(:);
+    if isempty(curve)
+        topk_el = struct([]);
+        return
+    end
+    [scores_sorted, ord] = sort(curve, 'descend');
+    n = min(k, numel(scores_sorted));
+    topk_el = repmat(struct('rank', NaN, 'el', NaN, 'score', NaN, 'score_gap_ratio', NaN), n, 1);
+    best = scores_sorted(1);
+    for i = 1:n
+        topk_el(i).rank = i;
+        topk_el(i).el = el_grid(ord(i));
+        topk_el(i).score = scores_sorted(i);
+        topk_el(i).score_gap_ratio = (best - scores_sorted(i)) / max(best, eps);
+    end
+end
+
+function topk = make_refocus_topk_candidates_local( ...
+    Rfb_curve, cache_map, el_grid, az_grid, power_topk_el)
+    if ~isstruct(power_topk_el) || isempty(power_topk_el)
+        topk = struct([]);
+        return
+    end
+    n = numel(power_topk_el);
+    topk = repmat(struct('rank', NaN, 'score', NaN, 'score_gap_ratio', NaN, ...
+        'az_pair', [NaN, NaN], 'pair_sep_deg', NaN, 'el_hat', NaN), n, 1);
+    for i = 1:n
+        rank_i = getfield_default_local(power_topk_el(i), 'rank', i);
+        el_hat = getfield_default_local(power_topk_el(i), 'el', NaN);
+        ie = find(abs(el_grid - el_hat) <= 1e-12, 1, 'first');
+        if isempty(ie)
+            continue
+        end
+        Rfb = Rfb_curve{ie};
+        cand = score_level2_cache_local(Rfb, cache_map(ie), az_grid);
+        topk(i).rank = rank_i;
+        topk(i).score = getfield_default_local(cand, 'residual_norm', NaN);
+        topk(i).score_gap_ratio = getfield_default_local(cand, 'score_gap_ratio', NaN);
+        topk(i).az_pair = pair_or_nan_local(getfield_default_local(cand, 'az_est', [NaN, NaN]));
+        topk(i).pair_sep_deg = getfield_default_local(cand, 'pair_sep_est', NaN);
+        topk(i).el_hat = el_hat;
+    end
 end
 
 function precomp = precompute_rank1_pair_bases_local(cache, candidate_pairs)
