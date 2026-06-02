@@ -1,0 +1,30 @@
+# Vivado / Vitis generated files
+*.jou
+*.log
+*.str
+*.xpr
+*.runs/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.srcs/
+*.gen/
+*.sdk/
+*.bit
+*.ltx
+*.dcp
+*.rpt
+*.wdb
+*.vcd
+*.fst
+
+# MATLAB temporary
+*.asv
+*.mat
+large_vectors/
+raw_vectors/
+
+# Build output
+build/*
+!build/.gitkeep

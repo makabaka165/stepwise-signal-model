@@ -1,0 +1,5 @@
+keypoint,value,note
+fixed_point_pass_flag,0,quoted from steps/step_10_final_thesis_route/evidence/step89_hardware_boundary_keypoints.csv; fixed-point influence validation did not pass
+recommended_fixed_point_format,not_recommended,quoted from Step10 evidence; no candidate promoted
+fixed_point_blocker_if_any,quantization_not_closed,quoted from Step10 evidence; hardware boundary blocker
+final_hardware_decision,FPGA_SoC_collaboration,do not claim completed pure FPGA fixed-point backend; keep EVD/SVD and route decision on SoC/CPU or float IP

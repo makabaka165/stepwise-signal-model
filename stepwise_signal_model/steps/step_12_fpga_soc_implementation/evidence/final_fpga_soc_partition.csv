@@ -1,0 +1,15 @@
+module,preferred_side,reason,notes
+pulse_compression,FPGA,high-throughput regular convolution or FFT,streaming kernel candidate
+MTD_FFT,FPGA,regular slow-time FFT,reuse FFT IP or pipelined FFT
+CFAR,FPGA,window statistics and threshold comparison,regular local window operation
+coarse_beamforming,FPGA,parallel beam power calculation,produces coarse angle or center_col
+shared_center_column_selection,FPGA_or_SoC,small control plus hardware extraction,RTL prototype provided
+Y_work_packing,FPGA,fixed local tensor construction,RTL prototype provided
+steering_LUT,FPGA,precomputed local templates,precision must be reviewed
+projection_score,FPGA_accelerated,parallel dot-products,optional acceleration RTL prototype provided
+EVD_SVD,SoC_or_float_IP,numerically sensitive,not first-version pure fixed-point FPGA
+rank1_decision,SoC,route-dependent decision,kept explainable and logged
+local_2D_pair_refinement,SoC_or_float_IP,small but complex branch,on-demand trigger
+route_selection,SoC,control-heavy,Step8.7 lazy cascade scheduler
+confidence_boundary,SoC,explainable state machine,confidence and boundary output
+logging_tracking_interface,SoC,system integration,route log and tracker interface
