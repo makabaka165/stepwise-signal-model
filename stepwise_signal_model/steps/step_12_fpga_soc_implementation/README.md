@@ -32,3 +32,14 @@ Raw ADC / array data
 - `matlab_golden/`: small-vector generation and comparison scripts.
 - `constraints/`: future timing, pin, and clocking constraints notes.
 - `build/`: ignored local build output directory.
+
+## 文件存放位置：
+
+rtl/              Verilog / SystemVerilog 源码
+tb/               testbench
+sim/              仿真脚本
+matlab_golden/    MATLAB 生成 golden data 和结果比对
+constraints/      约束文件，暂时可以空着
+docs/             FPGA/SoC 文档
+evidence/         分工表、边界表、验证结果表
+diagrams/         图表说明或图片
