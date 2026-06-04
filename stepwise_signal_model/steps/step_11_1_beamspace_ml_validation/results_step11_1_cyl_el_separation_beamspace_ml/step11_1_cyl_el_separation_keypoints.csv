@@ -1,0 +1,13 @@
+metric,metric_value,metric_text
+best_sep_joint_success_bias0_snr30,1,
+best_common_joint_success_bias0_snr30,0,
+sep_minus_common_joint_success_gap_bias0_snr30,1,
+best_layout_sep_bias0_snr30,NaN,az5_el5
+max_sep_boundary_hit_rate,0,
+max_sep_false_el_split_rate_when_true_sep0,0,
+mean_manifold_corr_at_best,0.194240996575622,
+mean_abs_el_sep_error_at_best,0.0199999999999991,
+cyl_el_separation_pass_flag,1,
+recommended_next_step,NaN,proceed_to_cylindrical_coherence_stress_or_model_selection
+best_sep_none_joint_success_bias0_snr30,1,
+white_minus_none_sep_joint_success_gap_bias0_snr30,0,

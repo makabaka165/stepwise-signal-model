@@ -1,0 +1,52 @@
+Step11.1 Stage4 starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\stage4_cyl_el_separation_beamspace_ml\run_stage4_cyl_el_separation_beamspace_ml
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml
+cfg.arr: Naz=192, Nel=32, fc=1e+10, lambda=0.03, R=0.4, dz=0.017
+cfg.beam.subNaz=65, arrInfo.nAct=2080, expected_N_elem=2080
+phase_factor=2, phase_sign=+1
+base_seed=20260614, L=64, Metkl=3
+az_sep_list=[0.83 1.21], el_sep_true_list=[0 0.31 0.57], el_center_offset_list=[-0.27 0.33], snr_list=[20 30]
+center_bias_cases=[0 0;0.2 0;0 0.2]
+beam_layouts=az3_el3,az5_el3,az5_el5
+source_mode_list=noncoherent, whitening_mode_list=none,white
+az_search_half_width=1.400, el_search_half_width=1.100, az_beam_span=2.000, el_beam_span=1.500
+az_grid_step_deg=0.070, el_grid_step_deg=0.150, el_sep_index_list=[0 1 2], search_orientations=[1 -1]
+az_tol_deg=0.150, el_tol_deg=0.220, el_sep_tol_deg=0.250
+Precomputed 9 beam/grid cache entries.
+Completed az_sep=0.83, el_sep_true=0.00, snr=20.0 dB, rows=54/1296, elapsed 1.44 s
+Completed az_sep=0.83, el_sep_true=0.00, snr=30.0 dB, rows=108/1296, elapsed 2.42 s
+Completed az_sep=0.83, el_sep_true=0.00, snr=20.0 dB, rows=162/1296, elapsed 3.16 s
+Completed az_sep=0.83, el_sep_true=0.00, snr=30.0 dB, rows=216/1296, elapsed 3.87 s
+Completed az_sep=0.83, el_sep_true=0.31, snr=20.0 dB, rows=270/1296, elapsed 4.56 s
+Completed az_sep=0.83, el_sep_true=0.31, snr=30.0 dB, rows=324/1296, elapsed 5.46 s
+Completed az_sep=0.83, el_sep_true=0.31, snr=20.0 dB, rows=378/1296, elapsed 6.22 s
+Completed az_sep=0.83, el_sep_true=0.31, snr=30.0 dB, rows=432/1296, elapsed 6.95 s
+Completed az_sep=0.83, el_sep_true=0.57, snr=20.0 dB, rows=486/1296, elapsed 7.87 s
+Completed az_sep=0.83, el_sep_true=0.57, snr=30.0 dB, rows=540/1296, elapsed 8.76 s
+Completed az_sep=0.83, el_sep_true=0.57, snr=20.0 dB, rows=594/1296, elapsed 9.54 s
+Completed az_sep=0.83, el_sep_true=0.57, snr=30.0 dB, rows=648/1296, elapsed 10.36 s
+Completed az_sep=1.21, el_sep_true=0.00, snr=20.0 dB, rows=702/1296, elapsed 11.38 s
+Completed az_sep=1.21, el_sep_true=0.00, snr=30.0 dB, rows=756/1296, elapsed 12.35 s
+Completed az_sep=1.21, el_sep_true=0.00, snr=20.0 dB, rows=810/1296, elapsed 13.12 s
+Completed az_sep=1.21, el_sep_true=0.00, snr=30.0 dB, rows=864/1296, elapsed 13.89 s
+Completed az_sep=1.21, el_sep_true=0.31, snr=20.0 dB, rows=918/1296, elapsed 14.72 s
+Completed az_sep=1.21, el_sep_true=0.31, snr=30.0 dB, rows=972/1296, elapsed 15.52 s
+Completed az_sep=1.21, el_sep_true=0.31, snr=20.0 dB, rows=1026/1296, elapsed 16.73 s
+Completed az_sep=1.21, el_sep_true=0.31, snr=30.0 dB, rows=1080/1296, elapsed 17.88 s
+Completed az_sep=1.21, el_sep_true=0.57, snr=20.0 dB, rows=1134/1296, elapsed 19.04 s
+Completed az_sep=1.21, el_sep_true=0.57, snr=30.0 dB, rows=1188/1296, elapsed 20.21 s
+Completed az_sep=1.21, el_sep_true=0.57, snr=20.0 dB, rows=1242/1296, elapsed 21.15 s
+Completed az_sep=1.21, el_sep_true=0.57, snr=30.0 dB, rows=1296/1296, elapsed 22.14 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\step11_1_cyl_el_separation_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\step11_1_cyl_el_separation_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\step11_1_cyl_el_separation_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\step11_1_cyl_el_separation_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_joint_success_by_layout.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_el_rmse_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_vs_common_success_gap.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_false_split_true_sep0.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_boundary_hit_rate.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_manifold_corr.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_el_separation_beamspace_ml\cyl_el_sep_score_margin.png
+cyl_el_separation_pass_flag=1
+recommended_next_step=proceed_to_cylindrical_coherence_stress_or_model_selection
