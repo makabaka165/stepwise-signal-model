@@ -122,3 +122,48 @@ Important Stage5 keypoints from the completed run:
 - `whitening_gain_mean_pair2d = 0`
 
 Stage5 is a coherence and strong-coherence pressure validation for the Stage4 controlled el-separated pair beamspace ML model. It is not AP, not a final engineering closed loop, and not a claim that every strong-coherence scenario succeeds. The `worst_case_joint_success_pair2d_white = 0` and `max_false_high_like_rate = 1` results should be treated as boundary and confidence-risk evidence for later model-selection work.
+
+## Stage6 Current Status
+
+Stage6 has a direct run entry:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_1_beamspace_ml_validation/stage6_full4d_beamspace_ml_comparison/run_stage6_full4d_beamspace_ml_comparison.m')
+```
+
+The result directory is `results_step11_1_full4d_beamspace_ml_comparison/`, and the main decision file is `step11_1_full4d_comparison_keypoints.csv`.
+
+The current generated keypoints report `full4d_pass_flag = 1` with `recommended_next_step = proceed_to_final_paper_evidence_summary`.
+
+Important Stage6 keypoints from the completed run:
+
+- `best_full4d_joint_success = 1`
+- `best_pair2d_joint_success = 1`
+- `best_common_joint_success = 0.5625`
+- `full4d_minus_pair2d_success_gap = 0`
+- `full4d_minus_common_success_gap = 0.4375`
+- `pair2d_minus_common_success_gap = 0.4375`
+- `complexity_ratio_full4d_over_pair2d = 3.95890410958904`
+- `full4d_recommended_role = upper_bound_only_pair2d_is_sufficient`
+
+Stage6 compares common-el, controlled pair2d, and local full4d beamspace ML. Full4d is treated as a local upper-bound comparison, not as the default main algorithm. In the current representative scenarios, full4d does not improve controlled pair2d, while its candidate-count proxy is about 3.96 times larger.
+
+## Stage7 Current Status
+
+Stage7 has a direct run entry:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_1_beamspace_ml_validation/stage7_final_paper_evidence_summary/run_stage7_final_paper_evidence_summary.m')
+```
+
+The result directory is `results_step11_1_final_paper_evidence_summary/`.
+
+The current generated final recommendation is:
+
+```text
+use_controlled_pair2d_beamspace_ml_as_main_thesis_route_with_full4d_upper_bound
+```
+
+Stage7 generates final paper evidence CSVs, Markdown writing notes, and overview PNGs. It is a paper-level result organization stage only: it adds no new algorithm, does not validate AP, does not complete an engineering confidence boundary, and does not claim that every strong-coherence scenario succeeds.

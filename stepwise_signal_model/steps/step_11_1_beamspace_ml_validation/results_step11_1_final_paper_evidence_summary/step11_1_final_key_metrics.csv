@@ -1,0 +1,18 @@
+stage,metric,metric_value,metric_text
+Stage1 ULA prior ablation,prior_dependency_flag,0,
+Stage2 cylindrical az-only beamspace ML,cyl_azonly_pass_flag,1,
+Stage3 cylindrical common-el 2D beamspace ML,cyl_common_el_2d_pass_flag,1,
+Stage4 controlled el-separated pair2d beamspace ML,cyl_el_separation_pass_flag,1,
+Stage4 controlled el-separated pair2d beamspace ML,best_sep_joint_success_bias0_snr30,1,
+Stage4 controlled el-separated pair2d beamspace ML,sep_minus_common_joint_success_gap_bias0_snr30,1,
+Stage5 coherence stress,coherence_stress_pass_flag,1,
+Stage5 coherence stress,pass_rate_moderate_coherence,0.993055555555556,
+Stage5 coherence stress,pass_rate_strong_coherence,0.951388888888889,
+Stage5 coherence stress,worst_case_joint_success_pair2d_white,0,
+Stage5 coherence stress,max_false_high_like_rate,1,
+Stage6 full4d upper-bound comparison,full4d_pass_flag,1,
+Stage6 full4d upper-bound comparison,best_full4d_joint_success,1,
+Stage6 full4d upper-bound comparison,best_pair2d_joint_success,1,
+Stage6 full4d upper-bound comparison,full4d_minus_pair2d_success_gap,0,
+Stage6 full4d upper-bound comparison,complexity_ratio_full4d_over_pair2d,3.95890410958904,
+Stage6 full4d upper-bound comparison,full4d_recommended_role,NaN,upper_bound_only_pair2d_is_sufficient

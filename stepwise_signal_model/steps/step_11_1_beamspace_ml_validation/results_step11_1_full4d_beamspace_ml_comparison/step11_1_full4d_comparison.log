@@ -1,0 +1,64 @@
+Step11.1 Stage6 starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\stage6_full4d_beamspace_ml_comparison\run_stage6_full4d_beamspace_ml_comparison
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison
+cfg.arr: Naz=192, Nel=32, fc=1e+10, lambda=0.03, R=0.4, dz=0.017
+cfg.beam.subNaz=65, arrInfo.nAct=2080, expected_N_elem=2080
+phase_factor=2, phase_sign=+1
+base_seed=20260616, L=64, Metkl=2
+beam_layouts=az5_el5,az5_el3
+model_mode_list=common_el_restricted,controlled_pair2d,full4d, whitening_mode_list=white
+az_search_half_width=1.500, el_search_half_width=1.200, az_beam_span=2.200, el_beam_span=1.600
+az_grid_step_deg=0.100, el_grid_step_deg=0.150, el_sep_index_list=[0 1 2], search_orientations=[1 -1]
+scenario 01 easy_noncoherent: rho=0.00, phase=0.0, beta=1.00, az_sep=1.27, el_sep=0.67, snr=30.0, bias=[0.0 0.0]
+scenario 02 moderate_coherent: rho=0.90, phase=5.0, beta=0.70, az_sep=1.27, el_sep=0.37, snr=30.0, bias=[0.0 0.0]
+scenario 03 strong_coherent: rho=0.99, phase=5.0, beta=1.00, az_sep=1.27, el_sep=0.37, snr=30.0, bias=[0.0 0.0]
+scenario 04 full_coherent: rho=1.00, phase=0.0, beta=1.00, az_sep=1.27, el_sep=0.37, snr=30.0, bias=[0.0 0.0]
+scenario 05 hard_phase: rho=0.99, phase=150.0, beta=1.00, az_sep=0.83, el_sep=0.37, snr=30.0, bias=[0.0 0.0]
+scenario 06 weak_secondary: rho=0.99, phase=150.0, beta=0.30, az_sep=0.83, el_sep=0.37, snr=30.0, bias=[0.0 0.0]
+scenario 07 near_common_el: rho=0.99, phase=30.0, beta=0.70, az_sep=0.83, el_sep=0.00, snr=30.0, bias=[0.0 0.0]
+scenario 08 biased_frontend: rho=0.99, phase=30.0, beta=0.70, az_sep=0.83, el_sep=0.37, snr=30.0, bias=[0.2 0.0]
+scenario 09 low_snr_hard: rho=1.00, phase=150.0, beta=0.30, az_sep=0.83, el_sep=0.37, snr=20.0, bias=[0.0 0.0]
+scenario 10 larger_el_sep: rho=0.90, phase=30.0, beta=0.70, az_sep=1.27, el_sep=0.67, snr=30.0, bias=[0.0 0.0]
+Completed scenario 01/10 easy_noncoherent, rows=12/120, elapsed 1.90 s
+Completed scenario 02/10 moderate_coherent, rows=24/120, elapsed 2.51 s
+Completed scenario 03/10 strong_coherent, rows=36/120, elapsed 3.01 s
+Completed scenario 04/10 full_coherent, rows=48/120, elapsed 3.53 s
+Completed scenario 05/10 hard_phase, rows=60/120, elapsed 4.02 s
+Completed scenario 06/10 weak_secondary, rows=72/120, elapsed 4.50 s
+Completed scenario 07/10 near_common_el, rows=84/120, elapsed 4.99 s
+Completed scenario 08/10 biased_frontend, rows=96/120, elapsed 5.57 s
+Completed scenario 09/10 low_snr_hard, rows=108/120, elapsed 6.13 s
+Completed scenario 10/10 larger_el_sep, rows=120/120, elapsed 6.71 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\step11_1_full4d_comparison_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\step11_1_full4d_comparison_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\step11_1_full4d_comparison_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\step11_1_full4d_comparison_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_model_joint_success_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_model_az_rmse_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_model_el_rmse_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_full4d_pair2d_gap_by_scenario.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_complexity_num_pairs_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_boundary_hit_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_full4d_beamspace_ml_comparison\stage6_model_score_margin_compare.png
+Keypoints:
+  full4d_pass_flag = 1
+  best_full4d_joint_success = 1
+  best_pair2d_joint_success = 1
+  best_common_joint_success = 0.5625
+  full4d_minus_pair2d_success_gap = 0
+  full4d_minus_common_success_gap = 0.4375
+  pair2d_minus_common_success_gap = 0.4375
+  full4d_mean_az_rmse = 0.043401432655
+  pair2d_mean_az_rmse = 0.043401432655
+  full4d_mean_el_rmse = 0.0331004807656
+  pair2d_mean_el_rmse = 0.0331004807656
+  full4d_runtime_proxy_num_pairs = 134385
+  pair2d_runtime_proxy_num_pairs = 33945
+  complexity_ratio_full4d_over_pair2d = 3.95890410959
+  full4d_boundary_hit_rate = 0
+  pair2d_boundary_hit_rate = 0
+  full4d_recommended_role = upper_bound_only_pair2d_is_sufficient
+  recommended_next_step = proceed_to_final_paper_evidence_summary
+full4d_pass_flag=1
+full4d_recommended_role=upper_bound_only_pair2d_is_sufficient
+recommended_next_step=proceed_to_final_paper_evidence_summary
