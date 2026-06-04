@@ -1,0 +1,40 @@
+Step11.1 Stage2 starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\stage2_cyl_azonly_beamspace_ml\run_stage2_cyl_azonly_beamspace_ml
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml
+cfg.arr: Naz=192, Nel=32, fc=1e+10, lambda=0.03, R=0.4, dz=0.017
+cfg.beam.subNaz=65, arrInfo.nAct=2080, expected_N_elem=2080
+phase_factor=2, phase_sign=+1
+L=64, Metkl=20, az_sep_list=[0.6 1 1.4], snr_list=[10 20 30]
+beam_count_list=[9 16 25], center_bias_list=[-0.2 0 0.2]
+source_mode_list=noncoherent,coherent, whitening_mode_list=none,white
+search_half_width=1.800, beam_span=2.400, grid_step_deg=0.020, tol_deg=0.100
+Precomputed 9 beam/grid cache entries.
+Completed source=noncoherent, az_sep=0.60, snr=10.0 dB, rows=360/6480, elapsed 1.20 s
+Completed source=noncoherent, az_sep=0.60, snr=20.0 dB, rows=720/6480, elapsed 2.04 s
+Completed source=noncoherent, az_sep=0.60, snr=30.0 dB, rows=1080/6480, elapsed 2.93 s
+Completed source=noncoherent, az_sep=1.00, snr=10.0 dB, rows=1440/6480, elapsed 3.77 s
+Completed source=noncoherent, az_sep=1.00, snr=20.0 dB, rows=1800/6480, elapsed 4.51 s
+Completed source=noncoherent, az_sep=1.00, snr=30.0 dB, rows=2160/6480, elapsed 5.43 s
+Completed source=noncoherent, az_sep=1.40, snr=10.0 dB, rows=2520/6480, elapsed 6.33 s
+Completed source=noncoherent, az_sep=1.40, snr=20.0 dB, rows=2880/6480, elapsed 7.18 s
+Completed source=noncoherent, az_sep=1.40, snr=30.0 dB, rows=3240/6480, elapsed 8.00 s
+Completed source=coherent, az_sep=0.60, snr=10.0 dB, rows=3600/6480, elapsed 8.86 s
+Completed source=coherent, az_sep=0.60, snr=20.0 dB, rows=3960/6480, elapsed 9.65 s
+Completed source=coherent, az_sep=0.60, snr=30.0 dB, rows=4320/6480, elapsed 10.57 s
+Completed source=coherent, az_sep=1.00, snr=10.0 dB, rows=4680/6480, elapsed 11.36 s
+Completed source=coherent, az_sep=1.00, snr=20.0 dB, rows=5040/6480, elapsed 12.23 s
+Completed source=coherent, az_sep=1.00, snr=30.0 dB, rows=5400/6480, elapsed 13.12 s
+Completed source=coherent, az_sep=1.40, snr=10.0 dB, rows=5760/6480, elapsed 13.87 s
+Completed source=coherent, az_sep=1.40, snr=20.0 dB, rows=6120/6480, elapsed 14.69 s
+Completed source=coherent, az_sep=1.40, snr=30.0 dB, rows=6480/6480, elapsed 15.55 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\step11_1_cyl_azonly_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\step11_1_cyl_azonly_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\step11_1_cyl_azonly_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\step11_1_cyl_azonly_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\cyl_azonly_tol_success_vs_beam_count.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\cyl_azonly_rmse_vs_snr.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\cyl_azonly_whitening_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\cyl_azonly_boundary_hit_rate.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_azonly_beamspace_ml\cyl_azonly_manifold_corr_vs_sep.png
+cyl_azonly_pass_flag=1
+recommended_next_step=proceed_to_cylindrical_2d_beamspace_ml_or_coherence_stress

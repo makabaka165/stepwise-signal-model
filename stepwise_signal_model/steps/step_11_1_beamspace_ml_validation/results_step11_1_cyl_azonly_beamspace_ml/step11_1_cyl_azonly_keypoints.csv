@@ -1,0 +1,9 @@
+metric,metric_value,metric_text
+best_white_tol_success_bias0_snr20,1,
+best_none_tol_success_bias0_snr20,1,
+white_minus_none_success_gap_bias0_snr20,0,
+best_beam_count_white_bias0_snr20,9,
+max_boundary_hit_rate,0,
+mean_manifold_corr_at_best,0.119840936156004,
+cyl_azonly_pass_flag,1,
+recommended_next_step,NaN,proceed_to_cylindrical_2d_beamspace_ml_or_coherence_stress

@@ -48,3 +48,18 @@ The result directory is `results_step11_1_ula_prior_ablation/`, and the main dec
 The current generated keypoints report `prior_dependency_flag = 0` for this Stage1 parameter set, with `recommended_next_step = proceed_to_cylindrical_azonly_beamspace_ml`.
 
 Any conclusion from this stage applies only to ULA beamspace ML prior ablation. It must not be read as a completed cylindrical-array beamspace ML result, and it must not be read as an AP validation. The next stage is cylindrical-array az-only beamspace ML migration, not AP.
+
+## Stage2 Current Status
+
+Stage2 has a direct run entry:
+
+```matlab
+run('stepwise_signal_model/setup_paths.m')
+run('stepwise_signal_model/steps/step_11_1_beamspace_ml_validation/stage2_cyl_azonly_beamspace_ml/run_stage2_cyl_azonly_beamspace_ml.m')
+```
+
+The result directory is `results_step11_1_cyl_azonly_beamspace_ml/`, and the main decision file is `step11_1_cyl_azonly_keypoints.csv`.
+
+The current generated keypoints report `cyl_azonly_pass_flag = 1` with `recommended_next_step = proceed_to_cylindrical_2d_beamspace_ml_or_coherence_stress`.
+
+Stage2 only validates cylindrical-array az-only beamspace ML with fixed `el0`. It is not a complete 2D az/el result, not an AP validation, not a strong-coherence final solution, and not a final thesis conclusion.
