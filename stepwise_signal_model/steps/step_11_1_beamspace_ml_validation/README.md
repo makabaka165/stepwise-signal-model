@@ -93,3 +93,32 @@ The result directory is `results_step11_1_cyl_el_separation_beamspace_ml/`, and 
 The current generated keypoints report `cyl_el_separation_pass_flag = 1` with `recommended_next_step = proceed_to_cylindrical_coherence_stress_or_model_selection`.
 
 Stage4 validates a controlled el-separated pair beamspace ML model with `[az1, az2, el_center, el_sep, orientation]`. It is not a complete unconstrained 4D pair az/el search, not an AP validation, not a strong-coherence final solution, and not a final thesis conclusion.
+
+## Stage5 Current Status
+
+Stage5 has a direct run entry:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_1_beamspace_ml_validation/stage5_cyl_coherence_stress/run_stage5_cyl_coherence_stress.m')
+```
+
+The result directory is `results_step11_1_cyl_coherence_stress/`, and the main decision file is `step11_1_cyl_coherence_stress_keypoints.csv`.
+
+The current generated keypoints report `coherence_stress_pass_flag = 1` with `recommended_next_step = proceed_to_model_selection_and_confidence_boundary`.
+
+Important Stage5 keypoints from the completed run:
+
+- `pass_rate_moderate_coherence = 0.993055555555556`
+- `pass_rate_strong_coherence = 0.951388888888889`
+- `pair2d_white_success_rho0 = 1`
+- `pair2d_white_success_rho09 = 0.986111111111111`
+- `pair2d_white_success_rho099 = 0.956018518518518`
+- `pair2d_white_success_rho1 = 0.946759259259259`
+- `worst_case_joint_success_pair2d_white = 0`
+- `max_boundary_hit_rate_pair2d_white = 0`
+- `max_false_el_split_rate_true_sep0_pair2d_white = 0`
+- `pair2d_minus_common_mean_success_gap = 0.657696759259259`
+- `whitening_gain_mean_pair2d = 0`
+
+Stage5 is a coherence and strong-coherence pressure validation for the Stage4 controlled el-separated pair beamspace ML model. It is not AP, not a final engineering closed loop, and not a claim that every strong-coherence scenario succeeds. The `worst_case_joint_success_pair2d_white = 0` and `max_false_high_like_rate = 1` results should be treated as boundary and confidence-risk evidence for later model-selection work.

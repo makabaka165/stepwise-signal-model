@@ -1,0 +1,152 @@
+Step11.1 Stage5 starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\stage5_cyl_coherence_stress\run_stage5_cyl_coherence_stress
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress
+cfg.arr: Naz=192, Nel=32, fc=1e+10, lambda=0.03, R=0.4, dz=0.017
+cfg.beam.subNaz=65, arrInfo.nAct=2080, expected_N_elem=2080
+phase_factor=2, phase_sign=+1
+base_seed=20260615, L=64, Metkl=3
+rho_list=[0 0.9 0.99 1], phase_deg_list=[0 5 30 150], beta_list=[1 0.7 0.3]
+az_sep_list=[0.83 1.27], el_sep_list=[0 0.37 0.67], snr_list=[20 30]
+el_center_offset=0.310, center_bias_cases=[0 0;0.2 0]
+beam_layouts=az5_el5,az5_el3, model_mode_list=pair2d,common_el_restricted, whitening_mode_list=none,white
+az_search_half_width=1.500, el_search_half_width=1.200, az_beam_span=2.200, el_beam_span=1.600
+az_grid_step_deg=0.080, el_grid_step_deg=0.120, el_sep_index_list=[0 1 2], search_orientations=[1 -1]
+az_tol_deg=0.150, el_tol_deg=0.200, el_sep_tol_deg=0.250, reg=1e-10
+should_run_case rules: pair2d+white full grid; common_el_restricted only white full grid; pair2d+none only rho in [0,1] and phase in [0,30].
+Precomputed 4 beam/grid cache entries.
+Completed rho=0.00, phase=0.0 deg, beta=1.00, snr=20.0 dB, rows=216/15552, elapsed 4.84 s
+Completed rho=0.00, phase=0.0 deg, beta=1.00, snr=30.0 dB, rows=432/15552, elapsed 8.67 s
+Completed rho=0.00, phase=0.0 deg, beta=0.70, snr=20.0 dB, rows=648/15552, elapsed 11.95 s
+Completed rho=0.00, phase=0.0 deg, beta=0.70, snr=30.0 dB, rows=864/15552, elapsed 15.36 s
+Completed rho=0.00, phase=0.0 deg, beta=0.30, snr=20.0 dB, rows=1080/15552, elapsed 19.01 s
+Completed rho=0.00, phase=0.0 deg, beta=0.30, snr=30.0 dB, rows=1296/15552, elapsed 22.48 s
+Completed rho=0.00, phase=5.0 deg, beta=1.00, snr=20.0 dB, rows=1440/15552, elapsed 24.35 s
+Completed rho=0.00, phase=5.0 deg, beta=1.00, snr=30.0 dB, rows=1584/15552, elapsed 26.56 s
+Completed rho=0.00, phase=5.0 deg, beta=0.70, snr=20.0 dB, rows=1728/15552, elapsed 28.50 s
+Completed rho=0.00, phase=5.0 deg, beta=0.70, snr=30.0 dB, rows=1872/15552, elapsed 30.41 s
+Completed rho=0.00, phase=5.0 deg, beta=0.30, snr=20.0 dB, rows=2016/15552, elapsed 32.58 s
+Completed rho=0.00, phase=5.0 deg, beta=0.30, snr=30.0 dB, rows=2160/15552, elapsed 34.45 s
+Completed rho=0.00, phase=30.0 deg, beta=1.00, snr=20.0 dB, rows=2376/15552, elapsed 37.73 s
+Completed rho=0.00, phase=30.0 deg, beta=1.00, snr=30.0 dB, rows=2592/15552, elapsed 41.34 s
+Completed rho=0.00, phase=30.0 deg, beta=0.70, snr=20.0 dB, rows=2808/15552, elapsed 44.40 s
+Completed rho=0.00, phase=30.0 deg, beta=0.70, snr=30.0 dB, rows=3024/15552, elapsed 48.08 s
+Completed rho=0.00, phase=30.0 deg, beta=0.30, snr=20.0 dB, rows=3240/15552, elapsed 51.39 s
+Completed rho=0.00, phase=30.0 deg, beta=0.30, snr=30.0 dB, rows=3456/15552, elapsed 54.89 s
+Completed rho=0.00, phase=150.0 deg, beta=1.00, snr=20.0 dB, rows=3600/15552, elapsed 56.73 s
+Completed rho=0.00, phase=150.0 deg, beta=1.00, snr=30.0 dB, rows=3744/15552, elapsed 58.76 s
+Completed rho=0.00, phase=150.0 deg, beta=0.70, snr=20.0 dB, rows=3888/15552, elapsed 60.66 s
+Completed rho=0.00, phase=150.0 deg, beta=0.70, snr=30.0 dB, rows=4032/15552, elapsed 62.46 s
+Completed rho=0.00, phase=150.0 deg, beta=0.30, snr=20.0 dB, rows=4176/15552, elapsed 64.59 s
+Completed rho=0.00, phase=150.0 deg, beta=0.30, snr=30.0 dB, rows=4320/15552, elapsed 66.51 s
+Completed rho=0.90, phase=0.0 deg, beta=1.00, snr=20.0 dB, rows=4464/15552, elapsed 68.32 s
+Completed rho=0.90, phase=0.0 deg, beta=1.00, snr=30.0 dB, rows=4608/15552, elapsed 70.39 s
+Completed rho=0.90, phase=0.0 deg, beta=0.70, snr=20.0 dB, rows=4752/15552, elapsed 72.16 s
+Completed rho=0.90, phase=0.0 deg, beta=0.70, snr=30.0 dB, rows=4896/15552, elapsed 74.05 s
+Completed rho=0.90, phase=0.0 deg, beta=0.30, snr=20.0 dB, rows=5040/15552, elapsed 76.34 s
+Completed rho=0.90, phase=0.0 deg, beta=0.30, snr=30.0 dB, rows=5184/15552, elapsed 78.31 s
+Completed rho=0.90, phase=5.0 deg, beta=1.00, snr=20.0 dB, rows=5328/15552, elapsed 80.14 s
+Completed rho=0.90, phase=5.0 deg, beta=1.00, snr=30.0 dB, rows=5472/15552, elapsed 82.39 s
+Completed rho=0.90, phase=5.0 deg, beta=0.70, snr=20.0 dB, rows=5616/15552, elapsed 84.76 s
+Completed rho=0.90, phase=5.0 deg, beta=0.70, snr=30.0 dB, rows=5760/15552, elapsed 86.81 s
+Completed rho=0.90, phase=5.0 deg, beta=0.30, snr=20.0 dB, rows=5904/15552, elapsed 88.89 s
+Completed rho=0.90, phase=5.0 deg, beta=0.30, snr=30.0 dB, rows=6048/15552, elapsed 90.72 s
+Completed rho=0.90, phase=30.0 deg, beta=1.00, snr=20.0 dB, rows=6192/15552, elapsed 92.54 s
+Completed rho=0.90, phase=30.0 deg, beta=1.00, snr=30.0 dB, rows=6336/15552, elapsed 94.74 s
+Completed rho=0.90, phase=30.0 deg, beta=0.70, snr=20.0 dB, rows=6480/15552, elapsed 96.65 s
+Completed rho=0.90, phase=30.0 deg, beta=0.70, snr=30.0 dB, rows=6624/15552, elapsed 98.51 s
+Completed rho=0.90, phase=30.0 deg, beta=0.30, snr=20.0 dB, rows=6768/15552, elapsed 100.56 s
+Completed rho=0.90, phase=30.0 deg, beta=0.30, snr=30.0 dB, rows=6912/15552, elapsed 102.42 s
+Completed rho=0.90, phase=150.0 deg, beta=1.00, snr=20.0 dB, rows=7056/15552, elapsed 104.29 s
+Completed rho=0.90, phase=150.0 deg, beta=1.00, snr=30.0 dB, rows=7200/15552, elapsed 106.53 s
+Completed rho=0.90, phase=150.0 deg, beta=0.70, snr=20.0 dB, rows=7344/15552, elapsed 108.36 s
+Completed rho=0.90, phase=150.0 deg, beta=0.70, snr=30.0 dB, rows=7488/15552, elapsed 110.19 s
+Completed rho=0.90, phase=150.0 deg, beta=0.30, snr=20.0 dB, rows=7632/15552, elapsed 112.48 s
+Completed rho=0.90, phase=150.0 deg, beta=0.30, snr=30.0 dB, rows=7776/15552, elapsed 114.31 s
+Completed rho=0.99, phase=0.0 deg, beta=1.00, snr=20.0 dB, rows=7920/15552, elapsed 116.13 s
+Completed rho=0.99, phase=0.0 deg, beta=1.00, snr=30.0 dB, rows=8064/15552, elapsed 118.12 s
+Completed rho=0.99, phase=0.0 deg, beta=0.70, snr=20.0 dB, rows=8208/15552, elapsed 120.07 s
+Completed rho=0.99, phase=0.0 deg, beta=0.70, snr=30.0 dB, rows=8352/15552, elapsed 122.05 s
+Completed rho=0.99, phase=0.0 deg, beta=0.30, snr=20.0 dB, rows=8496/15552, elapsed 124.11 s
+Completed rho=0.99, phase=0.0 deg, beta=0.30, snr=30.0 dB, rows=8640/15552, elapsed 125.84 s
+Completed rho=0.99, phase=5.0 deg, beta=1.00, snr=20.0 dB, rows=8784/15552, elapsed 127.64 s
+Completed rho=0.99, phase=5.0 deg, beta=1.00, snr=30.0 dB, rows=8928/15552, elapsed 129.66 s
+Completed rho=0.99, phase=5.0 deg, beta=0.70, snr=20.0 dB, rows=9072/15552, elapsed 131.28 s
+Completed rho=0.99, phase=5.0 deg, beta=0.70, snr=30.0 dB, rows=9216/15552, elapsed 133.13 s
+Completed rho=0.99, phase=5.0 deg, beta=0.30, snr=20.0 dB, rows=9360/15552, elapsed 135.59 s
+Completed rho=0.99, phase=5.0 deg, beta=0.30, snr=30.0 dB, rows=9504/15552, elapsed 137.84 s
+Completed rho=0.99, phase=30.0 deg, beta=1.00, snr=20.0 dB, rows=9648/15552, elapsed 140.08 s
+Completed rho=0.99, phase=30.0 deg, beta=1.00, snr=30.0 dB, rows=9792/15552, elapsed 142.12 s
+Completed rho=0.99, phase=30.0 deg, beta=0.70, snr=20.0 dB, rows=9936/15552, elapsed 144.11 s
+Completed rho=0.99, phase=30.0 deg, beta=0.70, snr=30.0 dB, rows=10080/15552, elapsed 146.32 s
+Completed rho=0.99, phase=30.0 deg, beta=0.30, snr=20.0 dB, rows=10224/15552, elapsed 148.36 s
+Completed rho=0.99, phase=30.0 deg, beta=0.30, snr=30.0 dB, rows=10368/15552, elapsed 150.31 s
+Completed rho=0.99, phase=150.0 deg, beta=1.00, snr=20.0 dB, rows=10512/15552, elapsed 152.24 s
+Completed rho=0.99, phase=150.0 deg, beta=1.00, snr=30.0 dB, rows=10656/15552, elapsed 153.98 s
+Completed rho=0.99, phase=150.0 deg, beta=0.70, snr=20.0 dB, rows=10800/15552, elapsed 155.73 s
+Completed rho=0.99, phase=150.0 deg, beta=0.70, snr=30.0 dB, rows=10944/15552, elapsed 157.69 s
+Completed rho=0.99, phase=150.0 deg, beta=0.30, snr=20.0 dB, rows=11088/15552, elapsed 159.45 s
+Completed rho=0.99, phase=150.0 deg, beta=0.30, snr=30.0 dB, rows=11232/15552, elapsed 161.18 s
+Completed rho=1.00, phase=0.0 deg, beta=1.00, snr=20.0 dB, rows=11448/15552, elapsed 164.49 s
+Completed rho=1.00, phase=0.0 deg, beta=1.00, snr=30.0 dB, rows=11664/15552, elapsed 167.76 s
+Completed rho=1.00, phase=0.0 deg, beta=0.70, snr=20.0 dB, rows=11880/15552, elapsed 171.09 s
+Completed rho=1.00, phase=0.0 deg, beta=0.70, snr=30.0 dB, rows=12096/15552, elapsed 174.20 s
+Completed rho=1.00, phase=0.0 deg, beta=0.30, snr=20.0 dB, rows=12312/15552, elapsed 177.51 s
+Completed rho=1.00, phase=0.0 deg, beta=0.30, snr=30.0 dB, rows=12528/15552, elapsed 180.61 s
+Completed rho=1.00, phase=5.0 deg, beta=1.00, snr=20.0 dB, rows=12672/15552, elapsed 182.59 s
+Completed rho=1.00, phase=5.0 deg, beta=1.00, snr=30.0 dB, rows=12816/15552, elapsed 184.32 s
+Completed rho=1.00, phase=5.0 deg, beta=0.70, snr=20.0 dB, rows=12960/15552, elapsed 186.09 s
+Completed rho=1.00, phase=5.0 deg, beta=0.70, snr=30.0 dB, rows=13104/15552, elapsed 188.04 s
+Completed rho=1.00, phase=5.0 deg, beta=0.30, snr=20.0 dB, rows=13248/15552, elapsed 189.77 s
+Completed rho=1.00, phase=5.0 deg, beta=0.30, snr=30.0 dB, rows=13392/15552, elapsed 191.51 s
+Completed rho=1.00, phase=30.0 deg, beta=1.00, snr=20.0 dB, rows=13608/15552, elapsed 194.79 s
+Completed rho=1.00, phase=30.0 deg, beta=1.00, snr=30.0 dB, rows=13824/15552, elapsed 198.05 s
+Completed rho=1.00, phase=30.0 deg, beta=0.70, snr=20.0 dB, rows=14040/15552, elapsed 201.35 s
+Completed rho=1.00, phase=30.0 deg, beta=0.70, snr=30.0 dB, rows=14256/15552, elapsed 204.40 s
+Completed rho=1.00, phase=30.0 deg, beta=0.30, snr=20.0 dB, rows=14472/15552, elapsed 207.67 s
+Completed rho=1.00, phase=30.0 deg, beta=0.30, snr=30.0 dB, rows=14688/15552, elapsed 210.71 s
+Completed rho=1.00, phase=150.0 deg, beta=1.00, snr=20.0 dB, rows=14832/15552, elapsed 212.66 s
+Completed rho=1.00, phase=150.0 deg, beta=1.00, snr=30.0 dB, rows=14976/15552, elapsed 214.38 s
+Completed rho=1.00, phase=150.0 deg, beta=0.70, snr=20.0 dB, rows=15120/15552, elapsed 216.10 s
+Completed rho=1.00, phase=150.0 deg, beta=0.70, snr=30.0 dB, rows=15264/15552, elapsed 218.03 s
+Completed rho=1.00, phase=150.0 deg, beta=0.30, snr=20.0 dB, rows=15408/15552, elapsed 219.79 s
+Completed rho=1.00, phase=150.0 deg, beta=0.30, snr=30.0 dB, rows=15552/15552, elapsed 221.54 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\step11_1_cyl_coherence_stress_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\step11_1_cyl_coherence_stress_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\step11_1_cyl_coherence_stress_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\step11_1_cyl_coherence_stress_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_success_vs_rho.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_success_heatmap_phase_rho.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_beta_sensitivity.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_pair2d_vs_common_gap.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_boundary_hit_rate.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_false_split_true_sep0.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_whitening_gain.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_coherence_stress\cyl_coherence_manifold_corr.png
+Keypoints:
+  pass_rate_moderate_coherence = 0.993055555556
+  pass_rate_strong_coherence = 0.951388888889
+  worst_case_joint_success = 0
+  best_layout_overall = az5_el5
+  max_boundary_hit_rate = 0
+  max_false_split_rate_true_sep0 = 0
+  max_false_high_like_rate = 1
+  rho90_or_highest_reliable_rho = 1
+  phase0_success_rate = 0.974537037037
+  weak_target_beta03_success_rate = 0.951388888889
+  whitening_gain_mean = 0
+  pair2d_white_success_rho0 = 1
+  pair2d_white_success_rho09 = 0.986111111111
+  pair2d_white_success_rho099 = 0.956018518519
+  pair2d_white_success_rho1 = 0.946759259259
+  phase0_success_rate_pair2d_white = 0.974537037037
+  weak_target_beta03_success_rate_pair2d_white = 0.951388888889
+  worst_case_joint_success_pair2d_white = 0
+  max_boundary_hit_rate_pair2d_white = 0
+  max_false_el_split_rate_true_sep0_pair2d_white = 0
+  highest_reliable_rho_pair2d_white = 1
+  pair2d_minus_common_mean_success_gap = 0.657696759259
+  whitening_gain_mean_pair2d = 0
+  coherence_stress_pass_flag = 1
+  recommended_next_step = proceed_to_model_selection_and_confidence_boundary
+coherence_stress_pass_flag=1
+recommended_next_step=proceed_to_model_selection_and_confidence_boundary
