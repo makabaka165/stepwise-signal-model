@@ -1,0 +1,9 @@
+metric,metric_value,metric_text
+best_left_right_tol_success_at_bias0,1,
+best_ordered_tol_success_at_bias0,1,
+left_right_minus_ordered_success_gap_at_bias0,0,
+max_boundary_hit_rate,1,
+recommended_next_step,NaN,proceed_to_cylindrical_azonly_beamspace_ml
+prior_dependency_flag,0,
+best_left_right_beam_count_at_bias0,16,
+best_ordered_beam_count_at_bias0,16,

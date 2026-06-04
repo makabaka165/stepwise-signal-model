@@ -1,0 +1,28 @@
+Step11.1 Stage1 ULA prior ablation starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\stage1_ula_prior_ablation\run_stage1_ula_prior_ablation
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation
+array_num=256, snapshots=130, snr=20.0 dB, Metkl=50
+theta_true=[12.700 14.300], true_center=13.500, beam_width=2.800
+beam_count_list=[16 20 24 28 32]
+center_bias_list=[-0.6 -0.4 -0.2 0 0.2 0.4 0.6]
+Completed trial 1 / 50, elapsed 0.62 s
+Completed trial 5 / 50, elapsed 1.82 s
+Completed trial 10 / 50, elapsed 3.13 s
+Completed trial 15 / 50, elapsed 4.42 s
+Completed trial 20 / 50, elapsed 5.73 s
+Completed trial 25 / 50, elapsed 7.08 s
+Completed trial 30 / 50, elapsed 8.41 s
+Completed trial 35 / 50, elapsed 9.74 s
+Completed trial 40 / 50, elapsed 11.01 s
+Completed trial 45 / 50, elapsed 12.31 s
+Completed trial 50 / 50, elapsed 13.56 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\step11_1_ula_prior_ablation_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\step11_1_ula_prior_ablation_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\step11_1_ula_prior_ablation_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\step11_1_ula_prior_ablation_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\ula_prior_ablation_tol_success_vs_center_bias.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\ula_prior_ablation_rmse_vs_center_bias.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\ula_prior_ablation_boundary_hit_rate.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_ula_prior_ablation\ula_prior_ablation_left_right_vs_ordered_bias0.png
+prior_dependency_flag=0
+recommended_next_step=proceed_to_cylindrical_azonly_beamspace_ml
