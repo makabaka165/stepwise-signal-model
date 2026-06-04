@@ -1,0 +1,34 @@
+Step11.1 Stage3 starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\stage3_cyl_common_el_2d_beamspace_ml\run_stage3_cyl_common_el_2d_beamspace_ml
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml
+cfg.arr: Naz=192, Nel=32, fc=1e+10, lambda=0.03, R=0.4, dz=0.017
+cfg.beam.subNaz=65, arrInfo.nAct=2080, expected_N_elem=2080
+phase_factor=2, phase_sign=+1
+base_seed=20260613, L=64, Metkl=5
+az_sep_list=[0.73 1.17], el_true_offset_list=[-0.37 0.43], snr_list=[15 25]
+center_bias_cases=[0 0;0.2 0;0 0.2;-0.2 -0.2]
+beam_layouts=az3_el3,az5_el3,az5_el5
+source_mode_list=noncoherent, whitening_mode_list=none,white
+az_search_half_width=1.400, el_search_half_width=1.000, az_beam_span=2.000, el_beam_span=1.400
+az_grid_step_deg=0.050, el_grid_step_deg=0.100, az_tol_deg=0.120, el_tol_deg=0.150
+Precomputed 12 beam/grid cache entries.
+Completed az_sep=0.73, el_offset=-0.37, snr=15.0 dB, rows=120/960, elapsed 0.92 s
+Completed az_sep=0.73, el_offset=-0.37, snr=25.0 dB, rows=240/960, elapsed 1.63 s
+Completed az_sep=0.73, el_offset=0.43, snr=15.0 dB, rows=360/960, elapsed 2.31 s
+Completed az_sep=0.73, el_offset=0.43, snr=25.0 dB, rows=480/960, elapsed 2.93 s
+Completed az_sep=1.17, el_offset=-0.37, snr=15.0 dB, rows=600/960, elapsed 3.49 s
+Completed az_sep=1.17, el_offset=-0.37, snr=25.0 dB, rows=720/960, elapsed 4.04 s
+Completed az_sep=1.17, el_offset=0.43, snr=15.0 dB, rows=840/960, elapsed 4.70 s
+Completed az_sep=1.17, el_offset=0.43, snr=25.0 dB, rows=960/960, elapsed 5.29 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\step11_1_cyl_common_el_2d_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\step11_1_cyl_common_el_2d_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\step11_1_cyl_common_el_2d_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\step11_1_cyl_common_el_2d_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\cyl_common_el_joint_success_by_layout.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\cyl_common_el_az_rmse_vs_snr.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\cyl_common_el_el_error_vs_snr.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\cyl_common_el_whitening_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\cyl_common_el_boundary_hit_rate.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_1_beamspace_ml_validation\results_step11_1_cyl_common_el_2d_beamspace_ml\cyl_common_el_manifold_corr.png
+cyl_common_el_2d_pass_flag=1
+recommended_next_step=proceed_to_cylindrical_el_separation_or_coherence_stress

@@ -63,3 +63,18 @@ The result directory is `results_step11_1_cyl_azonly_beamspace_ml/`, and the mai
 The current generated keypoints report `cyl_azonly_pass_flag = 1` with `recommended_next_step = proceed_to_cylindrical_2d_beamspace_ml_or_coherence_stress`.
 
 Stage2 only validates cylindrical-array az-only beamspace ML with fixed `el0`. It is not a complete 2D az/el result, not an AP validation, not a strong-coherence final solution, and not a final thesis conclusion.
+
+## Stage3 Current Status
+
+Stage3 has a direct run entry:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_1_beamspace_ml_validation/stage3_cyl_common_el_2d_beamspace_ml/run_stage3_cyl_common_el_2d_beamspace_ml.m')
+```
+
+The result directory is `results_step11_1_cyl_common_el_2d_beamspace_ml/`, and the main decision file is `step11_1_cyl_common_el_2d_keypoints.csv`.
+
+The current generated keypoints report `cyl_common_el_2d_pass_flag = 1` with `recommended_next_step = proceed_to_cylindrical_el_separation_or_coherence_stress`.
+
+Stage3 validates cylindrical-array common-el 2D beamspace ML under a shared-elevation assumption. It is not a complete 4D pair az/el search, not an AP validation, not a strong-coherence final solution, and not a final thesis conclusion.
