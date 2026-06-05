@@ -1,0 +1,61 @@
+Step11.2 Stage3 B-budget strategy tradeoff starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\stage3_b_budget_strategy_tradeoff\run_stage3_b_budget_strategy_tradeoff
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff
+W_pool mode=legacy_build_cyl_azel_beam_transform_with_fallback_centers, M=117, note=reuses the existing Step11.1 cylindrical az/el beam transform with a compatible 3dB-overlap center grid
+B_list=[5 7 9 11 15 19 21 25 31]
+A_patch: az [6.5,9.5] count=21, el [9,10.95] count=14
+pair_set rows=10, el_center_offset=0.310
+Built W cases=54, elapsed 7.41 s
+Methods=regular_3dB_grid,greedy_projection,greedy_lowcorr,greedy_combined,svd_upper_bound,random_pool_baseline
+Scenario count=5, Metkl=3, L=64
+Total backend trials=810
+Backend validation finished: trial rows=810, elapsed 23.55 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\step11_2_b_budget_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\step11_2_b_budget_summary.csv
+Wrote diagnostics CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\step11_2_b_budget_diagnostics.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\step11_2_b_budget_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\step11_2_b_budget_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_success_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_rmse_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_worst_case_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_projection_loss_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_max_corr_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_cond_WHW_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_success_vs_projection_loss.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_success_vs_max_corr.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_b_budget_strategy_tradeoff\b_budget_recommended_summary.png
+Keypoints:
+  best_backend_method_overall = greedy_combined
+  best_backend_B_overall = 7
+  best_backend_success_overall = 1
+  best_backend_rmse_overall = 0.0991391728928
+  best_backend_worst_case_success = 1
+  best_engineering_method = greedy_combined
+  best_engineering_B = 7
+  best_engineering_success = 1
+  best_engineering_rmse = 0.0991391728928
+  best_low_B_method = greedy_combined
+  best_low_B = 11
+  best_low_B_success = 1
+  best_high_B_method = greedy_combined
+  best_high_B = 25
+  best_high_B_success = 0.8
+  min_B_for_95pct_best_success = 7
+  min_B_for_105pct_best_rmse = 7
+  min_B_for_projection_loss_below_0p2 = 9
+  min_B_for_max_corr_below_0p3 = 5
+  min_B_for_information_retention = 9
+  min_B_for_low_correlation = 5
+  min_B_for_backend_performance = 7
+  recommended_engineering_B = 7
+  recommended_W_strategy = greedy_combined
+  recommended_high_performance_B = 7
+  recommended_fallback_strategy = regular_3dB_grid_if_greedy_selection_is_not_available
+  greedy_lowcorr_beats_regular_B_count = 1
+  greedy_combined_beats_regular_B_count = 5
+  regular_reference_B_count = 0
+  stage3_pass_flag = 1
+  recommended_next_step = finalize_W_design_summary_for_thesis
+recommended_engineering_B=7
+recommended_high_performance_B=7
+recommended_W_strategy=greedy_combined

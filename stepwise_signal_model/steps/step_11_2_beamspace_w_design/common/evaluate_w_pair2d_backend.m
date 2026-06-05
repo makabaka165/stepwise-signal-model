@@ -4,6 +4,9 @@ function [trial_table, summary_table] = evaluate_w_pair2d_backend(W_cases, scena
 if nargin < 3
     error('evaluate_w_pair2d_backend:NotEnoughInputs', 'W_cases, scenario_table, and cfg_eval are required.');
 end
+if ~isfield(cfg_eval, 'el_center_offset')
+    cfg_eval.el_center_offset = 0;
+end
 required_cfg = {'x','y','z','lambda','phase_factor','phase_sign','az_center_true','el_center_nominal', ...
     'L','Metkl','az_search_half_width','el_search_half_width','az_grid_step_deg','el_grid_step_deg', ...
     'el_sep_index_list','search_orientations','az_tol_deg','el_tol_deg','el_sep_tol_deg','reg','base_seed'};
@@ -30,7 +33,8 @@ for iCase = 1:numel(W_cases)
     for iScenario = 1:height(scenario_table)
         scenario = table_row_to_struct_local(scenario_table(iScenario, :));
         az_true = cfg_eval.az_center_true + [-scenario.az_sep_deg/2, scenario.az_sep_deg/2];
-        el_true = cfg_eval.el_center_nominal + [-scenario.el_sep_deg/2, scenario.el_sep_deg/2];
+        el_center_true = cfg_eval.el_center_nominal + cfg_eval.el_center_offset;
+        el_true = el_center_true + [-scenario.el_sep_deg/2, scenario.el_sep_deg/2];
 
         for trial_id = 1:cfg_eval.Metkl
             seed_now = cfg_eval.base_seed + 100000*iCase + 1000*iScenario + trial_id;
@@ -295,4 +299,3 @@ else
     v = min(x);
 end
 end
-

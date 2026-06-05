@@ -2,8 +2,8 @@ Step11.2 beamspace W design
 ===========================
 
 Step11.2 is a follow-up to Step11.1. It keeps the controlled pair2d
-beamspace ML backend fixed and studies how to choose the beamspace
-transform matrix W.
+beamspace ML backend fixed and studies how to choose the beamspace transform
+matrix W.
 
 Scope
 -----
@@ -40,7 +40,7 @@ Compared W choices
 - `regular_3dB_grid`
 - `greedy_projection`
 - `greedy_lowcorr`
-- `greedy_combined` for Stage1 diagnostics
+- `greedy_combined`
 - `svd_upper_bound`
 - `random_pool_baseline`
 
@@ -53,15 +53,17 @@ From the repository root:
 run('setup_paths.m')
 run('steps/step_11_2_beamspace_w_design/stage1_w_pool_diagnostics/run_stage1_w_pool_diagnostics.m')
 run('steps/step_11_2_beamspace_w_design/stage2_w_selection_validation/run_stage2_w_selection_validation.m')
+run('steps/step_11_2_beamspace_w_design/stage3_b_budget_strategy_tradeoff/run_stage3_b_budget_strategy_tradeoff.m')
 ```
 
 Current status
 --------------
 
-Stage1 and Stage2 have been run. Results are generated under:
+Stage1, Stage2, and Stage3 have been run. Results are generated under:
 
 - `results_step11_2_w_pool_diagnostics/`
 - `results_step11_2_w_selection_validation/`
+- `results_step11_2_b_budget_strategy_tradeoff/`
 
 Stage1 keypoints:
 
@@ -82,11 +84,26 @@ Stage2 keypoints:
 - B25 regular combined RMSE: `0.106144402704`
 - B25 greedy combined RMSE: `0.09888964751`
 
-Current recommendation:
+Stage3 keypoints:
 
-- Use `greedy_lowcorr_B25` as the best backend W candidate in this limited
-  validation because it improves average success and combined RMSE.
-- Document that the hardest scenarios still have zero worst-case success, so W
-  selection alone does not solve the weak/low-SNR coherent pair case.
+- best backend method: `greedy_combined`
+- best backend B: `7`
+- best backend success: `1`
+- best backend worst-case success: `1`
+- recommended engineering B: `7`
+- recommended high-performance B: `7`
+- recommended W strategy: `greedy_combined`
+- fallback strategy: `regular_3dB_grid_if_greedy_selection_is_not_available`
+
+Current recommendation
+----------------------
+
+- Stage2 recommended `greedy_lowcorr_B25` inside the B25-only validation
+  because it improves average success and combined RMSE.
+- Stage3 is the broader B-budget tradeoff and recommends
+  `greedy_combined_B7` for the representative Metkl=3 sweep.
+- Stage3 is not a new ML backend, AP, full4D, element-domain ML, or engineering
+  closed loop.
 - Keep SVD as an upper-bound diagnostic, not as an engineering beam.
-- The next step is writing and evidence整理, not AP/full4D/model-selection reruns.
+- The next step is writing and evidence organization, not AP/full4D/model-selection reruns.
+
