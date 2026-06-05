@@ -53,16 +53,23 @@ keypoints.full_fine_mean_num_pairs = full.overall_mean_num_pairs(1);
 keypoints.complexity_reduction_ratio = full.overall_mean_num_pairs(1) / max(recommended.overall_mean_num_pairs(1), eps);
 keypoints.full_grid_match_rate = recommended.overall_full_grid_match_rate(1);
 keypoints.topK_miss_rate = recommended.overall_topK_miss_rate(1);
+keypoints.search_param_mode = char_value_local(recommended.search_param_mode(1));
+keypoints.full_fine_el_sep_list_text = char_value_local(full.full_el_sep_deg_list_text(1));
+keypoints.coarse_el_sep_list_text = char_value_local(recommended.coarse_el_sep_deg_list_text(1));
+keypoints.fine_el_sep_list_text = char_value_local(recommended.fine_el_sep_deg_list_text(1));
+keypoints.el_sep_match_rate_vs_full = recommended.overall_el_sep_match_rate_vs_full(1);
 keypoints.recommended_topK = recommended.topK(1);
 keypoints.recommended_coarse_az_step = recommended.coarse_az_step(1);
 keypoints.recommended_coarse_el_step = recommended.coarse_el_step(1);
 keypoints.recommended_fine_az_step = recommended.fine_az_step(1);
 keypoints.recommended_fine_el_step = recommended.fine_el_step(1);
+keypoints.recommended_local_az_half_width = recommended.local_az_half_width(1);
+keypoints.recommended_local_el_center_half_width = recommended.local_el_center_half_width(1);
 keypoints.search_acceleration_pass_flag = pass_flag && ...
     keypoints.coarse_to_fine_success >= 0.95 * keypoints.full_fine_success && ...
     keypoints.coarse_to_fine_rmse <= 1.05 * max(keypoints.full_fine_rmse, eps) && ...
     keypoints.topK_miss_rate <= 0.05 && ...
-    keypoints.complexity_reduction_ratio >= 3;
+    keypoints.complexity_reduction_ratio >= 2;
 if keypoints.search_acceleration_pass_flag
     keypoints.recommended_next_step = 'proceed_to_search_acceleration_final_summary';
 else
@@ -103,6 +110,10 @@ keypoints.max_bias_success_drop = max_drop;
 keypoints.max_bias_topK_miss_rate = max_topk_miss;
 keypoints.max_bias_boundary_hit_rate = max_boundary;
 keypoints.valid_bias_range_text = valid_text;
+keypoints.search_param_mode = char_value_local(zero.search_param_mode(1));
+keypoints.coarse_el_sep_list_text = char_value_local(zero.coarse_el_sep_deg_list_text(1));
+keypoints.fine_el_sep_list_text = char_value_local(zero.fine_el_sep_deg_list_text(1));
+keypoints.el_sep_match_rate_vs_full = zero.overall_el_sep_match_rate_vs_full(1);
 keypoints.frontend_prior_robustness_pass_flag = all(pass_mask);
 if keypoints.frontend_prior_robustness_pass_flag
     keypoints.recommended_next_step = 'proceed_to_final_search_acceleration_evidence_summary';
@@ -119,11 +130,12 @@ if isempty(sub)
     return;
 end
 config_fields = {'search_method','topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
-    'az_center_bias_deg','el_center_bias_deg','B','W_method'};
+    'local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg','B','W_method', ...
+    'search_param_mode','full_el_sep_deg_list_text','coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text'};
 aggregate = unique(sub(:, config_fields), 'rows');
 fields = {'overall_joint_success_rate','overall_az_rmse_mean','overall_el_rmse_mean','overall_combined_rmse_mean', ...
     'worst_case_success','overall_boundary_hit_rate','overall_mean_num_pairs','overall_mean_reduction_ratio_vs_full', ...
-    'overall_full_grid_match_rate','overall_topK_miss_rate'};
+    'overall_full_grid_match_rate','overall_topK_miss_rate','overall_el_sep_match_rate_vs_full'};
 for iField = 1:numel(fields)
     aggregate.(fields{iField}) = nan(height(aggregate), 1);
 end

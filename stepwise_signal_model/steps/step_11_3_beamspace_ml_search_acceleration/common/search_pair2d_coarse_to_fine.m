@@ -18,7 +18,7 @@ end
 
 est_ctf = est_refined;
 debug = struct();
-debug.search_mode = 'coarse_to_fine';
+debug.search_mode = 'degree_based_coarse_to_fine';
 debug.coarse_num_pairs = coarse_debug.num_pairs;
 debug.refine_num_pairs = refine_debug.num_pairs;
 debug.total_num_pairs = coarse_debug.num_pairs + refine_debug.num_pairs;

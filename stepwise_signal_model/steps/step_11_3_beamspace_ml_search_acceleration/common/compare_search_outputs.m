@@ -16,6 +16,9 @@ metrics.same_as_full_grid = all(abs(az_diff) <= opts.az_match_tol_deg) && all(ab
 metrics.az_diff_vs_full = max(abs(az_diff));
 metrics.el_diff_vs_full = max(abs(el_diff));
 metrics.score_gap_vs_full = score_full - score_test;
+metrics.test_el_sep_hat = extract_el_sep_local(est_test);
+metrics.full_el_sep_hat = extract_el_sep_local(est_full);
+metrics.el_sep_diff_vs_full = abs(metrics.test_el_sep_hat - metrics.full_el_sep_hat);
 metrics.test_joint_success = logical(truth_metrics_test.joint_pair_tol_success);
 metrics.full_joint_success = logical(truth_metrics_full.joint_pair_tol_success);
 metrics.test_rmse = hypot(truth_metrics_test.az_rmse_deg, truth_metrics_test.el_rmse_deg);
@@ -67,5 +70,15 @@ elseif isfield(est, 'max_score')
     score = est.max_score;
 else
     score = NaN;
+end
+end
+
+function el_sep = extract_el_sep_local(est)
+if isfield(est, 'el_sep_hat')
+    el_sep = est.el_sep_hat;
+elseif isfield(est, 'el_hat') && numel(est.el_hat) == 2
+    el_sep = abs(diff(est.el_hat(:).'));
+else
+    el_sep = NaN;
 end
 end

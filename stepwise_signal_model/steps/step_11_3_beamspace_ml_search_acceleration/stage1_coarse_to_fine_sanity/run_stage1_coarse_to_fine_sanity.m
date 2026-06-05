@@ -49,21 +49,29 @@ cfg_eval.Metkl = 5;
 cfg_eval.L = 64;
 cfg_eval.base_seed = 20260624;
 cfg_eval.center_bias = [0, 0];
-cfg_eval.full_search_cfg = make_search_cfg_local(1.5, 1.2, 0.08, 0.12);
-cfg_eval.coarse_search_cfg = make_search_cfg_local(1.5, 1.2, 0.16, 0.24);
-cfg_eval.refine_cfg = make_refine_cfg_local(0.16, 0.24, 0.04, 0.06);
-cfg_eval.topK = 5;
+full_el_sep_deg_list = [0, 0.24, 0.36, 0.48, 0.60, 0.72];
+coarse_el_sep_deg_list = [0, 0.36, 0.48, 0.72];
+fine_el_sep_deg_list = [0, 0.24, 0.36, 0.48, 0.60, 0.72];
+cfg_eval.full_search_cfg = make_search_cfg_local(1.5, 1.2, 0.08, 0.12, full_el_sep_deg_list);
+cfg_eval.coarse_search_cfg = make_search_cfg_local(1.5, 1.2, 0.16, 0.24, coarse_el_sep_deg_list);
+cfg_eval.refine_cfg = make_refine_cfg_local(0.32, 0.48, 0.04, 0.06, fine_el_sep_deg_list);
+cfg_eval.topK = 10;
 cfg_eval.search_methods = {'full_fine','coarse_only','coarse_to_fine'};
 
 log_lines = append_log_local(log_lines, 'Scenarios=%d, Metkl=%d, L=%d, base_seed=%d', ...
     height(scenarios), cfg_eval.Metkl, cfg_eval.L, cfg_eval.base_seed);
 log_lines = append_log_local(log_lines, 'Full fine steps: az=%.3f, el=%.3f', ...
     cfg_eval.full_search_cfg.az_step, cfg_eval.full_search_cfg.el_step);
+log_lines = append_log_local(log_lines, 'degree-based el_sep enabled');
+log_lines = append_log_local(log_lines, 'old index-based el_sep no longer used in Stage1');
+log_lines = append_log_local(log_lines, 'Full el_sep_deg_list=%s', mat2str(cfg_eval.full_search_cfg.el_sep_deg_list));
+log_lines = append_log_local(log_lines, 'Coarse el_sep_deg_list=%s', mat2str(cfg_eval.coarse_search_cfg.el_sep_deg_list));
+log_lines = append_log_local(log_lines, 'Fine el_sep_deg_list=%s', mat2str(cfg_eval.refine_cfg.fine_el_sep_deg_list));
 log_lines = append_log_local(log_lines, 'Coarse steps: az=%.3f, el=%.3f, topK=%d', ...
     cfg_eval.coarse_search_cfg.az_step, cfg_eval.coarse_search_cfg.el_step, cfg_eval.topK);
 log_lines = append_log_local(log_lines, 'Refine steps: az=%.3f, el=%.3f, local half=[%.3f %.3f]', ...
     cfg_eval.refine_cfg.fine_az_step, cfg_eval.refine_cfg.fine_el_step, ...
-    cfg_eval.refine_cfg.local_az_half_width, cfg_eval.refine_cfg.local_el_half_width);
+    cfg_eval.refine_cfg.local_az_half_width, cfg_eval.refine_cfg.local_el_center_half_width);
 
 tic;
 [trial_table, summary_table] = evaluate_search_acceleration_backend(W, scenarios, cfg_eval);
@@ -142,23 +150,23 @@ cfg_eval.W_method = sprintf('greedy_%s_B%d', w_info.criterion, w_info.B);
 cfg_eval.B = w_info.B;
 end
 
-function search_cfg = make_search_cfg_local(az_half_width, el_half_width, az_step, el_step)
+function search_cfg = make_search_cfg_local(az_half_width, el_half_width, az_step, el_step, el_sep_deg_list)
 search_cfg = struct();
 search_cfg.az_half_width = az_half_width;
 search_cfg.el_half_width = el_half_width;
 search_cfg.az_step = az_step;
 search_cfg.el_step = el_step;
-search_cfg.el_sep_index_list = [0, 1, 2];
+search_cfg.el_sep_deg_list = el_sep_deg_list;
 search_cfg.search_orientations = [1, -1];
 end
 
-function refine_cfg = make_refine_cfg_local(local_az_half_width, local_el_half_width, fine_az_step, fine_el_step)
+function refine_cfg = make_refine_cfg_local(local_az_half_width, local_el_center_half_width, fine_az_step, fine_el_step, fine_el_sep_deg_list)
 refine_cfg = struct();
 refine_cfg.local_az_half_width = local_az_half_width;
-refine_cfg.local_el_half_width = local_el_half_width;
+refine_cfg.local_el_center_half_width = local_el_center_half_width;
 refine_cfg.fine_az_step = fine_az_step;
 refine_cfg.fine_el_step = fine_el_step;
-refine_cfg.el_sep_index_list = [0, 1, 2];
+refine_cfg.fine_el_sep_deg_list = fine_el_sep_deg_list;
 refine_cfg.search_orientations = [1, -1];
 end
 

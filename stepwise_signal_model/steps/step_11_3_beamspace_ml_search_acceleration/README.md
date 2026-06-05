@@ -55,6 +55,10 @@ Current Status
 
 The Step11.3 implementation is self-contained under this directory:
 
+- Stage1/common now use degree-based controlled pair2d elevation separation:
+  `el_sep_deg_list` / `fine_el_sep_deg_list`. The old index-based
+  `el_sep_index_list` path remains only as a legacy fallback in grid building,
+  not as the Stage1 default.
 - `common/search_pair2d_coarse_grid_topk.m` keeps the topK coarse ML
   candidates without modifying the Step11.1 baseline search routine.
 - `common/search_pair2d_local_refine_from_topk.m` evaluates local fine grids
@@ -64,6 +68,25 @@ The Step11.3 implementation is self-contained under this directory:
   metrics.
 - `common/summarize_search_acceleration_keypoints.m` selects the Stage2
   recommended topK and grid steps using the full fine-grid baseline constraints.
+
+Latest Stage1 keypoints after the degree-based el-separation correction:
+
+- `full_fine_success = 1`
+- `coarse_only_success = 0.6`
+- `coarse_to_fine_success = 1`
+- `full_fine_rmse = 0.0770101090859`
+- `coarse_to_fine_rmse = 0.0182032989911`
+- `complexity_reduction_ratio = 1.11896672474`
+- `topK_miss_rate = 0`
+- `search_acceleration_pass_flag = 0`
+- `recommended_next_step = tune_topK_or_refine_window`
+
+Interpretation: the degree-based correction fixes the topK miss and
+coarse-to-fine success problem, but the default Stage1 topK/window setting is
+not yet a passing acceleration configuration because the complexity reduction
+ratio is below the `>= 2` gate. Stage2 should sweep topK and refine-window
+settings to recover enough reduction while preserving the restored success
+rate.
 
 Stage Outputs
 -------------
@@ -90,7 +113,10 @@ Stage2 writes the same file family with `stage2` names and reports:
 - `topK_miss_rate`
 
 Stage3 loads the Stage2 recommendation when available. If Stage2 has not been
-run yet, it uses the conservative Stage1 default:
-`topK=5`, coarse step `[0.16, 0.24] deg`, fine step `[0.04, 0.06] deg`.
+run yet, it uses the corrected degree-based Stage1 default:
+`topK=10`, coarse step `[0.16, 0.24] deg`, fine step `[0.04, 0.06] deg`,
+coarse `el_sep_deg_list=[0, 0.36, 0.48, 0.72]`, fine
+`el_sep_deg_list=[0, 0.24, 0.36, 0.48, 0.60, 0.72]`, and local half-width
+`[0.32, 0.48] deg`.
 It reports zero-bias success, maximum bias success drop, maximum topK miss,
 boundary-hit risk, valid bias range, and the frontend-prior robustness pass flag.

@@ -41,11 +41,22 @@ reg = 1e-10;
     'B', 7, 'Criterion', 'combined', 'PhaseFactor', phase_factor, 'PhaseSign', phase_sign, 'Reg', reg);
 scenarios = build_stage_scenarios_local();
 
-topK_list = [1, 3, 5, 10];
+topK_list = [5, 10, 20];
 coarse_az_step_list = [0.12, 0.16, 0.20];
 coarse_el_step_list = [0.18, 0.24, 0.30];
 fine_az_step_list = [0.04, 0.02];
 fine_el_step_list = [0.06, 0.04];
+full_el_sep_deg_list = [0, 0.24, 0.36, 0.48, 0.60, 0.72];
+coarse_el_sep_deg_list_options = { ...
+    [0, 0.36, 0.48, 0.72], ...
+    [0, 0.24, 0.36, 0.48, 0.60, 0.72]};
+fine_el_sep_deg_list = [0, 0.24, 0.36, 0.48, 0.60, 0.72];
+local_el_center_half_width_list = [0.36, 0.48, 0.60];
+local_az_half_width = 0.32;
+
+log_lines = append_log_local(log_lines, 'degree-based el_sep enabled for Stage2');
+log_lines = append_log_local(log_lines, 'Full el_sep_deg_list=%s', mat2str(full_el_sep_deg_list));
+log_lines = append_log_local(log_lines, 'Fine el_sep_deg_list=%s', mat2str(fine_el_sep_deg_list));
 
 trial_tables = {};
 summary_tables = {};
@@ -57,29 +68,38 @@ for iTopK = 1:numel(topK_list)
         for iCel = 1:numel(coarse_el_step_list)
             for iFaz = 1:numel(fine_az_step_list)
                 for iFel = 1:numel(fine_el_step_list)
-                    cfg_idx = cfg_idx + 1;
-                    cfg_eval = build_base_eval_cfg_local(x, y, z, lambda, phase_factor, phase_sign, cfg, w_info);
-                    cfg_eval.Metkl = 10;
-                    cfg_eval.L = 64;
-                    cfg_eval.base_seed = 20260624;
-                    cfg_eval.seed_offset = 0;
-                    cfg_eval.center_bias = [0, 0];
-                    cfg_eval.full_search_cfg = make_search_cfg_local(1.5, 1.2, 0.08, 0.12);
-                    cfg_eval.coarse_search_cfg = make_search_cfg_local(1.5, 1.2, coarse_az_step_list(iCaz), coarse_el_step_list(iCel));
-                    cfg_eval.refine_cfg = make_refine_cfg_local(0.16, 0.24, fine_az_step_list(iFaz), fine_el_step_list(iFel));
-                    cfg_eval.topK = topK_list(iTopK);
-                    cfg_eval.search_methods = {'full_fine','coarse_to_fine'};
+                    for iSepOpt = 1:numel(coarse_el_sep_deg_list_options)
+                        for iLocalEl = 1:numel(local_el_center_half_width_list)
+                            cfg_idx = cfg_idx + 1;
+                            cfg_eval = build_base_eval_cfg_local(x, y, z, lambda, phase_factor, phase_sign, cfg, w_info);
+                            cfg_eval.Metkl = 10;
+                            cfg_eval.L = 64;
+                            cfg_eval.base_seed = 20260624;
+                            cfg_eval.seed_offset = 0;
+                            cfg_eval.center_bias = [0, 0];
+                            cfg_eval.full_search_cfg = make_search_cfg_local(1.5, 1.2, 0.08, 0.12, full_el_sep_deg_list);
+                            cfg_eval.coarse_search_cfg = make_search_cfg_local(1.5, 1.2, ...
+                                coarse_az_step_list(iCaz), coarse_el_step_list(iCel), coarse_el_sep_deg_list_options{iSepOpt});
+                            cfg_eval.refine_cfg = make_refine_cfg_local(local_az_half_width, ...
+                                local_el_center_half_width_list(iLocalEl), fine_az_step_list(iFaz), ...
+                                fine_el_step_list(iFel), fine_el_sep_deg_list);
+                            cfg_eval.topK = topK_list(iTopK);
+                            cfg_eval.search_methods = {'full_fine','coarse_to_fine'};
 
-                    log_lines = append_log_local(log_lines, ...
-                        'Sweep %d: topK=%d, coarse=[%.2f %.2f], fine=[%.2f %.2f]', ...
-                        cfg_idx, cfg_eval.topK, cfg_eval.coarse_search_cfg.az_step, cfg_eval.coarse_search_cfg.el_step, ...
-                        cfg_eval.refine_cfg.fine_az_step, cfg_eval.refine_cfg.fine_el_step);
-                    [trial_now, summary_now] = evaluate_search_acceleration_backend(W, scenarios, cfg_eval);
-                    trial_tables{end + 1, 1} = trial_now; %#ok<SAGROW>
-                    summary_tables{end + 1, 1} = summary_now; %#ok<SAGROW>
-                    cfg_records{end + 1, 1} = cfg_eval; %#ok<SAGROW>
-                    log_lines = append_log_local(log_lines, '  rows: trial=%d, summary=%d, elapsed %.2f s', ...
-                        height(trial_now), height(summary_now), toc);
+                            log_lines = append_log_local(log_lines, ...
+                                'Sweep %d: topK=%d, coarse=[%.2f %.2f], fine=[%.2f %.2f], local=[%.2f %.2f], coarse_el_sep=%s', ...
+                                cfg_idx, cfg_eval.topK, cfg_eval.coarse_search_cfg.az_step, cfg_eval.coarse_search_cfg.el_step, ...
+                                cfg_eval.refine_cfg.fine_az_step, cfg_eval.refine_cfg.fine_el_step, ...
+                                cfg_eval.refine_cfg.local_az_half_width, cfg_eval.refine_cfg.local_el_center_half_width, ...
+                                mat2str(cfg_eval.coarse_search_cfg.el_sep_deg_list));
+                            [trial_now, summary_now] = evaluate_search_acceleration_backend(W, scenarios, cfg_eval);
+                            trial_tables{end + 1, 1} = trial_now; %#ok<SAGROW>
+                            summary_tables{end + 1, 1} = summary_now; %#ok<SAGROW>
+                            cfg_records{end + 1, 1} = cfg_eval; %#ok<SAGROW>
+                            log_lines = append_log_local(log_lines, '  rows: trial=%d, summary=%d, elapsed %.2f s', ...
+                                height(trial_now), height(summary_now), toc);
+                        end
+                    end
                 end
             end
         end
@@ -107,6 +127,11 @@ params.coarse_az_step_list = coarse_az_step_list;
 params.coarse_el_step_list = coarse_el_step_list;
 params.fine_az_step_list = fine_az_step_list;
 params.fine_el_step_list = fine_el_step_list;
+params.full_el_sep_deg_list = full_el_sep_deg_list;
+params.coarse_el_sep_deg_list_options = coarse_el_sep_deg_list_options;
+params.fine_el_sep_deg_list = fine_el_sep_deg_list;
+params.local_az_half_width = local_az_half_width;
+params.local_el_center_half_width_list = local_el_center_half_width_list;
 params.scenarios = scenarios;
 params.w_info = w_info;
 save(mat_path, 'params', 'W', 'w_info', 'cfg_records', 'trial_table', 'summary_table', ...
@@ -160,16 +185,16 @@ cfg_eval.W_method = sprintf('greedy_%s_B%d', w_info.criterion, w_info.B);
 cfg_eval.B = w_info.B;
 end
 
-function search_cfg = make_search_cfg_local(az_half_width, el_half_width, az_step, el_step)
+function search_cfg = make_search_cfg_local(az_half_width, el_half_width, az_step, el_step, el_sep_deg_list)
 search_cfg = struct('az_half_width', az_half_width, 'el_half_width', el_half_width, ...
-    'az_step', az_step, 'el_step', el_step, 'el_sep_index_list', [0, 1, 2], ...
+    'az_step', az_step, 'el_step', el_step, 'el_sep_deg_list', el_sep_deg_list, ...
     'search_orientations', [1, -1]);
 end
 
-function refine_cfg = make_refine_cfg_local(local_az_half_width, local_el_half_width, fine_az_step, fine_el_step)
-refine_cfg = struct('local_az_half_width', local_az_half_width, 'local_el_half_width', local_el_half_width, ...
+function refine_cfg = make_refine_cfg_local(local_az_half_width, local_el_center_half_width, fine_az_step, fine_el_step, fine_el_sep_deg_list)
+refine_cfg = struct('local_az_half_width', local_az_half_width, 'local_el_center_half_width', local_el_center_half_width, ...
     'fine_az_step', fine_az_step, 'fine_el_step', fine_el_step, ...
-    'el_sep_index_list', [0, 1, 2], 'search_orientations', [1, -1]);
+    'fine_el_sep_deg_list', fine_el_sep_deg_list, 'search_orientations', [1, -1]);
 end
 
 function log_lines = append_keypoints_to_log_local(log_lines, keypoints)

@@ -123,11 +123,12 @@ if isempty(sub)
     return;
 end
 config_fields = {'search_method','topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
-    'az_center_bias_deg','el_center_bias_deg','B','W_method'};
+    'local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg','B','W_method', ...
+    'search_param_mode','full_el_sep_deg_list_text','coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text'};
 agg = unique(sub(:, config_fields), 'rows');
 metric_fields = {'overall_joint_success_rate','overall_combined_rmse_mean','overall_mean_num_pairs', ...
     'overall_mean_reduction_ratio_vs_full','overall_full_grid_match_rate','overall_topK_miss_rate', ...
-    'overall_boundary_hit_rate'};
+    'overall_boundary_hit_rate','overall_el_sep_match_rate_vs_full'};
 for iField = 1:numel(metric_fields)
     agg.(metric_fields{iField}) = nan(height(agg), 1);
 end

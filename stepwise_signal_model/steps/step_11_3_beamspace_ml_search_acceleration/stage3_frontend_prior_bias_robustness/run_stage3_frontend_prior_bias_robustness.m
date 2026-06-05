@@ -43,8 +43,12 @@ reg = 1e-10;
 scenarios = build_stage_scenarios_local();
 [rec_cfg, rec_note] = load_stage2_recommendation_local(stage2_result_dir);
 log_lines = append_log_local(log_lines, 'Stage2 recommendation source: %s', rec_note);
-log_lines = append_log_local(log_lines, 'Recommended config: topK=%d, coarse=[%.3f %.3f], fine=[%.3f %.3f]', ...
-    rec_cfg.topK, rec_cfg.coarse_az_step, rec_cfg.coarse_el_step, rec_cfg.fine_az_step, rec_cfg.fine_el_step);
+log_lines = append_log_local(log_lines, 'degree-based el_sep enabled for Stage3');
+log_lines = append_log_local(log_lines, 'Recommended config: topK=%d, coarse=[%.3f %.3f], fine=[%.3f %.3f], local=[%.3f %.3f]', ...
+    rec_cfg.topK, rec_cfg.coarse_az_step, rec_cfg.coarse_el_step, rec_cfg.fine_az_step, rec_cfg.fine_el_step, ...
+    rec_cfg.local_az_half_width, rec_cfg.local_el_center_half_width);
+log_lines = append_log_local(log_lines, 'Recommended coarse_el_sep_deg_list=%s', mat2str(rec_cfg.coarse_el_sep_deg_list));
+log_lines = append_log_local(log_lines, 'Recommended fine_el_sep_deg_list=%s', mat2str(rec_cfg.fine_el_sep_deg_list));
 
 center_bias_cases = [ ...
     0.0, 0.0; ...
@@ -64,9 +68,11 @@ for iBias = 1:size(center_bias_cases, 1)
     cfg_eval.base_seed = 20260624;
     cfg_eval.seed_offset = 10000 * iBias;
     cfg_eval.center_bias = center_bias_cases(iBias, :);
-    cfg_eval.full_search_cfg = make_search_cfg_local(1.5, 1.2, 0.08, 0.12);
-    cfg_eval.coarse_search_cfg = make_search_cfg_local(1.5, 1.2, rec_cfg.coarse_az_step, rec_cfg.coarse_el_step);
-    cfg_eval.refine_cfg = make_refine_cfg_local(0.16, 0.24, rec_cfg.fine_az_step, rec_cfg.fine_el_step);
+    cfg_eval.full_search_cfg = make_search_cfg_local(1.5, 1.2, 0.08, 0.12, rec_cfg.full_el_sep_deg_list);
+    cfg_eval.coarse_search_cfg = make_search_cfg_local(1.5, 1.2, ...
+        rec_cfg.coarse_az_step, rec_cfg.coarse_el_step, rec_cfg.coarse_el_sep_deg_list);
+    cfg_eval.refine_cfg = make_refine_cfg_local(rec_cfg.local_az_half_width, rec_cfg.local_el_center_half_width, ...
+        rec_cfg.fine_az_step, rec_cfg.fine_el_step, rec_cfg.fine_el_sep_deg_list);
     cfg_eval.topK = rec_cfg.topK;
     cfg_eval.search_methods = {'full_fine','coarse_to_fine'};
 
@@ -112,8 +118,17 @@ write_log_local(log_path, log_lines);
 fprintf('Log written: %s\n', log_path);
 
 function [rec_cfg, note] = load_stage2_recommendation_local(stage2_result_dir)
-rec_cfg = struct('topK', 5, 'coarse_az_step', 0.16, 'coarse_el_step', 0.24, ...
-    'fine_az_step', 0.04, 'fine_el_step', 0.06);
+rec_cfg = struct();
+rec_cfg.topK = 10;
+rec_cfg.coarse_az_step = 0.16;
+rec_cfg.coarse_el_step = 0.24;
+rec_cfg.fine_az_step = 0.04;
+rec_cfg.fine_el_step = 0.06;
+rec_cfg.local_az_half_width = 0.32;
+rec_cfg.local_el_center_half_width = 0.48;
+rec_cfg.full_el_sep_deg_list = [0, 0.24, 0.36, 0.48, 0.60, 0.72];
+rec_cfg.coarse_el_sep_deg_list = [0, 0.36, 0.48, 0.72];
+rec_cfg.fine_el_sep_deg_list = [0, 0.24, 0.36, 0.48, 0.60, 0.72];
 note = 'fallback_stage1_conservative_default';
 keypoints_csv = fullfile(stage2_result_dir, 'step11_3_stage2_keypoints.csv');
 if exist(keypoints_csv, 'file') ~= 2
@@ -125,6 +140,12 @@ rec_cfg.coarse_az_step = read_keypoint_numeric_local(T, 'recommended_coarse_az_s
 rec_cfg.coarse_el_step = read_keypoint_numeric_local(T, 'recommended_coarse_el_step', rec_cfg.coarse_el_step);
 rec_cfg.fine_az_step = read_keypoint_numeric_local(T, 'recommended_fine_az_step', rec_cfg.fine_az_step);
 rec_cfg.fine_el_step = read_keypoint_numeric_local(T, 'recommended_fine_el_step', rec_cfg.fine_el_step);
+rec_cfg.local_az_half_width = read_keypoint_numeric_local(T, 'recommended_local_az_half_width', rec_cfg.local_az_half_width);
+rec_cfg.local_el_center_half_width = read_keypoint_numeric_local(T, 'recommended_local_el_center_half_width', ...
+    rec_cfg.local_el_center_half_width);
+rec_cfg.full_el_sep_deg_list = read_keypoint_list_local(T, 'full_fine_el_sep_list_text', rec_cfg.full_el_sep_deg_list);
+rec_cfg.coarse_el_sep_deg_list = read_keypoint_list_local(T, 'coarse_el_sep_list_text', rec_cfg.coarse_el_sep_deg_list);
+rec_cfg.fine_el_sep_deg_list = read_keypoint_list_local(T, 'fine_el_sep_list_text', rec_cfg.fine_el_sep_deg_list);
 note = sprintf('loaded_from_%s', keypoints_csv);
 end
 
@@ -138,6 +159,22 @@ raw = T.value(find(mask, 1));
 value = str2double(raw);
 if ~isfinite(value)
     value = fallback;
+end
+end
+
+function values = read_keypoint_list_local(T, key, fallback)
+mask = strcmp(T.keypoint, string(key));
+if ~any(mask)
+    values = fallback;
+    return;
+end
+raw = char(T.value(find(mask, 1)));
+raw = regexprep(raw, '[\[\]]', '');
+parts = regexp(strtrim(raw), '[,\s]+', 'split');
+parts = parts(~cellfun(@isempty, parts));
+values = str2double(parts);
+if isempty(values) || any(~isfinite(values))
+    values = fallback;
 end
 end
 
@@ -176,16 +213,16 @@ cfg_eval.W_method = sprintf('greedy_%s_B%d', w_info.criterion, w_info.B);
 cfg_eval.B = w_info.B;
 end
 
-function search_cfg = make_search_cfg_local(az_half_width, el_half_width, az_step, el_step)
+function search_cfg = make_search_cfg_local(az_half_width, el_half_width, az_step, el_step, el_sep_deg_list)
 search_cfg = struct('az_half_width', az_half_width, 'el_half_width', el_half_width, ...
-    'az_step', az_step, 'el_step', el_step, 'el_sep_index_list', [0, 1, 2], ...
+    'az_step', az_step, 'el_step', el_step, 'el_sep_deg_list', el_sep_deg_list, ...
     'search_orientations', [1, -1]);
 end
 
-function refine_cfg = make_refine_cfg_local(local_az_half_width, local_el_half_width, fine_az_step, fine_el_step)
-refine_cfg = struct('local_az_half_width', local_az_half_width, 'local_el_half_width', local_el_half_width, ...
+function refine_cfg = make_refine_cfg_local(local_az_half_width, local_el_center_half_width, fine_az_step, fine_el_step, fine_el_sep_deg_list)
+refine_cfg = struct('local_az_half_width', local_az_half_width, 'local_el_center_half_width', local_el_center_half_width, ...
     'fine_az_step', fine_az_step, 'fine_el_step', fine_el_step, ...
-    'el_sep_index_list', [0, 1, 2], 'search_orientations', [1, -1]);
+    'fine_el_sep_deg_list', fine_el_sep_deg_list, 'search_orientations', [1, -1]);
 end
 
 function log_lines = append_keypoints_to_log_local(log_lines, keypoints)

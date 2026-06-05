@@ -19,6 +19,7 @@ el_center_search = cfg_eval.el_center_nominal + center_bias(2);
 full_grid_cfg_base = build_pair2d_search_grids(az_center_search, el_center_search, cfg_eval.full_search_cfg);
 coarse_grid_cfg_base = build_pair2d_search_grids(az_center_search, el_center_search, cfg_eval.coarse_search_cfg);
 refine_cfg_base = cfg_eval.refine_cfg;
+refine_cfg_base = normalize_refine_cfg_local(refine_cfg_base);
 refine_cfg_base.az_global_bounds = full_grid_cfg_base.az_bounds;
 refine_cfg_base.el_global_bounds = full_grid_cfg_base.el_bounds;
 
@@ -106,7 +107,7 @@ for iScenario = 1:height(scenario_table)
                         cfg_eval.lambda, top_candidates, refine_cfg_base, manifold_opts, search_opts);
                     est_now = attach_score_local(est_refined, refine_debug.max_score);
                     debug_now = struct();
-                    debug_now.search_mode = 'coarse_to_fine';
+                    debug_now.search_mode = 'degree_based_coarse_to_fine';
                     debug_now.full_num_pairs = debug_full.num_pairs;
                     debug_now.coarse_num_pairs = coarse_debug.num_pairs;
                     debug_now.refine_num_pairs = refine_debug.num_pairs;
@@ -193,6 +194,19 @@ if ~isfield(cfg_eval, 'B')
 end
 end
 
+function refine_cfg = normalize_refine_cfg_local(refine_cfg)
+if ~isfield(refine_cfg, 'local_el_center_half_width') && isfield(refine_cfg, 'local_el_half_width')
+    refine_cfg.local_el_center_half_width = refine_cfg.local_el_half_width;
+end
+if ~isfield(refine_cfg, 'fine_el_sep_deg_list')
+    if isfield(refine_cfg, 'el_sep_deg_list')
+        refine_cfg.fine_el_sep_deg_list = refine_cfg.el_sep_deg_list;
+    elseif isfield(refine_cfg, 'el_sep_index_list')
+        refine_cfg.fine_el_sep_deg_list = refine_cfg.el_sep_index_list(:).' * refine_cfg.fine_el_step * 2;
+    end
+end
+end
+
 function validate_cfg_local(cfg_eval)
 required_cfg = {'x','y','z','lambda','phase_factor','phase_sign','az_center_true','el_center_nominal', ...
     'L','Metkl','base_seed','full_search_cfg','coarse_search_cfg','refine_cfg','topK'};
@@ -257,16 +271,26 @@ end
 function covered = topk_covers_full_estimate_local(top_candidates, est_full, refine_cfg)
 covered = false;
 az_full = sort(est_full.az_hat(:).');
-el_full = est_full.el_hat(:).';
+el_center_full = est_full.el_center_hat;
+el_sep_full = est_full.el_sep_hat;
+if ~isfield(refine_cfg, 'local_el_center_half_width')
+    refine_cfg.local_el_center_half_width = refine_cfg.local_el_half_width;
+end
+fine_sep_list = refine_cfg.fine_el_sep_deg_list(:).';
 for idx = 1:numel(top_candidates)
     cand = top_candidates(idx);
-    az_bounds = [min(cand.az_hat) - refine_cfg.local_az_half_width, ...
-        max(cand.az_hat) + refine_cfg.local_az_half_width];
-    el_bounds = cand.el_center_hat + [-refine_cfg.local_el_half_width, refine_cfg.local_el_half_width];
-    az_bounds = clamp_bounds_local(az_bounds, refine_cfg.az_global_bounds);
-    el_bounds = clamp_bounds_local(el_bounds, refine_cfg.el_global_bounds);
-    if all(az_full >= az_bounds(1) - 1e-9) && all(az_full <= az_bounds(2) + 1e-9) && ...
-            all(el_full >= el_bounds(1) - 1e-9) && all(el_full <= el_bounds(2) + 1e-9)
+    az_cand = sort(cand.az_hat(:).');
+    az1_bounds = az_cand(1) + [-refine_cfg.local_az_half_width, refine_cfg.local_az_half_width];
+    az2_bounds = az_cand(2) + [-refine_cfg.local_az_half_width, refine_cfg.local_az_half_width];
+    el_center_bounds = cand.el_center_hat + [-refine_cfg.local_el_center_half_width, refine_cfg.local_el_center_half_width];
+    az1_bounds = clamp_bounds_local(az1_bounds, refine_cfg.az_global_bounds);
+    az2_bounds = clamp_bounds_local(az2_bounds, refine_cfg.az_global_bounds);
+    el_center_bounds = clamp_bounds_local(el_center_bounds, refine_cfg.el_global_bounds);
+    sep_match = any(abs(fine_sep_list - el_sep_full) <= max(refine_cfg.fine_el_step / 2, 1e-9));
+    if az_full(1) >= az1_bounds(1) - 1e-9 && az_full(1) <= az1_bounds(2) + 1e-9 && ...
+            az_full(2) >= az2_bounds(1) - 1e-9 && az_full(2) <= az2_bounds(2) + 1e-9 && ...
+            el_center_full >= el_center_bounds(1) - 1e-9 && el_center_full <= el_center_bounds(2) + 1e-9 && ...
+            sep_match
         covered = true;
         return;
     end
@@ -283,13 +307,14 @@ end
 function row = make_trial_row_template_local()
 row = struct();
 numeric_fields = {'trial_global_id','trial_id','seed','topK','coarse_az_step','coarse_el_step','fine_az_step', ...
-    'fine_el_step','az_center_search','el_center_search','az_center_bias_deg','el_center_bias_deg', ...
+    'fine_el_step','local_az_half_width','local_el_center_half_width','az_center_search','el_center_search','az_center_bias_deg','el_center_bias_deg', ...
     'rho','phase_deg','beta','az_sep_deg','el_sep_deg','snr_db','source_corr_empirical','true_orientation', ...
     'az_hat_1','az_hat_2','el_hat_1','el_hat_2','az_true_1','az_true_2','el_true_1','el_true_2', ...
     'az_rmse','el_rmse','boundary_hit','num_pairs','full_num_pairs','coarse_num_pairs','refine_num_pairs', ...
     'reduction_ratio_vs_full','full_grid_match','topK_miss','max_score','cond_best_GHG','B','L','phase_factor', ...
     'phase_sign','az_bound_min','az_bound_max','el_bound_min','el_bound_max','az_diff_vs_full','el_diff_vs_full', ...
-    'score_gap_vs_full','combined_rmse','full_combined_rmse','full_success_test_fail'};
+    'score_gap_vs_full','combined_rmse','full_combined_rmse','full_success_test_fail','full_el_sep_hat', ...
+    'test_el_sep_hat','el_sep_diff_vs_full'};
 for idx = 1:numel(numeric_fields)
     row.(numeric_fields{idx}) = NaN;
 end
@@ -297,6 +322,10 @@ row.scenario_name = '';
 row.search_method = '';
 row.W_method = '';
 row.whitening_mode = '';
+row.search_param_mode = '';
+row.full_el_sep_deg_list_text = '';
+row.coarse_el_sep_deg_list_text = '';
+row.fine_el_sep_deg_list_text = '';
 row.joint_success = false;
 row.boundary_hit = false;
 row.full_grid_match = false;
@@ -320,6 +349,12 @@ row.coarse_az_step = coarse_grid_cfg.az_step;
 row.coarse_el_step = coarse_grid_cfg.el_step;
 row.fine_az_step = refine_cfg.fine_az_step;
 row.fine_el_step = refine_cfg.fine_el_step;
+row.local_az_half_width = refine_cfg.local_az_half_width;
+row.local_el_center_half_width = refine_cfg.local_el_center_half_width;
+row.search_param_mode = 'degree_based_el_sep';
+row.full_el_sep_deg_list_text = numeric_list_text_local(full_grid_cfg.el_sep_deg_list);
+row.coarse_el_sep_deg_list_text = numeric_list_text_local(coarse_grid_cfg.el_sep_deg_list);
+row.fine_el_sep_deg_list_text = numeric_list_text_local(refine_cfg.fine_el_sep_deg_list);
 row.az_center_search = full_grid_cfg.az_center;
 row.el_center_search = full_grid_cfg.el_center;
 row.az_center_bias_deg = cfg_eval.center_bias(1);
@@ -367,6 +402,9 @@ row.score_gap_vs_full = compare_now.score_gap_vs_full;
 row.combined_rmse = compare_now.test_rmse;
 row.full_combined_rmse = compare_now.full_rmse;
 row.full_success_test_fail = logical(compare_now.full_success_test_fail);
+row.full_el_sep_hat = safe_est_field_local(compare_now, 'full_el_sep_hat', est.el_sep_hat);
+row.test_el_sep_hat = est.el_sep_hat;
+row.el_sep_diff_vs_full = abs(row.test_el_sep_hat - row.full_el_sep_hat);
 end
 
 function value = safe_field_local(s, field, default_value)
@@ -377,10 +415,19 @@ else
 end
 end
 
+function value = safe_est_field_local(s, field, default_value)
+if isstruct(s) && isfield(s, field)
+    value = s.(field);
+else
+    value = default_value;
+end
+end
+
 function summary_table = build_summary_table_local(trial_table)
 group_fields = {'search_method','scenario_name','topK','coarse_az_step','coarse_el_step','fine_az_step', ...
-    'fine_el_step','az_center_bias_deg','el_center_bias_deg','rho','phase_deg','beta','az_sep_deg','el_sep_deg', ...
-    'snr_db','B','W_method'};
+    'fine_el_step','local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg', ...
+    'rho','phase_deg','beta','az_sep_deg','el_sep_deg','snr_db','B','W_method','search_param_mode', ...
+    'full_el_sep_deg_list_text','coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text'};
 groups = unique(trial_table(:, group_fields), 'rows');
 rows = repmat(make_summary_row_template_local(), height(groups), 1);
 for iGroup = 1:height(groups)
@@ -397,6 +444,8 @@ for iGroup = 1:height(groups)
     rows(iGroup).coarse_el_step = groups.coarse_el_step(iGroup);
     rows(iGroup).fine_az_step = groups.fine_az_step(iGroup);
     rows(iGroup).fine_el_step = groups.fine_el_step(iGroup);
+    rows(iGroup).local_az_half_width = groups.local_az_half_width(iGroup);
+    rows(iGroup).local_el_center_half_width = groups.local_el_center_half_width(iGroup);
     rows(iGroup).az_center_bias_deg = groups.az_center_bias_deg(iGroup);
     rows(iGroup).el_center_bias_deg = groups.el_center_bias_deg(iGroup);
     rows(iGroup).rho = groups.rho(iGroup);
@@ -407,6 +456,10 @@ for iGroup = 1:height(groups)
     rows(iGroup).snr_db = groups.snr_db(iGroup);
     rows(iGroup).B = groups.B(iGroup);
     rows(iGroup).W_method = char_value_local(groups.W_method(iGroup));
+    rows(iGroup).search_param_mode = char_value_local(groups.search_param_mode(iGroup));
+    rows(iGroup).full_el_sep_deg_list_text = char_value_local(groups.full_el_sep_deg_list_text(iGroup));
+    rows(iGroup).coarse_el_sep_deg_list_text = char_value_local(groups.coarse_el_sep_deg_list_text(iGroup));
+    rows(iGroup).fine_el_sep_deg_list_text = char_value_local(groups.fine_el_sep_deg_list_text(iGroup));
     rows(iGroup).joint_success_rate = mean(double(sub.joint_success));
     rows(iGroup).az_rmse_mean = mean_omitnan_local(sub.az_rmse);
     rows(iGroup).el_rmse_mean = mean_omitnan_local(sub.el_rmse);
@@ -420,6 +473,7 @@ for iGroup = 1:height(groups)
     rows(iGroup).full_grid_match_rate = mean(double(sub.full_grid_match));
     rows(iGroup).topK_miss_rate = mean(double(sub.topK_miss));
     rows(iGroup).full_success_test_fail_rate = mean(double(sub.full_success_test_fail));
+    rows(iGroup).el_sep_match_rate_vs_full = mean(double(abs(sub.el_sep_diff_vs_full) <= max(sub.fine_el_step(1) / 2, 1e-9)));
     rows(iGroup).max_score_mean = mean_omitnan_local(sub.max_score);
     rows(iGroup).cond_best_GHG_mean = mean_omitnan_local(sub.cond_best_GHG);
     rows(iGroup).n_trials = height(sub);
@@ -431,25 +485,32 @@ end
 function row = make_summary_row_template_local()
 row = struct();
 fields = {'search_method','scenario_name','topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
-    'az_center_bias_deg','el_center_bias_deg','rho','phase_deg','beta','az_sep_deg','el_sep_deg','snr_db','B', ...
-    'W_method','joint_success_rate','az_rmse_mean','el_rmse_mean','combined_rmse_mean','boundary_hit_rate', ...
+    'local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg','rho','phase_deg', ...
+    'beta','az_sep_deg','el_sep_deg','snr_db','B','W_method','search_param_mode','full_el_sep_deg_list_text', ...
+    'coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text', ...
+    'joint_success_rate','az_rmse_mean','el_rmse_mean','combined_rmse_mean','boundary_hit_rate', ...
     'mean_num_pairs','mean_full_num_pairs','mean_coarse_num_pairs','mean_refine_num_pairs', ...
     'mean_reduction_ratio_vs_full','full_grid_match_rate','topK_miss_rate','full_success_test_fail_rate', ...
-    'max_score_mean','cond_best_GHG_mean','n_trials','overall_joint_success_rate','overall_az_rmse_mean', ...
+    'el_sep_match_rate_vs_full','max_score_mean','cond_best_GHG_mean','n_trials','overall_joint_success_rate','overall_az_rmse_mean', ...
     'overall_el_rmse_mean','overall_combined_rmse_mean','worst_case_success','overall_boundary_hit_rate', ...
     'overall_mean_num_pairs','overall_mean_reduction_ratio_vs_full','overall_full_grid_match_rate', ...
-    'overall_topK_miss_rate'};
+    'overall_topK_miss_rate','overall_el_sep_match_rate_vs_full'};
 for idx = 1:numel(fields)
     row.(fields{idx}) = NaN;
 end
 row.search_method = '';
 row.scenario_name = '';
 row.W_method = '';
+row.search_param_mode = '';
+row.full_el_sep_deg_list_text = '';
+row.coarse_el_sep_deg_list_text = '';
+row.fine_el_sep_deg_list_text = '';
 end
 
 function summary_table = add_config_aggregates_local(summary_table)
 config_fields = {'search_method','topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
-    'az_center_bias_deg','el_center_bias_deg','B','W_method'};
+    'local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg','B','W_method', ...
+    'search_param_mode','full_el_sep_deg_list_text','coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text'};
 for idx = 1:height(summary_table)
     mask = true(height(summary_table), 1);
     for iField = 1:numel(config_fields)
@@ -467,7 +528,17 @@ for idx = 1:height(summary_table)
     summary_table.overall_mean_reduction_ratio_vs_full(idx) = mean_omitnan_local(sub.mean_reduction_ratio_vs_full);
     summary_table.overall_full_grid_match_rate(idx) = mean_omitnan_local(sub.full_grid_match_rate);
     summary_table.overall_topK_miss_rate(idx) = mean_omitnan_local(sub.topK_miss_rate);
+    summary_table.overall_el_sep_match_rate_vs_full(idx) = mean_omitnan_local(sub.el_sep_match_rate_vs_full);
 end
+end
+
+function text = numeric_list_text_local(values)
+values = values(:).';
+parts = cell(1, numel(values));
+for idx = 1:numel(values)
+    parts{idx} = sprintf('%.12g', values(idx));
+end
+text = ['[', strjoin(parts, ','), ']'];
 end
 
 function scenario = table_row_to_struct_local(row_table)
