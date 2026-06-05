@@ -1,0 +1,4 @@
+stage,goal,interpretation,success_metric,topK_miss_rate,complexity_reduction_ratio,pass_flag
+Stage1,degree-based sanity check,degree-based el_sep fixes success/topK miss but default window is not enough acceleration,1,0,1.11896672474,0
+Stage2,two-phase topK/grid sweep,screening plus confirmation finds the passing topK3 coarse-to-fine config,1,0,6.86054096932,1
+Stage3,frontend-prior bias robustness,recommended Stage2 config remains robust under nominal +/-0.2 deg bias cases,1,0,NaN,1

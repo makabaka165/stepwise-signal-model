@@ -150,3 +150,36 @@ coarse `el_sep_deg_list=[0, 0.36, 0.48, 0.72]`, fine
 `[0.32, 0.48] deg`.
 It reports zero-bias success, maximum bias success drop, maximum topK miss,
 boundary-hit risk, valid bias range, and the frontend-prior robustness pass flag.
+
+Final Evidence Summary
+----------------------
+
+Stage4 collects the existing Stage1--Stage3 outputs and produces final
+evidence tables, figures, and thesis-writing Markdown. It does not rerun the
+Stage1/Stage2/Stage3 searches and does not change the search logic.
+
+Run entry:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_3_beamspace_ml_search_acceleration/stage4_final_search_acceleration_evidence_summary/run_stage4_final_search_acceleration_evidence_summary.m')
+```
+
+Result directory:
+
+- `results_step11_3_final_search_acceleration_evidence_summary/`
+
+Final recommendation:
+
+- `use_degree_based_coarse_to_fine_topK3_for_controlled_pair2d_beamspace_ml`
+
+Key metrics:
+
+- `complexity_reduction_ratio = 6.86054096932`
+- `full_grid_match_rate = 1`
+- `topK_miss_rate = 0`
+- `frontend_prior_robustness_pass_flag = 1`
+
+Interpretation: Step11.3 is a search-acceleration contribution for the fixed
+controlled pair2d beamspace ML backend. It is not AP, not a new W design, not a
+new ML model, and not element-domain ML.

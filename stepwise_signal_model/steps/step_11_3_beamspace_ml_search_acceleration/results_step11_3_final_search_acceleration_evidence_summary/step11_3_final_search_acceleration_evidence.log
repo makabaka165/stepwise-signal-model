@@ -1,0 +1,37 @@
+[2026-06-05 20:16:04] Stage4 starts
+[2026-06-05 20:16:04] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\stage4_final_search_acceleration_evidence_summary\run_stage4_final_search_acceleration_evidence_summary
+[2026-06-05 20:16:04] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary
+[2026-06-05 20:16:07] final recommendation = use_degree_based_coarse_to_fine_topK3_for_controlled_pair2d_beamspace_ml
+[2026-06-05 20:16:07] stage2 pass flag = 1
+[2026-06-05 20:16:07] stage3 pass flag = 1
+[2026-06-05 20:16:07] collected files:
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage1_coarse_to_fine_sanity\step11_3_stage1_keypoints.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage1_coarse_to_fine_sanity\step11_3_stage1_summary.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_keypoints.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_screening_summary.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_confirmation_summary.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_config_table.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\step11_3_stage3_keypoints.csv
+[2026-06-05 20:16:07]   [present] E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\step11_3_stage3_summary.csv
+[2026-06-05 20:16:07] missing files:
+[2026-06-05 20:16:07]   none
+[2026-06-05 20:16:08] Wrote CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\step11_3_final_stage_status.csv
+[2026-06-05 20:16:08] Wrote CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\step11_3_final_key_metrics.csv
+[2026-06-05 20:16:08] Wrote CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\step11_3_final_recommendation.csv
+[2026-06-05 20:16:20] written docs:
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\00_FINAL_STEP11_3_ONE_PAGE_SUMMARY.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\01_ALGORITHM_LOGIC_AND_FORMULATION.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\02_COARSE_TO_FINE_FLOW.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\03_STAGE_RESULTS_TABLES.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\04_COMPLEXITY_REDUCTION_ANALYSIS.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\05_FRONTEND_PRIOR_AND_BIAS_ROBUSTNESS.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\06_LIMITATIONS_AND_USAGE_BOUNDARY.md
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\07_THESIS_WRITING_TEXT.md
+[2026-06-05 20:16:20] written plots:
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\final_step11_3_algorithm_flow.png
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\final_step11_3_success_compare.png
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\final_step11_3_rmse_compare.png
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\final_step11_3_num_pairs_compare.png
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\final_step11_3_reduction_ratio.png
+[2026-06-05 20:16:20]   E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\final_step11_3_bias_robustness.png
+[2026-06-05 20:16:20] Wrote MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_final_search_acceleration_evidence_summary\step11_3_final_search_acceleration_evidence_result.mat

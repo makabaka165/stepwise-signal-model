@@ -1,0 +1,2 @@
+final_recommendation,recommended_search,recommended_topK,recommended_coarse_az_step,recommended_coarse_el_step,recommended_fine_az_step,recommended_fine_el_step,recommended_coarse_el_sep_list,recommended_fine_el_sep_list,recommended_W,stage2_pass_flag,stage3_pass_flag
+use_degree_based_coarse_to_fine_topK3_for_controlled_pair2d_beamspace_ml,degree_based_coarse_to_fine,3,0.16,0.24,0.08,0.12,"[0,0.36,0.72]","[0,0.24,0.36,0.48,0.6,0.72]",greedy_combined_B7,1,1
