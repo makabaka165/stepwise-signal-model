@@ -1,0 +1,17 @@
+keypoint,value
+b7_success,1
+b7_rmse,0.0991391728928
+b7_worst_case_success,1
+best_success_overall,1
+best_rmse_overall,0.0991391728928
+best_worst_case_success,1
+best_method_overall,greedy_combined_B7
+b7_minus_best_success_gap,0
+b7_rmse_over_best_ratio,1
+b7_worst_case_minus_best_worst_case,0
+b25_combined_success,0.8
+b25_lowcorr_success,0.8
+robustness_pass_flag,1
+recommended_final_W,greedy_combined
+recommended_final_B,7
+recommended_next_step,finalize_step11_2_w_design_evidence_summary

@@ -54,16 +54,18 @@ run('setup_paths.m')
 run('steps/step_11_2_beamspace_w_design/stage1_w_pool_diagnostics/run_stage1_w_pool_diagnostics.m')
 run('steps/step_11_2_beamspace_w_design/stage2_w_selection_validation/run_stage2_w_selection_validation.m')
 run('steps/step_11_2_beamspace_w_design/stage3_b_budget_strategy_tradeoff/run_stage3_b_budget_strategy_tradeoff.m')
+run('steps/step_11_2_beamspace_w_design/stage4_recommended_w_robustness_confirmation/run_stage4_recommended_w_robustness_confirmation.m')
 ```
 
 Current status
 --------------
 
-Stage1, Stage2, and Stage3 have been run. Results are generated under:
+Stage1, Stage2, Stage3, and Stage4 have been run. Results are generated under:
 
 - `results_step11_2_w_pool_diagnostics/`
 - `results_step11_2_w_selection_validation/`
 - `results_step11_2_b_budget_strategy_tradeoff/`
+- `results_step11_2_recommended_w_robustness_confirmation/`
 
 Stage1 keypoints:
 
@@ -95,6 +97,18 @@ Stage3 keypoints:
 - recommended W strategy: `greedy_combined`
 - fallback strategy: `regular_3dB_grid_if_greedy_selection_is_not_available`
 
+Stage4 keypoints:
+
+- robustness pass flag: `1`
+- B7 success: `1`
+- B7 combined RMSE: `0.0991391728928`
+- B7 worst-case success: `1`
+- best method overall: `greedy_combined_B7`
+- B25 combined success: `0.8`
+- B25 lowcorr success: `0.8`
+- recommended final W: `greedy_combined`
+- recommended final B: `7`
+
 Current recommendation
 ----------------------
 
@@ -102,8 +116,11 @@ Current recommendation
   because it improves average success and combined RMSE.
 - Stage3 is the broader B-budget tradeoff and recommends
   `greedy_combined_B7` for the representative Metkl=3 sweep.
+- Stage4 confirms `greedy_combined_B7` with Metkl=30 over the same
+  representative scenarios. It should be written as the current engineering
+  recommendation for this candidate pool and fixed pair2d backend, not as a
+  universal optimum.
 - Stage3 is not a new ML backend, AP, full4D, element-domain ML, or engineering
   closed loop.
 - Keep SVD as an upper-bound diagnostic, not as an engineering beam.
 - The next step is writing and evidence organization, not AP/full4D/model-selection reruns.
-
