@@ -88,6 +88,33 @@ ratio is below the `>= 2` gate. Stage2 should sweep topK and refine-window
 settings to recover enough reduction while preserving the restored success
 rate.
 
+Latest Stage2 status after the two-phase screening + confirmation sweep:
+
+- `recommended_config_name = coarse_016_024_minsep__topK3__refine_safe_fullsep`
+- `recommended_topK = 3`
+- coarse grid: `az_step=0.16`, `el_step=0.24`,
+  `el_sep_deg_list=[0, 0.36, 0.72]`
+- refine grid: `fine_az_step=0.08`, `fine_el_step=0.12`,
+  local half-width `[0.32, 0.48] deg`,
+  `fine_el_sep_deg_list=[0, 0.24, 0.36, 0.48, 0.60, 0.72]`
+- `coarse_to_fine_success = 1`
+- `coarse_to_fine_rmse = 0.0765589261214`
+- `complexity_reduction_ratio = 6.86054096932`
+- `topK_miss_rate = 0`
+- `boundary_hit_rate = 0`
+- `search_acceleration_pass_flag = 1`
+- `recommended_next_step = run_stage3_frontend_prior_bias_with_recommended_config`
+
+Stage3 has been rerun with the Stage2 recommended config and passes the
+frontend-prior robustness check:
+
+- `zero_bias_success = 1`
+- `max_bias_success_drop = 0.06`
+- `max_bias_topK_miss_rate = 0`
+- `max_bias_boundary_hit_rate = 0`
+- `valid_bias_range_text = az_bias=[-0.20,0.20], el_bias=[-0.20,0.20]`
+- `frontend_prior_robustness_pass_flag = 1`
+
 Stage Outputs
 -------------
 
@@ -101,19 +128,22 @@ Stage1 writes:
 - PNG plots for success, RMSE, candidate counts, reduction ratio,
   full-grid match, and topK miss.
 
-Stage2 writes the same file family with `stage2` names and reports:
+Stage2 writes screening and confirmation outputs:
 
-- `recommended_topK`
-- `recommended_coarse_az_step`
-- `recommended_coarse_el_step`
-- `recommended_fine_az_step`
-- `recommended_fine_el_step`
-- `complexity_reduction_ratio`
-- `full_grid_match_rate`
-- `topK_miss_rate`
+- `step11_3_stage2_screening_trial.csv`
+- `step11_3_stage2_screening_summary.csv`
+- `step11_3_stage2_confirmation_trial.csv`
+- `step11_3_stage2_confirmation_summary.csv`
+- `step11_3_stage2_config_table.csv`
+- `step11_3_stage2_keypoints.csv`
+- `step11_3_stage2_result.mat`
+- `step11_3_stage2.log`
+- PNG plots, including Stage2 config success/reduction, topK, refine-window,
+  RMSE, topK-miss, and recommended-config views.
 
-Stage3 loads the Stage2 recommendation when available. If Stage2 has not been
-run yet, it uses the corrected degree-based Stage1 default:
+Stage3 loads the Stage2 recommendation only when Stage2 passes. If Stage2 has
+not been run or does not pass, it uses the corrected degree-based Stage1
+default:
 `topK=10`, coarse step `[0.16, 0.24] deg`, fine step `[0.04, 0.06] deg`,
 coarse `el_sep_deg_list=[0, 0.36, 0.48, 0.72]`, fine
 `el_sep_deg_list=[0, 0.24, 0.36, 0.48, 0.60, 0.72]`, and local half-width

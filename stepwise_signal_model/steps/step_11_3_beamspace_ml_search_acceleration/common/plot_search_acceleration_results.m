@@ -27,6 +27,9 @@ plot_paths{end + 1} = plot_success_vs_coarse_step_local(summary_table, result_di
 if any(abs(summary_table.az_center_bias_deg) > 1e-12 | abs(summary_table.el_center_bias_deg) > 1e-12)
     plot_paths{end + 1} = plot_bias_robustness_local(summary_table, result_dir, tag);
 end
+if contains(lower(tag), 'stage2') && ismember('config_name', summary_table.Properties.VariableNames)
+    plot_paths = [plot_paths, plot_stage2_config_plots_local(summary_table, result_dir)];
+end
 end
 
 function out_path = plot_method_bar_local(summary_table, result_dir, tag, metric_name, y_label, file_name)
@@ -168,6 +171,166 @@ for idx = 1:numel(methods)
     rows(idx).overall_topK_miss_rate = mean_omitnan_local(sub.overall_topK_miss_rate);
 end
 agg = struct2table(rows);
+end
+
+function plot_paths = plot_stage2_config_plots_local(summary_table, result_dir)
+cfg = build_stage2_plot_config_table_local(summary_table);
+plot_paths = {};
+if isempty(cfg)
+    return;
+end
+recommended_idx = choose_stage2_plot_recommendation_local(cfg);
+plot_paths{end + 1} = plot_stage2_success_vs_reduction_local(cfg, recommended_idx, result_dir);
+plot_paths{end + 1} = plot_stage2_topk_vs_success_local(cfg, result_dir);
+plot_paths{end + 1} = plot_stage2_refine_window_vs_num_pairs_local(cfg, result_dir);
+plot_paths{end + 1} = plot_stage2_rmse_vs_reduction_local(cfg, recommended_idx, result_dir);
+plot_paths{end + 1} = plot_stage2_topk_miss_by_config_local(cfg, recommended_idx, result_dir);
+plot_paths{end + 1} = plot_stage2_recommended_bar_local(cfg(recommended_idx, :), result_dir);
+end
+
+function cfg = build_stage2_plot_config_table_local(summary_table)
+full_rows = summary_table(string_match_local(summary_table.search_method, 'full_fine'), :);
+ctf_rows = summary_table(string_match_local(summary_table.search_method, 'coarse_to_fine'), :);
+if isempty(full_rows) || isempty(ctf_rows)
+    cfg = table();
+    return;
+end
+names = unique(ctf_rows.config_name, 'stable');
+rows = repmat(struct('config_name', '', 'topK', NaN, 'local_az_half_width', NaN, ...
+    'local_el_center_half_width', NaN, 'full_success', NaN, 'success', NaN, 'full_rmse', NaN, ...
+    'rmse', NaN, 'full_pairs', NaN, 'pairs', NaN, 'reduction', NaN, 'topK_miss', NaN, ...
+    'boundary_hit', NaN, 'final_pass', false), numel(names), 1);
+for idx = 1:numel(names)
+    name = char_value_local(names(idx));
+    ctf = ctf_rows(string_match_local(ctf_rows.config_name, name), :);
+    full = full_rows(string_match_local(full_rows.config_name, name), :);
+    if isempty(full)
+        full = full_rows(1, :);
+    end
+    rows(idx).config_name = name;
+    rows(idx).topK = ctf.topK(1);
+    rows(idx).local_az_half_width = ctf.local_az_half_width(1);
+    rows(idx).local_el_center_half_width = ctf.local_el_center_half_width(1);
+    rows(idx).full_success = full.overall_joint_success_rate(1);
+    rows(idx).success = ctf.overall_joint_success_rate(1);
+    rows(idx).full_rmse = full.overall_combined_rmse_mean(1);
+    rows(idx).rmse = ctf.overall_combined_rmse_mean(1);
+    rows(idx).full_pairs = full.overall_mean_num_pairs(1);
+    rows(idx).pairs = ctf.overall_mean_num_pairs(1);
+    rows(idx).reduction = rows(idx).full_pairs / max(rows(idx).pairs, eps);
+    rows(idx).topK_miss = ctf.overall_topK_miss_rate(1);
+    rows(idx).boundary_hit = ctf.overall_boundary_hit_rate(1);
+    rmse_ok = rows(idx).rmse <= 1.05 * max(rows(idx).full_rmse, eps) || rows(idx).rmse <= rows(idx).full_rmse + 0.02;
+    rows(idx).final_pass = rows(idx).success >= 0.95 * rows(idx).full_success && rmse_ok && ...
+        rows(idx).topK_miss <= 0.05 && rows(idx).boundary_hit <= 0.2 && rows(idx).reduction >= 2;
+end
+cfg = struct2table(rows);
+end
+
+function idx = choose_stage2_plot_recommendation_local(cfg)
+pass_mask = logical(cfg.final_pass);
+if any(pass_mask)
+    candidates = cfg(pass_mask, :);
+    [~, order] = sortrows([-candidates.reduction, candidates.rmse, candidates.topK_miss]);
+    pass_indices = find(pass_mask);
+    idx = pass_indices(order(1));
+else
+    [~, idx] = sortrows([-cfg.success, cfg.topK_miss, -cfg.reduction, cfg.rmse]);
+    idx = idx(1);
+end
+end
+
+function out_path = plot_stage2_success_vs_reduction_local(cfg, recommended_idx, result_dir)
+fig = figure('Visible', 'off');
+scatter(cfg.reduction, cfg.success, 60, double(cfg.topK), 'filled');
+hold on;
+scatter(cfg.reduction(recommended_idx), cfg.success(recommended_idx), 120, 'r', 'LineWidth', 1.5);
+grid on;
+colorbar;
+xlabel('complexity reduction ratio');
+ylabel('coarse-to-fine success');
+title('Stage2 config success vs reduction');
+out_path = fullfile(result_dir, 'stage2_config_success_vs_reduction.png');
+saveas(fig, out_path);
+close(fig);
+end
+
+function out_path = plot_stage2_topk_vs_success_local(cfg, result_dir)
+fig = figure('Visible', 'off');
+topks = unique(cfg.topK);
+vals = nan(numel(topks), 1);
+for idx = 1:numel(topks)
+    vals(idx) = mean_omitnan_local(cfg.success(abs(cfg.topK - topks(idx)) < 1e-12));
+end
+plot(topks, vals, '-o', 'LineWidth', 1.3);
+grid on;
+xlabel('topK');
+ylabel('mean coarse-to-fine success');
+title('Stage2 topK vs success');
+out_path = fullfile(result_dir, 'stage2_topK_vs_success.png');
+saveas(fig, out_path);
+close(fig);
+end
+
+function out_path = plot_stage2_refine_window_vs_num_pairs_local(cfg, result_dir)
+fig = figure('Visible', 'off');
+x = hypot(cfg.local_az_half_width, cfg.local_el_center_half_width);
+scatter(x, cfg.pairs, 72, cfg.reduction, 'filled');
+grid on;
+colorbar;
+xlabel('refine window norm (deg)');
+ylabel('coarse-to-fine mean num pairs');
+title('Stage2 refine window vs num pairs');
+out_path = fullfile(result_dir, 'stage2_refine_window_vs_num_pairs.png');
+saveas(fig, out_path);
+close(fig);
+end
+
+function out_path = plot_stage2_rmse_vs_reduction_local(cfg, recommended_idx, result_dir)
+fig = figure('Visible', 'off');
+scatter(cfg.reduction, cfg.rmse, 60, cfg.success, 'filled');
+hold on;
+scatter(cfg.reduction(recommended_idx), cfg.rmse(recommended_idx), 120, 'r', 'LineWidth', 1.5);
+grid on;
+colorbar;
+xlabel('complexity reduction ratio');
+ylabel('coarse-to-fine RMSE (deg)');
+title('Stage2 RMSE vs reduction');
+out_path = fullfile(result_dir, 'stage2_rmse_vs_reduction.png');
+saveas(fig, out_path);
+close(fig);
+end
+
+function out_path = plot_stage2_topk_miss_by_config_local(cfg, recommended_idx, result_dir)
+fig = figure('Visible', 'off');
+[~, order] = sort(cfg.topK_miss, 'ascend');
+vals = cfg.topK_miss(order);
+bar(vals);
+hold on;
+hit = find(order == recommended_idx, 1);
+if ~isempty(hit)
+    scatter(hit, vals(hit), 100, 'r', 'filled');
+end
+grid on;
+xlabel('config rank by topK miss');
+ylabel('topK miss rate');
+title('Stage2 topK miss rate by config');
+out_path = fullfile(result_dir, 'stage2_topK_miss_rate_by_config.png');
+saveas(fig, out_path);
+close(fig);
+end
+
+function out_path = plot_stage2_recommended_bar_local(row, result_dir)
+fig = figure('Visible', 'off');
+vals = [row.success, row.topK_miss, row.reduction, row.rmse];
+bar(vals);
+grid on;
+set(gca, 'XTick', 1:4, 'XTickLabel', {'success','topK miss','reduction','RMSE'});
+xtickangle(20);
+title('Stage2 recommended config metrics');
+out_path = fullfile(result_dir, 'stage2_recommended_config_bar.png');
+saveas(fig, out_path);
+close(fig);
 end
 
 function mask = match_value_local(values, target)

@@ -1,0 +1,46 @@
+[2026-06-05 19:37:56] Step11.3 Stage3 frontend-prior bias robustness starts
+[2026-06-05 19:37:56] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\stage3_frontend_prior_bias_robustness\run_stage3_frontend_prior_bias_robustness
+[2026-06-05 19:37:56] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness
+[2026-06-05 19:37:59] Stage2 recommendation source: loaded_from_E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_keypoints.csv
+[2026-06-05 19:37:59] degree-based el_sep enabled for Stage3
+[2026-06-05 19:37:59] Recommended config: topK=3, coarse=[0.160 0.240], fine=[0.080 0.120], local=[0.320 0.480]
+[2026-06-05 19:37:59] Recommended coarse_el_sep_deg_list=[0 0.36 0.72]
+[2026-06-05 19:37:59] Recommended fine_el_sep_deg_list=[0 0.24 0.36 0.48 0.6 0.72]
+[2026-06-05 19:37:59] Recommended config name: coarse_016_024_minsep__topK3__refine_safe_fullsep
+[2026-06-05 19:37:59] Bias case 1/6: [0.00 0.00]
+[2026-06-05 19:38:13]   rows: trial=100, summary=10, elapsed 13.99 s
+[2026-06-05 19:38:13] Bias case 2/6: [0.20 0.00]
+[2026-06-05 19:38:25]   rows: trial=100, summary=10, elapsed 26.55 s
+[2026-06-05 19:38:25] Bias case 3/6: [0.00 0.20]
+[2026-06-05 19:38:38]   rows: trial=100, summary=10, elapsed 39.42 s
+[2026-06-05 19:38:38] Bias case 4/6: [0.20 0.20]
+[2026-06-05 19:38:51]   rows: trial=100, summary=10, elapsed 52.55 s
+[2026-06-05 19:38:51] Bias case 5/6: [-0.20 0.00]
+[2026-06-05 19:39:04]   rows: trial=100, summary=10, elapsed 65.56 s
+[2026-06-05 19:39:04] Bias case 6/6: [0.00 -0.20]
+[2026-06-05 19:39:17]   rows: trial=100, summary=10, elapsed 78.48 s
+[2026-06-05 19:39:27] Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\step11_3_stage3_trial.csv
+[2026-06-05 19:39:27] Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\step11_3_stage3_summary.csv
+[2026-06-05 19:39:27] Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\step11_3_stage3_keypoints.csv
+[2026-06-05 19:39:27] Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\step11_3_stage3_result.mat
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_success_compare.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_rmse_compare.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_num_pairs_compare.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_reduction_ratio.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_full_grid_match_rate.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_topK_miss_rate.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_success_vs_topK.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_success_vs_coarse_step.png
+[2026-06-05 19:39:27] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage3_frontend_prior_bias_robustness\search_bias_robustness.png
+[2026-06-05 19:39:27] Keypoints:
+[2026-06-05 19:39:27]   zero_bias_success = 1
+[2026-06-05 19:39:27]   max_bias_success_drop = 0.06
+[2026-06-05 19:39:27]   max_bias_topK_miss_rate = 0
+[2026-06-05 19:39:27]   max_bias_boundary_hit_rate = 0
+[2026-06-05 19:39:27]   valid_bias_range_text = az_bias=[-0.20,0.20], el_bias=[-0.20,0.20]
+[2026-06-05 19:39:27]   search_param_mode = degree_based_el_sep
+[2026-06-05 19:39:27]   coarse_el_sep_list_text = [0,0.36,0.72]
+[2026-06-05 19:39:27]   fine_el_sep_list_text = [0,0.24,0.36,0.48,0.6,0.72]
+[2026-06-05 19:39:27]   el_sep_match_rate_vs_full = 1
+[2026-06-05 19:39:27]   frontend_prior_robustness_pass_flag = 1
+[2026-06-05 19:39:27]   recommended_next_step = proceed_to_final_search_acceleration_evidence_summary

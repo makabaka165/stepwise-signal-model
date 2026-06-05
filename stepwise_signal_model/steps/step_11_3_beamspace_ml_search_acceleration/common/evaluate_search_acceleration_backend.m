@@ -192,6 +192,18 @@ end
 if ~isfield(cfg_eval, 'B')
     cfg_eval.B = size(W, 2);
 end
+if ~isfield(cfg_eval, 'config_name')
+    cfg_eval.config_name = 'default_config';
+end
+if ~isfield(cfg_eval, 'coarse_config_name')
+    cfg_eval.coarse_config_name = 'default_coarse';
+end
+if ~isfield(cfg_eval, 'refine_config_name')
+    cfg_eval.refine_config_name = 'default_refine';
+end
+if ~isfield(cfg_eval, 'sweep_phase')
+    cfg_eval.sweep_phase = 'single';
+end
 end
 
 function refine_cfg = normalize_refine_cfg_local(refine_cfg)
@@ -320,6 +332,10 @@ for idx = 1:numel(numeric_fields)
 end
 row.scenario_name = '';
 row.search_method = '';
+row.config_name = '';
+row.coarse_config_name = '';
+row.refine_config_name = '';
+row.sweep_phase = '';
 row.W_method = '';
 row.whitening_mode = '';
 row.search_param_mode = '';
@@ -342,6 +358,10 @@ row.trial_id = trial_id;
 row.seed = seed_now;
 row.scenario_name = scenario.scenario_name;
 row.search_method = method;
+row.config_name = cfg_eval.config_name;
+row.coarse_config_name = cfg_eval.coarse_config_name;
+row.refine_config_name = cfg_eval.refine_config_name;
+row.sweep_phase = cfg_eval.sweep_phase;
 row.W_method = cfg_eval.W_method;
 row.whitening_mode = cfg_eval.whitening_mode;
 row.topK = cfg_eval.topK;
@@ -424,7 +444,8 @@ end
 end
 
 function summary_table = build_summary_table_local(trial_table)
-group_fields = {'search_method','scenario_name','topK','coarse_az_step','coarse_el_step','fine_az_step', ...
+group_fields = {'search_method','scenario_name','config_name','coarse_config_name','refine_config_name','sweep_phase', ...
+    'topK','coarse_az_step','coarse_el_step','fine_az_step', ...
     'fine_el_step','local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg', ...
     'rho','phase_deg','beta','az_sep_deg','el_sep_deg','snr_db','B','W_method','search_param_mode', ...
     'full_el_sep_deg_list_text','coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text'};
@@ -439,6 +460,10 @@ for iGroup = 1:height(groups)
     sub = trial_table(mask, :);
     rows(iGroup).search_method = char_value_local(groups.search_method(iGroup));
     rows(iGroup).scenario_name = char_value_local(groups.scenario_name(iGroup));
+    rows(iGroup).config_name = char_value_local(groups.config_name(iGroup));
+    rows(iGroup).coarse_config_name = char_value_local(groups.coarse_config_name(iGroup));
+    rows(iGroup).refine_config_name = char_value_local(groups.refine_config_name(iGroup));
+    rows(iGroup).sweep_phase = char_value_local(groups.sweep_phase(iGroup));
     rows(iGroup).topK = groups.topK(iGroup);
     rows(iGroup).coarse_az_step = groups.coarse_az_step(iGroup);
     rows(iGroup).coarse_el_step = groups.coarse_el_step(iGroup);
@@ -485,6 +510,7 @@ end
 function row = make_summary_row_template_local()
 row = struct();
 fields = {'search_method','scenario_name','topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
+    'config_name','coarse_config_name','refine_config_name','sweep_phase', ...
     'local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg','rho','phase_deg', ...
     'beta','az_sep_deg','el_sep_deg','snr_db','B','W_method','search_param_mode','full_el_sep_deg_list_text', ...
     'coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text', ...
@@ -500,6 +526,10 @@ for idx = 1:numel(fields)
 end
 row.search_method = '';
 row.scenario_name = '';
+row.config_name = '';
+row.coarse_config_name = '';
+row.refine_config_name = '';
+row.sweep_phase = '';
 row.W_method = '';
 row.search_param_mode = '';
 row.full_el_sep_deg_list_text = '';
@@ -508,7 +538,8 @@ row.fine_el_sep_deg_list_text = '';
 end
 
 function summary_table = add_config_aggregates_local(summary_table)
-config_fields = {'search_method','topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
+config_fields = {'search_method','config_name','coarse_config_name','refine_config_name','sweep_phase', ...
+    'topK','coarse_az_step','coarse_el_step','fine_az_step','fine_el_step', ...
     'local_az_half_width','local_el_center_half_width','az_center_bias_deg','el_center_bias_deg','B','W_method', ...
     'search_param_mode','full_el_sep_deg_list_text','coarse_el_sep_deg_list_text','fine_el_sep_deg_list_text'};
 for idx = 1:height(summary_table)

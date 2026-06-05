@@ -49,6 +49,7 @@ log_lines = append_log_local(log_lines, 'Recommended config: topK=%d, coarse=[%.
     rec_cfg.local_az_half_width, rec_cfg.local_el_center_half_width);
 log_lines = append_log_local(log_lines, 'Recommended coarse_el_sep_deg_list=%s', mat2str(rec_cfg.coarse_el_sep_deg_list));
 log_lines = append_log_local(log_lines, 'Recommended fine_el_sep_deg_list=%s', mat2str(rec_cfg.fine_el_sep_deg_list));
+log_lines = append_log_local(log_lines, 'Recommended config name: %s', rec_cfg.config_name);
 
 center_bias_cases = [ ...
     0.0, 0.0; ...
@@ -119,6 +120,7 @@ fprintf('Log written: %s\n', log_path);
 
 function [rec_cfg, note] = load_stage2_recommendation_local(stage2_result_dir)
 rec_cfg = struct();
+rec_cfg.config_name = 'fallback_stage1_degree_based_default';
 rec_cfg.topK = 10;
 rec_cfg.coarse_az_step = 0.16;
 rec_cfg.coarse_el_step = 0.24;
@@ -134,7 +136,16 @@ keypoints_csv = fullfile(stage2_result_dir, 'step11_3_stage2_keypoints.csv');
 if exist(keypoints_csv, 'file') ~= 2
     return;
 end
-T = readtable(keypoints_csv, 'TextType', 'string');
+opts = detectImportOptions(keypoints_csv, 'TextType', 'string');
+opts.DataLines = [2, Inf];
+opts = setvartype(opts, {'keypoint','value'}, 'string');
+T = readtable(keypoints_csv, opts);
+pass_flag = read_keypoint_numeric_local(T, 'search_acceleration_pass_flag', 0);
+if pass_flag ~= 1
+    note = sprintf('fallback_stage1_default_stage2_not_passed_%s', keypoints_csv);
+    return;
+end
+rec_cfg.config_name = read_keypoint_text_local(T, 'recommended_config_name', rec_cfg.config_name);
 rec_cfg.topK = read_keypoint_numeric_local(T, 'recommended_topK', rec_cfg.topK);
 rec_cfg.coarse_az_step = read_keypoint_numeric_local(T, 'recommended_coarse_az_step', rec_cfg.coarse_az_step);
 rec_cfg.coarse_el_step = read_keypoint_numeric_local(T, 'recommended_coarse_el_step', rec_cfg.coarse_el_step);
@@ -143,9 +154,8 @@ rec_cfg.fine_el_step = read_keypoint_numeric_local(T, 'recommended_fine_el_step'
 rec_cfg.local_az_half_width = read_keypoint_numeric_local(T, 'recommended_local_az_half_width', rec_cfg.local_az_half_width);
 rec_cfg.local_el_center_half_width = read_keypoint_numeric_local(T, 'recommended_local_el_center_half_width', ...
     rec_cfg.local_el_center_half_width);
-rec_cfg.full_el_sep_deg_list = read_keypoint_list_local(T, 'full_fine_el_sep_list_text', rec_cfg.full_el_sep_deg_list);
-rec_cfg.coarse_el_sep_deg_list = read_keypoint_list_local(T, 'coarse_el_sep_list_text', rec_cfg.coarse_el_sep_deg_list);
-rec_cfg.fine_el_sep_deg_list = read_keypoint_list_local(T, 'fine_el_sep_list_text', rec_cfg.fine_el_sep_deg_list);
+rec_cfg.coarse_el_sep_deg_list = read_keypoint_list_local(T, 'recommended_coarse_el_sep_list_text', rec_cfg.coarse_el_sep_deg_list);
+rec_cfg.fine_el_sep_deg_list = read_keypoint_list_local(T, 'recommended_fine_el_sep_list_text', rec_cfg.fine_el_sep_deg_list);
 note = sprintf('loaded_from_%s', keypoints_csv);
 end
 
@@ -156,8 +166,24 @@ if ~any(mask)
     return;
 end
 raw = T.value(find(mask, 1));
-value = str2double(raw);
+if isnumeric(raw)
+    value = raw;
+else
+    value = str2double(raw);
+end
 if ~isfinite(value)
+    value = fallback;
+end
+end
+
+function value = read_keypoint_text_local(T, key, fallback)
+mask = strcmp(T.keypoint, string(key));
+if ~any(mask)
+    value = fallback;
+    return;
+end
+value = char(T.value(find(mask, 1)));
+if isempty(value)
     value = fallback;
 end
 end

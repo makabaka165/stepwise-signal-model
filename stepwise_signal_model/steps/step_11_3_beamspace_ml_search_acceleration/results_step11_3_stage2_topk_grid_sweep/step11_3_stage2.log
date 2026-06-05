@@ -1,0 +1,74 @@
+[2026-06-05 19:26:18] Step11.3 Stage2 starts
+[2026-06-05 19:26:18] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\stage2_topk_grid_sweep\run_stage2_topk_grid_sweep
+[2026-06-05 19:26:18] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep
+[2026-06-05 19:26:18] degree-based el_sep enabled
+[2026-06-05 19:26:19] W method = greedy_combined_B7
+[2026-06-05 19:26:19] screening config count = 96
+[2026-06-05 19:26:19] Full baseline: az_step=0.08, el_step=0.12, el_sep_deg_list=[0 0.24 0.36 0.48 0.6 0.72]
+[2026-06-05 19:26:47] screening scenario 1/5 finished, elapsed marker rows=576
+[2026-06-05 19:27:19] screening scenario 2/5 finished, elapsed marker rows=1152
+[2026-06-05 19:27:51] screening scenario 3/5 finished, elapsed marker rows=1728
+[2026-06-05 19:28:29] screening scenario 4/5 finished, elapsed marker rows=2304
+[2026-06-05 19:29:07] screening scenario 5/5 finished, elapsed marker rows=2880
+[2026-06-05 19:29:12] screening finished: configs=96, trial rows=2880, summary rows=960, elapsed 173.01 s
+[2026-06-05 19:29:12] top config selection: screening_pass_then_score
+[2026-06-05 19:29:12] top config names: coarse_016_024_minsep__topK3__refine_safe_fullsep, coarse_020_030_compact__topK3__refine_safe_fullsep, coarse_016_024_compact__topK3__refine_safe_fullsep, coarse_016_024_minsep__topK5__refine_safe_fullsep, coarse_016_024_minsep__topK7__refine_safe_fullsep
+[2026-06-05 19:29:12] confirmation config count = 5
+[2026-06-05 19:29:18] confirmation scenario 1/5 finished, elapsed marker rows=100
+[2026-06-05 19:29:26] confirmation scenario 2/5 finished, elapsed marker rows=200
+[2026-06-05 19:29:34] confirmation scenario 3/5 finished, elapsed marker rows=300
+[2026-06-05 19:29:41] confirmation scenario 4/5 finished, elapsed marker rows=400
+[2026-06-05 19:29:48] confirmation scenario 5/5 finished, elapsed marker rows=500
+[2026-06-05 19:30:01] confirmation results: trial rows=500, summary rows=50, elapsed 222.06 s
+[2026-06-05 19:30:01] recommended config = coarse_016_024_minsep__topK3__refine_safe_fullsep
+[2026-06-05 19:30:01] search_acceleration_pass_flag = 1
+[2026-06-05 19:30:01] Wrote screening trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_screening_trial.csv
+[2026-06-05 19:30:01] Wrote screening summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_screening_summary.csv
+[2026-06-05 19:30:01] Wrote confirmation trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_confirmation_trial.csv
+[2026-06-05 19:30:01] Wrote confirmation summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_confirmation_summary.csv
+[2026-06-05 19:30:01] Wrote config table CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_config_table.csv
+[2026-06-05 19:30:01] Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_keypoints.csv
+[2026-06-05 19:30:01] Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\step11_3_stage2_result.mat
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_success_compare.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_rmse_compare.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_num_pairs_compare.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_reduction_ratio.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_full_grid_match_rate.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_topK_miss_rate.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_success_vs_topK.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\search_success_vs_coarse_step.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\stage2_config_success_vs_reduction.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\stage2_topK_vs_success.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\stage2_refine_window_vs_num_pairs.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\stage2_rmse_vs_reduction.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\stage2_topK_miss_rate_by_config.png
+[2026-06-05 19:30:01] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_3_beamspace_ml_search_acceleration\results_step11_3_stage2_topk_grid_sweep\stage2_recommended_config_bar.png
+[2026-06-05 19:30:01] Keypoints:
+[2026-06-05 19:30:01]   recommended_config_name = coarse_016_024_minsep__topK3__refine_safe_fullsep
+[2026-06-05 19:30:01]   recommended_topK = 3
+[2026-06-05 19:30:01]   recommended_coarse_az_step = 0.16
+[2026-06-05 19:30:01]   recommended_coarse_el_step = 0.24
+[2026-06-05 19:30:01]   recommended_fine_az_step = 0.08
+[2026-06-05 19:30:01]   recommended_fine_el_step = 0.12
+[2026-06-05 19:30:01]   recommended_local_az_half_width = 0.32
+[2026-06-05 19:30:01]   recommended_local_el_center_half_width = 0.48
+[2026-06-05 19:30:01]   recommended_coarse_el_sep_list_text = [0,0.36,0.72]
+[2026-06-05 19:30:01]   recommended_fine_el_sep_list_text = [0,0.24,0.36,0.48,0.6,0.72]
+[2026-06-05 19:30:01]   full_fine_success = 1
+[2026-06-05 19:30:01]   coarse_to_fine_success = 1
+[2026-06-05 19:30:01]   full_fine_rmse = 0.0765589261214
+[2026-06-05 19:30:01]   coarse_to_fine_rmse = 0.0765589261214
+[2026-06-05 19:30:01]   full_fine_worst_case_success = 1
+[2026-06-05 19:30:01]   coarse_to_fine_worst_case_success = 1
+[2026-06-05 19:30:01]   full_fine_mean_num_pairs = 131461
+[2026-06-05 19:30:01]   coarse_to_fine_mean_num_pairs = 19161.9
+[2026-06-05 19:30:01]   coarse_mean_num_pairs = 7353
+[2026-06-05 19:30:01]   refine_mean_num_pairs = 11808.9
+[2026-06-05 19:30:01]   complexity_reduction_ratio = 6.86054096932
+[2026-06-05 19:30:01]   topK_miss_rate = 0
+[2026-06-05 19:30:01]   boundary_hit_rate = 0
+[2026-06-05 19:30:01]   el_sep_match_rate_vs_full = 1
+[2026-06-05 19:30:01]   full_grid_match_rate = 1
+[2026-06-05 19:30:01]   search_param_mode = degree_based_el_sep
+[2026-06-05 19:30:01]   search_acceleration_pass_flag = 1
+[2026-06-05 19:30:01]   recommended_next_step = run_stage3_frontend_prior_bias_with_recommended_config
