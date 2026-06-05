@@ -1,0 +1,44 @@
+Step11.2 Stage2 W selection validation starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\stage2_w_selection_validation\run_stage2_w_selection_validation
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation
+Loaded Stage1 MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\step11_2_w_pool_diagnostics_result.mat
+Selected W cases=15, scenarios=5, Metkl=5, L=64
+Search grid: az half 1.500 step 0.080, el half 1.200 step 0.120
+Backend validation finished, rows=375, elapsed 10.69 s
+Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\step11_2_w_selection_validation_trial.csv
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\step11_2_w_selection_validation_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\step11_2_w_selection_validation_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\step11_2_w_selection_validation_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\w_method_success_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\w_method_rmse_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\w_method_worst_case_compare.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\w_method_projection_vs_success.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\w_method_corr_vs_success.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_selection_validation\w_method_complexity_compare.png
+Keypoints:
+  best_method_overall = greedy_lowcorr_B25
+  best_method_B15 = greedy_projection
+  best_method_overall_excludes_random = 1
+  regular_success_B25 = 0.4
+  greedy_success_B25 = 0.6
+  best_greedy_method_B25 = greedy_lowcorr
+  svd_success_B25 = 0.4
+  greedy_minus_regular_success_gain_B25 = 0.2
+  svd_minus_regular_success_gain_B25 = 0
+  greedy_to_svd_success_gap_B25 = -0.2
+  worst_case_regular_success = 0
+  worst_case_greedy_success = 0
+  worst_case_svd_success = 0
+  regular_combined_rmse_B25 = 0.106144402704
+  greedy_combined_rmse_B25 = 0.09888964751
+  svd_combined_rmse_B25 = 0.106144402704
+  greedy_minus_regular_combined_rmse_gain_B25 = 0.00725475519448
+  regular_projection_loss_B25 = 0.121341194434
+  greedy_projection_loss_B25 = 0.526590832279
+  svd_projection_loss_B25 = 0.0027693581663
+  regular_max_corr_B25 = 0.476965684438
+  greedy_max_corr_B25 = 0.304113956049
+  svd_max_corr_B25 = 0.323886368776
+  w_selection_validation_pass_flag = 1
+  recommended_W = greedy_lowcorr_B25
+  recommended_next_step = use_greedy_lowcorr_as_backend_W_candidate_but_document_worst_case_not_solved

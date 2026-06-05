@@ -1,0 +1,16 @@
+keypoint,value
+best_regular_projection_loss_B25,0.121341194434
+best_greedy_projection_loss_B25,0.186246043264
+best_greedy_projection_method_B25,greedy_combined
+svd_projection_loss_B25,0.0027693581663
+greedy_minus_regular_projection_loss_gain_B25,-0.0649048488294
+greedy_to_svd_projection_loss_gap_B25,0.183476685097
+regular_max_corr_B25,0.476965684438
+greedy_max_corr_B25,0.250602286634
+best_greedy_corr_method_B25,greedy_combined
+svd_max_corr_B25,0.323886368776
+regular_cond_WHW_B25,23364816165.6
+greedy_combined_cond_WHW_B25,3273.79033918
+svd_cond_WHW_B25,1
+w_pool_diagnostics_pass_flag,1
+recommended_next_step,run_stage2_backend_validation_for_regular_greedy_svd

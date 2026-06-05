@@ -1,0 +1,40 @@
+Step11.2 Stage1 W pool diagnostics starts
+Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\stage1_w_pool_diagnostics\run_stage1_w_pool_diagnostics
+Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics
+N_elem=2080, expected_N_elem=2080, lambda=0.03
+phase_factor=2, phase_sign=+1, center=(8.000, 10.000)
+B_list=[9 15 25], reg=1e-10
+A_patch az=[6.500:0.150:9.500] (21), el=[9.000:0.150:10.950] (14)
+pair_set rows=10
+Built W_pool: N_elem=2080, M=117, mode=legacy_build_cyl_azel_beam_transform_with_fallback_centers
+Pool note: reuses the existing Step11.1 cylindrical az/el beam transform with a compatible 3dB-overlap center grid
+Built A_patch: N_elem=2080, N_patch=294
+Evaluating B=9
+Finished B=9, elapsed 1.69 s
+Evaluating B=15
+Finished B=15, elapsed 2.34 s
+Evaluating B=25
+Finished B=25, elapsed 3.41 s
+Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\step11_2_w_pool_diagnostics_summary.csv
+Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\step11_2_w_pool_diagnostics_keypoints.csv
+Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\step11_2_w_pool_diagnostics_result.mat
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\w_projection_loss_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\w_max_corr_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\w_cond_vs_B.png
+Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_2_beamspace_w_design\results_step11_2_w_pool_diagnostics\w_svd_energy_curve.png
+Keypoints:
+  best_regular_projection_loss_B25 = 0.121341194434
+  best_greedy_projection_loss_B25 = 0.186246043264
+  best_greedy_projection_method_B25 = greedy_combined
+  svd_projection_loss_B25 = 0.0027693581663
+  greedy_minus_regular_projection_loss_gain_B25 = -0.0649048488294
+  greedy_to_svd_projection_loss_gap_B25 = 0.183476685097
+  regular_max_corr_B25 = 0.476965684438
+  greedy_max_corr_B25 = 0.250602286634
+  best_greedy_corr_method_B25 = greedy_combined
+  svd_max_corr_B25 = 0.323886368776
+  regular_cond_WHW_B25 = 23364816165.6
+  greedy_combined_cond_WHW_B25 = 3273.79033918
+  svd_cond_WHW_B25 = 1
+  w_pool_diagnostics_pass_flag = 1
+  recommended_next_step = run_stage2_backend_validation_for_regular_greedy_svd
