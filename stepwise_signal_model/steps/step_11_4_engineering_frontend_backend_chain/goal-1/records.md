@@ -108,5 +108,61 @@ GO
 
 ### Git Commit
 
-Recorded in the Task 02 skeleton commit.
+`dfd63ad`
+
+## Task 03: Stage1 Interface Contract
+
+### Expected Result
+
+Implement and run Stage1 interface-contract code for `frontend_out` and
+`backend_in`. Generate CSV, MAT, log, keypoints, and README status artifacts.
+Pass criteria are `frontend_out_fields_ok = 1`, `backend_in_fields_ok = 1`, and
+`interface_contract_pass_flag = 1`.
+
+### Actual Result
+
+Implemented `make_frontend_out_struct.m`,
+`build_step11_backend_config_from_frontend.m`,
+`make_backend_in_from_frontend_out.m`, `append_log_local.m`, and
+`stage1_interface_contract/run_stage1_interface_contract.m`. Ran MATLAB R2022b
+successfully. Stage1 wrote summary/keypoints/MAT/log/README artifacts.
+
+### Alignment
+
+Aligned with Stage1 scope. The script checks interface fields, `Y/W/Z`
+dimensions, coarse-center handoff, truth-guard policy, and Step11.3 recommended
+search values. It does not run pair2d search or claim measurement performance.
+
+### Cause Analysis
+
+Stage1 passes because the frontend and backend contract fields are explicit,
+the backend config is derived from the observable frontend coarse center, and
+the recommended Step11.3 search constants are preserved in the generated
+backend config.
+
+### Checks
+
+- MATLAB command: `matlab -batch "run('.../run_stage1_interface_contract.m')"`
+- `frontend_out_fields_ok = 1`
+- `backend_in_fields_ok = 1`
+- `backend_dimension_ok = 1`
+- `coarse_center_alignment_ok = 1`
+- `truth_guard_ok = 1`
+- `search_cfg_fields_ok = 1`
+- `recommended_search_values_ok = 1`
+- `interface_contract_pass_flag = 1`
+
+### Risks
+
+Task3 validates structure and handoff only. It does not yet prove frontend
+coarse-angle accuracy or backend chain performance; those remain for Stage2 and
+Stage3.
+
+### Decision
+
+GO
+
+### Git Commit
+
+Recorded in the Task 03 Stage1 commit.
 

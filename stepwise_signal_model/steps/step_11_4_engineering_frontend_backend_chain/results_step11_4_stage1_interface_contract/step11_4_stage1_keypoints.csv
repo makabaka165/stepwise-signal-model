@@ -1,0 +1,14 @@
+keypoint,value
+frontend_out_fields_ok,   1
+backend_in_fields_ok,   1
+backend_dimension_ok,   1
+coarse_center_alignment_ok,   1
+truth_guard_ok,   1
+search_cfg_fields_ok,   1
+recommended_search_values_ok,   1
+interface_contract_pass_flag,   1
+backend_topK,   3
+coarse_az_step,0.16
+coarse_el_step,0.24
+fine_az_step,0.08
+fine_el_step,0.12
