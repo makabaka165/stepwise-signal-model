@@ -287,5 +287,61 @@ frontend coarse angle as the bottleneck rather than hiding the failure.
 
 ### Git Commit
 
-Recorded in the Task 04 Stage2 commit.
+`86b0be7`
+
+## Task 05: Stage3 Frontend-to-Backend Chain Validation
+
+### Expected Result
+
+Use the synthetic frontend coarse center to drive the Step11 backend and compare
+against an oracle-center backend. Pass gate: synthetic success >= 0.85 * oracle
+success, `topK_miss_rate <= 0.1`, and `boundary_hit_rate <= 0.2`.
+
+### Actual Result
+
+Implemented `run_step11_pair2d_backend_from_interface.m`,
+`evaluate_frontend_backend_chain_metrics.m`, and
+`stage3_frontend_to_backend_chain_validation/run_stage3_frontend_to_backend_chain_validation.m`.
+MATLAB R2022b ran successfully. Stage3 generated CSV, MAT, log, keypoints,
+README, and PNG artifacts. The chain validation pass flag is 1.
+
+### Alignment
+
+Aligned with the interface-level chain goal. Synthetic frontend backend uses
+beam-energy-derived coarse centers. Oracle center is used only as a backend
+comparison baseline.
+
+### Cause Analysis
+
+Although Stage2 showed frontend azimuth coarse-center bias in weak-secondary
+and low-SNR hard cases, the Step11.4 local backend search window was wide enough
+for the degree-based coarse-to-fine backend to recover the pair estimates in
+this Stage3 trial set.
+
+### Checks
+
+- MATLAB command: `matlab -batch "run('.../run_stage3_frontend_to_backend_chain_validation.m')"`
+- rows = 50.
+- oracle_success_rate = 1.
+- synthetic_success_rate = 1.
+- synthetic_to_oracle_success_ratio = 1.
+- synthetic_topK_miss_rate = 0.
+- synthetic_boundary_hit_rate = 0.
+- chain_validation_pass_flag = 1.
+- failure_reason = `none`.
+- PNG artifact exists: `frontend_backend_chain_summary.png`, 25505 bytes.
+
+### Risks
+
+Stage3 uses a scoped synthetic frontend and a local search window. It validates
+interface-level chaining under the tested scenarios, but it does not prove a
+complete real CFAR/MTD engineering closure or automatic trigger policy.
+
+### Decision
+
+GO
+
+### Git Commit
+
+Recorded in the Task 05 Stage3 commit.
 
