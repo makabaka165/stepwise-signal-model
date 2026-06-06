@@ -449,5 +449,53 @@ GO
 
 ### Git Commit
 
-Recorded in the Review B commit.
+`c48c554`
+
+## Task 07: Final Summary and Maximum Review
+
+### Expected Result
+
+Write the final Step11.4 engineering chain summary, rerun/review MATLAB outputs,
+answer the required final questions, and decide
+`ACCEPT_AND_END` / `ACCEPT_WITH_RISKS_AND_END` / `REJECT_AND_ROLLBACK` /
+`ACCEPT_AND_CONTINUE_ITERATION`.
+
+### Actual Result
+
+Final sequential MATLAB rerun of Stage1-4 completed successfully. Wrote
+`docs/06_FINAL_STEP11_4_ENGINEERING_CHAIN_SUMMARY.md`. The final decision is
+`ACCEPT_WITH_RISKS_AND_END`.
+
+### Alignment
+
+Aligned with the goal. The final summary accepts interface-level chaining while
+preserving the residual Stage2 frontend coarse-angle risk and avoiding claims of
+complete engineering closure or complete automatic model selection.
+
+### Checks
+
+- Stage1 rerun: `interface_contract_pass_flag = 1`.
+- Stage2 rerun: `frontend_coarse_angle_pass_flag = 0`,
+  `best_within_pm02deg_rate = 0.6`, `best_az_rmse_deg = 0.340822201375`.
+- Stage3 rerun: `chain_validation_pass_flag = 1`,
+  `synthetic_to_oracle_success_ratio = 1`, `failure_reason = none`.
+- Stage4 rerun: `stage4_module_diagnostics_pass_flag = 1`,
+  `single_target_false_split_rate = 1`, `pair_target_success_rate = 1`.
+- Final review covered user correctness, code correctness, MATLAB runtime,
+  theory consistency, frontend/backend layering, overclaim control, rollback
+  safety, reproducibility, and documentation completeness.
+
+### Risks
+
+Stage2 frontend coarse-angle quality remains a documented risk, especially in
+weak-secondary and low-SNR hard cases. Real CFAR/MTD closure and complete
+automatic model selection remain out of scope.
+
+### Decision
+
+ACCEPT_WITH_RISKS_AND_END
+
+### Git Commit
+
+Recorded in the Task 07 final summary commit.
 

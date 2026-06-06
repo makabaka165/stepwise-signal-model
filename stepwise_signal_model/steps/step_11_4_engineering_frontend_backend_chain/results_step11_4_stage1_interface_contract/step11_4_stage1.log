@@ -1,11 +1,11 @@
-[2026-06-06 13:19:19] Step11.4 Stage1 interface contract starts
-[2026-06-06 13:19:19] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\stage1_interface_contract\run_stage1_interface_contract
-[2026-06-06 13:19:19] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\results_step11_4_stage1_interface_contract
-[2026-06-06 13:19:21] frontend_out_fields_ok = 1
-[2026-06-06 13:19:21] backend_in_fields_ok = 1
-[2026-06-06 13:19:21] backend_dimension_ok = 1
-[2026-06-06 13:19:21] coarse_center_alignment_ok = 1
-[2026-06-06 13:19:21] truth_guard_ok = 1
-[2026-06-06 13:19:21] search_cfg_fields_ok = 1
-[2026-06-06 13:19:21] recommended_search_values_ok = 1
-[2026-06-06 13:19:21] interface_contract_pass_flag = 1
+[2026-06-06 13:48:22] Step11.4 Stage1 interface contract starts
+[2026-06-06 13:48:22] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\stage1_interface_contract\run_stage1_interface_contract
+[2026-06-06 13:48:22] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\results_step11_4_stage1_interface_contract
+[2026-06-06 13:48:22] frontend_out_fields_ok = 1
+[2026-06-06 13:48:22] backend_in_fields_ok = 1
+[2026-06-06 13:48:22] backend_dimension_ok = 1
+[2026-06-06 13:48:22] coarse_center_alignment_ok = 1
+[2026-06-06 13:48:22] truth_guard_ok = 1
+[2026-06-06 13:48:22] search_cfg_fields_ok = 1
+[2026-06-06 13:48:22] recommended_search_values_ok = 1
+[2026-06-06 13:48:22] interface_contract_pass_flag = 1

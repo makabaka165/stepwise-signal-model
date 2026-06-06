@@ -83,5 +83,9 @@ the `tasks.md` report template and does not provide standalone `context.md` or
   coarse angle; call pair2d only for unresolved-cluster indicators such as broad
   beam spread, ambiguous local peak structure, or downstream need for local pair
   enhancement.
-- Review B: completed, decision GO.
-- Next task: Task 07, write final Step11.4 summary and run final maximum review.
+- Review B: completed, decision GO, committed as `c48c554`.
+- Task 07: completed, final decision ACCEPT_WITH_RISKS_AND_END.
+- Final status: Step11.4 interface-level chain validated with residual Stage2
+  frontend coarse-angle risk. Not a full CFAR/MTD closure and not complete
+  automatic target-count selection.
+- Final summary: `docs/06_FINAL_STEP11_4_ENGINEERING_CHAIN_SUMMARY.md`.

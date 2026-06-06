@@ -1,11 +1,11 @@
-[2026-06-06 13:36:50] Step11.4 Stage3 frontend-to-backend chain starts
-[2026-06-06 13:36:50] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\stage3_frontend_to_backend_chain_validation\run_stage3_frontend_to_backend_chain_validation
-[2026-06-06 13:36:50] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\results_step11_4_stage3_frontend_to_backend_chain_validation
-[2026-06-06 13:37:04] Evaluation finished: rows=50, elapsed=6.76 sec
-[2026-06-06 13:37:04] oracle_success_rate = 1
-[2026-06-06 13:37:04] synthetic_success_rate = 1
-[2026-06-06 13:37:04] synthetic_to_oracle_success_ratio = 1
-[2026-06-06 13:37:04] synthetic_topK_miss_rate = 0
-[2026-06-06 13:37:04] synthetic_boundary_hit_rate = 0
-[2026-06-06 13:37:04] chain_validation_pass_flag = 1
-[2026-06-06 13:37:04] failure_reason = none
+[2026-06-06 13:48:31] Step11.4 Stage3 frontend-to-backend chain starts
+[2026-06-06 13:48:31] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\stage3_frontend_to_backend_chain_validation\run_stage3_frontend_to_backend_chain_validation
+[2026-06-06 13:48:31] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\results_step11_4_stage3_frontend_to_backend_chain_validation
+[2026-06-06 13:48:40] Evaluation finished: rows=50, elapsed=7.26 sec
+[2026-06-06 13:48:40] oracle_success_rate = 1
+[2026-06-06 13:48:40] synthetic_success_rate = 1
+[2026-06-06 13:48:40] synthetic_to_oracle_success_ratio = 1
+[2026-06-06 13:48:40] synthetic_topK_miss_rate = 0
+[2026-06-06 13:48:40] synthetic_boundary_hit_rate = 0
+[2026-06-06 13:48:40] chain_validation_pass_flag = 1
+[2026-06-06 13:48:40] failure_reason = none
