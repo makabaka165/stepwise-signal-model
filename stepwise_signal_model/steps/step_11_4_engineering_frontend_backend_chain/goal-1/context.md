@@ -69,11 +69,18 @@ the `tasks.md` report template and does not provide standalone `context.md` or
 - Risk concentration: `weak_secondary` and `low_snr_hard` cases show azimuth
   coarse-center bias around 0.53 deg for centroid methods; easy/strong/hard
   non-weak cases pass the +/-0.2 deg check.
-- Task 05: completed, decision GO.
+- Task 05: completed, decision GO, committed as `a5a844f`.
 - Stage3 result: oracle_success_rate = 1, synthetic_success_rate = 1,
   synthetic_to_oracle_success_ratio = 1, synthetic_topK_miss_rate = 0,
   synthetic_boundary_hit_rate = 0, chain_validation_pass_flag = 1.
 - Stage2 risk status: the synthetic frontend coarse center remains biased in
   hard weak cases, but within the current Step11.4 local search window it did
   not reduce backend success relative to oracle.
-- Next task: Task 06, implement and run Stage4 single-vs-pair diagnostics.
+- Task 06: completed, decision GO.
+- Stage4 result: single_target_false_split_rate = 1,
+  pair_target_success_rate = 1, stage4_module_diagnostics_pass_flag = 1.
+- Trigger policy: default ordinary single-target path should keep frontend
+  coarse angle; call pair2d only for unresolved-cluster indicators such as broad
+  beam spread, ambiguous local peak structure, or downstream need for local pair
+  enhancement.
+- Next task: Review B, the required broad review/debug gate after Tasks 04-06.

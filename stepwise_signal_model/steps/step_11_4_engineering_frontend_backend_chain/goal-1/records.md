@@ -343,5 +343,58 @@ GO
 
 ### Git Commit
 
-Recorded in the Task 05 Stage3 commit.
+`a5a844f`
+
+## Task 06: Stage4 Single-vs-Pair Module Diagnostics
+
+### Expected Result
+
+Diagnose whether ordinary single targets should be forced into pair2d by
+default, while confirming pair2d remains useful for unresolved pair cases.
+Produce `single_target_false_split_rate`, `pair_target_success_rate`, and
+`recommended_trigger_policy_text`.
+
+### Actual Result
+
+Implemented and ran
+`stage4_single_vs_pair_module_diagnostics/run_stage4_single_vs_pair_module_diagnostics.m`.
+MATLAB R2022b ran successfully and generated CSV, MAT, log, keypoints, README,
+and PNG artifacts. Stage4 pass flag is 1.
+
+### Alignment
+
+Aligned with the theoretical boundary. The result supports pair2d as a local
+unresolved-cluster enhanced mode and does not claim complete automatic model
+selection.
+
+### Cause Analysis
+
+Forced pair2d produces separated pair estimates on ordinary single-target cases
+in this diagnostic, while pair scenarios still succeed. This supports using
+pair2d only when frontend indicators suggest unresolved local cluster
+ambiguity.
+
+### Checks
+
+- MATLAB command: `matlab -batch "run('.../run_stage4_single_vs_pair_module_diagnostics.m')"`
+- rows = 40.
+- single_target_false_split_rate = 1.
+- pair_target_success_rate = 1.
+- pair_boundary_hit_rate = 0.
+- pair_topK_miss_rate = 0.
+- stage4_module_diagnostics_pass_flag = 1.
+- PNG artifact exists: `single_vs_pair_diagnostics_summary.png`, 21851 bytes.
+
+### Risks
+
+The trigger policy is a recommendation, not a complete automatic target-count
+classifier. Real frontend CFAR/MTD closure remains out of scope.
+
+### Decision
+
+GO
+
+### Git Commit
+
+Recorded in the Task 06 Stage4 commit.
 

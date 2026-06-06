@@ -1,0 +1,8 @@
+[2026-06-06 13:42:01] Step11.4 Stage4 single-vs-pair module diagnostics starts
+[2026-06-06 13:42:01] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\stage4_single_vs_pair_module_diagnostics\run_stage4_single_vs_pair_module_diagnostics
+[2026-06-06 13:42:01] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\results_step11_4_stage4_single_vs_pair_module_diagnostics
+[2026-06-06 13:42:13] Evaluation finished: rows=40, elapsed=5.11 sec
+[2026-06-06 13:42:13] single_target_false_split_rate = 1
+[2026-06-06 13:42:13] pair_target_success_rate = 1
+[2026-06-06 13:42:13] stage4_module_diagnostics_pass_flag = 1
+[2026-06-06 13:42:13] recommended_trigger_policy_text = Default ordinary single-target path should keep frontend coarse angle; call pair2d only for unresolved-cluster indicators such as broad beam spread, ambiguous local peak structure, or downstream need for local pair enhancement.

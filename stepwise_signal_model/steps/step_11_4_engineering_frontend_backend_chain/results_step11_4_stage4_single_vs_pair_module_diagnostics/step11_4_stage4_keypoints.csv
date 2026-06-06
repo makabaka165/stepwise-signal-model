@@ -1,0 +1,7 @@
+keypoint,value
+single_target_false_split_rate,"1"
+pair_target_success_rate,"1"
+pair_boundary_hit_rate,"0"
+pair_topK_miss_rate,"0"
+stage4_module_diagnostics_pass_flag,"1"
+recommended_trigger_policy_text,"Default ordinary single-target path should keep frontend coarse angle; call pair2d only for unresolved-cluster indicators such as broad beam spread, ambiguous local peak structure, or downstream need for local pair enhancement."
