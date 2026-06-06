@@ -164,5 +164,60 @@ GO
 
 ### Git Commit
 
-Recorded in the Task 03 Stage1 commit.
+`a183eda`
+
+## Review A: Broad Review After Tasks 01-03
+
+### Expected Result
+
+Run the required broad review/debug gate after Tasks 01-03. Check protected
+scope, truth leakage, frontend/backend layer wording, result completeness,
+reproducibility evidence, and git rollback safety before continuing to Task4.
+
+### Actual Result
+
+Review A passed. The last three commits modify only
+`steps/step_11_4_engineering_frontend_backend_chain/`. Stage1 keypoints show
+all contract pass flags equal to 1. `input.md` remains byte-for-byte identical
+to the pasted attachment. The code carries truth only as `truth_for_metrics`
+metadata and builds backend search config from `frontend_out.coarse_*` fields.
+Docs explicitly deny complete automatic target-count selection and full
+engineering closure.
+
+### Alignment
+
+Aligned with the review gate. No protected prior step was modified, no truth
+value is used to construct frontend coarse center, and Stage1 does not claim
+backend performance.
+
+### Cause Analysis
+
+The initial Step11.4 scope is isolated in its own directory and Stage1 is a
+contract test only. The pass result is therefore sufficient to continue into
+Stage2, where actual frontend coarse-angle quality becomes testable.
+
+### Checks
+
+- `git status --short` was clean before review report edits.
+- `git diff --name-only HEAD~3..HEAD` listed only Step11.4 paths.
+- `input.md` byte match: true, 20022 bytes.
+- Stage1 `interface_contract_pass_flag = 1`.
+- Stage1 `truth_guard_ok = 1`.
+- Stage1 `recommended_search_values_ok = 1`.
+- `rg` review found truth references only in metrics/guard paths.
+- wording review found only boundary statements, not positive overclaims.
+- rollback points: `f9df5f4`, `dfd63ad`, `a183eda`.
+
+### Risks
+
+Review A does not validate Stage2 coarse-angle accuracy. That remains the next
+required risk gate.
+
+### Decision
+
+GO
+
+### Git Commit
+
+Recorded in the Review A commit.
 
