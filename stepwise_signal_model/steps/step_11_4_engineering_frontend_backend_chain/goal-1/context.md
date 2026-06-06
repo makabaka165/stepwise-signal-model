@@ -76,11 +76,12 @@ the `tasks.md` report template and does not provide standalone `context.md` or
 - Stage2 risk status: the synthetic frontend coarse center remains biased in
   hard weak cases, but within the current Step11.4 local search window it did
   not reduce backend success relative to oracle.
-- Task 06: completed, decision GO.
+- Task 06: completed, decision GO, committed as `e6e7fd3`.
 - Stage4 result: single_target_false_split_rate = 1,
   pair_target_success_rate = 1, stage4_module_diagnostics_pass_flag = 1.
 - Trigger policy: default ordinary single-target path should keep frontend
   coarse angle; call pair2d only for unresolved-cluster indicators such as broad
   beam spread, ambiguous local peak structure, or downstream need for local pair
   enhancement.
-- Next task: Review B, the required broad review/debug gate after Tasks 04-06.
+- Review B: completed, decision GO.
+- Next task: Task 07, write final Step11.4 summary and run final maximum review.

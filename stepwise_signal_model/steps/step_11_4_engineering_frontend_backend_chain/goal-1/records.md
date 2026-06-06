@@ -396,5 +396,58 @@ GO
 
 ### Git Commit
 
-Recorded in the Task 06 Stage4 commit.
+`e6e7fd3`
+
+## Review B: Broad Review After Tasks 04-06
+
+### Expected Result
+
+Run the required broad review/debug gate after Tasks 04-06. Check protected
+scope, Stage2 risk handling, Stage3 oracle comparison, Stage4 trigger-policy
+boundary, truth usage, result completeness, and git rollback safety.
+
+### Actual Result
+
+Review B passed. The last three commits modify only Step11.4 paths. Stage2
+records a real frontend coarse-angle risk. Stage3 validates that the risk did
+not reduce synthetic backend success relative to oracle in the tested local
+search setup. Stage4 supports not forcing ordinary single targets into pair2d.
+
+### Alignment
+
+Aligned with the goal boundaries. The review preserves the distinction between
+interface-level chain validation and complete engineering closure.
+
+### Cause Analysis
+
+Task4 exposed a frontend limitation; Task5 showed the current backend window
+absorbed it in tested cases; Task6 clarified that pair2d should remain a
+conditional enhanced mode rather than the default single-target path.
+
+### Checks
+
+- `git status --short` was clean before review report edits.
+- `git diff --name-only HEAD~3..HEAD` listed only Step11.4 paths.
+- Recent rollback commits: `86b0be7`, `a5a844f`, `e6e7fd3`.
+- Stage2 `frontend_coarse_angle_pass_flag = 0` and
+  `best_used_truth_for_center_rate = 0`.
+- Stage3 `chain_validation_pass_flag = 1`, `failure_reason = none`.
+- Stage4 `stage4_module_diagnostics_pass_flag = 1`.
+- Truth references are confined to metrics, oracle comparison, or explicit
+  guard documentation.
+- Docs/results include boundary text against complete automatic model
+  selection and full engineering closure.
+
+### Risks
+
+The current evidence is synthetic and local-window scoped. It is not a real
+CFAR/MTD closure and not a complete target-count classifier.
+
+### Decision
+
+GO
+
+### Git Commit
+
+Recorded in the Review B commit.
 
