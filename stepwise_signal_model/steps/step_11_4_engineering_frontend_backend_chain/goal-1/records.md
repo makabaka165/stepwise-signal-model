@@ -219,5 +219,73 @@ GO
 
 ### Git Commit
 
-Recorded in the Review A commit.
+`c8562c8`
+
+## Task 04: Stage2 Synthetic Frontend Coarse Angle
+
+### Expected Result
+
+Implement and run a synthetic frontend two-dimensional beam scan and estimate
+coarse az/el without using truth to construct the coarse center. Produce CSV,
+MAT, log, keypoints, README, and PNG artifacts. Report whether the coarse angle
+is accurate enough to serve as a Step11 backend prior.
+
+### Actual Result
+
+Implemented `build_frontend_beam_pool_from_existing_layout.m`,
+`run_synthetic_frontend_beam_scan.m`,
+`estimate_coarse_angle_from_frontend_beams.m`,
+`compute_frontend_cluster_indicators.m`, and
+`stage2_synthetic_frontend_coarse_angle/run_stage2_synthetic_frontend_coarse_angle.m`.
+MATLAB R2022b ran successfully and generated Stage2 artifacts. The best method
+was `centroid_top9`, but the pass flag was 0.
+
+### Alignment
+
+The implementation aligns with the no-truth-center rule. Truth is carried only
+for offline error metrics, and `used_truth_for_center_rate = 0` for all methods.
+The frontend coarse center is estimated from beam energy.
+
+### Cause Analysis
+
+The best methods pass easy, strong coherent, and hard phase scenarios, but weak
+secondary and low-SNR hard scenarios bias the beam-energy centroid toward the
+dominant return. This raises azimuth RMSE above the Stage2 pass threshold.
+
+### Checks
+
+- MATLAB command: `matlab -batch "run('.../run_stage2_synthetic_frontend_coarse_angle.m')"`
+- rows = 150.
+- best_method = `centroid_top9`.
+- best_within_pm02deg_rate = 0.6.
+- best_az_rmse_deg = 0.340822201375.
+- best_el_rmse_deg = 0.114006308123.
+- best_used_truth_for_center_rate = 0.
+- frontend_coarse_angle_pass_flag = 0.
+- PNG artifact exists: `frontend_coarse_angle_summary.png`, 30271 bytes.
+
+### Risks
+
+The Stage2 frontend prior is not uniformly within the Step11.3 +/-0.2 deg
+robustness envelope. The risk is mainly weak-secondary/low-SNR azimuth bias.
+
+### Decision
+
+CONTINUE_WITH_RISK
+
+### Why This Does Not Block Continuation
+
+Stage3 is explicitly designed to compare synthetic frontend backend against
+oracle backend. A frontend coarse-angle risk should therefore be propagated into
+Stage3 rather than stopping here.
+
+### Follow-Up Verification
+
+Task05 must verify whether the biased synthetic frontend prior causes backend
+success to fall below the oracle-relative gate, and if it does, identify
+frontend coarse angle as the bottleneck rather than hiding the failure.
+
+### Git Commit
+
+Recorded in the Task 04 Stage2 commit.
 

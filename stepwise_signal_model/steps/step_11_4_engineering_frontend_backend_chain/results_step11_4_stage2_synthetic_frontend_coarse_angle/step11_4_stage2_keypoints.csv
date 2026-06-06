@@ -1,0 +1,8 @@
+keypoint,value
+best_method,centroid_top9
+best_within_pm02deg_rate,0.6
+best_az_rmse_deg,0.340822201375
+best_el_rmse_deg,0.114006308123
+best_used_truth_for_center_rate,0
+frontend_prior_robustness_pm02_reference,1
+frontend_coarse_angle_pass_flag,0

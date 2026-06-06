@@ -1,0 +1,10 @@
+[2026-06-06 13:28:53] Step11.4 Stage2 synthetic frontend coarse-angle starts
+[2026-06-06 13:28:53] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\stage2_synthetic_frontend_coarse_angle\run_stage2_synthetic_frontend_coarse_angle
+[2026-06-06 13:28:53] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_4_engineering_frontend_backend_chain\results_step11_4_stage2_synthetic_frontend_coarse_angle
+[2026-06-06 13:28:53] Frontend beam pool: beams=117, az=13, el=9
+[2026-06-06 13:29:05] Evaluation finished: rows=150, elapsed=0.82 sec
+[2026-06-06 13:29:05] Best method: centroid_top9
+[2026-06-06 13:29:05] best_within_pm02deg_rate = 0.6
+[2026-06-06 13:29:05] best_az_rmse_deg = 0.340822201375
+[2026-06-06 13:29:05] best_el_rmse_deg = 0.114006308123
+[2026-06-06 13:29:05] frontend_coarse_angle_pass_flag = 0

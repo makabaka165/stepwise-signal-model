@@ -61,5 +61,13 @@ the `tasks.md` report template and does not provide standalone `context.md` or
 - Task 01: completed, decision GO, committed as `f9df5f4`.
 - Task 02: completed, decision GO, committed as `dfd63ad`.
 - Task 03: completed, decision GO, committed as `a183eda`.
-- Review A: completed, decision GO.
-- Next task: Task 04, implement and run Stage2 synthetic frontend coarse-angle estimation.
+- Review A: completed, decision GO, committed as `c8562c8`.
+- Task 04: completed, decision CONTINUE_WITH_RISK.
+- Stage2 risk: best frontend method is `centroid_top9`, but
+  `frontend_coarse_angle_pass_flag = 0`, `best_within_pm02deg_rate = 0.6`,
+  `best_az_rmse_deg = 0.340822201375`, and `best_el_rmse_deg = 0.114006308123`.
+- Risk concentration: `weak_secondary` and `low_snr_hard` cases show azimuth
+  coarse-center bias around 0.53 deg for centroid methods; easy/strong/hard
+  non-weak cases pass the +/-0.2 deg check.
+- Next task: Task 05, validate whether this synthetic frontend prior still
+  allows the backend chain to approach oracle backend performance.
