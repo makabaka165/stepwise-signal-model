@@ -170,3 +170,90 @@ runner 固定 `rng(20260609, 'twister')`，并自动创建 result 目录。
 若 `adaptive_pass_flag = 1`，可作为 Step11.3 fixed topK3 之后的自适应搜索加速增强写入论文创新点。
 
 若 `adaptive_pass_flag = 0` 但安全指标通过、复杂度没有提升，则默认工程配置仍建议保留 Step11.3 fixed topK3，Step11.5 作为自适应搜索策略的边界验证与未来调参方向保留。
+
+## 10. Stage2 policy tuning
+
+### Stage1 result summary
+
+Stage1 已保留为：
+
+`Step11.5 Stage1: original uncertainty policy negative result / safety passed but complexity failed`
+
+Stage1 关键结论：
+
+- `adaptive_success = 1`
+- `adaptive_rmse = fixed_topK3_rmse = 0.0765589261214`
+- `adaptive_full_grid_match_rate = 1`
+- `adaptive_topK_miss_rate = 0`
+- `adaptive_boundary_hit_rate = 0`
+- `bias_robustness_pass_flag = 1`
+- `adaptive_pass_flag = 0`
+- `fixed_topK3_mean_num_pairs = 19126.26`
+- `adaptive_mean_num_pairs = 38749.86`
+- policy distribution: EASY=0, NORMAL=0, HARD=1, UNSAFE=0
+
+### Stage1 failure diagnosis
+
+Stage1 失败不是 ML 后端估计错误，也不是 adaptiveTopK 没生效，而是 policy calibration 过保守。Stage1 中 `H_norm` 在大多数样本接近 1，`gap_13` 也小于原始 `0.02` 标定尺度，导致综合不确定度 `U` 普遍大于 `0.55`，所有样本进入 HARD。HARD 同时设置 `topK=5` 和 `1.5` 倍 refine window，导致平均候选数超过 fixed topK3。
+
+### Stage2 modified policy idea
+
+Stage2 新增：
+
+`Step11.5 Stage2: calibrated search-budget policy tuning`
+
+Stage2 将 Stage1 的单一 `U` 拆成两个量：
+
+- `U_search`: 只用于决定搜索预算 topK/window。
+- `U_confidence`: 只用于决定 confidence / boundary flag。
+
+Stage2 明确：
+
+- `H_norm` 高说明 coarse top candidates 分数接近，但不必然意味着 fixed topK3 会失败。
+- `cond_risk` 高说明 beamspace pair manifold 病态，但不直接扩大搜索窗口，只降低 confidence。
+- `boundary_risk` 是扩大 refine window 的主要理由。
+- score gap 小可以适度增加 topK，但不默认扩大 window。
+- fixed topK3 是 NORMAL 默认策略。
+- SCORE_AMBIGUOUS 只增加 topK，不扩大 window。
+- BOUNDARY 才扩窗口，并限制 `boundary_window_scale <= 1.25`。
+- ILL_CONDITIONED 输出低置信，但不默认 topK=7 或 window=2.0。
+
+### Stage2 runner
+
+从 `stepwise_signal_model` 根目录运行：
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search/run_step11_5_stage2_policy_tuning.m')
+```
+
+### Stage2 result directory
+
+Stage2 独立输出目录：
+
+`steps/step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search/results_step11_5_stage2_policy_tuning/`
+
+该目录不会覆盖 Stage1 的 `results_step11_5_likelihood_uncertainty_adaptive_search/`。
+
+### Stage2 selected recommendation
+
+Stage2 runner 会生成显式 C01-C12 policy 配置表，在 zero-bias trials 上使用 deterministic split：
+
+- calibration split: `mod(trial_id, 2) == 1`
+- validation split: `mod(trial_id, 2) == 0`
+
+配置只在 calibration split 上选择；最终 pass/fail 只看 validation split。
+
+### Stage2 pass/fail conclusion
+
+Stage2 通过条件是 selected config 在 validation split 上同时满足：
+
+1. `adaptive_success >= fixed_topK3_success - 1e-12`
+2. `adaptive_rmse <= fixed_topK3_rmse + 1e-12`
+3. `adaptive_topK_miss_rate == 0`
+4. `adaptive_boundary_hit_rate == 0`
+5. `adaptive_full_grid_match_rate >= 0.98`
+6. `adaptive_mean_num_pairs <= 0.95 * fixed_topK3_mean_num_pairs`
+7. `policy_degeneracy_flag == 0`
+
+若 Stage2 仍未在 validation split 上证明复杂度优势，则最终默认工程配置继续保留 Step11.3 fixed topK3，Step11.5 Stage2 作为自适应搜索策略的负结果和未来扩展依据。

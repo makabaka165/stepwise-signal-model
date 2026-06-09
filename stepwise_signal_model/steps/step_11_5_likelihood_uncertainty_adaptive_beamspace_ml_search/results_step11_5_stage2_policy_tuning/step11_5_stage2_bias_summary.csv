@@ -1,0 +1,8 @@
+bias_case_id,az_center_bias_deg,el_center_bias_deg,n_trials,fixed_success,adaptive_success,adaptive_success_drop_vs_zero,adaptive_topK_miss_rate,adaptive_boundary_hit_rate,adaptive_full_grid_match_rate,adaptive_mean_num_pairs,bias_robustness_pass_020
+1,-0.2,-0.2,50,1,1,0,0,0,0.46,13350.14,1
+2,-0.2,0,50,1,1,0,0,0,0.6,14688.18,1
+3,0,-0.2,50,0.96,0.96,0.04,0,0,0.2,11180.6,1
+4,0,0,50,1,1,0,0,0,1,13668.3,1
+5,0,0.2,50,1,1,0,0,0,1,17063.58,1
+6,0.2,0,50,1,1,0,0,0,0.5,14112.72,1
+7,0.2,0.2,50,1,1,0,0,0,0.7,16584.2,1

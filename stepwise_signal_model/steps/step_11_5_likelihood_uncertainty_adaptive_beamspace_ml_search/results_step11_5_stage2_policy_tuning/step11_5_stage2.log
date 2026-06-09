@@ -1,0 +1,75 @@
+[2026-06-09 11:49:03] Step11.5 Stage2 policy tuning starts
+[2026-06-09 11:49:03] Based on latest Step11.5 commit a7b741e329d118a039f1da4f00ed86f35b33fad1
+[2026-06-09 11:49:03] Stage1 preserved label: original uncertainty policy negative result / safety passed but complexity failed
+[2026-06-09 11:49:03] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning
+[2026-06-09 11:49:04] W method = greedy_combined_B7
+[2026-06-09 11:49:04] Explicit Stage2 config count = 12
+[2026-06-09 11:51:46] Stage2 evaluation finished: trial rows=950, elapsed 161.72 s
+[2026-06-09 11:51:57] Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_trial.csv
+[2026-06-09 11:51:57] Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_summary.csv
+[2026-06-09 11:51:57] Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_keypoints.csv
+[2026-06-09 11:51:57] Wrote config table CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_config_table.csv
+[2026-06-09 11:51:57] Wrote config summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_config_summary.csv
+[2026-06-09 11:51:57] Wrote policy summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_policy_summary.csv
+[2026-06-09 11:51:57] Wrote bias summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_bias_summary.csv
+[2026-06-09 11:51:57] Wrote selected recommendation CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_selected_recommendation.csv
+[2026-06-09 11:51:57] Wrote MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_result.mat
+[2026-06-09 11:51:57] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_config_candidate_count.png
+[2026-06-09 11:51:57] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_config_success.png
+[2026-06-09 11:51:57] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_policy_distribution.png
+[2026-06-09 11:51:57] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_fixed_vs_stage1_vs_stage2_candidates.png
+[2026-06-09 11:51:57] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_uncertainty_features.png
+[2026-06-09 11:51:57] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\step11_5_stage2_bias_robustness.png
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\00_STEP11_5_STAGE2_ONE_PAGE_SUMMARY.md
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\01_POLICY_TUNING_THEORY.md
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\02_POLICY_TUNING_FLOW.md
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\03_POLICY_TUNING_RESULTS.md
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\04_STAGE1_TO_STAGE2_COMPARISON.md
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\05_LIMITATIONS_AND_FINAL_RECOMMENDATION.md
+[2026-06-09 11:51:57] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage2_policy_tuning\06_THESIS_WRITING_TEXT.md
+[2026-06-09 11:51:57] Keypoints:
+[2026-06-09 11:51:57]   selected_config_id = 5
+[2026-06-09 11:51:57]   selected_config_name = C05_easy_very_aggressive
+[2026-06-09 11:51:57]   selection_reason = calibration_safety_and_non_degenerate_min_candidate_count
+[2026-06-09 11:51:57]   validation_safety_pass = 1
+[2026-06-09 11:51:57]   validation_complexity_pass = 1
+[2026-06-09 11:51:57]   validation_policy_degeneracy_pass = 1
+[2026-06-09 11:51:57]   stage2_adaptive_pass_flag = 1
+[2026-06-09 11:51:57]   recommended_next_step = use_step11_5_stage2_as_positive_adaptive_enhancement
+[2026-06-09 11:51:57]   calibration_fixed_success = 1
+[2026-06-09 11:51:57]   calibration_adaptive_success = 1
+[2026-06-09 11:51:57]   calibration_fixed_rmse = 0.0788148409442
+[2026-06-09 11:51:57]   calibration_adaptive_rmse = 0.0572647286861
+[2026-06-09 11:51:57]   calibration_fixed_mean_num_pairs = 19623.24
+[2026-06-09 11:51:57]   calibration_adaptive_mean_num_pairs = 14094
+[2026-06-09 11:51:57]   calibration_pair_count_ratio = 0.718230017061
+[2026-06-09 11:51:57]   calibration_adaptive_full_grid_match_rate = 1
+[2026-06-09 11:51:57]   calibration_adaptive_topK_miss_rate = 0
+[2026-06-09 11:51:57]   calibration_adaptive_boundary_hit_rate = 0
+[2026-06-09 11:51:57]   calibration_policy_degeneracy_flag = 0
+[2026-06-09 11:51:57]   validation_fixed_success = 1
+[2026-06-09 11:51:57]   validation_adaptive_success = 1
+[2026-06-09 11:51:57]   validation_fixed_rmse = 0.0743030112986
+[2026-06-09 11:51:57]   validation_adaptive_rmse = 0.0527528990405
+[2026-06-09 11:51:57]   validation_fixed_mean_num_pairs = 18558
+[2026-06-09 11:51:57]   validation_adaptive_mean_num_pairs = 13242.6
+[2026-06-09 11:51:57]   validation_pair_count_ratio = 0.713579049467
+[2026-06-09 11:51:57]   validation_adaptive_full_grid_match_rate = 1
+[2026-06-09 11:51:57]   validation_adaptive_topK_miss_rate = 0
+[2026-06-09 11:51:57]   validation_adaptive_boundary_hit_rate = 0
+[2026-06-09 11:51:57]   validation_policy_degeneracy_flag = 0
+[2026-06-09 11:51:57]   stage1_result_label = Step11.5 Stage1: original uncertainty policy negative result / safety passed but complexity failed
+[2026-06-09 11:51:57]   stage1_fixed_topK3_mean_num_pairs = 19126.26
+[2026-06-09 11:51:57]   stage1_adaptive_mean_num_pairs = 38749.86
+[2026-06-09 11:51:57]   stage1_adaptive_pass_flag = 0
+[2026-06-09 11:51:57]   stage1_policy_distribution_text = EASY=0,NORMAL=0,HARD=1,UNSAFE=0
+[2026-06-09 11:51:57]   fixed_topK3_mean_num_pairs = 19090.62
+[2026-06-09 11:51:57]   stage2_selected_adaptive_mean_num_pairs = 13668.3
+[2026-06-09 11:51:57]   stage2_selected_pair_count_ratio = 0.715969413251
+[2026-06-09 11:51:57]   selected_config_overall_policy_degeneracy_flag = 0
+[2026-06-09 11:51:57]   selected_config_max_policy_rate = 0.6
+[2026-06-09 11:51:57]   max_bias_adaptive_topK_miss_rate = 0
+[2026-06-09 11:51:57]   max_bias_adaptive_boundary_hit_rate = 0
+[2026-06-09 11:51:57]   max_bias_adaptive_success_drop = 0.04
+[2026-06-09 11:51:57]   bias_robustness_pass_flag = 1
+[2026-06-09 11:51:57]   valid_bias_range_text = az_bias=[-0.20,0.20], el_bias=[-0.20,0.20]
