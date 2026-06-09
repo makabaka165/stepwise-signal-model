@@ -1,0 +1,58 @@
+[2026-06-09 15:45:43] Step11.5 Stage3 supplementary rechecks start
+[2026-06-09 15:45:43] Based on commit c5284dd2f4449eba36cf24b48df8e3eb23c5ef6b
+[2026-06-09 15:45:43] This is not Step11.6, not Stage2 rerun, and not full Stage3 rerun
+[2026-06-09 15:45:43] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks
+[2026-06-09 15:45:44] W method = greedy_combined_B7
+[2026-06-09 15:45:45] Fixed C05 policy config = C05_easy_very_aggressive
+[2026-06-09 15:48:53] Metkl30 repeat-seed recheck finished: trial rows=450, elapsed 188.78 s
+[2026-06-09 15:49:48] Ill-conditioned real-search stress recheck finished: trial rows=120, elapsed 55.07 s
+[2026-06-09 15:50:04] Wrote Metkl30 trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_metkl30_repeat_trial.csv
+[2026-06-09 15:50:04] Wrote Metkl30 summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_metkl30_repeat_summary.csv
+[2026-06-09 15:50:04] Wrote ill-conditioned real stress trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_illcond_real_stress_trial.csv
+[2026-06-09 15:50:04] Wrote ill-conditioned real stress summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_illcond_real_stress_summary.csv
+[2026-06-09 15:50:04] Wrote guard probe CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_illcond_guard_probe.csv
+[2026-06-09 15:50:04] Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_keypoints.csv
+[2026-06-09 15:50:04] Wrote final recommendation CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_final_recommendation.csv
+[2026-06-09 15:50:04] Wrote selected C05 config CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_selected_c05_config.csv
+[2026-06-09 15:50:04] Wrote MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_result.mat
+[2026-06-09 15:50:04] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_metkl30_pair_count.png
+[2026-06-09 15:50:04] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_metkl30_safety.png
+[2026-06-09 15:50:04] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_metkl30_policy_distribution.png
+[2026-06-09 15:50:04] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_illcond_trigger_rate.png
+[2026-06-09 15:50:04] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_illcond_confidence_safety.png
+[2026-06-09 15:50:04] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\step11_5_stage3_supp_illcond_cond_risk_distribution.png
+[2026-06-09 15:50:04] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\00_STEP11_5_STAGE3_SUPP_ONE_PAGE_SUMMARY.md
+[2026-06-09 15:50:04] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\01_METKL30_REPEAT_SEED_RECHECK.md
+[2026-06-09 15:50:04] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\02_ILL_CONDITIONED_REAL_STRESS_RECHECK.md
+[2026-06-09 15:50:04] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\03_FINAL_SUPPLEMENTARY_EVIDENCE.md
+[2026-06-09 15:50:04] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_stage3_supplementary_rechecks\04_THESIS_WRITING_TEXT.md
+[2026-06-09 15:50:04] Keypoints:
+[2026-06-09 15:50:04]   stage2_selected_config_name = C05_easy_very_aggressive
+[2026-06-09 15:50:04]   stage2_adaptive_pass_flag = 1
+[2026-06-09 15:50:04]   stage3_required_enhancement_pass_flag = 1
+[2026-06-09 15:50:04]   metkl30_num_seed_groups = 3
+[2026-06-09 15:50:04]   metkl30_metkl_per_seed = 30
+[2026-06-09 15:50:04]   metkl30_total_trials = 450
+[2026-06-09 15:50:04]   metkl30_min_adaptive_success = 1
+[2026-06-09 15:50:04]   metkl30_max_adaptive_rmse = 0.0550088138633
+[2026-06-09 15:50:04]   metkl30_max_pair_count_ratio = 0.715079432344
+[2026-06-09 15:50:04]   metkl30_min_full_grid_match_rate = 1
+[2026-06-09 15:50:04]   metkl30_max_topK_miss_rate = 0
+[2026-06-09 15:50:04]   metkl30_max_boundary_hit_rate = 0
+[2026-06-09 15:50:04]   metkl30_max_policy_degeneracy_flag = 0
+[2026-06-09 15:50:04]   metkl30_repeat_pass_flag = 1
+[2026-06-09 15:50:04]   metkl30_failed_seed_group_text = 
+[2026-06-09 15:50:04]   illcond_total_cases = 12
+[2026-06-09 15:50:04]   illcond_total_trials = 120
+[2026-06-09 15:50:04]   illcond_real_trigger_count = 0
+[2026-06-09 15:50:04]   illcond_real_trigger_rate = 0
+[2026-06-09 15:50:04]   illcond_max_cond_risk = 0.225446533226
+[2026-06-09 15:50:04]   illcond_max_cond_best_GHG = 63.6168653336
+[2026-06-09 15:50:04]   illcond_high_confidence_misuse_rate = 0
+[2026-06-09 15:50:04]   illcond_pair_count_ratio_overall = 1.08628608143
+[2026-06-09 15:50:04]   illcond_real_stress_pass_flag = 0
+[2026-06-09 15:50:04]   illcond_guard_probe_pass_flag = 1
+[2026-06-09 15:50:04]   illcond_real_stress_result_text = ill_conditioned_real_stress_not_naturally_triggered_under_current_fixed_C05_and_grid
+[2026-06-09 15:50:04]   illcond_pair_count_ratio_note = ill_conditioned_stress_pair_count_ratio_within_1p2
+[2026-06-09 15:50:04]   stage3_supplementary_pass_flag = 0
+[2026-06-09 15:50:04]   stage3_supplementary_recommendation = keep_step11_5_stage2_c05_as_positive_adaptive_enhancement_with_metkl30_recheck_and_guard_probe_keep_illcond_real_trigger_as_boundary_future_work

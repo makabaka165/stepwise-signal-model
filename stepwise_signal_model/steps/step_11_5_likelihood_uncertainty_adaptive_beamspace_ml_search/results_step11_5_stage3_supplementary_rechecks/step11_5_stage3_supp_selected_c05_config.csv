@@ -1,0 +1,2 @@
+config_id,config_name,gap_scale,easy_gap_threshold,easy_topK,easy_window_scale,ambiguous_gap_threshold,ambiguous_topK,boundary_topK,boundary_window_scale,cond_threshold,topK_max,tau,is_control_config,notes
+5,C05_easy_very_aggressive,0.003,0.002,1,0.6,0.0008,5,5,1.15,0.85,7,0.02,0,Stage2 selected C05 fixed for Step11.5 Stage3 required enhancement validation

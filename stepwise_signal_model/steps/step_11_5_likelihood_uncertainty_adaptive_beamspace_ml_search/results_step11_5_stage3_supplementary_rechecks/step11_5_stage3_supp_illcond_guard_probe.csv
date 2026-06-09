@@ -1,0 +1,2 @@
+probe_name,cond_risk,boundary_risk,gap_13,H_norm,U_search,U_confidence,policy_name,confidence,boundary_flag,adaptive_topK,az_window_scale,el_window_scale,guard_probe_pass_flag
+deterministic_ill_conditioned_guard_probe,0.9,0,0.001,0.8,0.458333333333333,0.671666666666667,ILL_CONDITIONED,low,ill_conditioned_pair_manifold,3,1,1,1

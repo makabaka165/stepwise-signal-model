@@ -312,3 +312,48 @@ Main Stage3 output files:
 - `step11_5_stage3_result.mat`
 - `step11_5_stage3.log`
 - Stage3 Markdown summaries and PNG figures.
+
+## 12. Stage3 supplementary rechecks
+
+Stage3 supplementary rechecks add two focused validations after the Stage3 required enhancement pass. This stage is not Step11.6, does not rerun Stage2 tuning, and does not change C05 parameters.
+
+The fixed policy remains:
+
+`selected_config_name = C05_easy_very_aggressive`
+
+### Why Metkl=30 is added
+
+Stage3 required validation used a larger repeat-seed check with `Metkl=20`. The supplementary Metkl=30 recheck increases the representative scenario sample count to verify that C05 keeps fixed topK3 safety and candidate-count advantage under a larger multi-seed trial set.
+
+### Why stronger ill-conditioned real-search stress is added
+
+Stage3 required validation showed BOUNDARY real-search triggering, while ILL_CONDITIONED was validated by deterministic guard probe but did not naturally trigger in the real-search stress case. The supplementary stress set uses close same-elevation coherent pairs, anti-phase close pairs, weak secondary close pairs, and lower-SNR close pairs to test whether the fixed C05 `cond_threshold = 0.85` can be crossed naturally without forcing policy labels.
+
+Run from the `stepwise_signal_model` root:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search/run_step11_5_stage3_supplementary_rechecks.m')
+```
+
+Supplementary results are written to:
+
+`steps/step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search/results_step11_5_stage3_supplementary_rechecks/`
+
+Pass/fail interpretation:
+
+- `metkl30_repeat_pass_flag = 1` means every seed group and the overall Metkl=30 set preserve safety, full-grid agreement, non-degenerate policy distribution, and candidate-count reduction.
+- `illcond_real_stress_pass_flag = 1` means ILL_CONDITIONED naturally triggers in real-search stress, has no high-confidence misuse, and keeps overall stress pair-count ratio within the required bound.
+- If real-search ILL_CONDITIONED does not trigger but `illcond_guard_probe_pass_flag = 1`, the result must be written as a boundary/partial result: the guard probe validates policy logic, but the thesis must not claim real-search triggering.
+
+Main supplementary output files:
+
+- `step11_5_stage3_supp_metkl30_repeat_trial.csv`
+- `step11_5_stage3_supp_metkl30_repeat_summary.csv`
+- `step11_5_stage3_supp_illcond_real_stress_trial.csv`
+- `step11_5_stage3_supp_illcond_real_stress_summary.csv`
+- `step11_5_stage3_supp_keypoints.csv`
+- `step11_5_stage3_supp_final_recommendation.csv`
+- `step11_5_stage3_supp_result.mat`
+- `step11_5_stage3_supp.log`
+- Stage3 supplementary PNG figures and Markdown summaries.
