@@ -1,0 +1,7 @@
+summary_scope,run_label,split_scheme,split_name,seed_group_id,n_trials,fixed_success,adaptive_success,fixed_rmse,adaptive_rmse,fixed_mean_num_pairs,adaptive_mean_num_pairs,adaptive_vs_fixed_pair_count_ratio,adaptive_full_grid_match_rate,adaptive_topK_miss_rate,adaptive_boundary_hit_rate,max_policy_rate,policy_degeneracy_flag,safety_pass_flag,complexity_pass_flag,stage3_pass_flag
+split_scheme_all,repeat_seed_metkl_recheck,repeat_all,all,NaN,300,1,1,0.0765589261213527,0.0551132571388122,19132.2,13697.91,0.715961049957663,1,0,0,0.596666666666667,0,1,1,1
+split_scheme_split,repeat_seed_metkl_recheck,repeat_all,repeat_all,NaN,300,1,1,0.0765589261213527,0.0551132571388122,19132.2,13697.91,0.715961049957663,1,0,0,0.596666666666667,0,1,1,1
+seed_group_all,repeat_seed_metkl_recheck,all,all,1,100,1,1,0.0765589261213527,0.0550088138632942,19108.44,13668.3,0.71530172007762,1,0,0,0.6,0,1,1,1
+seed_group_all,repeat_seed_metkl_recheck,all,all,2,100,1,1,0.0765589261213527,0.0553221436898483,19126.26,13757.13,0.719279670986382,1,0,0,0.59,0,1,1,1
+seed_group_all,repeat_seed_metkl_recheck,all,all,3,100,1,1,0.0765589261213527,0.0550088138632942,19161.9,13668.3,0.713306091775868,1,0,0,0.6,0,1,1,1
+overall,repeat_seed_metkl_recheck,all,all,NaN,300,1,1,0.0765589261213527,0.0551132571388122,19132.2,13697.91,0.715961049957663,1,0,0,0.596666666666667,0,1,1,1

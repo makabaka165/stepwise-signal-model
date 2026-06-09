@@ -257,3 +257,58 @@ Stage2 通过条件是 selected config 在 validation split 上同时满足：
 7. `policy_degeneracy_flag == 0`
 
 若 Stage2 仍未在 validation split 上证明复杂度优势，则最终默认工程配置继续保留 Step11.3 fixed topK3，Step11.5 Stage2 作为自适应搜索策略的负结果和未来扩展依据。
+
+## 11. Stage3 required enhancement validation
+
+Stage3 is an enhancement validation of the existing Step11.5 Stage2 positive result.
+It is not Step11.6, not a new algorithm, and not a repeated C01-C12 tuning scan.
+Stage3 fixes the Stage2 selected policy:
+
+`selected_config_name = C05_easy_very_aggressive`
+
+The preserved Stage2 conclusion is:
+
+- `stage2_adaptive_pass_flag = 1`
+- `recommended_next_step = use_step11_5_stage2_as_positive_adaptive_enhancement`
+- validation fixed/adaptive success = `1 / 1`
+- validation fixed/adaptive RMSE = `0.0743030112986 / 0.0527528990405`
+- validation fixed/adaptive mean pairs = `18558 / 13242.6`
+- validation pair count ratio = `0.713579049467`
+- adaptive full-grid match rate = `1`
+- adaptive topK miss rate = `0`
+- adaptive boundary hit rate = `0`
+- validation policy degeneracy flag = `0`
+- Stage2 selected pair count ratio = `0.715969413251`
+- Stage2 +/-0.20 deg bias robustness pass flag = `1`
+
+Stage3 adds three required rechecks:
+
+1. Alternative split recheck: C05 is rerun under non odd/even validation splits.
+2. Larger Metkl / repeat-seed recheck: C05 is rerun with `Metkl=20` and three deterministic seed groups.
+3. Targeted branch recheck: BOUNDARY and ILL_CONDITIONED v2 policy branches are exercised and checked for non-high-confidence safety output.
+
+Run from the `stepwise_signal_model` root:
+
+```matlab
+run('setup_paths.m')
+run('steps/step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search/run_step11_5_stage3_required_enhancement_validation.m')
+```
+
+Stage3 writes an independent result directory:
+
+`steps/step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search/results_step11_5_stage3_required_enhancement_validation/`
+
+Main Stage3 output files:
+
+- `step11_5_stage3_alt_split_trial.csv`
+- `step11_5_stage3_alt_split_summary.csv`
+- `step11_5_stage3_repeat_seed_metkl_trial.csv`
+- `step11_5_stage3_repeat_seed_metkl_summary.csv`
+- `step11_5_stage3_targeted_branch_trial.csv`
+- `step11_5_stage3_targeted_branch_summary.csv`
+- `step11_5_stage3_keypoints.csv`
+- `step11_5_stage3_selected_c05_config.csv`
+- `step11_5_stage3_stage2_reference.csv`
+- `step11_5_stage3_result.mat`
+- `step11_5_stage3.log`
+- Stage3 Markdown summaries and PNG figures.

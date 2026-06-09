@@ -1,0 +1,9 @@
+summary_scope,run_label,split_scheme,split_name,seed_group_id,n_trials,fixed_success,adaptive_success,fixed_rmse,adaptive_rmse,fixed_mean_num_pairs,adaptive_mean_num_pairs,adaptive_vs_fixed_pair_count_ratio,adaptive_full_grid_match_rate,adaptive_topK_miss_rate,adaptive_boundary_hit_rate,max_policy_rate,policy_degeneracy_flag,safety_pass_flag,complexity_pass_flag,stage3_pass_flag
+split_scheme_all,alt_split_recheck,alt_mod3_validation,all,NaN,50,1,1,0.0765589261213527,0.0550088138632942,19090.62,13668.3,0.715969413251115,1,0,0,0.6,0,1,1,1
+split_scheme_split,alt_split_recheck,alt_mod3_validation,calibration,NaN,35,1,1,0.0762366525752387,0.0546865403171801,19024.7142857143,13607.4857142857,0.715253091842941,1,0,0,0.6,0,1,1,1
+split_scheme_split,alt_split_recheck,alt_mod3_validation,validation,NaN,15,1,1,0.0773108977289522,0.0557607854708936,19244.4,13810.2,0.71762174970381,1,0,0,0.6,0,1,1,1
+split_scheme_all,alt_split_recheck,alt_tail_block_validation,all,NaN,50,1,1,0.0765589261213527,0.0550088138632942,19090.62,13668.3,0.715969413251115,1,0,0,0.6,0,1,1,1
+split_scheme_split,alt_split_recheck,alt_tail_block_validation,calibration,NaN,30,1,1,0.0765589261213527,0.0550088138632942,19102.5,13668.3,0.715524146054181,1,0,0,0.6,0,1,1,1
+split_scheme_split,alt_split_recheck,alt_tail_block_validation,validation,NaN,20,1,1,0.0765589261213527,0.0550088138632942,19072.8,13668.3,0.716638354095885,1,0,0,0.6,0,1,1,1
+seed_group_all,alt_split_recheck,all,all,1,100,1,1,0.0765589261213527,0.0550088138632942,19090.62,13668.3,0.715969413251115,1,0,0,0.6,0,1,1,1
+overall,alt_split_recheck,all,all,NaN,100,1,1,0.0765589261213527,0.0550088138632942,19090.62,13668.3,0.715969413251115,1,0,0,0.6,0,1,1,1

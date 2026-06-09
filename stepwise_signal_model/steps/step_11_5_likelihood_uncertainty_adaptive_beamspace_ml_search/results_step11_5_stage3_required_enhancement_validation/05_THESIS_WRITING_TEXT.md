@@ -1,0 +1,3 @@
+# Step11.5 Stage3 Thesis Writing Text
+
+Step11.5 Stage3 further validated the Stage2 selected C05 adaptive policy by testing alternative data splits, larger Metkl with repeated seeds, and targeted safety-branch behavior. The alternative split and repeat-seed checks kept the same fixed C05 parameters and did not use target truth in search-center, candidate, topK, or policy decisions. The targeted branch checks showed that BOUNDARY and ILL_CONDITIONED branches can be triggered and produce non-high-confidence safety outputs. Therefore the Stage2 C05 policy can be retained as a positive adaptive enhancement after the Step11.3 fixed topK3 beamspace ML baseline.

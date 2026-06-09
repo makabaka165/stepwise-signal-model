@@ -1,0 +1,5 @@
+summary_scope,n_cases,trigger_rate,reasonable_safe_output_rate,high_confidence_misuse_rate,boundary_real_trigger_count,ill_conditioned_real_trigger_count,ill_conditioned_policy_probe_trigger_count,targeted_branch_pass_flag
+BOUNDARY_real_search,2,1,1,0,2,0,1,1
+ILL_CONDITIONED_real_search,1,0,0,0,2,0,1,1
+ILL_CONDITIONED_policy_probe,1,1,1,0,2,0,1,1
+all_targeted_branch_cases,4,0.75,0.75,0,2,0,1,1
