@@ -1,0 +1,55 @@
+[2026-06-09 10:55:16] Step11.5 Likelihood-Uncertainty-Aware Adaptive TopK-Window Beamspace ML Search starts
+[2026-06-09 10:55:16] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\run_step11_5_likelihood_uncertainty_adaptive_search
+[2026-06-09 10:55:16] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search
+[2026-06-09 10:55:16] Fixed backend: Step11.3 controlled pair2d beamspace DML
+[2026-06-09 10:55:16] Fixed W: Step11.2 greedy_combined_B7
+[2026-06-09 10:55:16] Truth is used only for final evaluation fields.
+[2026-06-09 10:55:18] W method = greedy_combined_B7
+[2026-06-09 10:58:32] Evaluation finished: trial rows=350, elapsed 194.11 s
+[2026-06-09 10:58:47] Wrote trial CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_trial.csv
+[2026-06-09 10:58:47] Wrote summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_summary.csv
+[2026-06-09 10:58:47] Wrote keypoints CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_keypoints.csv
+[2026-06-09 10:58:47] Wrote policy summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_policy_summary.csv
+[2026-06-09 10:58:47] Wrote bias summary CSV: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_bias_summary.csv
+[2026-06-09 10:58:47] Wrote result MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_result.mat
+[2026-06-09 10:58:47] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_candidate_count_comparison.png
+[2026-06-09 10:58:47] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_rmse_comparison.png
+[2026-06-09 10:58:47] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_success_comparison.png
+[2026-06-09 10:58:47] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_policy_distribution.png
+[2026-06-09 10:58:47] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_uncertainty_U_histogram.png
+[2026-06-09 10:58:47] Wrote plot: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\step11_5_uncertainty_vs_candidate_count.png
+[2026-06-09 10:58:47] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\00_STEP11_5_ONE_PAGE_SUMMARY.md
+[2026-06-09 10:58:47] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\01_THEORY_AND_FORMULATION.md
+[2026-06-09 10:58:47] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\02_ALGORITHM_FLOW.md
+[2026-06-09 10:58:47] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\03_EXPERIMENT_RESULTS.md
+[2026-06-09 10:58:47] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\04_LIMITATIONS_AND_BOUNDARY.md
+[2026-06-09 10:58:47] Wrote markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_5_likelihood_uncertainty_adaptive_beamspace_ml_search\results_step11_5_likelihood_uncertainty_adaptive_search\05_THESIS_WRITING_TEXT.md
+[2026-06-09 10:58:47] Keypoints:
+[2026-06-09 10:58:47]   full_fine_success = 1
+[2026-06-09 10:58:47]   fixed_topK3_success = 1
+[2026-06-09 10:58:47]   adaptive_success = 1
+[2026-06-09 10:58:47]   full_fine_rmse = 0.0765589261214
+[2026-06-09 10:58:47]   fixed_topK3_rmse = 0.0765589261214
+[2026-06-09 10:58:47]   adaptive_rmse = 0.0765589261214
+[2026-06-09 10:58:47]   full_fine_mean_num_pairs = 131461
+[2026-06-09 10:58:47]   fixed_topK3_mean_num_pairs = 19126.26
+[2026-06-09 10:58:47]   adaptive_mean_num_pairs = 38749.86
+[2026-06-09 10:58:47]   fixed_topK3_reduction_ratio = 6.87332494696
+[2026-06-09 10:58:47]   adaptive_reduction_ratio = 3.39255419245
+[2026-06-09 10:58:47]   adaptive_vs_fixed_pair_count_ratio = 2.02600299274
+[2026-06-09 10:58:47]   adaptive_vs_fixed_reduction_gain = 0.493582686492
+[2026-06-09 10:58:47]   adaptive_full_grid_match_rate = 1
+[2026-06-09 10:58:47]   adaptive_topK_miss_rate = 0
+[2026-06-09 10:58:47]   adaptive_boundary_hit_rate = 0
+[2026-06-09 10:58:47]   easy_policy_rate = 0
+[2026-06-09 10:58:47]   normal_policy_rate = 0
+[2026-06-09 10:58:47]   hard_policy_rate = 1
+[2026-06-09 10:58:47]   unsafe_policy_rate = 0
+[2026-06-09 10:58:47]   low_confidence_rate = 0
+[2026-06-09 10:58:47]   max_bias_adaptive_topK_miss_rate = 0
+[2026-06-09 10:58:47]   max_bias_adaptive_boundary_hit_rate = 0
+[2026-06-09 10:58:47]   max_bias_adaptive_success_drop = 0.04
+[2026-06-09 10:58:47]   bias_robustness_pass_flag = 1
+[2026-06-09 10:58:47]   valid_bias_range_text = az_bias=[-0.20,0.20], el_bias=[-0.20,0.20]
+[2026-06-09 10:58:47]   adaptive_pass_flag = 0
+[2026-06-09 10:58:47]   recommended_next_step = tune_policy_thresholds_for_more_complexity_reduction
