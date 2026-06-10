@@ -1,0 +1,2 @@
+stage_name,num_tested_centers,num_passed_centers,cross_center_reuse_pass_flag,cache_miss_count,fail_center_list
+stage4_cross_center_cache_reuse,6,6,1,0,none

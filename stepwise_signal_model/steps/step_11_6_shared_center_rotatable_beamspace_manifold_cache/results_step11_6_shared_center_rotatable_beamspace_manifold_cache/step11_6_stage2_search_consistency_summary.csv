@@ -1,0 +1,2 @@
+stage_name,num_trials,num_tested_centers,same_estimate_rate,same_policy_rate,same_score_rate,max_relative_score_diff,max_abs_score_diff,cache_miss_count,max_cache_miss_count,success_match_rate,topK_miss_match_rate,boundary_hit_match_rate,search_consistency_pass_flag
+stage2_search_consistency,300,3,1,1,1,8.30131334589128e-16,1.16415321826935e-10,0,0,1,1,1,1

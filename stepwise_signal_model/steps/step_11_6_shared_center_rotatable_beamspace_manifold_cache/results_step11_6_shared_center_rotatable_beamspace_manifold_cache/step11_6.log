@@ -1,0 +1,48 @@
+[2026-06-10 10:50:11] Step11.6 shared-center rotatable beamspace manifold cache validation starts
+[2026-06-10 10:50:11] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\run_step11_6_shared_center_manifold_cache_validation
+[2026-06-10 10:50:11] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache
+[2026-06-10 10:50:11] No Step11.1/11.2/11.3/11.4/11.5 files are modified.
+[2026-06-10 10:50:11] Truth is used only for final success/RMSE/same-estimate metrics.
+[2026-06-10 10:50:12] W reconstructed as greedy_combined_B7 on canonical local order
+[2026-06-10 10:50:13] Cache built: N_delta=112, N_el=174, memory=2.081543 MB, build=0.937862 s
+[2026-06-10 10:50:16] Stage1 complete: pass=1, max_rel_G=3.23e-14
+[2026-06-10 10:50:59] Stage2 complete: pass=1, same_estimate_rate=1.000000, cache_miss=0
+[2026-06-10 10:51:10] Stage3 complete: manifold_pass=1, search_pass=1, median_manifold_reduction=0.997734
+[2026-06-10 10:51:17] Stage4 complete: pass=1, passed_centers=6/6
+[2026-06-10 10:51:17] Final recommendation: use_canonical_beamspace_manifold_cache_as_default_for_step11_5_c05_runtime_acceleration
+[2026-06-10 10:51:26] Wrote MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_result.mat
+[2026-06-10 10:51:26] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_manifold_error_by_center.png
+[2026-06-10 10:51:26] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_manifold_error_heatmap.png
+[2026-06-10 10:51:26] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_search_consistency.png
+[2026-06-10 10:51:26] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_runtime_direct_vs_cached.png
+[2026-06-10 10:51:26] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_cache_memory_tradeoff.png
+[2026-06-10 10:51:26] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\step11_6_cross_center_reuse.png
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\00_STEP11_6_ONE_PAGE_SUMMARY.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\01_THEORY_ROTATION_EQUIVALENCE.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\02_CACHE_ALGORITHM_FLOW.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\03_MANIFOLD_EQUIVALENCE_RESULTS.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\04_SEARCH_CONSISTENCY_RESULTS.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\05_RUNTIME_AND_MEMORY_RESULTS.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\06_LIMITATIONS_AND_USAGE_BOUNDARY.md
+[2026-06-10 10:51:26] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_6_shared_center_rotatable_beamspace_manifold_cache\results_step11_6_shared_center_rotatable_beamspace_manifold_cache\07_THESIS_WRITING_TEXT.md
+[2026-06-10 10:51:26] Keypoints:
+[2026-06-10 10:51:26]   manifold_equivalence_pass_flag = 1
+[2026-06-10 10:51:26]   phase_aligned_equivalence_flag = 1
+[2026-06-10 10:51:26]   max_rel_a_error = 3.81606715719e-14
+[2026-06-10 10:51:26]   max_rel_G_error = 3.22673017304e-14
+[2026-06-10 10:51:26]   search_consistency_pass_flag = 1
+[2026-06-10 10:51:26]   same_estimate_rate = 1
+[2026-06-10 10:51:26]   same_policy_rate = 1
+[2026-06-10 10:51:26]   max_relative_score_diff = 8.30131334589e-16
+[2026-06-10 10:51:26]   cache_miss_count = 0
+[2026-06-10 10:51:26]   runtime_manifold_pass_flag = 1
+[2026-06-10 10:51:26]   runtime_search_pass_flag = 1
+[2026-06-10 10:51:26]   median_manifold_time_reduction_ratio = 0.997733509648
+[2026-06-10 10:51:26]   median_search_time_reduction_ratio = 0.86040740001
+[2026-06-10 10:51:26]   cache_build_once_time_sec = 0.9378621
+[2026-06-10 10:51:26]   cache_memory_MB = 2.08154296875
+[2026-06-10 10:51:26]   cross_center_reuse_pass_flag = 1
+[2026-06-10 10:51:26]   num_tested_centers = 6
+[2026-06-10 10:51:26]   num_passed_centers = 6
+[2026-06-10 10:51:26]   step11_6_overall_pass_flag = 1
+[2026-06-10 10:51:26]   step11_6_recommendation = use_canonical_beamspace_manifold_cache_as_default_for_step11_5_c05_runtime_acceleration

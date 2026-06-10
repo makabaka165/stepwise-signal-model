@@ -1,0 +1,2 @@
+stage_name,num_trials,num_tested_centers,max_rel_a_error,max_rel_G_error,max_phase_aligned_rel_a_error,max_phase_aligned_rel_G_error,max_cache_miss_count,manifold_equivalence_pass_flag,phase_aligned_equivalence_flag,recommendation
+stage1_manifold_equivalence,10070,5,3.81606715718943e-14,3.22673017304011e-14,2.55670368978601e-14,1.69946657827035e-14,0,1,1,canonical_cache_equivalence_verified_for_tested_shared_centers
