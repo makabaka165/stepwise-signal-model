@@ -1,0 +1,46 @@
+[2026-06-10 11:42:16] Step11.7 final cached C05 beamspace ML route starts
+[2026-06-10 11:42:16] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\run_step11_7_final_cached_c05_beamspace_ml_route
+[2026-06-10 11:42:16] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route
+[2026-06-10 11:42:16] Step11.7 is integration/packaging, not a new algorithm.
+[2026-06-10 11:42:16] Truth is used only for final evaluation metrics.
+[2026-06-10 11:42:27] Context ready: W=greedy_combined_B7, cache_source=rebuilt_for_step11_7, cache_memory=20.954819 MB
+[2026-06-10 11:42:28] Stage1 interface smoke pass=1
+[2026-06-10 11:43:01] Stage2 cached/direct pass=1, same_estimate=1.000000, cache_miss=0
+[2026-06-10 11:43:20] Stage3 frontend bias pass=1, max_success_drop=0.000000
+[2026-06-10 11:43:21] Stage4 cache fallback pass=1
+[2026-06-10 11:44:31] Stage5 runtime pass=1, median_reduction=0.618403
+[2026-06-10 11:44:31] Final recommendation: use_step11_7_cached_c05_backend_as_final_step11_beamspace_ml_route
+[2026-06-10 11:44:43] Wrote MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_result.mat
+[2026-06-10 11:44:43] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_final_route_flowchart.png
+[2026-06-10 11:44:43] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_cached_vs_direct_consistency.png
+[2026-06-10 11:44:43] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_frontend_bias_safety.png
+[2026-06-10 11:44:43] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_cache_fallback_behavior.png
+[2026-06-10 11:44:43] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_runtime_direct_vs_cached.png
+[2026-06-10 11:44:43] Wrote PNG: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\step11_7_output_field_summary.png
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\00_STEP11_7_ONE_PAGE_SUMMARY.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\01_FINAL_BACKEND_INTERFACE.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\02_FINAL_ROUTE_FLOW.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\03_CACHED_DIRECT_CONSISTENCY.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\04_FRONTEND_BIAS_AND_OOS_HANDLING.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\05_CACHE_FALLBACK_AND_RUNTIME.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\06_LIMITATIONS_AND_USAGE_BOUNDARY.md
+[2026-06-10 11:44:43] Wrote Markdown: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_11_7_final_cached_c05_beamspace_ml_route\results_step11_7_final_cached_c05_beamspace_ml_route\07_THESIS_WRITING_TEXT.md
+[2026-06-10 11:44:43] Keypoints:
+[2026-06-10 11:44:43]   interface_smoke_pass_flag = 1
+[2026-06-10 11:44:43]   cached_direct_consistency_pass_flag = 1
+[2026-06-10 11:44:43]   frontend_prior_bias_recheck_pass_flag = 1
+[2026-06-10 11:44:43]   cache_fallback_behavior_pass_flag = 1
+[2026-06-10 11:44:43]   runtime_packaging_pass_flag = 1
+[2026-06-10 11:44:43]   same_estimate_rate = 1
+[2026-06-10 11:44:43]   same_policy_rate = 1
+[2026-06-10 11:44:43]   same_score_rate = 1
+[2026-06-10 11:44:43]   max_score_diff_rel = 8.15297727181e-16
+[2026-06-10 11:44:43]   cache_miss_count = 0
+[2026-06-10 11:44:43]   fallback_expected_case_pass_rate = 1
+[2026-06-10 11:44:43]   frontend_bias_max_topK_miss_rate = 0
+[2026-06-10 11:44:43]   frontend_bias_max_boundary_hit_rate = 0
+[2026-06-10 11:44:43]   frontend_bias_max_success_drop = 0
+[2026-06-10 11:44:43]   median_runtime_reduction_ratio = 0.61840349117
+[2026-06-10 11:44:43]   final_backend_output_fields_pass_flag = 1
+[2026-06-10 11:44:43]   step11_7_overall_pass_flag = 1
+[2026-06-10 11:44:43]   step11_7_recommendation = use_step11_7_cached_c05_backend_as_final_step11_beamspace_ml_route

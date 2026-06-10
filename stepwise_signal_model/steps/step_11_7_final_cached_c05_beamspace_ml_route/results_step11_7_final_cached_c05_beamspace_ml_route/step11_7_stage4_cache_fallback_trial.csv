@@ -1,0 +1,8 @@
+case_name,expected_behavior,actual_behavior,cache_miss_count,fallback_used,status,error_message,high_confidence_misuse_flag,pass_flag
+valid_cache_exact_lookup,cache_hit_ok,cache_hit_ok,0,0,ok,,0,1
+cache_missing_metadata,fallback_recorded,fallback_recorded,0,1,ok,,0,1
+cache_grid_missing_one_delta,fallback_recorded,fallback_recorded,1,1,ok,,0,1
+cache_grid_missing_one_el,fallback_recorded,fallback_recorded,2,1,ok,,0,1
+wrong_W_method,reject_wrong_cache_and_fallback,fallback_recorded,0,1,ok,,0,1
+wrong_canonical_order_tag,reject_wrong_cache_and_fallback,fallback_recorded,0,1,ok,,0,1
+allow_cache_fallback_false,cache_miss_error_no_silent_direct,cache_miss_error_no_silent_direct,1,0,cache_miss_error,Exact cache lookup missed 1 entries. Interpolation is disabled.,0,1

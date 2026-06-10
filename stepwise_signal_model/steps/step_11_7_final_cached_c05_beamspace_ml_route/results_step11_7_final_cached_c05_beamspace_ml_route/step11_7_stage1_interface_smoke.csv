@@ -1,0 +1,8 @@
+case_name,frontend_state,input_shape,expected_status,actual_status,expected_confidence_class,actual_confidence,backend_ran_flag,error_message,output_fields_present_flag,pass_flag
+valid_single_local_cluster,single_peak_in_scope,2080x64,ok,ok,nonlow,high,1,,1,1
+valid_controlled_pair2d_candidate,controlled_pair2d_candidate,2080x64,ok,ok,nonlow,high,1,,1,1
+invalid_Ywork_shape,controlled_pair2d_candidate,3x4,invalid_input,invalid_input,low_or_out_of_scope,low,0,Y_work shape 3x4 does not match W element count 2080 or 65x32xT.,1,1
+missing_frontend_state,,2080x64,invalid_input,invalid_input,low_or_out_of_scope,low,0,missing required input.frontend_state,1,1
+two_separated_peaks_out_of_scope,two_separated_peaks_out_of_scope,2080x64,out_of_scope,out_of_scope,low_or_out_of_scope,low,0,unsupported frontend_state: two_separated_peaks_out_of_scope,1,1
+weak_secondary_candidate,weak_secondary_candidate,2080x64,out_of_scope,out_of_scope,low_or_out_of_scope,low,0,unsupported frontend_state: weak_secondary_candidate,1,1
+empty_detection,empty_detection,2080x64,out_of_scope,out_of_scope,low_or_out_of_scope,low,0,unsupported frontend_state: empty_detection,1,1

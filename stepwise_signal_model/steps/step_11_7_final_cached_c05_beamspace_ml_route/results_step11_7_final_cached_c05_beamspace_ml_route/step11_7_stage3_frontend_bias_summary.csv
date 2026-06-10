@@ -1,0 +1,2 @@
+stage_name,num_trials,num_bias_cases,zero_bias_success_rate,max_topK_miss_rate,max_boundary_hit_rate,max_success_drop_vs_zero,cache_miss_count,fallback_used_rate,high_confidence_misuse_count,frontend_prior_bias_recheck_pass_flag,full_grid_match_note
+stage3_frontend_prior_bias_recheck,350,7,0.8,0,0,0,0,0,0,1,bias cases require safety and success robustness; full-grid match is recorded only when a separate reference is run

@@ -1,0 +1,2 @@
+stage_name,num_trials,same_estimate_rate,same_policy_rate,same_score_rate,max_score_diff_rel,cache_miss_count,fallback_used_rate,success_match_rate,boundary_flag_match_rate,confidence_match_rate,cached_direct_consistency_pass_flag
+stage2_cached_direct_consistency,200,1,1,1,8.1529772718109e-16,0,0,1,1,1,1
