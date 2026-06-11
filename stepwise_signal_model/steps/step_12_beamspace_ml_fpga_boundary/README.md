@@ -219,7 +219,36 @@ Aggregate-only reports `formal_plan_total_obs`, `formal_plan_completed_obs`, `fo
 
 Cache estimates have explicit scope. `cache_memory_MB_total_est_working_set` is the compact working-set/candidate-subset estimate used by aggregate-only reports, while `cache_memory_MB_total_est_full_if_available` records the full canonical cache estimate when a chunk context exposes that reference. These two numbers are not the same hardware/storage path and should not be compared as if they were identical artifacts.
 
-The tracked `pilot_min_fast_path` and `chunk_pilot_tps3` artifacts are formal-path smoke runs only. The current `formal_tps30` progress artifact contains chunks 1-10, `formal_plan_completed_obs=100` out of `formal_plan_total_obs=1200`; it is still incomplete, below `STEP12_MIN_FORMAL_OBS=300`, and no formal conclusion is available yet.
+The tracked `pilot_min_fast_path` and `chunk_pilot_tps3` artifacts are formal-path smoke runs only. The full `formal_tps30` aggregate now contains chunks 1-120, with `formal_plan_completed_obs=1200` out of `formal_plan_total_obs=1200`.
+
+## Final / Closure Report
+
+The full formal closure report is:
+
+`第12步_波束级ML_FPGA可行性边界验证收束报告.md`
+
+Full formal status:
+
+- run tag: `formal_tps30`
+- formal plan: `1200 / 1200` observations complete
+- `formal_plan_complete_flag = 1`
+- `fixed_point_pass_flag = 1`
+- `minimum_passing_mode = combined_int24`
+- `engineering_recommended_fixed_point_format = mixed_Z16_G24_Rz24`
+- `combined_int16_formal_pass_flag = 0`
+- `combined_int16_blocker_if_any = reliable_argmax_changed`
+- `proceed_to_rtl_score_core_flag = 1`
+- `proceed_to_full_fpga_backend_flag = 0`
+
+The closure is scoped to Step11.x beamspace ML score-core feasibility. It does not claim a complete FPGA backend, bit-true HDL simulation, pure RTL implementation, or board validation.
+
+Golden vectors were regenerated after the full 1200-observation aggregate:
+
+`results_step12_beamspace_ml_fpga_boundary/formal_tps30/aggregate/golden_vectors/`
+
+The golden-vector manifest records `mixed_Z16_G24_Rz24` as the recommended fixed-point format and contains compact RTL score-core testbench cases only.
+
+Full MAT remains untracked by default. The tracked light MAT, CSV, PNG, markdown reports, and compact golden-vector CSV files are the reproducible evidence artifacts. The working-set cache estimate and full-cache estimate describe different implementation scopes: the working set is compact per-run/candidate-subset evidence, while the full canonical G-cache estimate is the larger cache residency pressure for future FPGA/SoC implementation planning.
 
 ## Mode Selection
 

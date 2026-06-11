@@ -1,0 +1,9 @@
+quant_mode,is_fixed_candidate,recommendation_candidate_flag,num_trials,reliable_trial_count,overall_top1_preservation_rate,overall_topK_set_preservation_rate,overall_topK_miss_rate,reliable_top1_preservation_rate,reliable_topK_set_preservation_rate,reliable_topK_miss_rate,argmax_changed_rate_on_reliable_margin,reliable_score_gap_sign_flip_rate,mean_score_rank_spearman,min_score_rank_spearman,max_candidate_score_rel_l2_error,max_score_gap_rel_error,same_policy_rate,same_estimate_rate,same_confidence_rate,same_fallback_rate,boundary_state_same_rate,max_clip_rate,max_overflow_rate,ranking_pass_flag,topK_pass_flag,fixed_point_pass_flag,mode_storage_cost_bits
+double_baseline,0,0,10,4,1,1,0,1,1,0,0,0,1,1,0,0,1,1,1,1,1,0,0,1,1,0,16
+float32_all,0,0,10,4,0.9,1,0,1,1,0,0,0,0.999999999686079,0.999999999607598,8.14296039412036e-07,0.00062370553525623,1,0.9,1,1,1,0,0,1,1,0,16
+combined_int16,1,1,10,4,0.9,1,0,1,1,0,0,0,0.999999975333024,0.999999971022642,3.5325649473112e-05,0.00895298792694839,1,0.9,1,1,1,0,0,1,1,0,16
+combined_int18,1,1,10,4,1,1,0,1,1,0,0,0,0.999999994799168,0.999999993540464,8.85515532335822e-06,0.00310336048825024,1,1,1,1,1,0,0,1,1,0,18
+combined_int24,1,1,10,4,1,1,0,1,1,0,0,0,0.999999999894354,0.999999999818892,1.31887146014967e-07,5.44324498277923e-05,1,1,1,1,1,0,0,1,1,0,24
+mixed_Z16_G24_Rz24,1,1,10,4,1,1,0,1,1,0,0,0,0.999999999269529,0.999999998913349,3.7325134609589e-06,0.000113640356327575,1,1,1,1,1,0,0,1,1,0,24
+combined_int14,1,1,10,4,0.5,0.9,0.01,1,1,0,0,0,0.999999855876883,0.999999777779885,0.000145935409275448,0.0603646182907986,1,0.5,1,1,1,0,0,1,0,0,16
+W_int18_G24_Z16,1,1,10,4,1,1,0,1,1,0,0,0,0.999999999266511,0.999999998883164,3.95994862177106e-06,0.000173021182161224,1,1,1,1,1,0,0,1,1,0,24

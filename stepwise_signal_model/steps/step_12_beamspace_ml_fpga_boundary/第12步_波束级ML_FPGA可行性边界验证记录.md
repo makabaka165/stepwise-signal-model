@@ -20,14 +20,14 @@
 - run_tag: `formal_tps30`
 - quick_mode_flag: 0
 - chunked_run_flag: 1
-- formal_trial_count: 300
+- formal_trial_count: 1200
 - min_formal_obs: 300
 - formal_plan_total_obs: 1200
-- formal_plan_completed_obs: 300
-- formal_plan_complete_flag: 0
+- formal_plan_completed_obs: 1200
+- formal_plan_complete_flag: 1
 - formal_min_obs_satisfied_flag: 1
-- chunks_detected: 30
-- chunks_completed: 30
+- chunks_detected: 120
+- chunks_completed: 120
 
 ## Chunked Formal Validation
 
@@ -51,65 +51,65 @@ mode_set 为 `formal_core`。formal_core 至少包含 double_baseline、float32_
 
 | quant_mode | is_fixed_candidate | recommendation_candidate_flag | num_trials | reliable_trial_count | overall_top1_preservation_rate | overall_topK_set_preservation_rate | overall_topK_miss_rate | reliable_top1_preservation_rate | reliable_topK_set_preservation_rate | reliable_topK_miss_rate | argmax_changed_rate_on_reliable_margin | reliable_score_gap_sign_flip_rate | mean_score_rank_spearman | min_score_rank_spearman | max_candidate_score_rel_l2_error | max_score_gap_rel_error | same_policy_rate | same_estimate_rate | same_confidence_rate | same_fallback_rate | boundary_state_same_rate | max_clip_rate | max_overflow_rate | ranking_pass_flag | topK_pass_flag | fixed_point_pass_flag | mode_storage_cost_bits |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| double_baseline | 0 | 0 | 300 | 185 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 0 | 16 |
-| float32_all | 0 | 0 | 300 | 185 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 9.85384e-07 | 0.00114912 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 0 | 16 |
-| combined_int16 | 1 | 1 | 300 | 185 | 0.92 | 0.993333 | 0.000666667 | 0.945946 | 0.994595 | 0.000540541 | 0.0540541 | 0 | 1 | 1 | 4.38601e-05 | 0.101385 | 1 | 0.92 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 16 |
-| combined_int18 | 1 | 1 | 300 | 185 | 0.983333 | 1 | 0 | 0.994595 | 1 | 0 | 0.00540541 | 0 | 1 | 1 | 1.08498e-05 | 0.0149798 | 1 | 0.983333 | 1 | 1 | 1 | 0 | 0 | 0 | 1 | 0 | 18 |
-| combined_int24 | 1 | 1 | 300 | 185 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 1.64558e-07 | 0.000255016 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 24 |
-| mixed_Z16_G24_Rz24 | 1 | 1 | 300 | 185 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 5.26286e-06 | 0.00261169 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 24 |
-| combined_int14 | 1 | 1 | 300 | 185 | 0.71 | 0.98 | 0.002 | 0.821622 | 0.978378 | 0.00216216 | 0.178378 | 0 | 1 | 1 | 0.000211591 | 0.265671 | 1 | 0.71 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 16 |
-| W_int18_G24_Z16 | 1 | 1 | 300 | 185 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 5.47666e-06 | 0.00332874 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 24 |
+| double_baseline | 0 | 0 | 1200 | 614 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 0 | 16 |
+| float32_all | 0 | 0 | 1200 | 614 | 0.999167 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 9.91393e-07 | 0.0429507 | 1 | 0.999167 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 0 | 16 |
+| combined_int16 | 1 | 1 | 1200 | 614 | 0.895833 | 0.991667 | 0.000833333 | 0.965798 | 0.998371 | 0.000162866 | 0.034202 | 0 | 1 | 1 | 4.6614e-05 | 1 | 0.999167 | 0.895833 | 0.999167 | 1 | 1 | 0 | 0 | 0 | 1 | 0 | 16 |
+| combined_int18 | 1 | 1 | 1200 | 614 | 0.973333 | 0.999167 | 8.33333e-05 | 0.995114 | 1 | 0 | 0.00488599 | 0 | 1 | 1 | 1.1336e-05 | 1 | 1 | 0.973333 | 1 | 1 | 1 | 0 | 0 | 0 | 1 | 0 | 18 |
+| combined_int24 | 1 | 1 | 1200 | 614 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 1.69436e-07 | 0.0150665 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 24 |
+| mixed_Z16_G24_Rz24 | 1 | 1 | 1200 | 614 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 7.38896e-06 | 0.0208116 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 24 |
+| combined_int14 | 1 | 1 | 1200 | 614 | 0.6325 | 0.964167 | 0.00358333 | 0.820847 | 0.980456 | 0.0019544 | 0.179153 | 0 | 1 | 1 | 0.000211591 | 1.06944 | 0.999167 | 0.6325 | 0.999167 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 16 |
+| W_int18_G24_Z16 | 1 | 1 | 1200 | 614 | 1 | 1 | 0 | 1 | 1 | 0 | 0 | 0 | 1 | 1 | 7.55914e-06 | 0.0306036 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 1 | 1 | 1 | 24 |
 
 ## Mode Selection
 
 | quant_mode | is_fixed_candidate | is_recommendation_candidate | component_bits | formal_trial_count | ranking_pass_flag | topK_pass_flag | fixed_point_pass_flag | reliable_top1_preservation_rate | reliable_topK_set_preservation_rate | overall_topK_set_preservation_rate | reliable_topK_miss_rate | argmax_changed_rate_on_reliable_margin | reliable_score_gap_sign_flip_rate | max_candidate_score_rel_l2_error | max_score_gap_rel_error | max_clip_rate | max_overflow_rate | estimated_total_MB | estimated_BRAM36 | estimated_URAM288 | engineering_rank | selection_reason |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| double_baseline | 0 | 0 | 16 | 300 | 1 | 1 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | not_fixed_candidate |
-| float32_all | 0 | 0 | 16 | 300 | 1 | 1 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 9.85384e-07 | 0.00114912 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | not_fixed_candidate |
-| combined_int16 | 1 | 1 | 16 | 300 | 0 | 0 | 0 | 0.945946 | 0.994595 | 0.993333 | 0.000540541 | 0.0540541 | 0 | 4.38601e-05 | 0.101385 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | ranking_not_closed |
-| combined_int18 | 1 | 1 | 18 | 300 | 0 | 1 | 0 | 0.994595 | 1 | 1 | 0 | 0.00540541 | 0 | 1.08498e-05 | 0.0149798 | 0 | 0 | 0.0848737 | 20 | 3 | NaN | ranking_not_closed |
-| combined_int24 | 1 | 1 | 24 | 300 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 1.64558e-07 | 0.000255016 | 0 | 0 | 0.113165 | 26 | 4 | 1 | formal_ranking_topK_passed |
-| mixed_Z16_G24_Rz24 | 1 | 1 | 24 | 300 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 5.26286e-06 | 0.00261169 | 0 | 0 | 0.113165 | 26 | 4 | 2 | formal_ranking_topK_passed |
-| combined_int14 | 1 | 1 | 16 | 300 | 0 | 0 | 0 | 0.821622 | 0.978378 | 0.98 | 0.00216216 | 0.178378 | 0 | 0.000211591 | 0.265671 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | ranking_not_closed |
-| W_int18_G24_Z16 | 1 | 1 | 24 | 300 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 5.47666e-06 | 0.00332874 | 0 | 0 | 0.113165 | 26 | 4 | 3 | formal_ranking_topK_passed |
+| double_baseline | 0 | 0 | 16 | 1200 | 1 | 1 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | not_fixed_candidate |
+| float32_all | 0 | 0 | 16 | 1200 | 1 | 1 | 0 | 1 | 1 | 1 | 0 | 0 | 0 | 9.91393e-07 | 0.0429507 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | not_fixed_candidate |
+| combined_int16 | 1 | 1 | 16 | 1200 | 0 | 1 | 0 | 0.965798 | 0.998371 | 0.991667 | 0.000162866 | 0.034202 | 0 | 4.6614e-05 | 1 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | ranking_not_closed |
+| combined_int18 | 1 | 1 | 18 | 1200 | 0 | 1 | 0 | 0.995114 | 1 | 0.999167 | 0 | 0.00488599 | 0 | 1.1336e-05 | 1 | 0 | 0 | 0.0848737 | 20 | 3 | NaN | ranking_not_closed |
+| combined_int24 | 1 | 1 | 24 | 1200 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 1.69436e-07 | 0.0150665 | 0 | 0 | 0.113165 | 26 | 4 | 1 | formal_ranking_topK_passed |
+| mixed_Z16_G24_Rz24 | 1 | 1 | 24 | 1200 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 7.38896e-06 | 0.0208116 | 0 | 0 | 0.113165 | 26 | 4 | 2 | formal_ranking_topK_passed |
+| combined_int14 | 1 | 1 | 16 | 1200 | 0 | 0 | 0 | 0.820847 | 0.980456 | 0.964167 | 0.0019544 | 0.179153 | 0 | 0.000211591 | 1.06944 | 0 | 0 | 0.0754433 | 18 | 3 | NaN | ranking_not_closed |
+| W_int18_G24_Z16 | 1 | 1 | 24 | 1200 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 7.55914e-06 | 0.0306036 | 0 | 0 | 0.113165 | 26 | 4 | 3 | formal_ranking_topK_passed |
 
 ## combined_int16 状态
 
 - combined_int16_formal_pass_flag: 0
 - combined_int16_blocker_if_any: `reliable_argmax_changed`
-- combined_int16_reliable_top1_preservation: 0.945945945946
-- combined_int16_reliable_topK_preservation: 0.994594594595
+- combined_int16_reliable_top1_preservation: 0.965798045603
+- combined_int16_reliable_topK_preservation: 0.998371335505
 
 ## Score Gap Stress Bins
 
 | quant_mode | gap_bin | num_trials | top1_preservation_rate | topK_set_preservation_rate | topK_miss_rate | argmax_changed_rate | score_gap_sign_flip_rate | mean_score_gap_rel_error | p95_score_gap_rel_error | max_score_gap_rel_error | same_policy_rate | same_confidence_rate | same_boundary_rate |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| double_baseline | gap_bin_very_weak | 0 | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN |
-| double_baseline | gap_bin_weak | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
-| double_baseline | gap_bin_transition | 114 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
-| double_baseline | gap_bin_reliable | 185 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
-| float32_all | gap_bin_very_weak | 0 | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN |
-| float32_all | gap_bin_weak | 1 | 1 | 1 | 0 | 0 | 0 | 0.000593273 | 0.000593273 | 0.000593273 | 1 | 1 | 1 |
-| float32_all | gap_bin_transition | 114 | 1 | 1 | 0 | 0 | 0 | 0.000212036 | 0.000961369 | 0.00114912 | 1 | 1 | 1 |
-| float32_all | gap_bin_reliable | 185 | 1 | 1 | 0 | 0 | 0 | 4.00487e-05 | 0.000105653 | 0.000128441 | 1 | 1 | 1 |
-| combined_int16 | gap_bin_very_weak | 0 | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN |
-| combined_int16 | gap_bin_weak | 1 | 1 | 1 | 0 | 0 | 0 | 0.101385 | 0.101385 | 0.101385 | 1 | 1 | 1 |
-| combined_int16 | gap_bin_transition | 114 | 0.877193 | 0.991228 | 0.000877193 | 0.122807 | 0 | 0.0137895 | 0.0475951 | 0.0863009 | 1 | 1 | 1 |
-| combined_int16 | gap_bin_reliable | 185 | 0.945946 | 0.994595 | 0.000540541 | 0.0540541 | 0 | 0.00249269 | 0.00515914 | 0.0081717 | 1 | 1 | 1 |
-| combined_int18 | gap_bin_very_weak | 0 | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN |
-| combined_int18 | gap_bin_weak | 1 | 1 | 1 | 0 | 0 | 0 | 0.00958473 | 0.00958473 | 0.00958473 | 1 | 1 | 1 |
-| combined_int18 | gap_bin_transition | 114 | 0.964912 | 1 | 0 | 0.0350877 | 0 | 0.00338291 | 0.0110749 | 0.0149798 | 1 | 1 | 1 |
-| combined_int18 | gap_bin_reliable | 185 | 0.994595 | 1 | 0 | 0.00540541 | 0 | 0.000650775 | 0.00141633 | 0.00189677 | 1 | 1 | 1 |
-| combined_int24 | gap_bin_very_weak | 0 | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN | NaN |
-| combined_int24 | gap_bin_weak | 1 | 1 | 1 | 0 | 0 | 0 | 0.000255016 | 0.000255016 | 0.000255016 | 1 | 1 | 1 |
-| combined_int24 | gap_bin_transition | 114 | 1 | 1 | 0 | 0 | 0 | 5.17115e-05 | 0.000166667 | 0.0002499 | 1 | 1 | 1 |
-| combined_int24 | gap_bin_reliable | 185 | 1 | 1 | 0 | 0 | 0 | 1.04715e-05 | 2.31667e-05 | 3.22019e-05 | 1 | 1 | 1 |
+| double_baseline | gap_bin_very_weak | 2 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
+| double_baseline | gap_bin_weak | 83 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
+| double_baseline | gap_bin_transition | 501 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
+| double_baseline | gap_bin_reliable | 614 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 1 | 1 |
+| float32_all | gap_bin_very_weak | 2 | 1 | 1 | 0 | 0 | 0 | 0.0267384 | 0.0429507 | 0.0429507 | 1 | 1 | 1 |
+| float32_all | gap_bin_weak | 83 | 1 | 1 | 0 | 0 | 0 | 0.00484175 | 0.0143101 | 0.0204169 | 1 | 1 | 1 |
+| float32_all | gap_bin_transition | 501 | 0.998004 | 1 | 0 | 0.00199601 | 0 | 0.000252361 | 0.000830637 | 0.00164567 | 1 | 1 | 1 |
+| float32_all | gap_bin_reliable | 614 | 1 | 1 | 0 | 0 | 0 | 3.55294e-05 | 9.44001e-05 | 0.000136225 | 1 | 1 | 1 |
+| combined_int16 | gap_bin_very_weak | 2 | 0 | 1 | 0 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| combined_int16 | gap_bin_weak | 83 | 0.771084 | 1 | 0 | 0.228916 | 0 | 0.0564521 | 0.136896 | 0.30692 | 1 | 1 | 1 |
+| combined_int16 | gap_bin_transition | 501 | 0.834331 | 0.982036 | 0.00179641 | 0.165669 | 0 | 0.0149908 | 0.047679 | 0.0863009 | 0.998004 | 0.998004 | 1 |
+| combined_int16 | gap_bin_reliable | 614 | 0.965798 | 0.998371 | 0.000162866 | 0.034202 | 0 | 0.00250003 | 0.00584819 | 0.00901686 | 1 | 1 | 1 |
+| combined_int18 | gap_bin_very_weak | 2 | 1 | 1 | 0 | 0 | 0.5 | 0.626685 | 1 | 1 | 1 | 1 | 1 |
+| combined_int18 | gap_bin_weak | 83 | 0.903614 | 1 | 0 | 0.0963855 | 0 | 0.0176723 | 0.0304434 | 0.0947393 | 1 | 1 | 1 |
+| combined_int18 | gap_bin_transition | 501 | 0.958084 | 0.998004 | 0.000199601 | 0.0419162 | 0 | 0.00378498 | 0.0121269 | 0.0190974 | 1 | 1 | 1 |
+| combined_int18 | gap_bin_reliable | 614 | 0.995114 | 1 | 0 | 0.00488599 | 0 | 0.000621516 | 0.00143506 | 0.00194674 | 1 | 1 | 1 |
+| combined_int24 | gap_bin_very_weak | 2 | 1 | 1 | 0 | 0 | 0 | 0.00814762 | 0.0150665 | 0.0150665 | 1 | 1 | 1 |
+| combined_int24 | gap_bin_weak | 83 | 1 | 1 | 0 | 0 | 0 | 0.000277585 | 0.000571936 | 0.000745037 | 1 | 1 | 1 |
+| combined_int24 | gap_bin_transition | 501 | 1 | 1 | 0 | 0 | 0 | 5.67332e-05 | 0.000189806 | 0.000332054 | 1 | 1 | 1 |
+| combined_int24 | gap_bin_reliable | 614 | 1 | 1 | 0 | 0 | 0 | 1.02231e-05 | 2.35216e-05 | 3.31253e-05 | 1 | 1 | 1 |
 
 _Only first 20 rows shown; see CSV for full table._
 
 - reliable_margin_instability_flag: 0
 - failures_limited_to_low_margin_cases: 0
-- worst_gap_bin_for_recommended_mode: `gap_bin_weak`
+- worst_gap_bin_for_recommended_mode: `gap_bin_very_weak`
 
 ## Cache Storage 估算
 
@@ -145,20 +145,20 @@ _Only first 20 rows shown; see CSV for full table._
 
 | stage_name | total_elapsed_sec | mean_elapsed_sec | p95_elapsed_sec | max_elapsed_sec | num_calls |
 | --- | --- | --- | --- | --- | --- |
-| score_recompute | 931.504 | 0.388127 | 0.535957 | 0.950302 | 2400 |
-| ranking_compare | 471.905 | 0.196627 | 0.278058 | 0.492329 | 2400 |
-| build_candidate_score_pack | 293.061 | 0.97687 | 1.29662 | 1.60671 | 300 |
-| build_step11_input | 3.27194 | 0.0109065 | 0.0264069 | 0.0658347 | 300 |
-| run_step11_backend | 0 | 0 | 0 | 0 | 300 |
+| score_recompute | 3557.47 | 0.37057 | 0.571134 | 1.06975 | 9600 |
+| ranking_compare | 1806.95 | 0.188224 | 0.289896 | 0.592071 | 9600 |
+| build_candidate_score_pack | 1134.13 | 0.945105 | 1.39158 | 1.64185 | 1200 |
+| build_step11_input | 10.4719 | 0.00872655 | 0.0181917 | 0.0715528 | 1200 |
+| run_step11_backend | 0 | 0 | 0 | 0 | 1200 |
 
 ## Worst Cases 总结
 
 | case_type | trial_index | scenario_name | quant_mode | metric_name | metric_value | topK_miss_count | argmax_changed_flag | score_gap_norm_baseline | score_gap_rel_error | max_clip_rate | note |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | max_topK_miss_count | 1086 | medium_beta_coherent | combined_int16 | topK_miss_count | 1 | 1 | 1 | 0.000453774 | 0.00927453 | 0 | see trial CSV for full fields |
-| argmax_changed_largest_baseline_gap | 390 | hard_phase | combined_int16 | score_gap_norm_baseline | 0.00256089 | 0 | 1 | 0.00256089 | 0.00360831 | 0 | see trial CSV for full fields |
-| max_score_gap_rel_error | 611 | easy_noncoherent | combined_int14 | score_gap_rel_error | 0.265671 | 0 | 0 | 8.31342e-05 | 0.265671 | 0 | see trial CSV for full fields |
-| policy_changed_sample | NaN |  |  | same_policy_flag | NaN | NaN | 0 | NaN | NaN | NaN | no matching sample |
+| argmax_changed_largest_baseline_gap | 1138 | large_el_pair | combined_int14 | score_gap_norm_baseline | 0.00496799 | 0 | 1 | 0.00496799 | 0.000212347 | 0 | see trial CSV for full fields |
+| max_score_gap_rel_error | 511 | large_el_pair | combined_int14 | score_gap_rel_error | 1.06944 | 0 | 0 | 2.94984e-05 | 1.06944 | 0 | see trial CSV for full fields |
+| policy_changed_sample | 1119 | large_el_pair | combined_int14 | same_policy_flag | 0 | 0 | 0 | 0.000158089 | 0.158625 | 0 | see trial CSV for full fields |
 | max_clip_or_overflow_sample | 1 | easy_noncoherent | double_baseline | max_clip_rate | 0 | 0 | 0 | 0.00110155 | 0 | 0 | see trial CSV for full fields |
 
 ## Recommendation
@@ -170,6 +170,34 @@ _Only first 20 rows shown; see CSV for full table._
 ## Golden Vectors
 
 - exported: 1
+
+## Full formal收束状态
+
+详见：[第12步_波束级ML_FPGA可行性边界验证收束报告.md](第12步_波束级ML_FPGA可行性边界验证收束报告.md)
+
+full formal关键keypoints：
+
+- run_tag: `formal_tps30`
+- formal_plan_total_obs: 1200
+- formal_plan_completed_obs: 1200
+- formal_plan_complete_flag: 1
+- formal_min_obs_satisfied_flag: 1
+- uses_step89_results_flag: 0
+- quick_mode_flag: 0
+- fixed_point_pass_flag: 1
+- blocker_if_any: `none`
+- combined_int16_formal_pass_flag: 0
+- combined_int16_blocker_if_any: `reliable_argmax_changed`
+- minimum_passing_mode: `combined_int24`
+- engineering_recommended_fixed_point_format: `mixed_Z16_G24_Rz24`
+- recommended_fixed_point_format: `mixed_Z16_G24_Rz24`
+- proceed_to_rtl_score_core_flag: 1
+- proceed_to_full_fpga_backend_flag: 0
+- reliable_margin_instability_flag: 0
+- failures_limited_to_low_margin_cases: 0
+- worst_gap_bin_for_recommended_mode: `gap_bin_very_weak`
+
+full formal结论：第12步已完成第11.x beamspace ML score core的FPGA可行性边界收束。推荐进入第13步RTL score core prototype；该结论不覆盖完整FPGA backend、bit-true HDL仿真或下板验证。
 - manifest: `E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\formal_tps30\aggregate\step12_ml_fpga_boundary_golden_vector_manifest.md`
 
 ## 最终判断

@@ -1,0 +1,6 @@
+stage_name,total_elapsed_sec,mean_elapsed_sec,p95_elapsed_sec,max_elapsed_sec,num_calls
+score_recompute,25.0338854,0.3129235675,0.3437945,0.3898988,80
+ranking_compare,12.8383634,0.1604795425,0.1813976,0.1846724,80
+build_candidate_score_pack,8.4411328,0.84411328,0.9700873,0.9700873,10
+build_step11_input,0.0702055,0.00702055,0.0102622,0.0102622,10
+run_step11_backend,0,0,0,0,10

@@ -1,10 +1,10 @@
 case_name,case_0005
 case_role,combined_int16_worst_case
 quant_mode,combined_int16
-trial_index,611
-scenario_name,easy_noncoherent
+trial_index,872
+scenario_name,low_margin_score_gap
 metric_name,score_gap_rel_error
-metric_value,0.101384560489
+metric_value,1
 score_core_only_flag,1
 full_fpga_backend_validation_flag,0
 golden_vector_limit,256

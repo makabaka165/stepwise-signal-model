@@ -1,0 +1,6 @@
+case_type,trial_index,scenario_name,quant_mode,metric_name,metric_value,topK_miss_count,argmax_changed_flag,score_gap_norm_baseline,score_gap_rel_error,max_clip_rate,note
+max_topK_miss_count,159,near_tie_close_sep,combined_int14,topK_miss_count,1,1,1,0.000525767145080152,0.0454822248417035,0,see trial CSV for full fields
+argmax_changed_largest_baseline_gap,879,low_margin_score_gap,combined_int14,score_gap_norm_baseline,0.00166703604956302,0,1,0.00166703604956302,0.00964894508908654,0,see trial CSV for full fields
+max_score_gap_rel_error,1119,large_el_pair,combined_int14,score_gap_rel_error,0.158624887792316,0,0,0.000158088617108376,0.158624887792316,0,see trial CSV for full fields
+policy_changed_sample,1119,large_el_pair,combined_int14,same_policy_flag,0,0,0,0.000158088617108376,0.158624887792316,0,see trial CSV for full fields
+max_clip_or_overflow_sample,39,strong_coherent,double_baseline,max_clip_rate,0,0,0,0.00116867766014211,0,0,see trial CSV for full fields

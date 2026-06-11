@@ -1,0 +1,191 @@
+obs_id,chunk_id,total_chunks,run_tag,scenario_name,center_az,trial_id,quant_mode,stage_name,elapsed_sec,num_candidates,num_topK,score_lanes_assumed,comment
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,,build_step11_input,0.0081242,NaN,10,NaN,Step11.7 frontend-like input builder
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,,build_candidate_score_pack,0.8133427,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,,build_step11_input,0.0064157,NaN,10,NaN,Step11.7 frontend-like input builder
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,,build_candidate_score_pack,0.9344547,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,4,28,,build_step11_input,0.0071679,NaN,10,NaN,Step11.7 frontend-like input builder
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,4,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,4,28,,build_candidate_score_pack,0.8655995,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,4,28,,build_step11_input,0.0066749,NaN,10,NaN,Step11.7 frontend-like input builder
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,4,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,4,28,,build_candidate_score_pack,0.8909718,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,4,28,,build_step11_input,0.0066053,NaN,10,NaN,Step11.7 frontend-like input builder
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,4,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,4,28,,build_candidate_score_pack,0.865229,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,8,28,,build_step11_input,0.0091909,NaN,10,NaN,Step11.7 frontend-like input builder
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,8,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,8,28,,build_candidate_score_pack,0.9277978,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,8,28,,build_step11_input,0.0059718,NaN,10,NaN,Step11.7 frontend-like input builder
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,8,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,8,28,,build_candidate_score_pack,0.8447808,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,,build_step11_input,0.0059878,NaN,10,NaN,Step11.7 frontend-like input builder
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,,build_candidate_score_pack,0.8953345,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,,build_step11_input,0.0081433,NaN,10,NaN,Step11.7 frontend-like input builder
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,,build_candidate_score_pack,0.9472451,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,,build_step11_input,0.0065895,NaN,10,NaN,Step11.7 frontend-like input builder
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,,run_step11_backend,0,NaN,10,NaN,Skipped full Step11.7 backend; using Step12 score-core adapter
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,,build_candidate_score_pack,0.9834269,7353,10,NaN,Build W/Y/Z/Rz/G_cache candidate score pack
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,double_baseline,score_recompute,0.3356489,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,double_baseline,ranking_compare,0.1525809,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,float32_all,score_recompute,0.2992271,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,float32_all,ranking_compare,0.1534994,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int16,score_recompute,0.2953725,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int16,ranking_compare,0.154796,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int18,score_recompute,0.3095225,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int18,ranking_compare,0.176316,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int24,score_recompute,0.3270718,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int24,ranking_compare,0.1529638,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,mixed_Z16_G24_Rz24,score_recompute,0.3241916,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,mixed_Z16_G24_Rz24,ranking_compare,0.167638,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int14,score_recompute,0.3432639,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,combined_int14,ranking_compare,0.1669457,7353,10,NaN,ranking and topK comparison
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,W_int18_G24_Z16,score_recompute,0.3426078,7353,10,NaN,Step12 quantized score recompute
+cp00p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,0,28,W_int18_G24_Z16,ranking_compare,0.1549889,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,double_baseline,score_recompute,0.3070522,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,double_baseline,ranking_compare,0.1553682,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,float32_all,score_recompute,0.3091742,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,float32_all,ranking_compare,0.1534484,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int16,score_recompute,0.2925784,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int16,ranking_compare,0.1494973,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int18,score_recompute,0.3029502,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int18,ranking_compare,0.1684186,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int24,score_recompute,0.4349856,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int24,ranking_compare,0.1862124,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,mixed_Z16_G24_Rz24,score_recompute,0.3392312,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,mixed_Z16_G24_Rz24,ranking_compare,0.1691091,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int14,score_recompute,0.3480503,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,combined_int14,ranking_compare,0.1631688,7353,10,NaN,ranking and topK comparison
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,W_int18_G24_Z16,score_recompute,0.3463256,7353,10,NaN,Step12 quantized score recompute
+cp00p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,0,28,W_int18_G24_Z16,ranking_compare,0.1808044,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,double_baseline,score_recompute,0.3226449,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,double_baseline,ranking_compare,0.1578026,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,float32_all,score_recompute,0.3053603,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,float32_all,ranking_compare,0.1535984,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int16,score_recompute,0.3238377,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int16,ranking_compare,0.1531107,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int18,score_recompute,0.3161888,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int18,ranking_compare,0.2046871,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int24,score_recompute,0.3798032,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int24,ranking_compare,0.1862829,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,mixed_Z16_G24_Rz24,score_recompute,0.3957319,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,mixed_Z16_G24_Rz24,ranking_compare,0.1802958,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int14,score_recompute,0.3457741,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,combined_int14,ranking_compare,0.2210201,7353,10,NaN,ranking and topK comparison
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,W_int18_G24_Z16,score_recompute,0.3622205,7353,10,NaN,Step12 quantized score recompute
+cp04p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,3.75,28,W_int18_G24_Z16,ranking_compare,0.2130992,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,double_baseline,score_recompute,0.3327475,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,double_baseline,ranking_compare,0.1645422,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,float32_all,score_recompute,0.3091925,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,float32_all,ranking_compare,0.1509418,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int16,score_recompute,0.3032952,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int16,ranking_compare,0.1554521,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int18,score_recompute,0.3873012,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int18,ranking_compare,0.1923199,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int24,score_recompute,0.3435749,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int24,ranking_compare,0.1715919,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,mixed_Z16_G24_Rz24,score_recompute,0.3330803,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,mixed_Z16_G24_Rz24,ranking_compare,0.1611459,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int14,score_recompute,0.3424839,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,combined_int14,ranking_compare,0.160699,7353,10,NaN,ranking and topK comparison
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,W_int18_G24_Z16,score_recompute,0.3307436,7353,10,NaN,Step12 quantized score recompute
+cp04p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,3.75,28,W_int18_G24_Z16,ranking_compare,0.1800077,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,double_baseline,score_recompute,0.3120491,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,double_baseline,ranking_compare,0.1568896,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,float32_all,score_recompute,0.3318252,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,float32_all,ranking_compare,0.15857,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int16,score_recompute,0.3085514,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int16,ranking_compare,0.1608786,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int18,score_recompute,0.4244759,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int18,ranking_compare,0.2144412,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int24,score_recompute,0.3505165,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int24,ranking_compare,0.1811261,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,mixed_Z16_G24_Rz24,score_recompute,0.3085949,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,mixed_Z16_G24_Rz24,ranking_compare,0.169632,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int14,score_recompute,0.3374417,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,combined_int14,ranking_compare,0.1723814,7353,10,NaN,ranking and topK comparison
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,W_int18_G24_Z16,score_recompute,0.3302928,7353,10,NaN,Step12 quantized score recompute
+cp04p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,3.75,28,W_int18_G24_Z16,ranking_compare,0.166381,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,double_baseline,score_recompute,0.3105099,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,double_baseline,ranking_compare,0.1525626,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,float32_all,score_recompute,0.2953596,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,float32_all,ranking_compare,0.1538629,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int16,score_recompute,0.3141111,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int16,ranking_compare,0.1676291,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int18,score_recompute,0.395254,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int18,ranking_compare,0.1852283,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int24,score_recompute,0.3399079,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int24,ranking_compare,0.1887082,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,mixed_Z16_G24_Rz24,score_recompute,0.3434664,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,mixed_Z16_G24_Rz24,ranking_compare,0.1767945,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int14,score_recompute,0.3657256,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,combined_int14,ranking_compare,0.1795808,7353,10,NaN,ranking and topK comparison
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,W_int18_G24_Z16,score_recompute,0.3876518,7353,10,NaN,Step12 quantized score recompute
+cp08p00_hard_phase_t0028,88,120,formal_tps30,hard_phase,7.5,28,W_int18_G24_Z16,ranking_compare,0.1906851,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,double_baseline,score_recompute,0.337764,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,double_baseline,ranking_compare,0.1882073,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,float32_all,score_recompute,0.3260116,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,float32_all,ranking_compare,0.1646636,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int16,score_recompute,0.3870028,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int16,ranking_compare,0.2834125,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int18,score_recompute,0.4391003,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int18,ranking_compare,0.1880103,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int24,score_recompute,0.3486438,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int24,ranking_compare,0.1716674,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,mixed_Z16_G24_Rz24,score_recompute,0.3575863,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,mixed_Z16_G24_Rz24,ranking_compare,0.1806128,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int14,score_recompute,0.3572376,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,combined_int14,ranking_compare,0.167375,7353,10,NaN,ranking and topK comparison
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,W_int18_G24_Z16,score_recompute,0.3936777,7353,10,NaN,Step12 quantized score recompute
+cp08p00_medium_beta_coherent_t0028,88,120,formal_tps30,medium_beta_coherent,7.5,28,W_int18_G24_Z16,ranking_compare,0.1724153,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,double_baseline,score_recompute,0.2908172,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,double_baseline,ranking_compare,0.1520296,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,float32_all,score_recompute,0.3058633,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,float32_all,ranking_compare,0.1793552,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int16,score_recompute,0.3545166,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int16,ranking_compare,0.1677688,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int18,score_recompute,0.3110606,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int18,ranking_compare,0.1603031,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int24,score_recompute,0.3256824,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int24,ranking_compare,0.1663302,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,mixed_Z16_G24_Rz24,score_recompute,0.3341789,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,mixed_Z16_G24_Rz24,ranking_compare,0.1971984,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int14,score_recompute,0.3554324,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,combined_int14,ranking_compare,0.1602346,7353,10,NaN,ranking and topK comparison
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,W_int18_G24_Z16,score_recompute,0.3211198,7353,10,NaN,Step12 quantized score recompute
+cp15p00_easy_noncoherent_t0028,88,120,formal_tps30,easy_noncoherent,15,28,W_int18_G24_Z16,ranking_compare,0.1540086,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,double_baseline,score_recompute,0.2954337,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,double_baseline,ranking_compare,0.1552752,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,float32_all,score_recompute,0.3045407,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,float32_all,ranking_compare,0.1917699,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int16,score_recompute,0.3553955,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int16,ranking_compare,0.1700702,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int18,score_recompute,0.3161303,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int18,ranking_compare,0.1683146,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int24,score_recompute,0.3041272,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int24,ranking_compare,0.1631258,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,mixed_Z16_G24_Rz24,score_recompute,0.3161651,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,mixed_Z16_G24_Rz24,ranking_compare,0.1594834,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int14,score_recompute,0.3261289,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,combined_int14,ranking_compare,0.1550007,7353,10,NaN,ranking and topK comparison
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,W_int18_G24_Z16,score_recompute,0.3156049,7353,10,NaN,Step12 quantized score recompute
+cp15p00_low_snr_hard_t0028,88,120,formal_tps30,low_snr_hard,15,28,W_int18_G24_Z16,ranking_compare,0.1572418,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,double_baseline,score_recompute,0.2983438,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,double_baseline,ranking_compare,0.147418,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,float32_all,score_recompute,0.2985855,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,float32_all,ranking_compare,0.1589404,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int16,score_recompute,0.3329676,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int16,ranking_compare,0.1735164,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int18,score_recompute,0.3179275,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int18,ranking_compare,0.1916434,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int24,score_recompute,0.3249995,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int24,ranking_compare,0.1592037,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,mixed_Z16_G24_Rz24,score_recompute,0.316157,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,mixed_Z16_G24_Rz24,ranking_compare,0.1700187,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int14,score_recompute,0.3281895,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,combined_int14,ranking_compare,0.1667082,7353,10,NaN,ranking and topK comparison
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,W_int18_G24_Z16,score_recompute,0.3191641,7353,10,NaN,Step12 quantized score recompute
+cp15p00_cache_boundary_center_t0028,88,120,formal_tps30,cache_boundary_center,15,28,W_int18_G24_Z16,ranking_compare,0.1608141,7353,10,NaN,ranking and topK comparison
