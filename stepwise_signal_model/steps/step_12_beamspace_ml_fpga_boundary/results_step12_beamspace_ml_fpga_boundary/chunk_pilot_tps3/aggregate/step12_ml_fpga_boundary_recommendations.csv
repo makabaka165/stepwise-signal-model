@@ -1,0 +1,2 @@
+recommendation,rationale,recommended_fixed_point_format,proceed_to_rtl_score_core_flag,proceed_to_rtl_score_core_smoke_flag,proceed_to_full_fpga_backend_flag
+proceed_to_rtl_score_core_prototype_only,ranking and topK preservation passed for the recommended fixed-point score-core mode,combined_int16,1,0,0

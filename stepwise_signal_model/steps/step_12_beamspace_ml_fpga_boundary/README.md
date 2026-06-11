@@ -144,6 +144,79 @@ Formal environment variables:
 - `STEP12_SAVE_FULL_MAT`: set to `1` to save the ignored local full MAT.
 - `STEP12_RUN_FULL_STEP11_BACKEND`: set to `1` to run the full Step11.7 backend for formal diagnostics; default formal mode uses the non-invasive Step12 score-core adapter with the same Step11 score objective.
 
+## Chunked Formal Validation
+
+`formal_tps30` can exceed a short interactive execution window, so Step12 supports chunked formal validation with checkpoint/resume and aggregate-only reporting.
+
+Chunk environment variables:
+
+- `STEP12_CHUNK_ID`: current chunk index, starting at `1`.
+- `STEP12_TOTAL_CHUNKS`: total number of chunks. Required when `STEP12_CHUNK_ID` is set.
+- `STEP12_MAX_OBS_PER_RUN`: maximum observations to run in the current process.
+- `STEP12_RESUME_FROM_PARTIALS`: set to `1` to skip observations already complete in the current chunk CSV.
+- `STEP12_AGGREGATE_ONLY`: set to `1` to read chunk partials and rebuild aggregate outputs without running Step11 or score recomputation.
+- `STEP12_MODE_SET`: `full_diagnostic`, `formal_core`, or `recommendation_only`. Formal chunks default to `formal_core`.
+- `STEP12_PROFILE_ENABLE`: set to `1` to write per-stage timing rows.
+- `STEP12_PROFILE_TOP_N`: number of stage rows retained in the profile summary, default `20`.
+- `STEP12_SCORE_ENGINE`: reserved score-engine selector. Default is `loop_reference`; `vectorized_candidate` is not used for formal unless equivalence is validated.
+
+`formal_core` includes:
+
+- `double_baseline`
+- `float32_all`
+- `combined_int14`
+- `combined_int16`
+- `combined_int18`
+- `combined_int24`
+- `mixed_Z16_G24_Rz24`
+- `W_int18_G24_Z16`
+
+Chunked results are written under the run tag:
+
+```text
+results_step12_beamspace_ml_fpga_boundary/<run_tag>/
+  chunks/chunk_001/
+    step12_chunk_trial.csv
+    step12_chunk_topk.csv
+    step12_chunk_score_gap.csv
+    step12_chunk_profile.csv
+    step12_chunk_manifest.csv
+  aggregate/
+    step12_ml_fpga_boundary_keypoints.csv
+    step12_ml_fpga_boundary_mode_selection.csv
+    step12_ml_fpga_boundary_score_gap_bins.csv
+```
+
+Example wrappers:
+
+```matlab
+run_step12_formal_chunk_plan_example
+
+setenv('STEP12_RUN_TAG','formal_tps30')
+setenv('STEP12_QUICK_MODE','0')
+setenv('STEP12_FORMAL_TRIALS_PER_SCENARIO','30')
+setenv('STEP12_FORMAL_CENTER_AZ_LIST','0,4,8,15')
+setenv('STEP12_MIN_FORMAL_OBS','300')
+setenv('STEP12_TOTAL_CHUNKS','20')
+setenv('STEP12_MODE_SET','formal_core')
+setenv('STEP12_PROFILE_ENABLE','1')
+setenv('STEP12_RESUME_FROM_PARTIALS','1')
+setenv('STEP12_MAX_OBS_PER_RUN','30')
+
+setenv('STEP12_CHUNK_ID','1')
+run_step12_formal_chunk
+
+setenv('STEP12_CHUNK_ID','2')
+run_step12_formal_chunk
+
+setenv('STEP12_AGGREGATE_ONLY','1')
+aggregate_step12_formal_chunks
+```
+
+Aggregate-only reports `formal_plan_total_obs`, `formal_plan_completed_obs`, `formal_plan_complete_flag`, `formal_min_obs_satisfied_flag`, `chunks_detected`, and `chunks_completed`. If the completed formal observation count is below `STEP12_MIN_FORMAL_OBS`, aggregate keypoints keep `fixed_point_pass_flag=0`, `blocker_if_any=formal_trial_count_below_minimum`, and `proceed_to_rtl_score_core_flag=0`.
+
+`pilot_min_fast_path` and any `chunk_pilot_*` run are traceable smoke/pilot artifacts only. They are not formal FPGA feasibility conclusions.
+
 The current tracked pilot artifact `pilot_min_fast_path` is a formal-path smoke run with `formal_trial_count=12` and `blocker_if_any=formal_trial_count_below_minimum`. It is not a formal validation conclusion. The requested `pilot_tps10` was attempted but did not complete within the interactive execution window; `formal_tps30` was not run in this commit.
 
 ## Mode Selection

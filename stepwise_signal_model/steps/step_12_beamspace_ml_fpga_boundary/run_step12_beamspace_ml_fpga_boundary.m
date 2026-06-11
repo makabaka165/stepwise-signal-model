@@ -5,17 +5,77 @@ close all
 cfg12 = make_step12_cfg_local();
 [cfg12, log_lines] = init_step12_paths_local(cfg12);
 adapter_info = inspect_step11_adapter_local(cfg12);
-modes = build_step12_quant_modes_local();
+modes = filter_step12_modes_local(build_step12_quant_modes_local(), cfg12);
 
 log_lines = append_log_local(log_lines, 'Step12 starts');
 log_lines = append_log_local(log_lines, 'Quick mode: %d', cfg12.quick_mode_flag);
+log_lines = append_log_local(log_lines, 'Chunked run: %d', cfg12.chunked_run_flag);
+log_lines = append_log_local(log_lines, 'Aggregate only: %d', cfg12.aggregate_only_flag);
+log_lines = append_log_local(log_lines, 'Mode set: %s', cfg12.mode_set);
+log_lines = append_log_local(log_lines, 'Score engine: %s', cfg12.score_engine);
 log_lines = append_log_local(log_lines, 'Step11 adapter found: %d', adapter_info.step11_adapter_found_flag);
 
+if cfg12.aggregate_only_flag
+    [trial_tbl, topk_tbl, score_gap_tbl, profile_tbl, aggregate_info] = load_step12_chunk_partials_local(cfg12, modes);
+    summary_tbl = build_step12_summary_table_local(trial_tbl, modes, cfg12);
+    mode_selection_tbl = build_step12_mode_selection_table_from_trial_local(summary_tbl, modes, trial_tbl, cfg12);
+    score_gap_bins_tbl = build_step12_score_gap_bins_local(trial_tbl, modes, cfg12);
+    best_info = select_best_fixed_point_mode_local(summary_tbl, modes, mode_selection_tbl, cfg12);
+    storage_tbl = build_step12_storage_estimate_from_trial_local(trial_tbl, best_info, cfg12);
+    bandwidth_tbl = build_step12_bandwidth_estimate_from_trial_local(trial_tbl, best_info, cfg12);
+    cfg12.formal_plan_total_obs = aggregate_info.formal_plan_total_obs;
+    cfg12.formal_plan_completed_obs = aggregate_info.formal_plan_completed_obs;
+    cfg12.formal_plan_complete_flag = aggregate_info.formal_plan_complete_flag;
+    cfg12.chunks_detected = aggregate_info.chunks_detected;
+    cfg12.chunks_completed = aggregate_info.chunks_completed;
+    keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12);
+    worst_tbl = build_step12_worst_cases_local(trial_tbl);
+    recommendation_tbl = build_step12_recommendations_local(keypoints_tbl);
+    profile_summary_tbl = build_step12_profile_summary_local(profile_tbl, cfg12);
+    plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12);
+    write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, ...
+        storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl, profile_tbl, profile_summary_tbl);
+    golden_manifest_path = export_step12_golden_vectors_local(repmat(make_empty_obs_local(), 0, 1), trial_tbl, keypoints_tbl, modes, cfg12);
+    doc_path = write_step12_record_doc_clean_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, ...
+        worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path, profile_summary_tbl);
+    adapter_info_light = make_adapter_info_light_local(adapter_info);
+    mat_light_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_light.mat');
+    save(mat_light_path, 'cfg12', 'adapter_info_light', 'modes', 'summary_tbl', ...
+        'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'score_gap_bins_tbl', 'storage_tbl', ...
+        'bandwidth_tbl', 'mode_selection_tbl', 'worst_tbl', 'recommendation_tbl', ...
+        'profile_tbl', 'profile_summary_tbl', 'plot_paths', 'doc_path', 'golden_manifest_path');
+    manifest_path = write_step12_mat_manifest_local(cfg12, mat_light_path, '');
+    log_lines = append_log_local(log_lines, 'Aggregate-only loaded trial rows: %d', height(trial_tbl));
+    log_lines = append_log_local(log_lines, 'Wrote aggregate light MAT: %s', mat_light_path);
+    log_lines = append_log_local(log_lines, 'Wrote MAT manifest: %s', manifest_path);
+    log_lines = append_log_local(log_lines, 'Wrote record doc: %s', doc_path);
+    write_log_local(fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary.log'), log_lines);
+    fprintf('Step12 aggregate-only validation complete.\n');
+    fprintf('Result directory: %s\n', cfg12.result_dir);
+    return;
+end
+
 obs = repmat(make_empty_obs_local(), 0, 1);
+load_profile_tbl = make_profile_table_empty_local();
 adapter_error = [];
 if adapter_info.step11_adapter_found_flag
     try
-        [obs, adapter_info] = load_or_run_step11_ml_observations_local(cfg12, adapter_info);
+        [obs, adapter_info, load_profile_tbl] = load_or_run_step11_ml_observations_local(cfg12, adapter_info, modes);
+        if isfield(adapter_info, 'formal_plan_total_obs')
+            cfg12.formal_plan_total_obs = adapter_info.formal_plan_total_obs;
+        end
+        if isfield(adapter_info, 'formal_plan_completed_obs')
+            cfg12.formal_plan_completed_obs = adapter_info.formal_plan_completed_obs;
+        end
+        if isfield(adapter_info, 'formal_plan_complete_flag')
+            cfg12.formal_plan_complete_flag = adapter_info.formal_plan_complete_flag;
+        end
+        if isfield(adapter_info, 'formal_plan_planned_obs')
+            cfg12.formal_plan_planned_obs = adapter_info.formal_plan_planned_obs;
+        end
+        if isfield(adapter_info, 'completed_obs_before')
+            cfg12.chunk_completed_obs_before = adapter_info.completed_obs_before;
+        end
         log_lines = append_log_local(log_lines, 'Loaded Step11 observations: %d', numel(obs));
     catch ME
         adapter_error = ME;
@@ -29,9 +89,12 @@ end
 if isempty(obs)
     [trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, ...
         bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl] = build_step12_blocker_outputs_local(cfg12, adapter_info, modes);
+    profile_tbl = load_profile_tbl;
+    profile_summary_tbl = build_step12_profile_summary_local(profile_tbl, cfg12);
     plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12);
 else
-    [trial_tbl, topk_tbl, score_gap_tbl] = run_step12_quantization_trials_local(obs, modes, cfg12);
+    [trial_tbl, topk_tbl, score_gap_tbl, quant_profile_tbl] = run_step12_quantization_trials_local(obs, modes, cfg12);
+    profile_tbl = concat_tables_local(load_profile_tbl, quant_profile_tbl);
     summary_tbl = build_step12_summary_table_local(trial_tbl, modes, cfg12);
     mode_selection_tbl = build_step12_mode_selection_table_local(summary_tbl, modes, obs(1), cfg12);
     score_gap_bins_tbl = build_step12_score_gap_bins_local(trial_tbl, modes, cfg12);
@@ -41,27 +104,28 @@ else
     keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12);
     worst_tbl = build_step12_worst_cases_local(trial_tbl);
     recommendation_tbl = build_step12_recommendations_local(keypoints_tbl);
+    profile_summary_tbl = build_step12_profile_summary_local(profile_tbl, cfg12);
     plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12);
 end
 
 write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, ...
-    storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl);
+    storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl, profile_tbl, profile_summary_tbl);
 golden_manifest_path = export_step12_golden_vectors_local(obs, trial_tbl, keypoints_tbl, modes, cfg12);
-doc_path = write_step12_record_doc_v2_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, ...
-    worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path);
+doc_path = write_step12_record_doc_clean_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, ...
+    worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path, profile_summary_tbl);
 adapter_info_light = make_adapter_info_light_local(adapter_info);
 mat_light_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_light.mat');
 save(mat_light_path, 'cfg12', 'adapter_info_light', 'modes', 'summary_tbl', ...
     'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'score_gap_bins_tbl', 'storage_tbl', ...
     'bandwidth_tbl', 'mode_selection_tbl', 'worst_tbl', 'recommendation_tbl', ...
-    'plot_paths', 'doc_path', 'golden_manifest_path');
+    'profile_tbl', 'profile_summary_tbl', 'plot_paths', 'doc_path', 'golden_manifest_path');
 mat_full_path = '';
 if cfg12.save_full_mat_flag
     mat_full_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_full.mat');
     save(mat_full_path, 'cfg12', 'adapter_info', 'modes', 'obs', 'trial_tbl', 'summary_tbl', ...
         'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'score_gap_bins_tbl', 'storage_tbl', ...
         'bandwidth_tbl', 'mode_selection_tbl', 'worst_tbl', 'recommendation_tbl', ...
-        'plot_paths', 'doc_path', 'golden_manifest_path', '-v7.3');
+        'profile_tbl', 'profile_summary_tbl', 'plot_paths', 'doc_path', 'golden_manifest_path', '-v7.3');
 end
 manifest_path = write_step12_mat_manifest_local(cfg12, mat_light_path, mat_full_path);
 
@@ -103,11 +167,42 @@ cfg12.run_tag = strtrim(getenv('STEP12_RUN_TAG'));
 cfg12.min_formal_obs = parse_env_scalar_local('STEP12_MIN_FORMAL_OBS', 300);
 cfg12.run_step11_full_backend_diagnostic_flag = cfg12.quick_mode_flag || strcmp(getenv('STEP12_RUN_FULL_STEP11_BACKEND'), '1');
 cfg12.enable_static_quant_cache_flag = ~strcmp(getenv('STEP12_DISABLE_STATIC_QUANT_CACHE'), '1');
+cfg12.chunk_id = parse_env_scalar_local('STEP12_CHUNK_ID', NaN);
+cfg12.total_chunks = parse_env_scalar_local('STEP12_TOTAL_CHUNKS', NaN);
+cfg12.max_obs_per_run = parse_env_scalar_local('STEP12_MAX_OBS_PER_RUN', Inf);
+cfg12.resume_from_partials_flag = strcmp(getenv('STEP12_RESUME_FROM_PARTIALS'), '1');
+cfg12.aggregate_only_flag = strcmp(getenv('STEP12_AGGREGATE_ONLY'), '1');
+cfg12.profile_enable_flag = strcmp(getenv('STEP12_PROFILE_ENABLE'), '1');
+cfg12.profile_top_n = max(1, floor(parse_env_scalar_local('STEP12_PROFILE_TOP_N', 20)));
+cfg12.score_engine = strtrim(getenv('STEP12_SCORE_ENGINE'));
+if isempty(cfg12.score_engine)
+    cfg12.score_engine = 'loop_reference';
+end
+cfg12.mode_set = strtrim(getenv('STEP12_MODE_SET'));
+cfg12.chunked_run_flag = cfg12.aggregate_only_flag || isfinite(cfg12.chunk_id) || isfinite(cfg12.total_chunks);
+if cfg12.chunked_run_flag
+    if cfg12.aggregate_only_flag
+        if isfinite(cfg12.total_chunks)
+            cfg12.total_chunks = floor(cfg12.total_chunks);
+        end
+    elseif ~(isfinite(cfg12.chunk_id) && isfinite(cfg12.total_chunks))
+        error('step12:ChunkConfigMissing', 'STEP12_CHUNK_ID and STEP12_TOTAL_CHUNKS must both be set for chunked runs.');
+    else
+        cfg12.chunk_id = floor(cfg12.chunk_id);
+        cfg12.total_chunks = floor(cfg12.total_chunks);
+    end
+    if ~cfg12.aggregate_only_flag && (cfg12.chunk_id < 1 || cfg12.total_chunks < 1 || cfg12.chunk_id > cfg12.total_chunks)
+        error('step12:InvalidChunkConfig', 'Chunk id must be in [1, total_chunks]. Got %d of %d.', cfg12.chunk_id, cfg12.total_chunks);
+    end
+end
 if cfg12.quick_mode_flag
     cfg12.center_az_list = 0;
     cfg12.scenario_limit = 2;
     cfg12.trials_per_scenario = 1;
     cfg12.formal_trials_per_scenario = NaN;
+    if isempty(cfg12.mode_set)
+        cfg12.mode_set = 'full_diagnostic';
+    end
 else
     cfg12.center_az_list = parse_env_numeric_list_local('STEP12_FORMAL_CENTER_AZ_LIST', [0, 4, 8, 15]);
     cfg12.scenario_limit = parse_env_scalar_local('STEP12_FORMAL_SCENARIO_LIMIT', Inf);
@@ -115,10 +210,22 @@ else
     cfg12.formal_trials_per_scenario = max(1, floor(formal_trials));
     cfg12.trials_per_scenario = cfg12.formal_trials_per_scenario;
     cfg12.min_formal_obs = max(1, floor(cfg12.min_formal_obs));
+    if isempty(cfg12.mode_set)
+        cfg12.mode_set = 'formal_core';
+    end
 end
 cfg12.golden_vector_limit = max(1, floor(cfg12.golden_vector_limit));
+cfg12.max_obs_per_run = floor(cfg12.max_obs_per_run);
 cfg12.rng_seed = 20260611;
 cfg12.formal_trial_count = 0;
+cfg12.formal_plan_total_obs = 0;
+cfg12.formal_plan_completed_obs = 0;
+cfg12.formal_plan_complete_flag = 0;
+cfg12.formal_min_obs_satisfied_flag = 0;
+cfg12.formal_plan_planned_obs = 0;
+cfg12.chunk_completed_obs_before = 0;
+cfg12.chunks_detected = 0;
+cfg12.chunks_completed = 0;
 cfg12.step11_entry = 'step11_7_final_cached_c05_beamspace_ml_backend';
 cfg12.step11_score_function = 'beamspace_dml_score';
 cfg12.step11_adapter_note = ['Step12 uses Step11.7 final backend/context for W, cache, Z, policy ', ...
@@ -143,8 +250,26 @@ if isempty(cfg12.run_tag)
 else
     cfg12.result_dir = fullfile(cfg12.result_root_dir, cfg12.run_tag);
 end
+if cfg12.aggregate_only_flag
+    cfg12.run_result_dir = cfg12.result_dir;
+    cfg12.chunk_root_dir = fullfile(cfg12.run_result_dir, 'chunks');
+    cfg12.aggregate_dir = fullfile(cfg12.run_result_dir, 'aggregate');
+    cfg12.result_dir = cfg12.aggregate_dir;
+elseif cfg12.chunked_run_flag && ~cfg12.aggregate_only_flag
+    cfg12.run_result_dir = cfg12.result_dir;
+    cfg12.chunk_root_dir = fullfile(cfg12.run_result_dir, 'chunks');
+    cfg12.chunk_dir = fullfile(cfg12.chunk_root_dir, sprintf('chunk_%03d', cfg12.chunk_id));
+    cfg12.result_dir = cfg12.chunk_dir;
+else
+    cfg12.run_result_dir = cfg12.result_dir;
+    cfg12.chunk_root_dir = fullfile(cfg12.run_result_dir, 'chunks');
+    cfg12.chunk_dir = '';
+end
 if exist(cfg12.result_dir, 'dir') ~= 7
     mkdir(cfg12.result_dir);
+end
+if cfg12.chunked_run_flag && exist(cfg12.chunk_root_dir, 'dir') ~= 7
+    mkdir(cfg12.chunk_root_dir);
 end
 
 setup_path = fullfile(project_dir, 'setup_paths.m');
@@ -165,6 +290,11 @@ log_lines = append_log_local(log_lines, 'Script: %s', script_path);
 log_lines = append_log_local(log_lines, 'Project directory: %s', project_dir);
 log_lines = append_log_local(log_lines, 'Result directory: %s', cfg12.result_dir);
 log_lines = append_log_local(log_lines, 'Run tag: %s', cfg12.run_tag);
+if cfg12.chunked_run_flag && ~cfg12.aggregate_only_flag
+    log_lines = append_log_local(log_lines, 'Chunk: %d / %d', cfg12.chunk_id, cfg12.total_chunks);
+elseif cfg12.aggregate_only_flag
+    log_lines = append_log_local(log_lines, 'Aggregate-only chunk root: %s', cfg12.chunk_root_dir);
+end
 end
 
 function adapter_info = inspect_step11_adapter_local(cfg12)
@@ -226,6 +356,32 @@ rows{end + 1} = make_mode_local('W_int18_G24_Z16', true, true, false, 18, 24, 16
 modes = [rows{:}];
 end
 
+function modes_out = filter_step12_modes_local(modes, cfg12)
+mode_set = char(cfg12.mode_set);
+switch mode_set
+    case 'full_diagnostic'
+        keep = {modes.name};
+    case 'formal_core'
+        keep = {'double_baseline', 'float32_all', 'combined_int14', 'combined_int16', ...
+            'combined_int18', 'combined_int24', 'mixed_Z16_G24_Rz24', 'W_int18_G24_Z16'};
+    case 'recommendation_only'
+        keep = {'double_baseline', 'combined_int16', 'combined_int18', ...
+            'combined_int24', 'mixed_Z16_G24_Rz24'};
+    otherwise
+        warning('step12:UnknownModeSet', 'Unknown STEP12_MODE_SET=%s; using formal_core.', mode_set);
+        keep = {'double_baseline', 'float32_all', 'combined_int14', 'combined_int16', ...
+            'combined_int18', 'combined_int24', 'mixed_Z16_G24_Rz24', 'W_int18_G24_Z16'};
+end
+mask = false(size(modes));
+for idx = 1:numel(modes)
+    mask(idx) = any(strcmp(modes(idx).name, keep));
+end
+modes_out = modes(mask);
+if isempty(modes_out)
+    error('step12:EmptyModeSet', 'STEP12_MODE_SET=%s did not select any quantization modes.', mode_set);
+end
+end
+
 function mode = make_mode_local(name, is_fixed, recommendation_candidate, is_float_reference, W_bits, G_bits, Z_bits, Rz_bits, score_bits, score_float)
 mode = struct();
 mode.name = name;
@@ -242,41 +398,71 @@ mode.storage_component_bits = max([finite_or_zero_local(W_bits), finite_or_zero_
     finite_or_zero_local(Z_bits), finite_or_zero_local(Rz_bits), finite_or_zero_local(score_bits), 16]);
 end
 
-function [obs, adapter_info] = load_or_run_step11_ml_observations_local(cfg12, adapter_info)
+function [obs, adapter_info, profile_tbl] = load_or_run_step11_ml_observations_local(cfg12, adapter_info, modes)
 rng(cfg12.rng_seed, 'twister');
 [context, context_metadata] = build_step11_7_runtime_context(cfg12.project_dir, cfg12.result_dir, 'DefaultCenterAz', 0);
-scenarios = build_step12_scenarios_local();
-if isfinite(cfg12.scenario_limit)
-    scenario_count = min(cfg12.scenario_limit, numel(scenarios));
+plan_tbl = build_step12_observation_plan_local(cfg12);
+plan_tbl = apply_step12_chunk_plan_local(plan_tbl, cfg12);
+required_modes = {modes.name};
+[completed_ids, partial_counts] = completed_obs_ids_from_partials_local(cfg12, required_modes);
+plan_tbl.completed_flag = ismember(plan_tbl.obs_id, completed_ids);
+writetable(plan_tbl, fullfile(cfg12.result_dir, 'step12_observation_plan.csv'));
+if cfg12.resume_from_partials_flag
+    run_tbl = plan_tbl(plan_tbl.planned_flag & ~plan_tbl.completed_flag, :);
 else
-    scenario_count = numel(scenarios);
+    run_tbl = plan_tbl(plan_tbl.planned_flag, :);
+end
+if isfinite(cfg12.max_obs_per_run)
+    run_tbl = run_tbl(1:min(height(run_tbl), cfg12.max_obs_per_run), :);
 end
 obs = repmat(make_empty_obs_local(), 0, 1);
-trial_index = 0;
-for iCenter = 1:numel(cfg12.center_az_list)
-    center_az = cfg12.center_az_list(iCenter);
-    for iScenario = 1:scenario_count
-        scenario = scenarios(iScenario);
-        for iTrial = 1:cfg12.trials_per_scenario
-            trial_index = trial_index + 1;
+profile_rows = repmat(make_profile_row_template_local(), 0, 1);
+scenarios_all = build_step12_scenarios_local();
+for iPlan = 1:height(run_tbl)
+            plan = table_row_to_struct_local(run_tbl(iPlan, :));
+            scenario = scenarios_all(plan.scenario_index);
+            center_az = plan.center_az;
+            iCenter = plan.center_index;
+            iScenario = plan.scenario_index;
+            iTrial = plan.trial_id;
+            t_stage = tic;
             [input, truth, input_meta] = build_step11_7_frontend_like_input(context, scenario, center_az, iTrial, ...
                 'FrontendState', 'controlled_pair2d_candidate', 'L', context.L_default, ...
                 'CenterIndex', iCenter, 'ScenarioIndex', iScenario);
+            profile_rows(end + 1, 1) = make_profile_row_local(plan, '', 'build_step11_input', toc(t_stage), NaN, cfg12.topK_default, NaN, 'Step11.7 frontend-like input builder'); %#ok<AGROW>
             if cfg12.run_step11_full_backend_diagnostic_flag
+                t_stage = tic;
                 backend_opts = struct('use_cache', true, 'run_direct_reference', false, 'allow_cache_fallback', true, 'runtime_timing', false);
                 out = step11_7_final_cached_c05_beamspace_ml_backend(input, context, backend_opts);
+                profile_rows(end + 1, 1) = make_profile_row_local(plan, '', 'run_step11_backend', toc(t_stage), NaN, cfg12.topK_default, NaN, 'Full Step11.7 backend diagnostic path'); %#ok<AGROW>
             else
                 out = make_step12_backend_stub_local(input);
+                profile_rows(end + 1, 1) = make_profile_row_local(plan, '', 'run_step11_backend', 0, NaN, cfg12.topK_default, NaN, 'Skipped full Step11.7 backend; using Step12 score-core adapter'); %#ok<AGROW>
             end
-            obs_now = build_step12_observation_local(trial_index, scenario, iCenter, iScenario, iTrial, ...
+            t_stage = tic;
+            obs_now = build_step12_observation_local(plan.obs_global_index, scenario, iCenter, iScenario, iTrial, ...
                 input, truth, input_meta, out, context, context_metadata, cfg12);
+            obs_now.obs_id = plan.obs_id;
+            obs_now.obs_global_index = plan.obs_global_index;
+            obs_now.chunk_id = plan.chunk_id_assigned;
+            obs_now.total_chunks = cfg12.total_chunks;
+            obs_now.run_tag = cfg12.run_tag;
             obs(end + 1, 1) = obs_now; %#ok<AGROW>
-        end
-    end
+            profile_rows(end + 1, 1) = make_profile_row_local(plan, '', 'build_candidate_score_pack', toc(t_stage), obs_now.num_candidates, cfg12.topK_default, NaN, 'Build W/Y/Z/Rz/G_cache candidate score pack'); %#ok<AGROW>
 end
 adapter_info.context_metadata = context_metadata;
 adapter_info.cache_memory_MB_reference = context.cache.cache_memory_MB;
 adapter_info.observation_count = numel(obs);
+adapter_info.formal_plan_total_obs = height(plan_tbl);
+adapter_info.formal_plan_planned_obs = nnz(plan_tbl.planned_flag);
+adapter_info.completed_obs_before = numel(completed_ids);
+adapter_info.partial_trial_rows_before = partial_counts.trial_rows;
+cfg12.formal_plan_total_obs = height(plan_tbl);
+cfg12.formal_plan_completed_obs = numel(unique([completed_ids; cellstr(run_tbl.obs_id)]));
+profile_tbl = struct2table(profile_rows);
+if isempty(profile_rows)
+    profile_tbl = make_profile_table_empty_local();
+end
 end
 
 function scenarios = build_step12_scenarios_local()
@@ -299,6 +485,190 @@ row = struct('scenario_name', name, 'rho', rho, 'phase_deg', phase_deg, 'beta', 
     'expected_difficulty_label', difficulty);
 end
 
+function plan_tbl = build_step12_observation_plan_local(cfg12)
+scenarios = build_step12_scenarios_local();
+if isfinite(cfg12.scenario_limit)
+    scenario_count = min(cfg12.scenario_limit, numel(scenarios));
+else
+    scenario_count = numel(scenarios);
+end
+rows = repmat(make_plan_row_template_local(), 0, 1);
+global_idx = 0;
+if cfg12.chunked_run_flag
+    total_chunks = cfg12.total_chunks;
+else
+    total_chunks = 1;
+end
+for iCenter = 1:numel(cfg12.center_az_list)
+    center_az = cfg12.center_az_list(iCenter);
+    for iScenario = 1:scenario_count
+        scenario = scenarios(iScenario);
+        for iTrial = 1:cfg12.trials_per_scenario
+            global_idx = global_idx + 1;
+            row = make_plan_row_template_local();
+            row.obs_global_index = global_idx;
+            row.obs_id = make_obs_id_local(center_az, scenario.scenario_name, iTrial);
+            row.chunk_id_assigned = mod(global_idx - 1, total_chunks) + 1;
+            row.total_chunks = total_chunks;
+            row.run_tag = cfg12.run_tag;
+            row.center_index = iCenter;
+            row.center_az = center_az;
+            row.scenario_name = scenario.scenario_name;
+            row.scenario_index = iScenario;
+            row.trial_id = iTrial;
+            row.planned_flag = true;
+            row.completed_flag = false;
+            rows(end + 1, 1) = row; %#ok<AGROW>
+        end
+    end
+end
+plan_tbl = struct2table(rows);
+end
+
+function row = make_plan_row_template_local()
+row = struct('obs_global_index', NaN, 'obs_id', '', 'chunk_id_assigned', NaN, ...
+    'total_chunks', NaN, 'run_tag', '', 'center_index', NaN, 'center_az', NaN, 'scenario_name', '', 'scenario_index', NaN, ...
+    'trial_id', NaN, 'planned_flag', false, 'completed_flag', false);
+end
+
+function plan_tbl = apply_step12_chunk_plan_local(plan_tbl, cfg12)
+if cfg12.chunked_run_flag
+    plan_tbl.planned_flag = plan_tbl.chunk_id_assigned == cfg12.chunk_id;
+else
+    plan_tbl.planned_flag = true(height(plan_tbl), 1);
+end
+end
+
+function obs_id = make_obs_id_local(center_az, scenario_name, trial_id)
+safe_name = regexprep(char(scenario_name), '[^A-Za-z0-9_]+', '_');
+obs_id = sprintf('c%+06.2f_%s_t%04d', center_az, safe_name, trial_id);
+obs_id = strrep(obs_id, '+', 'p');
+obs_id = strrep(obs_id, '-', 'm');
+obs_id = strrep(obs_id, '.', 'p');
+end
+
+function s = table_row_to_struct_local(T)
+s = struct();
+vars = T.Properties.VariableNames;
+for idx = 1:numel(vars)
+    v = T.(vars{idx});
+    if iscell(v)
+        v = v{1};
+    elseif ischar(v)
+        v = strtrim(v(1, :));
+    elseif isstring(v)
+        v = char(v(1));
+    else
+        v = v(1);
+    end
+    s.(vars{idx}) = v;
+end
+end
+
+function [completed_ids, counts] = completed_obs_ids_from_partials_local(cfg12, required_modes)
+completed_ids = {};
+counts = struct('trial_rows', 0, 'topk_rows', 0, 'score_gap_rows', 0);
+if ~(cfg12.chunked_run_flag && cfg12.resume_from_partials_flag)
+    return;
+end
+trial_path = fullfile(cfg12.result_dir, 'step12_chunk_trial.csv');
+if exist(trial_path, 'file') ~= 2
+    return;
+end
+T = readtable(trial_path, 'TextType', 'char');
+counts.trial_rows = height(T);
+if ~ismember('obs_id', T.Properties.VariableNames) || ~ismember('quant_mode', T.Properties.VariableNames)
+    return;
+end
+ids = unique(T.obs_id);
+done = false(numel(ids), 1);
+for idx = 1:numel(ids)
+    modes_here = unique(T.quant_mode(strcmp(T.obs_id, ids{idx})));
+    done(idx) = all(ismember(required_modes(:), modes_here(:)));
+end
+completed_ids = ids(done);
+end
+
+function row = make_profile_row_template_local()
+row = struct('obs_id', '', 'chunk_id', NaN, 'total_chunks', NaN, 'run_tag', '', ...
+    'scenario_name', '', 'center_az', NaN, 'trial_id', NaN, 'quant_mode', '', ...
+    'stage_name', '', 'elapsed_sec', NaN, 'num_candidates', NaN, 'num_topK', NaN, ...
+    'score_lanes_assumed', NaN, 'comment', '');
+end
+
+function row = make_profile_row_local(plan, quant_mode, stage_name, elapsed_sec, num_candidates, num_topK, score_lanes, comment)
+row = make_profile_row_template_local();
+row.obs_id = char(plan.obs_id);
+row.chunk_id = plan.chunk_id_assigned;
+row.total_chunks = safe_plan_total_chunks_local(plan);
+row.run_tag = char(plan.run_tag);
+row.scenario_name = char(plan.scenario_name);
+row.center_az = plan.center_az;
+row.trial_id = plan.trial_id;
+row.quant_mode = char(quant_mode);
+row.stage_name = char(stage_name);
+row.elapsed_sec = elapsed_sec;
+row.num_candidates = num_candidates;
+row.num_topK = num_topK;
+row.score_lanes_assumed = score_lanes;
+row.comment = char(comment);
+end
+
+function row = make_profile_row_from_obs_local(obs, quant_mode, stage_name, elapsed_sec, num_candidates, num_topK, score_lanes, comment)
+row = make_profile_row_template_local();
+row.obs_id = char(obs.obs_id);
+row.chunk_id = obs.chunk_id;
+row.total_chunks = obs.total_chunks;
+row.run_tag = char(obs.run_tag);
+row.scenario_name = char(obs.scenario_name);
+row.center_az = obs.center_az;
+row.trial_id = obs.trial_id;
+row.quant_mode = char(quant_mode);
+row.stage_name = char(stage_name);
+row.elapsed_sec = elapsed_sec;
+row.num_candidates = num_candidates;
+row.num_topK = numTopKOrNan_local(num_topK);
+row.score_lanes_assumed = score_lanes;
+row.comment = char(comment);
+end
+
+function n = numTopKOrNan_local(n)
+if isempty(n)
+    n = NaN;
+end
+end
+
+function n = safe_plan_total_chunks_local(plan)
+if isfield(plan, 'total_chunks')
+    n = plan.total_chunks;
+else
+    n = NaN;
+end
+end
+
+function T = make_profile_table_empty_local()
+T = struct2table(make_profile_row_template_local(), 'AsArray', true);
+T(1, :) = [];
+end
+
+function T = concat_tables_local(varargin)
+T = table();
+for idx = 1:nargin
+    Ti = varargin{idx};
+    if isempty(Ti) || ~istable(Ti) || height(Ti) == 0
+        continue;
+    end
+    if isempty(T) || width(T) == 0
+        T = Ti;
+    else
+        T = [T; Ti]; %#ok<AGROW>
+    end
+end
+if isempty(T) || width(T) == 0
+    T = table();
+end
+end
+
 function out = make_step12_backend_stub_local(input)
 out = struct();
 out.status = 'step12_score_core_adapter_only';
@@ -317,6 +687,11 @@ end
 function obs = make_empty_obs_local()
 obs = struct();
 obs.trial_index = NaN;
+obs.obs_id = '';
+obs.obs_global_index = NaN;
+obs.chunk_id = NaN;
+obs.total_chunks = NaN;
+obs.run_tag = '';
 obs.scenario_name = '';
 obs.center_az = NaN;
 obs.trial_id = NaN;
@@ -566,16 +941,21 @@ catch
 end
 end
 
-function [trial_tbl, topk_tbl, score_gap_tbl] = run_step12_quantization_trials_local(obs, modes, cfg12)
+function [trial_tbl, topk_tbl, score_gap_tbl, profile_tbl] = run_step12_quantization_trials_local(obs, modes, cfg12)
 trial_rows = repmat(make_trial_row_template_local(), 0, 1);
 topk_rows = repmat(make_topk_row_template_local(), 0, 1);
 gap_rows = repmat(make_score_gap_row_template_local(), 0, 1);
+profile_rows = repmat(make_profile_row_template_local(), 0, 1);
 for iObs = 1:numel(obs)
     base = obs(iObs);
     for iMode = 1:numel(modes)
         mode = modes(iMode);
+        t_stage = tic;
         score_out = run_step11_ml_score_adapter_local(base, mode, cfg12);
+        profile_rows(end + 1, 1) = make_profile_row_from_obs_local(base, mode.name, 'score_recompute', toc(t_stage), base.num_candidates, cfg12.topK_default, NaN, 'Step12 quantized score recompute'); %#ok<AGROW>
+        t_stage = tic;
         metrics = compare_score_ranking_local(base, score_out, mode, cfg12);
+        profile_rows(end + 1, 1) = make_profile_row_from_obs_local(base, mode.name, 'ranking_compare', toc(t_stage), base.num_candidates, cfg12.topK_default, NaN, 'ranking and topK comparison'); %#ok<AGROW>
         trial_rows(end + 1, 1) = metrics.trial_row; %#ok<AGROW>
         for kIdx = 1:numel(metrics.topk_rows)
             topk_rows(end + 1, 1) = metrics.topk_rows(kIdx); %#ok<AGROW>
@@ -586,10 +966,18 @@ end
 trial_tbl = struct2table(trial_rows);
 topk_tbl = struct2table(topk_rows);
 score_gap_tbl = struct2table(gap_rows);
+profile_tbl = struct2table(profile_rows);
+if ~cfg12.profile_enable_flag
+    profile_tbl = make_profile_table_empty_local();
+elseif isempty(profile_rows)
+    profile_tbl = make_profile_table_empty_local();
+end
 end
 
 function row = make_trial_row_template_local()
-row = struct('trial_index', NaN, 'scenario_name', '', 'quant_mode', '', 'candidate_count', NaN, ...
+row = struct('trial_index', NaN, 'obs_id', '', 'obs_global_index', NaN, 'chunk_id', NaN, ...
+    'total_chunks', NaN, 'run_tag', '', 'scenario_name', '', 'center_az', NaN, ...
+    'trial_id', NaN, 'quant_mode', '', 'candidate_count', NaN, ...
     'topK_default', NaN, 'top1_same_flag', false, 'topK_order_same_flag', false, ...
     'topK_set_same_flag', false, 'topK_jaccard', NaN, 'topK_miss_count', NaN, ...
     'topK_miss_rate', NaN, 'selected_candidate_same_flag', false, 'score_rank_spearman', NaN, ...
@@ -611,14 +999,18 @@ row = struct('trial_index', NaN, 'scenario_name', '', 'quant_mode', '', 'candida
 end
 
 function row = make_topk_row_template_local()
-row = struct('trial_index', NaN, 'scenario_name', '', 'quant_mode', '', 'K', NaN, ...
+row = struct('trial_index', NaN, 'obs_id', '', 'obs_global_index', NaN, 'chunk_id', NaN, ...
+    'total_chunks', NaN, 'run_tag', '', 'scenario_name', '', 'center_az', NaN, ...
+    'trial_id', NaN, 'quant_mode', '', 'K', NaN, ...
     'K_actual', NaN, 'topK_order_same_flag', false, 'topK_set_same_flag', false, ...
     'topK_jaccard', NaN, 'topK_miss_count', NaN, 'topK_miss_rate', NaN, ...
     'reliable_margin_flag', false, 'reliable_topK_same_flag', false);
 end
 
 function row = make_score_gap_row_template_local()
-row = struct('trial_index', NaN, 'scenario_name', '', 'quant_mode', '', ...
+row = struct('trial_index', NaN, 'obs_id', '', 'obs_global_index', NaN, 'chunk_id', NaN, ...
+    'total_chunks', NaN, 'run_tag', '', 'scenario_name', '', 'center_az', NaN, ...
+    'trial_id', NaN, 'quant_mode', '', ...
     'score_gap_top1_top2_baseline', NaN, 'score_gap_top1_top2_quant', NaN, ...
     'score_gap_same_baseline_pair_quant', NaN, 'score_gap_norm_baseline', NaN, ...
     'score_gap_norm_quant', NaN, 'score_gap_abs_error', NaN, 'score_gap_rel_error', NaN, ...
@@ -832,7 +1224,14 @@ for idx = 1:numel(cfg12.topK_list)
     tm = compare_topk_ids_local(tb.ids, tq.ids);
     row = make_topk_row_template_local();
     row.trial_index = base.trial_index;
+    row.obs_id = base.obs_id;
+    row.obs_global_index = base.obs_global_index;
+    row.chunk_id = base.chunk_id;
+    row.total_chunks = base.total_chunks;
+    row.run_tag = base.run_tag;
     row.scenario_name = base.scenario_name;
+    row.center_az = base.center_az;
+    row.trial_id = base.trial_id;
     row.quant_mode = mode.name;
     row.K = cfg12.topK_list(idx);
     row.K_actual = K;
@@ -874,7 +1273,14 @@ estimate_quant = quant.estimate;
 
 row = make_trial_row_template_local();
 row.trial_index = base.trial_index;
+row.obs_id = base.obs_id;
+row.obs_global_index = base.obs_global_index;
+row.chunk_id = base.chunk_id;
+row.total_chunks = base.total_chunks;
+row.run_tag = base.run_tag;
 row.scenario_name = base.scenario_name;
+row.center_az = base.center_az;
+row.trial_id = base.trial_id;
 row.quant_mode = mode.name;
 row.candidate_count = numel(score_base);
 row.topK_default = K_default;
@@ -935,7 +1341,14 @@ end
 
 gap_row = make_score_gap_row_template_local();
 gap_row.trial_index = base.trial_index;
+gap_row.obs_id = base.obs_id;
+gap_row.obs_global_index = base.obs_global_index;
+gap_row.chunk_id = base.chunk_id;
+gap_row.total_chunks = base.total_chunks;
+gap_row.run_tag = base.run_tag;
 gap_row.scenario_name = base.scenario_name;
+gap_row.center_az = base.center_az;
+gap_row.trial_id = base.trial_id;
 gap_row.quant_mode = mode.name;
 gap_row.score_gap_top1_top2_baseline = base_pair_gap;
 gap_row.score_gap_top1_top2_quant = quant_top_gap;
@@ -1470,6 +1883,282 @@ end
 bandwidth_tbl = struct2table(rows);
 end
 
+function mode_selection_tbl = build_step12_mode_selection_table_from_trial_local(summary_tbl, modes, trial_tbl, cfg12)
+obs_proxy = make_obs_proxy_from_trial_local(trial_tbl, cfg12);
+mode_selection_tbl = build_step12_mode_selection_table_local(summary_tbl, modes, obs_proxy, cfg12);
+end
+
+function storage_tbl = build_step12_storage_estimate_from_trial_local(trial_tbl, best_info, cfg12)
+obs_proxy = make_obs_proxy_from_trial_local(trial_tbl, cfg12);
+storage_tbl = build_step12_storage_estimate_local(obs_proxy, best_info, cfg12);
+end
+
+function bandwidth_tbl = build_step12_bandwidth_estimate_from_trial_local(trial_tbl, best_info, cfg12)
+obs_proxy = make_obs_proxy_from_trial_local(trial_tbl, cfg12);
+bandwidth_tbl = build_step12_bandwidth_estimate_local(obs_proxy, best_info, cfg12);
+end
+
+function obs_proxy = make_obs_proxy_from_trial_local(trial_tbl, cfg12)
+obs_proxy = make_empty_obs_local();
+B = 7;
+num_candidates = 1;
+if ~isempty(trial_tbl) && height(trial_tbl) > 0
+    if ismember('candidate_count', trial_tbl.Properties.VariableNames)
+        num_candidates = max(1, round(max_or_nan_local(trial_tbl.candidate_count)));
+    end
+end
+obs_proxy.W = complex(zeros(12, B));
+obs_proxy.Z_use = complex(zeros(B, 16));
+obs_proxy.Rz = complex(zeros(B, B));
+obs_proxy.num_candidates = num_candidates;
+obs_proxy.context = struct();
+obs_proxy.context.cache = struct();
+obs_proxy.context.cache.G_grid = complex(zeros(B, max(2, ceil(sqrt(num_candidates))), 8));
+obs_proxy.context.C05_policy_cfg = struct('topK_max', cfg12.topK_default);
+end
+
+function [trial_tbl, topk_tbl, score_gap_tbl, profile_tbl, aggregate_info] = load_step12_chunk_partials_local(cfg12, modes)
+chunk_dirs = dir(fullfile(cfg12.chunk_root_dir, 'chunk_*'));
+chunk_dirs = chunk_dirs([chunk_dirs.isdir]);
+trial_tbl = read_and_concat_chunk_tables_local(chunk_dirs, 'step12_chunk_trial.csv');
+topk_tbl = read_and_concat_chunk_tables_local(chunk_dirs, 'step12_chunk_topk.csv');
+score_gap_tbl = read_and_concat_chunk_tables_local(chunk_dirs, 'step12_chunk_score_gap.csv');
+profile_tbl = read_and_concat_chunk_tables_local(chunk_dirs, 'step12_chunk_profile.csv');
+trial_tbl = ensure_table_template_local(trial_tbl, make_trial_row_template_local());
+topk_tbl = ensure_table_template_local(topk_tbl, make_topk_row_template_local());
+score_gap_tbl = ensure_table_template_local(score_gap_tbl, make_score_gap_row_template_local());
+profile_tbl = ensure_table_template_local(profile_tbl, make_profile_row_template_local());
+trial_tbl = coerce_table_types_from_template_local(trial_tbl, make_trial_row_template_local());
+topk_tbl = coerce_table_types_from_template_local(topk_tbl, make_topk_row_template_local());
+score_gap_tbl = coerce_table_types_from_template_local(score_gap_tbl, make_score_gap_row_template_local());
+profile_tbl = coerce_table_types_from_template_local(profile_tbl, make_profile_row_template_local());
+trial_tbl = unique_table_rows_local(trial_tbl, {'obs_id', 'quant_mode'});
+topk_tbl = unique_table_rows_local(topk_tbl, {'obs_id', 'quant_mode', 'K'});
+score_gap_tbl = unique_table_rows_local(score_gap_tbl, {'obs_id', 'quant_mode'});
+profile_tbl = unique_table_rows_local(profile_tbl, {'obs_id', 'quant_mode', 'stage_name'});
+
+plan_tbl = build_step12_observation_plan_local(cfg12);
+completed_ids = completed_obs_ids_from_trial_table_local(trial_tbl, {modes.name});
+plan_tbl.completed_flag = ismember(plan_tbl.obs_id, completed_ids);
+writetable(plan_tbl, fullfile(cfg12.result_dir, 'step12_observation_plan.csv'));
+
+aggregate_info = struct();
+aggregate_info.formal_plan_total_obs = height(plan_tbl);
+aggregate_info.formal_plan_completed_obs = numel(completed_ids);
+aggregate_info.formal_plan_complete_flag = double(aggregate_info.formal_plan_completed_obs >= aggregate_info.formal_plan_total_obs && aggregate_info.formal_plan_total_obs > 0);
+aggregate_info.chunks_detected = numel(chunk_dirs);
+aggregate_info.chunks_completed = count_completed_chunks_local(chunk_dirs, {modes.name});
+end
+
+function T = read_and_concat_chunk_tables_local(chunk_dirs, file_name)
+T = table();
+for idx = 1:numel(chunk_dirs)
+    p = fullfile(chunk_dirs(idx).folder, chunk_dirs(idx).name, file_name);
+    if exist(p, 'file') ~= 2
+        continue;
+    end
+    Ti = readtable(p, 'TextType', 'char');
+    T = concat_tables_local(T, Ti);
+end
+end
+
+function T = ensure_table_template_local(T, row_template)
+if isempty(T) || ~istable(T) || width(T) == 0
+    T = struct2table(row_template, 'AsArray', true);
+    T(1, :) = [];
+end
+end
+
+function T = coerce_table_types_from_template_local(T, row_template)
+vars = fieldnames(row_template);
+for idx = 1:numel(vars)
+    name = vars{idx};
+    if ~ismember(name, T.Properties.VariableNames)
+        continue;
+    end
+    target = row_template.(name);
+    if islogical(target)
+        T.(name) = to_logical_column_local(T.(name));
+    elseif isnumeric(target)
+        T.(name) = to_numeric_column_local(T.(name));
+    elseif ischar(target)
+        T.(name) = to_cellstr_column_local(T.(name));
+    end
+end
+end
+
+function y = to_numeric_column_local(x)
+if isnumeric(x)
+    y = double(x);
+elseif islogical(x)
+    y = double(x);
+elseif iscell(x)
+    y = nan(numel(x), 1);
+    for i = 1:numel(x)
+        y(i) = scalar_to_double_local(x{i});
+    end
+elseif isstring(x)
+    y = str2double(x);
+elseif ischar(x)
+    y = str2double(cellstr(x));
+else
+    y = nan(numel(x), 1);
+end
+y = y(:);
+end
+
+function y = to_logical_column_local(x)
+if islogical(x)
+    y = x(:);
+elseif isnumeric(x)
+    y = x(:) ~= 0;
+elseif iscell(x)
+    y = false(numel(x), 1);
+    for i = 1:numel(x)
+        y(i) = scalar_to_logical_local(x{i});
+    end
+elseif isstring(x)
+    y = false(numel(x), 1);
+    for i = 1:numel(x)
+        y(i) = scalar_to_logical_local(x(i));
+    end
+elseif ischar(x)
+    parts = cellstr(x);
+    y = false(numel(parts), 1);
+    for i = 1:numel(parts)
+        y(i) = scalar_to_logical_local(parts{i});
+    end
+else
+    y = false(numel(x), 1);
+end
+y = y(:);
+end
+
+function y = to_cellstr_column_local(x)
+if iscell(x)
+    y = cell(size(x));
+    for i = 1:numel(x)
+        y{i} = scalar_to_char_local(x{i});
+    end
+    y = y(:);
+elseif isstring(x)
+    y = cellstr(x(:));
+elseif ischar(x)
+    y = cellstr(x);
+else
+    y = cell(numel(x), 1);
+    for i = 1:numel(x)
+        y{i} = scalar_to_char_local(x(i));
+    end
+end
+end
+
+function v = scalar_to_double_local(x)
+if isnumeric(x) || islogical(x)
+    if isempty(x)
+        v = NaN;
+    else
+        v = double(x(1));
+    end
+elseif isstring(x) || ischar(x)
+    v = str2double(char(x));
+else
+    v = NaN;
+end
+end
+
+function v = scalar_to_logical_local(x)
+if isnumeric(x) || islogical(x)
+    v = ~isempty(x) && double(x(1)) ~= 0;
+else
+    s = lower(strtrim(char(x)));
+    v = any(strcmp(s, {'1','true','t','yes'}));
+end
+end
+
+function s = scalar_to_char_local(x)
+if ischar(x)
+    s = x;
+elseif isstring(x)
+    s = char(x);
+elseif isnumeric(x) || islogical(x)
+    s = num2str(x);
+else
+    s = '';
+end
+end
+
+function completed_ids = completed_obs_ids_from_trial_table_local(trial_tbl, required_modes)
+completed_ids = {};
+if isempty(trial_tbl) || height(trial_tbl) == 0 || ...
+        ~all(ismember({'obs_id','quant_mode'}, trial_tbl.Properties.VariableNames))
+    return;
+end
+ids = unique(trial_tbl.obs_id);
+done = false(numel(ids), 1);
+for idx = 1:numel(ids)
+    modes_here = unique(trial_tbl.quant_mode(strcmp(trial_tbl.obs_id, ids{idx})));
+    done(idx) = all(ismember(required_modes(:), modes_here(:)));
+end
+completed_ids = ids(done);
+end
+
+function n = count_completed_chunks_local(chunk_dirs, required_modes)
+n = 0;
+for idx = 1:numel(chunk_dirs)
+    p = fullfile(chunk_dirs(idx).folder, chunk_dirs(idx).name, 'step12_chunk_trial.csv');
+    if exist(p, 'file') ~= 2
+        continue;
+    end
+    T = readtable(p, 'TextType', 'char');
+    ids = completed_obs_ids_from_trial_table_local(T, required_modes);
+    if ~isempty(ids)
+        n = n + 1;
+    end
+end
+end
+
+function profile_summary_tbl = build_step12_profile_summary_local(profile_tbl, cfg12)
+template = make_profile_summary_row_template_local();
+rows = repmat(template, 0, 1);
+if isempty(profile_tbl) || ~istable(profile_tbl) || height(profile_tbl) == 0 || ...
+        ~ismember('stage_name', profile_tbl.Properties.VariableNames)
+    profile_summary_tbl = struct2table(rows);
+    return;
+end
+stages = unique(profile_tbl.stage_name);
+for idx = 1:numel(stages)
+    mask = strcmp(profile_tbl.stage_name, stages{idx});
+    elapsed = profile_tbl.elapsed_sec(mask);
+    row = template;
+    row.stage_name = stages{idx};
+    row.total_elapsed_sec = sum(elapsed(isfinite(elapsed)));
+    row.mean_elapsed_sec = mean_or_nan_local(elapsed);
+    row.p95_elapsed_sec = percentile_local(elapsed, 95);
+    row.max_elapsed_sec = max_or_nan_local(elapsed);
+    row.num_calls = nnz(mask);
+    rows(end + 1, 1) = row; %#ok<AGROW>
+end
+profile_summary_tbl = struct2table(rows);
+if height(profile_summary_tbl) > 0
+    [~, order] = sort(profile_summary_tbl.total_elapsed_sec, 'descend');
+    profile_summary_tbl = profile_summary_tbl(order, :);
+    if isfield(cfg12, 'profile_top_n') && height(profile_summary_tbl) > cfg12.profile_top_n
+        profile_summary_tbl = profile_summary_tbl(1:cfg12.profile_top_n, :);
+    end
+end
+end
+
+function row = make_profile_summary_row_template_local()
+row = struct('stage_name', '', 'total_elapsed_sec', NaN, 'mean_elapsed_sec', NaN, ...
+    'p95_elapsed_sec', NaN, 'max_elapsed_sec', NaN, 'num_calls', 0);
+end
+
+function T = make_profile_summary_table_empty_local()
+T = struct2table(make_profile_summary_row_template_local(), 'AsArray', true);
+T(1, :) = [];
+end
+
 function row = make_bandwidth_row_template_local()
 row = struct('stage_name', '', 'num_candidates', NaN, 'topK', NaN, 'G_vectors_per_candidate', NaN, ...
     'G_complex_per_vector', NaN, 'Rz_dim', NaN, 'complex_read_per_candidate', NaN, ...
@@ -1553,6 +2242,7 @@ if ~cfg12.quick_mode_flag && formal_trial_count < cfg12.min_formal_obs
     engineering_recommended_fixed_point_format = 'not_recommended';
     mode_selection_reason = 'formal_trial_count_below_minimum';
 end
+cfg12.formal_min_obs_satisfied_flag = double(~cfg12.quick_mode_flag && formal_trial_count >= cfg12.min_formal_obs);
 combined = combined_int16_status_local(summary_tbl, cfg12);
 gap_flags = gap_stress_flags_local(score_gap_bins_tbl, best_info);
 pairs = { ...
@@ -1561,6 +2251,13 @@ pairs = { ...
     'formal_trial_count', formal_trial_count; ...
     'min_formal_obs', cfg12.min_formal_obs; ...
     'quick_mode_flag', cfg12.quick_mode_flag; ...
+    'chunked_run_flag', cfg12.chunked_run_flag; ...
+    'formal_plan_total_obs', cfg12.formal_plan_total_obs; ...
+    'formal_plan_completed_obs', cfg12.formal_plan_completed_obs; ...
+    'formal_plan_complete_flag', cfg12.formal_plan_complete_flag; ...
+    'formal_min_obs_satisfied_flag', cfg12.formal_min_obs_satisfied_flag; ...
+    'chunks_detected', cfg12.chunks_detected; ...
+    'chunks_completed', cfg12.chunks_completed; ...
     'run_tag', cfg12.run_tag; ...
     'smoke_ranking_pass_flag', smoke_ranking_pass_flag; ...
     'smoke_topK_pass_flag', smoke_topK_pass_flag; ...
@@ -1790,7 +2487,30 @@ keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth
 recommendation_tbl = build_step12_recommendations_local(keypoints_tbl);
 end
 
-function write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl)
+function write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl, profile_tbl, profile_summary_tbl)
+if nargin < 13
+    profile_tbl = make_profile_table_empty_local();
+end
+if nargin < 14
+    profile_summary_tbl = make_profile_summary_table_empty_local();
+end
+if cfg12.chunked_run_flag && ~cfg12.aggregate_only_flag
+    append_or_write_table_local(trial_tbl, fullfile(cfg12.result_dir, 'step12_chunk_trial.csv'), {'obs_id','quant_mode'});
+    append_or_write_table_local(topk_tbl, fullfile(cfg12.result_dir, 'step12_chunk_topk.csv'), {'obs_id','quant_mode','K'});
+    append_or_write_table_local(score_gap_tbl, fullfile(cfg12.result_dir, 'step12_chunk_score_gap.csv'), {'obs_id','quant_mode'});
+    append_or_write_table_local(score_gap_bins_tbl, fullfile(cfg12.result_dir, 'step12_chunk_score_gap_bins_partial.csv'), {'quant_mode','gap_bin'});
+    append_or_write_table_local(profile_tbl, fullfile(cfg12.result_dir, 'step12_chunk_profile.csv'), {'obs_id','quant_mode','stage_name'});
+    writetable(summary_tbl, fullfile(cfg12.result_dir, 'step12_chunk_summary.csv'));
+    writetable(keypoints_tbl, fullfile(cfg12.result_dir, 'step12_chunk_keypoints.csv'), 'WriteVariableNames', false);
+    writetable(storage_tbl, fullfile(cfg12.result_dir, 'step12_chunk_storage_estimate.csv'));
+    writetable(bandwidth_tbl, fullfile(cfg12.result_dir, 'step12_chunk_bandwidth_estimate.csv'));
+    writetable(worst_tbl, fullfile(cfg12.result_dir, 'step12_chunk_worst_cases.csv'));
+    writetable(recommendation_tbl, fullfile(cfg12.result_dir, 'step12_chunk_recommendations.csv'));
+    writetable(mode_selection_tbl, fullfile(cfg12.result_dir, 'step12_chunk_mode_selection.csv'));
+    writetable(profile_summary_tbl, fullfile(cfg12.result_dir, 'step12_profile_summary.csv'));
+    write_step12_chunk_manifest_local(cfg12, trial_tbl, profile_tbl);
+    return;
+end
 writetable(trial_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_trial.csv'));
 writetable(summary_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_summary.csv'));
 writetable(keypoints_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_keypoints.csv'), 'WriteVariableNames', false);
@@ -1802,6 +2522,96 @@ writetable(worst_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_worst_
 writetable(recommendation_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_recommendations.csv'));
 writetable(mode_selection_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_mode_selection.csv'));
 writetable(score_gap_bins_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_score_gap_bins.csv'));
+writetable(profile_tbl, fullfile(cfg12.result_dir, 'step12_profile.csv'));
+writetable(profile_summary_tbl, fullfile(cfg12.result_dir, 'step12_profile_summary.csv'));
+end
+
+function append_or_write_table_local(Tnew, path_out, key_vars)
+if exist(path_out, 'file') == 2
+    Told = readtable(path_out, 'TextType', 'char');
+    T = concat_tables_local(Told, Tnew);
+else
+    T = Tnew;
+end
+if nargin >= 3 && ~isempty(key_vars) && ~isempty(T) && istable(T) && height(T) > 0
+    T = unique_table_rows_local(T, key_vars);
+end
+writetable(T, path_out);
+end
+
+function T = unique_table_rows_local(T, key_vars)
+if isempty(T) || height(T) == 0
+    return;
+end
+valid = key_vars(ismember(key_vars, T.Properties.VariableNames));
+if isempty(valid)
+    return;
+end
+keys = cell(height(T), 1);
+for i = 1:height(T)
+    parts = cell(1, numel(valid));
+    for j = 1:numel(valid)
+        parts{j} = table_cell_as_char_local(T.(valid{j})(i));
+    end
+    keys{i} = strjoin(parts, '||');
+end
+[~, ia] = unique(keys, 'stable');
+T = T(sort(ia), :);
+end
+
+function s = table_cell_as_char_local(v)
+if iscell(v)
+    v = v{1};
+end
+if isstring(v)
+    s = char(v);
+elseif ischar(v)
+    s = v;
+elseif isnumeric(v) || islogical(v)
+    s = mat2str(v);
+else
+    s = '?';
+end
+end
+
+function write_step12_chunk_manifest_local(cfg12, trial_tbl, profile_tbl)
+trial_path = fullfile(cfg12.result_dir, 'step12_chunk_trial.csv');
+if exist(trial_path, 'file') == 2
+    Tall = readtable(trial_path, 'TextType', 'char');
+else
+    Tall = trial_tbl;
+end
+required_modes = {};
+if ~isempty(Tall) && height(Tall) > 0 && ismember('quant_mode', Tall.Properties.VariableNames)
+    required_modes = unique(Tall.quant_mode);
+end
+obs_done = {};
+if ~isempty(Tall) && height(Tall) > 0 && ismember('obs_id', Tall.Properties.VariableNames)
+    obs_done = unique(Tall.obs_id);
+end
+new_obs = {};
+if ~isempty(trial_tbl) && height(trial_tbl) > 0 && ismember('obs_id', trial_tbl.Properties.VariableNames)
+    new_obs = unique(trial_tbl.obs_id);
+end
+elapsed_sec = NaN;
+if ~isempty(profile_tbl) && height(profile_tbl) > 0 && ismember('elapsed_sec', profile_tbl.Properties.VariableNames)
+    elapsed_sec = sum(profile_tbl.elapsed_sec(isfinite(profile_tbl.elapsed_sec)));
+end
+manifest = key_value_table_local({ ...
+    'chunk_id', cfg12.chunk_id; ...
+    'total_chunks', cfg12.total_chunks; ...
+    'run_tag', cfg12.run_tag; ...
+    'planned_obs', cfg12.formal_plan_planned_obs; ...
+    'completed_obs_before', cfg12.chunk_completed_obs_before; ...
+    'completed_obs_after', numel(obs_done); ...
+    'new_obs_this_run', numel(new_obs); ...
+    'mode_set', cfg12.mode_set; ...
+    'modes_observed', strjoin(required_modes(:).', ','); ...
+    'run_start_time', datestr(now - elapsed_sec / 86400, 'yyyy-mm-dd HH:MM:SS'); ...
+    'run_end_time', datestr(now, 'yyyy-mm-dd HH:MM:SS'); ...
+    'elapsed_sec', elapsed_sec; ...
+    'status', 'partial_chunk_written'});
+writetable(manifest, fullfile(cfg12.result_dir, 'step12_chunk_manifest.csv'), 'WriteVariableNames', false);
 end
 
 function adapter_info_light = make_adapter_info_light_local(adapter_info)
@@ -2211,6 +3021,123 @@ score_fixed = quant.score(subset);
 score_abs_diff = abs(score_fixed - score_baseline);
 score_rel_diff = score_abs_diff ./ max(abs(score_baseline), eps);
 T = table(candidate_index, candidate_id, score_baseline, score_fixed, score_abs_diff, score_rel_diff);
+end
+
+function doc_path = write_step12_record_doc_clean_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path, profile_summary_tbl)
+doc_path = fullfile(cfg12.step_dir, '第12步_波束级ML_FPGA可行性边界验证记录.md');
+fid = fopen(doc_path, 'w', 'n', 'UTF-8');
+if fid < 0
+    error('step12:DocOpenFailed', 'Could not open doc: %s', doc_path);
+end
+cleanup = onCleanup(@() fclose(fid));
+
+fprintf(fid, '# 第12步 波束级ML FPGA可行性边界验证记录\n\n');
+fprintf(fid, '## 本轮目的\n\n');
+fprintf(fid, '本轮围绕第11.x beamspace ML 后端，验证有限字长对 score ranking consistency、topK preservation、score gap stability 以及 cache/storage/bandwidth 的影响。\n\n');
+fprintf(fid, '本步骤不是完整 FPGA RTL，不是 bit-true HDL 仿真，不是完整 FPGA backend 或下板验证结论，也不复用 Step8.9 的结果或 pass/fail 标准。\n\n');
+
+fprintf(fid, '## 第11.x Adapter 来源\n\n');
+fprintf(fid, '- final 入口: `%s`\n', adapter_info.entry_function);
+fprintf(fid, '- score 函数: `%s`\n', adapter_info.score_function);
+fprintf(fid, '- candidate 范围: %s\n', adapter_info.candidate_scope);
+fprintf(fid, '- adapter found flag: %d\n', adapter_info.step11_adapter_found_flag);
+fprintf(fid, '- uses_step89_results_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'uses_step89_results_flag'));
+fprintf(fid, '- blocker: `%s`\n\n', get_keypoint_value_local(keypoints_tbl, 'blocker_if_any'));
+
+fprintf(fid, '## Formal / Chunk 状态\n\n');
+fprintf(fid, '- run_tag: `%s`\n', cfg12.run_tag);
+fprintf(fid, '- quick_mode_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'quick_mode_flag'));
+fprintf(fid, '- chunked_run_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'chunked_run_flag'));
+fprintf(fid, '- formal_trial_count: %s\n', get_keypoint_value_local(keypoints_tbl, 'formal_trial_count'));
+fprintf(fid, '- min_formal_obs: %s\n', get_keypoint_value_local(keypoints_tbl, 'min_formal_obs'));
+fprintf(fid, '- formal_plan_total_obs: %s\n', get_keypoint_value_local(keypoints_tbl, 'formal_plan_total_obs'));
+fprintf(fid, '- formal_plan_completed_obs: %s\n', get_keypoint_value_local(keypoints_tbl, 'formal_plan_completed_obs'));
+fprintf(fid, '- formal_plan_complete_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'formal_plan_complete_flag'));
+fprintf(fid, '- formal_min_obs_satisfied_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'formal_min_obs_satisfied_flag'));
+fprintf(fid, '- chunks_detected: %s\n', get_keypoint_value_local(keypoints_tbl, 'chunks_detected'));
+fprintf(fid, '- chunks_completed: %s\n\n', get_keypoint_value_local(keypoints_tbl, 'chunks_completed'));
+
+if cfg12.quick_mode_flag
+    fprintf(fid, '本次为 quick smoke test。smoke_fixed_point_pass_flag 仅说明 adapter、量化流程、score ranking/topK 统计和输出链路打通；formal fixed_point_pass_flag 仍为 0。\n\n');
+elseif startsWith(cfg12.run_tag, 'pilot') || contains(cfg12.run_tag, 'chunk_pilot')
+    fprintf(fid, '本次为 pilot/chunk pilot，用于验证 formal chunk/resume/aggregate 流程和字段完整性，不作为 formal_tps30 的正式 FPGA 可行性结论。\n\n');
+end
+
+fprintf(fid, '## Chunked Formal Validation\n\n');
+fprintf(fid, 'formal_tps30 曾受交互窗口限制，本轮新增 chunked formal validation、checkpoint/resume、aggregate-only、formal_core mode set 和 profiling 输出。aggregate-only 只读取 chunk partial CSV，不重新运行 Step11 observation 或 score recomputation。\n\n');
+fprintf(fid, '正式 proceed_to_rtl_score_core_flag 只能在非 quick、满足 min formal obs、uses_step89_results_flag=0 且 ranking/topK formal gate 通过时置 1。\n\n');
+
+fprintf(fid, '## Quantization Modes\n\n');
+fprintf(fid, 'mode_set 为 `%s`。formal_core 至少包含 double_baseline、float32_all、combined_int14、combined_int16、combined_int18、combined_int24、mixed_Z16_G24_Rz24 和 W_int18_G24_Z16。float32_all 仅为诊断参考，不作为 fixed-point pass candidate。\n\n', cfg12.mode_set);
+
+fprintf(fid, '## Score Ranking / TopK Pass-Fail 标准\n\n');
+fprintf(fid, '正式 fixed-point pass/fail 只由 ML score ranking consistency 和 topK preservation 决定。policy/confidence/fallback/boundary 仅作为工程风险诊断。\n\n');
+fprintf(fid, '- ranking_pass_flag: reliable_top1_preservation_rate >= 0.999, reliable_score_gap_sign_flip_rate == 0, argmax_changed_rate_on_reliable_margin <= 0.001。\n');
+fprintf(fid, '- topK_pass_flag: reliable_topK_set_preservation_rate >= 0.995, overall_topK_set_preservation_rate >= 0.980, reliable_topK_miss_rate <= 0.005。\n');
+fprintf(fid, '- formal fixed_point_pass_flag 还要求 quick_mode_flag=0 且 formal_trial_count >= min_formal_obs。\n\n');
+
+fprintf(fid, '## 总体结果表\n\n');
+write_markdown_table_from_table_local(fid, summary_tbl, 16);
+
+fprintf(fid, '\n## Mode Selection\n\n');
+write_markdown_table_from_table_local(fid, mode_selection_tbl, 16);
+
+fprintf(fid, '\n## combined_int16 状态\n\n');
+fprintf(fid, '- combined_int16_formal_pass_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_formal_pass_flag'));
+fprintf(fid, '- combined_int16_blocker_if_any: `%s`\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_blocker_if_any'));
+fprintf(fid, '- combined_int16_reliable_top1_preservation: %s\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_reliable_top1_preservation'));
+fprintf(fid, '- combined_int16_reliable_topK_preservation: %s\n\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_reliable_topK_preservation'));
+
+fprintf(fid, '## Score Gap Stress Bins\n\n');
+write_markdown_table_from_table_local(fid, score_gap_bins_tbl, 20);
+fprintf(fid, '\n- reliable_margin_instability_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'reliable_margin_instability_flag'));
+fprintf(fid, '- failures_limited_to_low_margin_cases: %s\n', get_keypoint_value_local(keypoints_tbl, 'failures_limited_to_low_margin_cases'));
+fprintf(fid, '- worst_gap_bin_for_recommended_mode: `%s`\n\n', get_keypoint_value_local(keypoints_tbl, 'worst_gap_bin_for_recommended_mode'));
+
+fprintf(fid, '## Cache Storage 估算\n\n');
+write_markdown_table_from_table_local(fid, storage_tbl, 12);
+
+fprintf(fid, '\n## Bandwidth / Score Lane 估算\n\n');
+write_markdown_table_from_table_local(fid, bandwidth_tbl, 12);
+
+fprintf(fid, '\n## Profiling 摘要\n\n');
+write_markdown_table_from_table_local(fid, profile_summary_tbl, 12);
+
+fprintf(fid, '\n## Worst Cases 总结\n\n');
+write_markdown_table_from_table_local(fid, worst_tbl, 12);
+
+fprintf(fid, '\n## Recommendation\n\n');
+write_markdown_table_from_table_local(fid, recommendation_tbl, 8);
+
+fprintf(fid, '\n## Golden Vectors\n\n');
+if ~isempty(golden_manifest_path)
+    fprintf(fid, '- exported: 1\n');
+    fprintf(fid, '- manifest: `%s`\n', golden_manifest_path);
+else
+    fprintf(fid, '- exported: 0\n');
+    fprintf(fid, '- reason: 需要 formal fixed-point pass 且 STEP12_EXPORT_GOLDEN_VECTORS=1。\n');
+end
+
+fprintf(fid, '\n## 最终判断\n\n');
+fprintf(fid, '- minimum_passing_mode: `%s`\n', get_keypoint_value_local(keypoints_tbl, 'minimum_passing_mode'));
+fprintf(fid, '- engineering_recommended_fixed_point_format: `%s`\n', get_keypoint_value_local(keypoints_tbl, 'engineering_recommended_fixed_point_format'));
+fprintf(fid, '- fixed_point_pass_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag'));
+fprintf(fid, '- blocker_if_any: `%s`\n', get_keypoint_value_local(keypoints_tbl, 'blocker_if_any'));
+fprintf(fid, '- proceed_to_rtl_score_core_flag: %s\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_rtl_score_core_flag'));
+fprintf(fid, '- proceed_to_full_fpga_backend_flag: %s\n\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_full_fpga_backend_flag'));
+
+fprintf(fid, '## 下一步建议\n\n');
+if cfg12.quick_mode_flag
+    fprintf(fid, '先运行 formal validation，再决定是否进入 RTL score core prototype。\n');
+elseif startsWith(cfg12.run_tag, 'pilot') || contains(cfg12.run_tag, 'chunk_pilot')
+    fprintf(fid, '本次仅证明 chunk/resume/aggregate 路径可用。下一步继续按 formal_tps30 chunk plan 运行更多 chunks，并在 aggregate 后检查 formal_trial_count 是否达到 STEP12_MIN_FORMAL_OBS。\n');
+elseif str2double(get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag')) == 1
+    fprintf(fid, 'formal ranking/topK gate 已对工程推荐 fixed-point mode 关闭。下一步只建议进入 RTL score core prototype；这仍不代表完整 FPGA backend 通过。\n');
+else
+    fprintf(fid, '不建议进入 RTL score core prototype。应继续运行 formal chunks 或针对 blocker 调整有限字长方案。\n');
+end
+
+clear cleanup;
 end
 
 function doc_path = write_step12_record_doc_v2_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path)

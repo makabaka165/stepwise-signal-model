@@ -1,0 +1,16 @@
+[2026-06-11 16:56:23] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\run_step12_beamspace_ml_fpga_boundary
+[2026-06-11 16:56:23] Project directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model
+[2026-06-11 16:56:23] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\chunk_pilot_tps3\aggregate
+[2026-06-11 16:56:23] Run tag: chunk_pilot_tps3
+[2026-06-11 16:56:23] Aggregate-only chunk root: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\chunk_pilot_tps3\chunks
+[2026-06-11 16:56:23] Step12 starts
+[2026-06-11 16:56:23] Quick mode: 0
+[2026-06-11 16:56:23] Chunked run: 1
+[2026-06-11 16:56:23] Aggregate only: 1
+[2026-06-11 16:56:23] Mode set: formal_core
+[2026-06-11 16:56:23] Score engine: loop_reference
+[2026-06-11 16:56:23] Step11 adapter found: 1
+[2026-06-11 16:56:34] Aggregate-only loaded trial rows: 96
+[2026-06-11 16:56:34] Wrote aggregate light MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\chunk_pilot_tps3\aggregate\step12_ml_fpga_boundary_result_light.mat
+[2026-06-11 16:56:34] Wrote MAT manifest: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\chunk_pilot_tps3\aggregate\step12_ml_fpga_boundary_mat_manifest.md
+[2026-06-11 16:56:34] Wrote record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\第12步_波束级ML_FPGA可行性边界验证记录.md

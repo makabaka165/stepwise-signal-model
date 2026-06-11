@@ -1,0 +1,17 @@
+fprintf('Suggested Step12 formal_tps30 chunk plan:\n\n');
+fprintf('setenv(''STEP12_RUN_TAG'',''formal_tps30'')\n');
+fprintf('setenv(''STEP12_QUICK_MODE'',''0'')\n');
+fprintf('setenv(''STEP12_FORMAL_TRIALS_PER_SCENARIO'',''30'')\n');
+fprintf('setenv(''STEP12_FORMAL_CENTER_AZ_LIST'',''0,4,8,15'')\n');
+fprintf('setenv(''STEP12_MIN_FORMAL_OBS'',''300'')\n');
+fprintf('setenv(''STEP12_TOTAL_CHUNKS'',''20'')\n');
+fprintf('setenv(''STEP12_MODE_SET'',''formal_core'')\n');
+fprintf('setenv(''STEP12_PROFILE_ENABLE'',''1'')\n');
+fprintf('setenv(''STEP12_RESUME_FROM_PARTIALS'',''1'')\n');
+fprintf('setenv(''STEP12_MAX_OBS_PER_RUN'',''30'')\n\n');
+fprintf('Then run one chunk per interactive window:\n\n');
+fprintf('setenv(''STEP12_CHUNK_ID'',''1''); run_step12_formal_chunk\n');
+fprintf('setenv(''STEP12_CHUNK_ID'',''2''); run_step12_formal_chunk\n');
+fprintf('...\n\n');
+fprintf('After enough chunks finish:\n\n');
+fprintf('setenv(''STEP12_AGGREGATE_ONLY'',''1''); aggregate_step12_formal_chunks\n');
