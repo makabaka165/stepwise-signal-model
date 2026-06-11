@@ -1,2 +1,2 @@
-recommendation,rationale,recommended_fixed_point_format,proceed_to_rtl_score_core_flag,proceed_to_full_fpga_backend_flag
-proceed_to_rtl_score_core_prototype_only,ranking and topK preservation passed for the recommended fixed-point score-core mode,combined_int16,1,0
+recommendation,rationale,recommended_fixed_point_format,proceed_to_rtl_score_core_flag,proceed_to_rtl_score_core_smoke_flag,proceed_to_full_fpga_backend_flag
+quick_smoke_passed_run_formal_validation_before_rtl,"quick smoke passed the adapter and metric chain, but formal fixed_point_pass_flag remains zero until formal validation runs",not_recommended_until_formal_validation,0,1,0

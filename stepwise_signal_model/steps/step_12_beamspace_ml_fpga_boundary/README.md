@@ -105,7 +105,27 @@ From the project root:
 matlab -batch "setenv('STEP12_QUICK_MODE','1'); run('setup_paths.m'); cd('steps/step_12_beamspace_ml_fpga_boundary'); run_step12_beamspace_ml_fpga_boundary"
 ```
 
-Formal mode omits `STEP12_QUICK_MODE=1` and uses the script's non-quick trial settings. If a run is quick mode, `quick_mode_flag=1`; it is a smoke test and must not be written as a formal FPGA feasibility conclusion.
+Formal mode omits `STEP12_QUICK_MODE=1` and uses:
+
+- `center_az_list = [0, 4, 8, 15]`
+- all Step12 scenarios
+- `STEP12_FORMAL_TRIALS_PER_SCENARIO`, default `30`
+
+For a shorter formal run, set for example:
+
+```matlab
+setenv('STEP12_FORMAL_TRIALS_PER_SCENARIO','10')
+run_step12_beamspace_ml_fpga_boundary
+```
+
+If a run is quick mode, `quick_mode_flag=1`; it is a smoke test and must not be written as a formal FPGA feasibility conclusion. In quick mode, the script writes `smoke_fixed_point_pass_flag` and `smoke_recommended_fixed_point_format`, while formal `fixed_point_pass_flag` stays `0`, `recommended_fixed_point_format` is `not_recommended_until_formal_validation`, and `blocker_if_any` is `formal_validation_not_run`.
+
+Full MAT output is disabled by default. To regenerate it locally:
+
+```matlab
+setenv('STEP12_SAVE_FULL_MAT','1')
+run_step12_beamspace_ml_fpga_boundary
+```
 
 ## Outputs
 
@@ -137,4 +157,6 @@ Figures:
 
 MAT output:
 
-- `step12_ml_fpga_boundary_result.mat`
+- `step12_ml_fpga_boundary_result_light.mat`, tracked-friendly light MAT without full observations, context, cache, or candidate-table payloads
+- `step12_ml_fpga_boundary_result_full.mat`, optional local full MAT only when `STEP12_SAVE_FULL_MAT=1`; ignored by Git by default
+- `step12_ml_fpga_boundary_mat_manifest.md`, manifest explaining light/full MAT policy and quick-vs-formal semantics

@@ -10,3 +10,8 @@ steps/**/results_step*/**/*_partial.mat
 steps/**/results_step*/**/*partial*.tmp
 steps/**/results_step*/**/*cache*
 steps/**/results_step*/**/tmp*/
+
+# Step12 full result MAT is reproducible and can exceed GitHub's 50 MiB warning threshold.
+# Keep CSV/PNG/MD evidence in Git; keep full MAT local or external.
+steps/step_12_beamspace_ml_fpga_boundary/results_step12_beamspace_ml_fpga_boundary/step12_ml_fpga_boundary_result.mat
+steps/step_12_beamspace_ml_fpga_boundary/results_step12_beamspace_ml_fpga_boundary/*_full.mat

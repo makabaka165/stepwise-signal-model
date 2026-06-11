@@ -12,7 +12,7 @@
 - score函数：`beamspace_dml_score`
 - candidate范围：Step11.7 C05 coarse-stage controlled pair2d candidate table
 - adapter found flag：1
-- blocker：`none`
+- blocker：`formal_validation_not_run`
 
 ## quantization modes
 
@@ -84,13 +84,16 @@ _Only first 12 rows shown; see CSV for full table._
 ## 最终判断
 
 - quick_mode_flag：1
-- fixed_point_pass_flag：1
-- recommended_fixed_point_format：`combined_int16`
-- proceed_to_rtl_score_core_flag：1
+- smoke_fixed_point_pass_flag：1
+- smoke_recommended_fixed_point_format：`combined_int16`
+- fixed_point_pass_flag：0
+- recommended_fixed_point_format：`not_recommended_until_formal_validation`
+- proceed_to_rtl_score_core_flag：0
+- proceed_to_rtl_score_core_smoke_flag：1
 - proceed_to_full_fpga_backend_flag：0
 
-本次为quick smoke test，不能写成正式FPGA可行性结论。
+本次为 quick smoke test。smoke_fixed_point_pass_flag = 1 仅说明 Step12 adapter、量化流程、score ranking/topK 统计和结果输出链路打通；formal fixed_point_pass_flag 仍为 0。下一步应先运行 formal validation，再决定是否进入 RTL score core prototype。
 
 ## 下一步建议
 
-若fixed_point_pass_flag为1，下一步只建议进入RTL score core prototype；仍需独立完成bit-true HDL仿真、接口时序、cache访问调度和板级验证。
+quick mode 下不建议直接进入 RTL score core prototype。请先运行 formal validation，并检查正式 fixed_point_pass_flag、recommended_fixed_point_format 与 worst cases。

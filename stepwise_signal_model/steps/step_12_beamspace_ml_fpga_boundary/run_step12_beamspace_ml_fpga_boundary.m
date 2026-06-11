@@ -45,12 +45,27 @@ end
 write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, ...
     storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl);
 doc_path = write_step12_record_doc_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, worst_tbl);
-mat_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result.mat');
-save(mat_path, 'cfg12', 'adapter_info', 'modes', 'obs', 'trial_tbl', 'summary_tbl', ...
+adapter_info_light = make_adapter_info_light_local(adapter_info);
+mat_light_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_light.mat');
+save(mat_light_path, 'cfg12', 'adapter_info_light', 'modes', 'summary_tbl', ...
     'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'storage_tbl', 'bandwidth_tbl', ...
     'worst_tbl', 'recommendation_tbl', 'plot_paths', 'doc_path');
+mat_full_path = '';
+if cfg12.save_full_mat_flag
+    mat_full_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_full.mat');
+    save(mat_full_path, 'cfg12', 'adapter_info', 'modes', 'obs', 'trial_tbl', 'summary_tbl', ...
+        'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'storage_tbl', 'bandwidth_tbl', ...
+        'worst_tbl', 'recommendation_tbl', 'plot_paths', 'doc_path', '-v7.3');
+end
+manifest_path = write_step12_mat_manifest_local(cfg12, mat_light_path, mat_full_path);
 
-log_lines = append_log_local(log_lines, 'Wrote MAT: %s', mat_path);
+log_lines = append_log_local(log_lines, 'Wrote light MAT: %s', mat_light_path);
+if cfg12.save_full_mat_flag
+    log_lines = append_log_local(log_lines, 'Wrote full MAT: %s', mat_full_path);
+else
+    log_lines = append_log_local(log_lines, 'Full MAT not saved; set STEP12_SAVE_FULL_MAT=1 to regenerate locally.');
+end
+log_lines = append_log_local(log_lines, 'Wrote MAT manifest: %s', manifest_path);
 log_lines = append_log_local(log_lines, 'Wrote record doc: %s', doc_path);
 write_log_local(fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary.log'), log_lines);
 
@@ -75,14 +90,21 @@ cfg12.weak_margin_threshold = 1e-4;
 cfg12.max_kendall_n = 300;
 cfg12.default_component_bits = 16;
 cfg12.quick_mode_flag = strcmp(getenv('STEP12_QUICK_MODE'), '1');
+cfg12.save_full_mat_flag = strcmp(getenv('STEP12_SAVE_FULL_MAT'), '1');
 if cfg12.quick_mode_flag
     cfg12.center_az_list = 0;
     cfg12.scenario_limit = 2;
     cfg12.trials_per_scenario = 1;
+    cfg12.formal_trials_per_scenario = NaN;
 else
-    cfg12.center_az_list = [0, 8, 15];
-    cfg12.scenario_limit = 5;
-    cfg12.trials_per_scenario = 3;
+    cfg12.center_az_list = [0, 4, 8, 15];
+    cfg12.scenario_limit = Inf;
+    formal_trials = str2double(getenv('STEP12_FORMAL_TRIALS_PER_SCENARIO'));
+    if isnan(formal_trials)
+        formal_trials = 30;
+    end
+    cfg12.formal_trials_per_scenario = max(1, floor(formal_trials));
+    cfg12.trials_per_scenario = cfg12.formal_trials_per_scenario;
 end
 cfg12.rng_seed = 20260611;
 cfg12.formal_trial_count = 0;
@@ -207,7 +229,11 @@ function [obs, adapter_info] = load_or_run_step11_ml_observations_local(cfg12, a
 rng(cfg12.rng_seed, 'twister');
 [context, context_metadata] = build_step11_7_runtime_context(cfg12.project_dir, cfg12.result_dir, 'DefaultCenterAz', 0);
 scenarios = build_step12_scenarios_local();
-scenario_count = min(cfg12.scenario_limit, numel(scenarios));
+if isfinite(cfg12.scenario_limit)
+    scenario_count = min(cfg12.scenario_limit, numel(scenarios));
+else
+    scenario_count = numel(scenarios);
+end
 obs = repmat(make_empty_obs_local(), 0, 1);
 trial_index = 0;
 for iCenter = 1:numel(cfg12.center_az_list)
@@ -1124,11 +1150,39 @@ formal_trial_count = 0;
 if ~cfg12.quick_mode_flag && height(summary_tbl) > 0
     formal_trial_count = max(summary_tbl.num_trials);
 end
+smoke_ranking_pass_flag = 0;
+smoke_topK_pass_flag = 0;
+smoke_fixed_point_pass_flag = 0;
+smoke_recommended_fixed_point_format = 'not_recommended';
+proceed_to_rtl_score_core_smoke_flag = 0;
+ranking_pass_flag = best_info.ranking_pass_flag;
+topK_pass_flag = best_info.topK_pass_flag;
+fixed_point_pass_flag = best_info.fixed_point_pass_flag;
+recommended_fixed_point_format = best_info.recommended_fixed_point_format;
+blocker_if_any = best_info.blocker_if_any;
+proceed_to_rtl_score_core_flag = best_info.proceed_to_rtl_score_core_flag;
+if cfg12.quick_mode_flag
+    smoke_ranking_pass_flag = best_info.ranking_pass_flag;
+    smoke_topK_pass_flag = best_info.topK_pass_flag;
+    smoke_fixed_point_pass_flag = best_info.fixed_point_pass_flag;
+    smoke_recommended_fixed_point_format = best_info.recommended_fixed_point_format;
+    proceed_to_rtl_score_core_smoke_flag = double(smoke_fixed_point_pass_flag);
+    ranking_pass_flag = false;
+    topK_pass_flag = false;
+    fixed_point_pass_flag = false;
+    recommended_fixed_point_format = 'not_recommended_until_formal_validation';
+    blocker_if_any = 'formal_validation_not_run';
+    proceed_to_rtl_score_core_flag = 0;
+end
 pairs = { ...
     'step11_adapter_found_flag', adapter_info.step11_adapter_found_flag; ...
     'uses_step89_results_flag', 0; ...
     'formal_trial_count', formal_trial_count; ...
     'quick_mode_flag', cfg12.quick_mode_flag; ...
+    'smoke_ranking_pass_flag', smoke_ranking_pass_flag; ...
+    'smoke_topK_pass_flag', smoke_topK_pass_flag; ...
+    'smoke_fixed_point_pass_flag', smoke_fixed_point_pass_flag; ...
+    'smoke_recommended_fixed_point_format', smoke_recommended_fixed_point_format; ...
     'score_direction', cfg12.score_direction; ...
     'score_direction_inferred_flag', cfg12.score_direction_inferred_flag; ...
     'topK_default', cfg12.topK_default; ...
@@ -1139,12 +1193,13 @@ pairs = { ...
     'best_fixed_point_overall_topK_preservation', best_info.overall_topK_preservation; ...
     'best_fixed_point_argmax_changed_reliable', best_info.argmax_changed_reliable; ...
     'best_fixed_point_score_gap_flip_reliable', best_info.score_gap_flip_reliable; ...
-    'ranking_pass_flag', best_info.ranking_pass_flag; ...
-    'topK_pass_flag', best_info.topK_pass_flag; ...
-    'fixed_point_pass_flag', best_info.fixed_point_pass_flag; ...
-    'recommended_fixed_point_format', best_info.recommended_fixed_point_format; ...
-    'blocker_if_any', best_info.blocker_if_any; ...
-    'proceed_to_rtl_score_core_flag', best_info.proceed_to_rtl_score_core_flag; ...
+    'ranking_pass_flag', ranking_pass_flag; ...
+    'topK_pass_flag', topK_pass_flag; ...
+    'fixed_point_pass_flag', fixed_point_pass_flag; ...
+    'recommended_fixed_point_format', recommended_fixed_point_format; ...
+    'blocker_if_any', blocker_if_any; ...
+    'proceed_to_rtl_score_core_flag', proceed_to_rtl_score_core_flag; ...
+    'proceed_to_rtl_score_core_smoke_flag', proceed_to_rtl_score_core_smoke_flag; ...
     'proceed_to_full_fpga_backend_flag', best_info.proceed_to_full_fpga_backend_flag; ...
     'cache_memory_MB_total_est', total_MB; ...
     'BRAM36_total_est', total_BRAM; ...
@@ -1201,7 +1256,12 @@ end
 
 function recommendation_tbl = build_step12_recommendations_local(keypoints_tbl)
 fixed_pass = logical(str2double(get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag')));
-if fixed_pass
+quick_mode = logical(str2double(get_keypoint_value_local(keypoints_tbl, 'quick_mode_flag')));
+smoke_pass = logical(str2double(get_keypoint_value_local(keypoints_tbl, 'smoke_fixed_point_pass_flag')));
+if quick_mode && smoke_pass
+    recommendation = 'quick_smoke_passed_run_formal_validation_before_rtl';
+    rationale = 'quick smoke passed the adapter and metric chain, but formal fixed_point_pass_flag remains zero until formal validation runs';
+elseif fixed_pass
     recommendation = 'proceed_to_rtl_score_core_prototype_only';
     rationale = 'ranking and topK preservation passed for the recommended fixed-point score-core mode';
 else
@@ -1211,9 +1271,10 @@ end
 recommendation_tbl = table({recommendation}, {rationale}, ...
     {get_keypoint_value_local(keypoints_tbl, 'recommended_fixed_point_format')}, ...
     str2double(get_keypoint_value_local(keypoints_tbl, 'proceed_to_rtl_score_core_flag')), ...
+    str2double(get_keypoint_value_local(keypoints_tbl, 'proceed_to_rtl_score_core_smoke_flag')), ...
     str2double(get_keypoint_value_local(keypoints_tbl, 'proceed_to_full_fpga_backend_flag')), ...
     'VariableNames', {'recommendation', 'rationale', 'recommended_fixed_point_format', ...
-    'proceed_to_rtl_score_core_flag', 'proceed_to_full_fpga_backend_flag'});
+    'proceed_to_rtl_score_core_flag', 'proceed_to_rtl_score_core_smoke_flag', 'proceed_to_full_fpga_backend_flag'});
 end
 
 function [trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl] = build_step12_blocker_outputs_local(cfg12, adapter_info)
@@ -1259,6 +1320,50 @@ writetable(storage_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_stor
 writetable(bandwidth_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_bandwidth_estimate.csv'));
 writetable(worst_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_worst_cases.csv'));
 writetable(recommendation_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_recommendations.csv'));
+end
+
+function adapter_info_light = make_adapter_info_light_local(adapter_info)
+adapter_info_light = adapter_info;
+if isfield(adapter_info_light, 'context_metadata')
+    adapter_info_light = rmfield(adapter_info_light, 'context_metadata');
+end
+if isfield(adapter_info, 'context_metadata')
+    cm = adapter_info.context_metadata;
+    keep = {'route_name','W_method','B','N_elements','cache_type','cache_source', ...
+        'cache_memory_MB','C05_config_id','C05_config_name','lambda','created_by'};
+    context_metadata_light = struct();
+    for idx = 1:numel(keep)
+        if isfield(cm, keep{idx})
+            context_metadata_light.(keep{idx}) = cm.(keep{idx});
+        end
+    end
+    adapter_info_light.context_metadata_light = context_metadata_light;
+end
+adapter_info_light.light_note = 'Full obs/context/G_cache/candidate_table objects are intentionally excluded from the default light MAT.';
+end
+
+function manifest_path = write_step12_mat_manifest_local(cfg12, mat_light_path, mat_full_path)
+manifest_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_mat_manifest.md');
+fid = fopen(manifest_path, 'w', 'n', 'UTF-8');
+if fid < 0
+    error('step12:ManifestOpenFailed', 'Could not open manifest: %s', manifest_path);
+end
+cleanup = onCleanup(@() fclose(fid));
+fprintf(fid, '# Step12 MAT Manifest\n\n');
+fprintf(fid, '- Full MAT can be regenerated by running `setenv(''STEP12_SAVE_FULL_MAT'',''1'')` before `run_step12_beamspace_ml_fpga_boundary`.\n');
+fprintf(fid, '- Full MAT is not tracked by Git by default because it is reproducible and can exceed GitHub size-warning thresholds.\n');
+fprintf(fid, '- CSV, PNG, README, and the Chinese record document are the Git-tracked evidence artifacts.\n');
+fprintf(fid, '- Quick smoke test is not formal validation; check `quick_mode_flag`, `smoke_fixed_point_pass_flag`, and formal `fixed_point_pass_flag` in keypoints.\n\n');
+fprintf(fid, '## Current Run\n\n');
+fprintf(fid, '- quick_mode_flag: %d\n', cfg12.quick_mode_flag);
+fprintf(fid, '- save_full_mat_flag: %d\n', cfg12.save_full_mat_flag);
+fprintf(fid, '- light MAT: `%s`\n', mat_light_path);
+if cfg12.save_full_mat_flag
+    fprintf(fid, '- full MAT: `%s`\n', mat_full_path);
+else
+    fprintf(fid, '- full MAT: not generated in this run\n');
+end
+clear cleanup;
 end
 
 function plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12)
@@ -1421,15 +1526,23 @@ fprintf(fid, '\n## worst cases总结\n\n');
 write_markdown_table_from_table_local(fid, worst_tbl, 12);
 fprintf(fid, '\n## 最终判断\n\n');
 fprintf(fid, '- quick_mode_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'quick_mode_flag'));
+fprintf(fid, '- smoke_fixed_point_pass_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'smoke_fixed_point_pass_flag'));
+fprintf(fid, '- smoke_recommended_fixed_point_format：`%s`\n', get_keypoint_value_local(keypoints_tbl, 'smoke_recommended_fixed_point_format'));
 fprintf(fid, '- fixed_point_pass_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag'));
 fprintf(fid, '- recommended_fixed_point_format：`%s`\n', get_keypoint_value_local(keypoints_tbl, 'recommended_fixed_point_format'));
 fprintf(fid, '- proceed_to_rtl_score_core_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_rtl_score_core_flag'));
+fprintf(fid, '- proceed_to_rtl_score_core_smoke_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_rtl_score_core_smoke_flag'));
 fprintf(fid, '- proceed_to_full_fpga_backend_flag：%s\n\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_full_fpga_backend_flag'));
 if cfg12.quick_mode_flag
-    fprintf(fid, '本次为quick smoke test，不能写成正式FPGA可行性结论。\n\n');
+    fprintf(fid, '本次为 quick smoke test。smoke_fixed_point_pass_flag = %s 仅说明 Step12 adapter、量化流程、score ranking/topK 统计和结果输出链路打通；formal fixed_point_pass_flag 仍为 %s。下一步应先运行 formal validation，再决定是否进入 RTL score core prototype。\n\n', ...
+        get_keypoint_value_local(keypoints_tbl, 'smoke_fixed_point_pass_flag'), get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag'));
 end
 fprintf(fid, '## 下一步建议\n\n');
-fprintf(fid, '若fixed_point_pass_flag为1，下一步只建议进入RTL score core prototype；仍需独立完成bit-true HDL仿真、接口时序、cache访问调度和板级验证。\n');
+if cfg12.quick_mode_flag
+    fprintf(fid, 'quick mode 下不建议直接进入 RTL score core prototype。请先运行 formal validation，并检查正式 fixed_point_pass_flag、recommended_fixed_point_format 与 worst cases。\n');
+else
+    fprintf(fid, '若 formal fixed_point_pass_flag 为 1，下一步只建议进入 RTL score core prototype；仍需独立完成 bit-true HDL 仿真、接口时序、cache 访问调度和板级验证。\n');
+end
 end
 
 function write_markdown_table_from_table_local(fid, T, max_rows)
