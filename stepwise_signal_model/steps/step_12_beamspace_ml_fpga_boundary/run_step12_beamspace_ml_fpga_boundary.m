@@ -28,34 +28,40 @@ end
 
 if isempty(obs)
     [trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, ...
-        bandwidth_tbl, worst_tbl, recommendation_tbl] = build_step12_blocker_outputs_local(cfg12, adapter_info);
+        bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl] = build_step12_blocker_outputs_local(cfg12, adapter_info, modes);
     plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12);
 else
     [trial_tbl, topk_tbl, score_gap_tbl] = run_step12_quantization_trials_local(obs, modes, cfg12);
     summary_tbl = build_step12_summary_table_local(trial_tbl, modes, cfg12);
-    best_info = select_best_fixed_point_mode_local(summary_tbl, modes);
+    mode_selection_tbl = build_step12_mode_selection_table_local(summary_tbl, modes, obs(1), cfg12);
+    score_gap_bins_tbl = build_step12_score_gap_bins_local(trial_tbl, modes, cfg12);
+    best_info = select_best_fixed_point_mode_local(summary_tbl, modes, mode_selection_tbl, cfg12);
     storage_tbl = build_step12_storage_estimate_local(obs(1), best_info, cfg12);
     bandwidth_tbl = build_step12_bandwidth_estimate_local(obs(1), best_info, cfg12);
-    keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, cfg12);
+    keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12);
     worst_tbl = build_step12_worst_cases_local(trial_tbl);
     recommendation_tbl = build_step12_recommendations_local(keypoints_tbl);
     plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12);
 end
 
 write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, ...
-    storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl);
-doc_path = write_step12_record_doc_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, worst_tbl);
+    storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl);
+golden_manifest_path = export_step12_golden_vectors_local(obs, trial_tbl, keypoints_tbl, modes, cfg12);
+doc_path = write_step12_record_doc_v2_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, ...
+    worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path);
 adapter_info_light = make_adapter_info_light_local(adapter_info);
 mat_light_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_light.mat');
 save(mat_light_path, 'cfg12', 'adapter_info_light', 'modes', 'summary_tbl', ...
-    'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'storage_tbl', 'bandwidth_tbl', ...
-    'worst_tbl', 'recommendation_tbl', 'plot_paths', 'doc_path');
+    'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'score_gap_bins_tbl', 'storage_tbl', ...
+    'bandwidth_tbl', 'mode_selection_tbl', 'worst_tbl', 'recommendation_tbl', ...
+    'plot_paths', 'doc_path', 'golden_manifest_path');
 mat_full_path = '';
 if cfg12.save_full_mat_flag
     mat_full_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_result_full.mat');
     save(mat_full_path, 'cfg12', 'adapter_info', 'modes', 'obs', 'trial_tbl', 'summary_tbl', ...
-        'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'storage_tbl', 'bandwidth_tbl', ...
-        'worst_tbl', 'recommendation_tbl', 'plot_paths', 'doc_path', '-v7.3');
+        'keypoints_tbl', 'score_gap_tbl', 'topk_tbl', 'score_gap_bins_tbl', 'storage_tbl', ...
+        'bandwidth_tbl', 'mode_selection_tbl', 'worst_tbl', 'recommendation_tbl', ...
+        'plot_paths', 'doc_path', 'golden_manifest_path', '-v7.3');
 end
 manifest_path = write_step12_mat_manifest_local(cfg12, mat_light_path, mat_full_path);
 
@@ -91,21 +97,26 @@ cfg12.max_kendall_n = 300;
 cfg12.default_component_bits = 16;
 cfg12.quick_mode_flag = strcmp(getenv('STEP12_QUICK_MODE'), '1');
 cfg12.save_full_mat_flag = strcmp(getenv('STEP12_SAVE_FULL_MAT'), '1');
+cfg12.export_golden_vectors_flag = strcmp(getenv('STEP12_EXPORT_GOLDEN_VECTORS'), '1');
+cfg12.golden_vector_limit = parse_env_scalar_local('STEP12_GOLDEN_VECTOR_LIMIT', 256);
+cfg12.run_tag = strtrim(getenv('STEP12_RUN_TAG'));
+cfg12.min_formal_obs = parse_env_scalar_local('STEP12_MIN_FORMAL_OBS', 300);
+cfg12.run_step11_full_backend_diagnostic_flag = cfg12.quick_mode_flag || strcmp(getenv('STEP12_RUN_FULL_STEP11_BACKEND'), '1');
+cfg12.enable_static_quant_cache_flag = ~strcmp(getenv('STEP12_DISABLE_STATIC_QUANT_CACHE'), '1');
 if cfg12.quick_mode_flag
     cfg12.center_az_list = 0;
     cfg12.scenario_limit = 2;
     cfg12.trials_per_scenario = 1;
     cfg12.formal_trials_per_scenario = NaN;
 else
-    cfg12.center_az_list = [0, 4, 8, 15];
-    cfg12.scenario_limit = Inf;
-    formal_trials = str2double(getenv('STEP12_FORMAL_TRIALS_PER_SCENARIO'));
-    if isnan(formal_trials)
-        formal_trials = 30;
-    end
+    cfg12.center_az_list = parse_env_numeric_list_local('STEP12_FORMAL_CENTER_AZ_LIST', [0, 4, 8, 15]);
+    cfg12.scenario_limit = parse_env_scalar_local('STEP12_FORMAL_SCENARIO_LIMIT', Inf);
+    formal_trials = parse_env_scalar_local('STEP12_FORMAL_TRIALS_PER_SCENARIO', 30);
     cfg12.formal_trials_per_scenario = max(1, floor(formal_trials));
     cfg12.trials_per_scenario = cfg12.formal_trials_per_scenario;
+    cfg12.min_formal_obs = max(1, floor(cfg12.min_formal_obs));
 end
+cfg12.golden_vector_limit = max(1, floor(cfg12.golden_vector_limit));
 cfg12.rng_seed = 20260611;
 cfg12.formal_trial_count = 0;
 cfg12.step11_entry = 'step11_7_final_cached_c05_beamspace_ml_backend';
@@ -126,7 +137,12 @@ project_dir = fileparts(steps_dir);
 cfg12.step_dir = step_dir;
 cfg12.steps_dir = steps_dir;
 cfg12.project_dir = project_dir;
-cfg12.result_dir = fullfile(step_dir, cfg12.result_dir_name);
+cfg12.result_root_dir = fullfile(step_dir, cfg12.result_dir_name);
+if isempty(cfg12.run_tag)
+    cfg12.result_dir = cfg12.result_root_dir;
+else
+    cfg12.result_dir = fullfile(cfg12.result_root_dir, cfg12.run_tag);
+end
 if exist(cfg12.result_dir, 'dir') ~= 7
     mkdir(cfg12.result_dir);
 end
@@ -148,6 +164,7 @@ log_lines = {};
 log_lines = append_log_local(log_lines, 'Script: %s', script_path);
 log_lines = append_log_local(log_lines, 'Project directory: %s', project_dir);
 log_lines = append_log_local(log_lines, 'Result directory: %s', cfg12.result_dir);
+log_lines = append_log_local(log_lines, 'Run tag: %s', cfg12.run_tag);
 end
 
 function adapter_info = inspect_step11_adapter_local(cfg12)
@@ -245,8 +262,12 @@ for iCenter = 1:numel(cfg12.center_az_list)
             [input, truth, input_meta] = build_step11_7_frontend_like_input(context, scenario, center_az, iTrial, ...
                 'FrontendState', 'controlled_pair2d_candidate', 'L', context.L_default, ...
                 'CenterIndex', iCenter, 'ScenarioIndex', iScenario);
-            backend_opts = struct('use_cache', true, 'run_direct_reference', false, 'allow_cache_fallback', true, 'runtime_timing', false);
-            out = step11_7_final_cached_c05_beamspace_ml_backend(input, context, backend_opts);
+            if cfg12.run_step11_full_backend_diagnostic_flag
+                backend_opts = struct('use_cache', true, 'run_direct_reference', false, 'allow_cache_fallback', true, 'runtime_timing', false);
+                out = step11_7_final_cached_c05_beamspace_ml_backend(input, context, backend_opts);
+            else
+                out = make_step12_backend_stub_local(input);
+            end
             obs_now = build_step12_observation_local(trial_index, scenario, iCenter, iScenario, iTrial, ...
                 input, truth, input_meta, out, context, context_metadata, cfg12);
             obs(end + 1, 1) = obs_now; %#ok<AGROW>
@@ -260,16 +281,37 @@ end
 
 function scenarios = build_step12_scenarios_local()
 scenarios = [ ...
-    make_scenario_local('easy_noncoherent', 0.00, 0, 1.0, 1.27, 0.67, 30); ...
-    make_scenario_local('strong_coherent', 0.99, 5, 1.0, 1.27, 0.37, 30); ...
-    make_scenario_local('hard_phase', 0.99, 150, 1.0, 0.83, 0.37, 30); ...
-    make_scenario_local('weak_secondary', 0.99, 150, 0.3, 0.83, 0.37, 30); ...
-    make_scenario_local('low_snr_hard', 1.00, 150, 0.3, 0.83, 0.37, 20)];
+    make_scenario_local('easy_noncoherent', 0.00, 0, 1.0, 1.27, 0.67, 30, 'easy'); ...
+    make_scenario_local('strong_coherent', 0.99, 5, 1.0, 1.27, 0.37, 30, 'coherent'); ...
+    make_scenario_local('hard_phase', 0.99, 150, 1.0, 0.83, 0.37, 30, 'hard_phase'); ...
+    make_scenario_local('weak_secondary', 0.99, 150, 0.3, 0.83, 0.37, 30, 'weak_secondary'); ...
+    make_scenario_local('low_snr_hard', 1.00, 150, 0.3, 0.83, 0.37, 20, 'low_snr'); ...
+    make_scenario_local('near_tie_close_sep', 0.98, 90, 0.95, 0.41, 0.19, 28, 'near_tie'); ...
+    make_scenario_local('medium_beta_coherent', 0.95, 45, 0.6, 0.83, 0.37, 26, 'medium_beta'); ...
+    make_scenario_local('large_el_pair', 0.70, 20, 1.0, 1.27, 1.09, 30, 'large_el_pair'); ...
+    make_scenario_local('cache_boundary_center', 0.90, 120, 0.8, 1.05, 0.67, 24, 'cache_boundary'); ...
+    make_scenario_local('low_margin_score_gap', 0.995, 175, 0.85, 0.41, 0.19, 22, 'low_margin')];
 end
 
-function row = make_scenario_local(name, rho, phase_deg, beta, az_sep_deg, el_sep_deg, snr_db)
+function row = make_scenario_local(name, rho, phase_deg, beta, az_sep_deg, el_sep_deg, snr_db, difficulty)
 row = struct('scenario_name', name, 'rho', rho, 'phase_deg', phase_deg, 'beta', beta, ...
-    'az_sep_deg', az_sep_deg, 'el_sep_deg', el_sep_deg, 'snr_db', snr_db);
+    'az_sep_deg', az_sep_deg, 'el_sep_deg', el_sep_deg, 'snr_db', snr_db, ...
+    'expected_difficulty_label', difficulty);
+end
+
+function out = make_step12_backend_stub_local(input)
+out = struct();
+out.status = 'step12_score_core_adapter_only';
+out.method_name = 'step12_nonintrusive_score_core_adapter';
+out.confidence = '';
+out.boundary_flag = '';
+out.fallback_used = false;
+out.used_cache = true;
+out.cache_miss_count = 0;
+out.selectedCenterColumn = safe_input_field_local(input, 'selectedCenterColumn', NaN);
+out.selectedCenterAz = safe_input_field_local(input, 'selectedCenterAz', NaN);
+out.error_message = 'Step12 formal mode does not run the full Step11.7 backend unless STEP12_RUN_FULL_STEP11_BACKEND=1.';
+out.debug = struct('step12_adapter_only_flag', true);
 end
 
 function obs = make_empty_obs_local()
@@ -351,9 +393,11 @@ obs.candidate_ids = score_pack.candidate_ids;
 obs.score_baseline = score_pack.score;
 obs.top_candidates_baseline = score_pack.top_candidates;
 obs.policy_baseline = score_pack.policy.policy_name;
-obs.confidence_baseline = safe_field_local(out, 'confidence', safe_field_local(score_pack.policy, 'confidence', ''));
+obs.confidence_baseline = nonempty_or_fallback_local(safe_field_local(out, 'confidence', ''), ...
+    safe_field_local(score_pack.policy, 'confidence', ''));
 obs.fallback_baseline = logical(safe_field_local(out, 'fallback_used', false));
-obs.boundary_baseline = safe_field_local(out, 'boundary_flag', safe_field_local(score_pack.policy, 'boundary_flag', ''));
+obs.boundary_baseline = nonempty_or_fallback_local(safe_field_local(out, 'boundary_flag', ''), ...
+    safe_field_local(score_pack.policy, 'boundary_flag', ''));
 obs.score_direction = cfg12.score_direction;
 obs.whitening_info = score_pack.whitening_info;
 obs.cache_lookup_info = score_pack.cache_lookup_info;
@@ -464,23 +508,41 @@ function score = score_candidate_table_from_grids_local(Z_use, Rz, G_use_grid, c
 N = height(candidate_table);
 score = nan(N, 1);
 B = size(G_use_grid, 1);
-for idx = 1:N
-    g1 = G_use_grid(:, candidate_table.iAz1(idx), candidate_table.iEl1(idx));
-    g2 = G_use_grid(:, candidate_table.iAz2(idx), candidate_table.iEl2(idx));
-    G = [g1, g2];
-    if use_quantized_rz
-        GHG = G' * G + reg * eye(2);
-        P_left = G / GHG;
-        score(idx) = real(trace((P_left * G') * Rz));
-    else
-        score(idx) = beamspace_dml_score(Z_use, G, 'reg', reg);
-    end
-    if ~isfinite(score(idx))
-        score(idx) = -Inf;
-    end
-end
 if B < 1
     score(:) = -Inf;
+    return;
+end
+if isempty(Rz)
+    Rz = Z_use * Z_use';
+end
+
+% Vectorized Step11 DML identity:
+% beamspace_dml_score(Z,G)=real(trace((G/(G'*G+reg*I))*G'*(Z*Z'))).
+% For pair2d candidates K=2, this evaluates the same objective without
+% changing the Step11 backend or score definition.
+nAz = size(G_use_grid, 2);
+idx1 = candidate_table.iAz1 + (candidate_table.iEl1 - 1) * nAz;
+idx2 = candidate_table.iAz2 + (candidate_table.iEl2 - 1) * nAz;
+G_flat = reshape(G_use_grid, B, []);
+G1 = G_flat(:, idx1);
+G2 = G_flat(:, idx2);
+
+a = sum(conj(G1) .* G1, 1) + reg;
+d = sum(conj(G2) .* G2, 1) + reg;
+b = sum(conj(G1) .* G2, 1);
+RzG1 = Rz * G1;
+RzG2 = Rz * G2;
+k11 = sum(conj(G1) .* RzG1, 1);
+k22 = sum(conj(G2) .* RzG2, 1);
+k12 = sum(conj(G1) .* RzG2, 1);
+k21 = sum(conj(G2) .* RzG1, 1);
+detH = a .* d - b .* conj(b);
+small = abs(detH) <= eps(max(abs(detH)));
+detH(small) = NaN;
+score = real((d .* k11 + a .* k22 - b .* k21 - conj(b) .* k12) ./ detH).';
+score(~isfinite(score)) = -Inf;
+if use_quantized_rz
+    score = double(score);
 end
 end
 
@@ -567,42 +629,25 @@ function score_out = run_step11_ml_score_adapter_local(obs, mode, cfg12)
 score_out = struct();
 score_out.mode_name = mode.name;
 score_out.score_direction = cfg12.score_direction;
-qdiag = make_qdiag_template_local();
 context = obs.context;
-W_use = obs.W;
 Y_use = obs.Y;
-G_raw = obs.G_grid_raw;
-
 if mode.is_float_reference
-    W_use = single(W_use);
     Y_use = single(Y_use);
-    G_raw = single(G_raw);
 end
-
-if isfinite(mode.W_bits)
-    [W_use, qdiag.W] = quantize_complex_block_float_local(W_use, mode.W_bits, 'W');
-    grid = precompute_beamspace_azel_grid(W_use, obs.geom.x_actual, obs.geom.y_actual, obs.geom.z_actual, ...
-        obs.az_grid, obs.el_values, context.lambda, 'PhaseFactor', context.phase_factor, 'PhaseSign', context.phase_sign);
-    G_raw = grid.G_grid;
-end
-
-if isfinite(mode.Gcache_bits)
-    [G_raw, qdiag.Gcache] = quantize_complex_block_float_local(G_raw, mode.Gcache_bits, 'G_cache');
-end
+static_pack = get_step12_static_quant_pack_local(obs, mode, cfg12);
+qdiag = static_pack.qdiag;
+W_use = static_pack.W_use;
+G_use_grid = static_pack.G_use_grid;
 
 Z_raw = W_use' * Y_use;
 if mode.is_float_reference
     Z_raw = single(Z_raw);
 end
 
-B = size(W_use, 2);
-[Z_use, G_flat_use, ~] = apply_beamspace_whitening(Z_raw, reshape(G_raw, B, []), W_use, context.search_opts.whitening_mode, ...
-    'eps_reg', max(context.search_opts.reg, 1e-12));
-G_use_grid = reshape(G_flat_use, size(G_raw));
+Z_use = static_pack.Cwhiten * Z_raw;
 
 if mode.is_float_reference
     Z_use = single(Z_use);
-    G_use_grid = single(G_use_grid);
 end
 
 if isfinite(mode.Z_bits)
@@ -649,6 +694,70 @@ qdiag.Gcache.name = 'G_cache';
 qdiag.Z.name = 'Z';
 qdiag.Rz.name = 'Rz';
 qdiag.score.name = 'score';
+end
+
+function static_pack = get_step12_static_quant_pack_local(obs, mode, cfg12)
+persistent cache_map
+if isempty(cache_map) || ~isa(cache_map, 'containers.Map')
+    cache_map = containers.Map('KeyType', 'char', 'ValueType', 'any');
+end
+key = static_quant_cache_key_local(obs, mode);
+if cfg12.enable_static_quant_cache_flag && isKey(cache_map, key)
+    static_pack = cache_map(key);
+    return;
+end
+
+qdiag = make_qdiag_template_local();
+context = obs.context;
+W_use = obs.W;
+G_raw = obs.G_grid_raw;
+if mode.is_float_reference
+    W_use = single(W_use);
+    G_raw = single(G_raw);
+end
+
+if isfinite(mode.W_bits)
+    [W_use, qdiag.W] = quantize_complex_block_float_local(W_use, mode.W_bits, 'W');
+    grid = precompute_beamspace_azel_grid(W_use, obs.geom.x_actual, obs.geom.y_actual, obs.geom.z_actual, ...
+        obs.az_grid, obs.el_values, context.lambda, 'PhaseFactor', context.phase_factor, 'PhaseSign', context.phase_sign);
+    G_raw = grid.G_grid;
+end
+
+if isfinite(mode.Gcache_bits)
+    [G_raw, qdiag.Gcache] = quantize_complex_block_float_local(G_raw, mode.Gcache_bits, 'G_cache');
+end
+
+B = size(W_use, 2);
+I = eye(B);
+[I_white, G_flat_use, ~] = apply_beamspace_whitening(I, reshape(G_raw, B, []), W_use, context.search_opts.whitening_mode, ...
+    'eps_reg', max(context.search_opts.reg, 1e-12));
+G_use_grid = reshape(G_flat_use, size(G_raw));
+if mode.is_float_reference
+    I_white = single(I_white);
+    G_use_grid = single(G_use_grid);
+end
+
+static_pack = struct();
+static_pack.W_use = W_use;
+static_pack.G_use_grid = G_use_grid;
+static_pack.Cwhiten = I_white;
+static_pack.qdiag = qdiag;
+if cfg12.enable_static_quant_cache_flag
+    cache_map(key) = static_pack;
+end
+end
+
+function key = static_quant_cache_key_local(obs, mode)
+key = sprintf('center_%+.10f_mode_%s_W_%s_G_%s_float_%d', obs.center_az, mode.name, ...
+    bit_key_local(mode.W_bits), bit_key_local(mode.Gcache_bits), mode.is_float_reference);
+end
+
+function text = bit_key_local(bits)
+if isfinite(bits)
+    text = sprintf('%d', bits);
+else
+    text = 'none';
+end
 end
 
 function [xq, diag] = quantize_complex_block_float_local(x, bits, name)
@@ -962,7 +1071,8 @@ for iMode = 1:numel(modes)
         row.reliable_score_gap_sign_flip_rate == 0 && row.argmax_changed_rate_on_reliable_margin <= 0.001;
     row.topK_pass_flag = row.reliable_topK_set_preservation_rate >= 0.995 && ...
         row.overall_topK_set_preservation_rate >= 0.980 && row.reliable_topK_miss_rate <= 0.005;
-    row.fixed_point_pass_flag = mode.is_fixed_candidate && row.ranking_pass_flag && row.topK_pass_flag;
+    formal_count_ok = (~cfg12.quick_mode_flag) && row.num_trials >= cfg12.min_formal_obs;
+    row.fixed_point_pass_flag = mode.is_fixed_candidate && row.ranking_pass_flag && row.topK_pass_flag && formal_count_ok;
     if row.reliable_trial_count == 0
         row.ranking_pass_flag = false;
         row.topK_pass_flag = false;
@@ -988,18 +1098,192 @@ row = struct('quant_mode', '', 'is_fixed_candidate', false, 'recommendation_cand
     'topK_pass_flag', false, 'fixed_point_pass_flag', false, 'mode_storage_cost_bits', NaN);
 end
 
-function best_info = select_best_fixed_point_mode_local(summary_tbl, modes)
+function mode_selection_tbl = build_step12_mode_selection_table_local(summary_tbl, modes, obs, cfg12)
+template = make_mode_selection_row_template_local();
+rows = repmat(template, 0, 1);
+if isempty(summary_tbl) || height(summary_tbl) == 0
+    mode_selection_tbl = struct2table(rows);
+    return;
+end
+for idx = 1:height(summary_tbl)
+    mode_name = char(summary_tbl.quant_mode{idx});
+    mode = mode_by_name_local(modes, mode_name);
+    bits = mode.storage_component_bits;
+    if ~(isfinite(bits) && bits > 0)
+        bits = cfg12.default_component_bits;
+    end
+    estimate = estimate_storage_totals_for_bits_local(obs, bits, cfg12);
+    row = template;
+    row.quant_mode = mode_name;
+    row.is_fixed_candidate = logical(summary_tbl.is_fixed_candidate(idx));
+    row.is_recommendation_candidate = logical(summary_tbl.recommendation_candidate_flag(idx));
+    row.component_bits = bits;
+    row.formal_trial_count = double(summary_tbl.num_trials(idx)) * double(~cfg12.quick_mode_flag);
+    row.ranking_pass_flag = logical(summary_tbl.ranking_pass_flag(idx));
+    row.topK_pass_flag = logical(summary_tbl.topK_pass_flag(idx));
+    row.fixed_point_pass_flag = logical(summary_tbl.fixed_point_pass_flag(idx));
+    row.reliable_top1_preservation_rate = summary_tbl.reliable_top1_preservation_rate(idx);
+    row.reliable_topK_set_preservation_rate = summary_tbl.reliable_topK_set_preservation_rate(idx);
+    row.overall_topK_set_preservation_rate = summary_tbl.overall_topK_set_preservation_rate(idx);
+    row.reliable_topK_miss_rate = summary_tbl.reliable_topK_miss_rate(idx);
+    row.argmax_changed_rate_on_reliable_margin = summary_tbl.argmax_changed_rate_on_reliable_margin(idx);
+    row.reliable_score_gap_sign_flip_rate = summary_tbl.reliable_score_gap_sign_flip_rate(idx);
+    row.max_candidate_score_rel_l2_error = summary_tbl.max_candidate_score_rel_l2_error(idx);
+    row.max_score_gap_rel_error = summary_tbl.max_score_gap_rel_error(idx);
+    row.max_clip_rate = summary_tbl.max_clip_rate(idx);
+    row.max_overflow_rate = summary_tbl.max_overflow_rate(idx);
+    row.estimated_total_MB = estimate.total_MB;
+    row.estimated_BRAM36 = estimate.BRAM36;
+    row.estimated_URAM288 = estimate.URAM288;
+    row.engineering_rank = NaN;
+    row.selection_reason = selection_reason_for_row_local(row, cfg12);
+    rows(end + 1, 1) = row; %#ok<AGROW>
+end
+
+mode_selection_tbl = struct2table(rows);
+pass_mask = logical(mode_selection_tbl.fixed_point_pass_flag) & logical(mode_selection_tbl.is_fixed_candidate);
+if any(pass_mask)
+    pass_idx = find(pass_mask);
+    [~, order] = sortrows([mode_selection_tbl.estimated_total_MB(pass_idx), ...
+        mode_selection_tbl.component_bits(pass_idx), pass_idx(:)], [1, 2, 3]);
+    for rank = 1:numel(order)
+        mode_selection_tbl.engineering_rank(pass_idx(order(rank))) = rank;
+    end
+end
+end
+
+function row = make_mode_selection_row_template_local()
+row = struct('quant_mode', '', 'is_fixed_candidate', false, 'is_recommendation_candidate', false, ...
+    'component_bits', NaN, 'formal_trial_count', 0, 'ranking_pass_flag', false, ...
+    'topK_pass_flag', false, 'fixed_point_pass_flag', false, ...
+    'reliable_top1_preservation_rate', NaN, 'reliable_topK_set_preservation_rate', NaN, ...
+    'overall_topK_set_preservation_rate', NaN, 'reliable_topK_miss_rate', NaN, ...
+    'argmax_changed_rate_on_reliable_margin', NaN, 'reliable_score_gap_sign_flip_rate', NaN, ...
+    'max_candidate_score_rel_l2_error', NaN, 'max_score_gap_rel_error', NaN, ...
+    'max_clip_rate', NaN, 'max_overflow_rate', NaN, 'estimated_total_MB', NaN, ...
+    'estimated_BRAM36', NaN, 'estimated_URAM288', NaN, 'engineering_rank', NaN, ...
+    'selection_reason', '');
+end
+
+function reason = selection_reason_for_row_local(row, cfg12)
+if ~row.is_fixed_candidate
+    reason = 'not_fixed_candidate';
+elseif cfg12.quick_mode_flag
+    reason = 'quick_mode_not_formal';
+elseif row.formal_trial_count < cfg12.min_formal_obs
+    reason = 'formal_trial_count_below_minimum';
+elseif ~row.ranking_pass_flag
+    reason = 'ranking_not_closed';
+elseif ~row.topK_pass_flag
+    reason = 'topK_not_closed';
+elseif row.fixed_point_pass_flag
+    reason = 'formal_ranking_topK_passed';
+else
+    reason = 'not_recommendation_candidate_or_not_closed';
+end
+end
+
+function estimate = estimate_storage_totals_for_bits_local(obs, bits, cfg12)
+if isempty(obs) || ~isstruct(obs) || isempty(obs.W)
+    estimate = struct('total_MB', NaN, 'BRAM36', NaN, 'URAM288', NaN);
+    return;
+end
+num_candidates = max(obs.num_candidates, 1);
+B = size(obs.W, 2);
+topK = min(cfg12.topK_default, num_candidates);
+num_complex = [numel(obs.W), numel(obs.context.cache.G_grid), numel(obs.Z_use), ...
+    numel(obs.Rz), num_candidates, topK, num_candidates];
+total_bits = sum(num_complex) * 2 * bits;
+estimate = struct();
+estimate.total_MB = total_bits / 8 / 1024 / 1024;
+estimate.BRAM36 = ceil(total_bits / 36864);
+estimate.URAM288 = ceil(total_bits / 294912);
+end
+
+function score_gap_bins_tbl = build_step12_score_gap_bins_local(trial_tbl, modes, cfg12)
+template = make_gap_bin_row_template_local();
+rows = repmat(template, 0, 1);
+if isempty(trial_tbl) || height(trial_tbl) == 0
+    score_gap_bins_tbl = struct2table(rows);
+    return;
+end
+bin_names = {'gap_bin_very_weak', 'gap_bin_weak', 'gap_bin_transition', 'gap_bin_reliable'};
+for iMode = 1:numel(modes)
+    mode_name = modes(iMode).name;
+    Tm = trial_tbl(strcmp(trial_tbl.quant_mode, mode_name), :);
+    for iBin = 1:numel(bin_names)
+        mask = gap_bin_mask_local(Tm.score_gap_norm_baseline, bin_names{iBin});
+        Tb = Tm(mask, :);
+        row = template;
+        row.quant_mode = mode_name;
+        row.gap_bin = bin_names{iBin};
+        row.num_trials = height(Tb);
+        row.top1_preservation_rate = mean_or_nan_local(double(Tb.top1_same_flag));
+        row.topK_set_preservation_rate = mean_or_nan_local(double(Tb.topK_set_same_flag));
+        row.topK_miss_rate = mean_or_nan_local(Tb.topK_miss_rate);
+        row.argmax_changed_rate = mean_or_nan_local(double(Tb.argmax_changed_flag));
+        row.score_gap_sign_flip_rate = mean_or_nan_local(double(Tb.score_gap_sign_flip_flag));
+        row.mean_score_gap_rel_error = mean_or_nan_local(Tb.score_gap_rel_error);
+        row.p95_score_gap_rel_error = percentile_local(Tb.score_gap_rel_error, 95);
+        row.max_score_gap_rel_error = max_or_nan_local(Tb.score_gap_rel_error);
+        row.same_policy_rate = mean_or_nan_local(double(Tb.same_policy_flag));
+        row.same_confidence_rate = mean_or_nan_local(double(Tb.same_confidence_flag));
+        row.same_boundary_rate = mean_or_nan_local(double(Tb.boundary_state_same_flag));
+        rows(end + 1, 1) = row; %#ok<AGROW>
+    end
+end
+score_gap_bins_tbl = struct2table(rows);
+end
+
+function row = make_gap_bin_row_template_local()
+row = struct('quant_mode', '', 'gap_bin', '', 'num_trials', 0, ...
+    'top1_preservation_rate', NaN, 'topK_set_preservation_rate', NaN, ...
+    'topK_miss_rate', NaN, 'argmax_changed_rate', NaN, ...
+    'score_gap_sign_flip_rate', NaN, 'mean_score_gap_rel_error', NaN, ...
+    'p95_score_gap_rel_error', NaN, 'max_score_gap_rel_error', NaN, ...
+    'same_policy_rate', NaN, 'same_confidence_rate', NaN, 'same_boundary_rate', NaN);
+end
+
+function mask = gap_bin_mask_local(gap_norm, bin_name)
+switch bin_name
+    case 'gap_bin_very_weak'
+        mask = gap_norm < 1e-5;
+    case 'gap_bin_weak'
+        mask = gap_norm >= 1e-5 & gap_norm < 1e-4;
+    case 'gap_bin_transition'
+        mask = gap_norm >= 1e-4 & gap_norm < 1e-3;
+    case 'gap_bin_reliable'
+        mask = gap_norm >= 1e-3;
+    otherwise
+        mask = false(size(gap_norm));
+end
+end
+
+function best_info = select_best_fixed_point_mode_local(summary_tbl, modes, mode_selection_tbl, cfg12)
 best_info = struct('mode_name', 'not_recommended', 'recommended_fixed_point_format', 'not_recommended', ...
     'ranking_pass_flag', false, 'topK_pass_flag', false, 'fixed_point_pass_flag', false, ...
     'blocker_if_any', 'ml_score_ranking_or_topK_not_closed', 'component_bits', 16, ...
     'proceed_to_rtl_score_core_flag', 0, 'proceed_to_full_fpga_backend_flag', 0, ...
     'reliable_top1_preservation', NaN, 'reliable_topK_preservation', NaN, ...
-    'overall_topK_preservation', NaN, 'argmax_changed_reliable', NaN, 'score_gap_flip_reliable', NaN);
+    'overall_topK_preservation', NaN, 'argmax_changed_reliable', NaN, 'score_gap_flip_reliable', NaN, ...
+    'minimum_passing_mode', 'none', 'engineering_recommended_fixed_point_format', 'not_recommended', ...
+    'mode_selection_reason', 'no_passing_fixed_candidate');
 if isempty(summary_tbl) || height(summary_tbl) == 0
     return;
 end
-mask = logical(summary_tbl.fixed_point_pass_flag) & logical(summary_tbl.recommendation_candidate_flag);
-if ~any(mask)
+if cfg12.quick_mode_flag
+    best_info = select_smoke_fixed_point_mode_local(best_info, summary_tbl, modes);
+    return;
+end
+formal_trial_count = max(summary_tbl.num_trials);
+if formal_trial_count < cfg12.min_formal_obs
+    best_info.blocker_if_any = 'formal_trial_count_below_minimum';
+    best_info.mode_selection_reason = 'formal_trial_count_below_minimum';
+    best_info = best_available_metric_row_local(best_info, summary_tbl);
+    return;
+end
+pass_mask = logical(mode_selection_tbl.fixed_point_pass_flag) & logical(mode_selection_tbl.is_fixed_candidate);
+if ~any(pass_mask)
     fixed_mask = logical(summary_tbl.is_fixed_candidate);
     if any(fixed_mask)
         [~, idx] = max(summary_tbl.reliable_topK_set_preservation_rate(fixed_mask));
@@ -1014,16 +1298,32 @@ if ~any(mask)
     end
     return;
 end
-pass_indices = find(mask);
-cost = summary_tbl.mode_storage_cost_bits(mask);
-[~, rel_order] = sort(cost, 'ascend');
-best_idx = pass_indices(rel_order(1));
+pass_indices = find(pass_mask);
+[~, min_order] = sortrows([mode_selection_tbl.estimated_total_MB(pass_indices), ...
+    mode_selection_tbl.component_bits(pass_indices), pass_indices(:)], [1, 2, 3]);
+minimum_idx = pass_indices(min_order(1));
+best_info.minimum_passing_mode = char(mode_selection_tbl.quant_mode{minimum_idx});
+
+preferred = {'combined_int16', 'combined_int18', 'mixed_Z16_G24_Rz24', 'combined_int24'};
+best_mode = '';
+for idx = 1:numel(preferred)
+    hit = find(strcmp(mode_selection_tbl.quant_mode, preferred{idx}) & pass_mask, 1);
+    if ~isempty(hit)
+        best_mode = preferred{idx};
+        break;
+    end
+end
+if isempty(best_mode)
+    best_mode = best_info.minimum_passing_mode;
+end
+best_idx = find(strcmp(summary_tbl.quant_mode, best_mode), 1);
 best_row = summary_tbl(best_idx, :);
 best_info.mode_name = char(best_row.quant_mode{1});
 best_info.recommended_fixed_point_format = best_info.mode_name;
+best_info.engineering_recommended_fixed_point_format = best_info.mode_name;
 best_info.ranking_pass_flag = logical(best_row.ranking_pass_flag(1));
 best_info.topK_pass_flag = logical(best_row.topK_pass_flag(1));
-best_info.fixed_point_pass_flag = best_info.ranking_pass_flag && best_info.topK_pass_flag;
+best_info.fixed_point_pass_flag = best_info.ranking_pass_flag && best_info.topK_pass_flag && formal_trial_count >= cfg12.min_formal_obs;
 best_info.blocker_if_any = 'none';
 best_info.component_bits = mode_bits_by_name_local(modes, best_info.mode_name);
 best_info.proceed_to_rtl_score_core_flag = double(best_info.fixed_point_pass_flag);
@@ -1033,6 +1333,68 @@ best_info.reliable_topK_preservation = best_row.reliable_topK_set_preservation_r
 best_info.overall_topK_preservation = best_row.overall_topK_set_preservation_rate(1);
 best_info.argmax_changed_reliable = best_row.argmax_changed_rate_on_reliable_margin(1);
 best_info.score_gap_flip_reliable = best_row.reliable_score_gap_sign_flip_rate(1);
+if strcmp(best_info.minimum_passing_mode, best_info.engineering_recommended_fixed_point_format)
+    best_info.mode_selection_reason = 'minimum_passing_fixed_candidate_selected';
+else
+    best_info.mode_selection_reason = sprintf('minimum_passing_mode_%s_but_engineering_priority_selected_%s', ...
+        best_info.minimum_passing_mode, best_info.engineering_recommended_fixed_point_format);
+end
+end
+
+function best_info = select_smoke_fixed_point_mode_local(best_info, summary_tbl, modes)
+mask = logical(summary_tbl.is_fixed_candidate) & logical(summary_tbl.recommendation_candidate_flag) & ...
+    logical(summary_tbl.ranking_pass_flag) & logical(summary_tbl.topK_pass_flag);
+if any(mask)
+    indices = find(mask);
+    cost = summary_tbl.mode_storage_cost_bits(mask);
+    [~, order] = sort(cost, 'ascend');
+    idx = indices(order(1));
+    row = summary_tbl(idx, :);
+    best_info.mode_name = char(row.quant_mode{1});
+    best_info.recommended_fixed_point_format = best_info.mode_name;
+    best_info.engineering_recommended_fixed_point_format = best_info.mode_name;
+    best_info.ranking_pass_flag = logical(row.ranking_pass_flag(1));
+    best_info.topK_pass_flag = logical(row.topK_pass_flag(1));
+    best_info.fixed_point_pass_flag = best_info.ranking_pass_flag && best_info.topK_pass_flag;
+    best_info.blocker_if_any = 'none';
+    best_info.component_bits = mode_bits_by_name_local(modes, best_info.mode_name);
+    best_info.reliable_top1_preservation = row.reliable_top1_preservation_rate(1);
+    best_info.reliable_topK_preservation = row.reliable_topK_set_preservation_rate(1);
+    best_info.overall_topK_preservation = row.overall_topK_set_preservation_rate(1);
+    best_info.argmax_changed_reliable = row.argmax_changed_rate_on_reliable_margin(1);
+    best_info.score_gap_flip_reliable = row.reliable_score_gap_sign_flip_rate(1);
+    best_info.mode_selection_reason = 'quick_smoke_metric_chain_passed';
+else
+    best_info = best_available_metric_row_local(best_info, summary_tbl);
+    best_info.mode_selection_reason = 'quick_smoke_metric_chain_not_closed';
+end
+end
+
+function best_info = best_available_metric_row_local(best_info, summary_tbl)
+fixed_mask = logical(summary_tbl.is_fixed_candidate);
+if ~any(fixed_mask)
+    return;
+end
+score = summary_tbl.reliable_topK_set_preservation_rate;
+score(~fixed_mask) = -Inf;
+[~, idx] = max(score);
+best_row = summary_tbl(idx, :);
+best_info.mode_name = char(best_row.quant_mode{1});
+best_info.reliable_top1_preservation = best_row.reliable_top1_preservation_rate(1);
+best_info.reliable_topK_preservation = best_row.reliable_topK_set_preservation_rate(1);
+best_info.overall_topK_preservation = best_row.overall_topK_set_preservation_rate(1);
+best_info.argmax_changed_reliable = best_row.argmax_changed_rate_on_reliable_margin(1);
+best_info.score_gap_flip_reliable = best_row.reliable_score_gap_sign_flip_rate(1);
+end
+
+function mode = mode_by_name_local(modes, mode_name)
+mode = modes(1);
+for idx = 1:numel(modes)
+    if strcmp(modes(idx).name, mode_name)
+        mode = modes(idx);
+        return;
+    end
+end
 end
 
 function bits = mode_bits_by_name_local(modes, mode_name)
@@ -1142,7 +1504,7 @@ row.throughput_candidate_per_cycle = lanes / II;
 row.comment = 'score core estimate for Step11 controlled pair2d DML candidate scoring';
 end
 
-function keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, cfg12)
+function keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12)
 total_MB = sum(storage_tbl.total_MB);
 total_BRAM = sum(storage_tbl.BRAM36_equivalent);
 total_URAM = sum(storage_tbl.URAM288_equivalent);
@@ -1161,6 +1523,9 @@ fixed_point_pass_flag = best_info.fixed_point_pass_flag;
 recommended_fixed_point_format = best_info.recommended_fixed_point_format;
 blocker_if_any = best_info.blocker_if_any;
 proceed_to_rtl_score_core_flag = best_info.proceed_to_rtl_score_core_flag;
+minimum_passing_mode = best_info.minimum_passing_mode;
+engineering_recommended_fixed_point_format = best_info.engineering_recommended_fixed_point_format;
+mode_selection_reason = best_info.mode_selection_reason;
 if cfg12.quick_mode_flag
     smoke_ranking_pass_flag = best_info.ranking_pass_flag;
     smoke_topK_pass_flag = best_info.topK_pass_flag;
@@ -1173,12 +1538,30 @@ if cfg12.quick_mode_flag
     recommended_fixed_point_format = 'not_recommended_until_formal_validation';
     blocker_if_any = 'formal_validation_not_run';
     proceed_to_rtl_score_core_flag = 0;
+    minimum_passing_mode = 'none';
+    engineering_recommended_fixed_point_format = 'not_recommended_until_formal_validation';
+    mode_selection_reason = 'formal_validation_not_run';
 end
+if ~cfg12.quick_mode_flag && formal_trial_count < cfg12.min_formal_obs
+    ranking_pass_flag = false;
+    topK_pass_flag = false;
+    fixed_point_pass_flag = false;
+    recommended_fixed_point_format = 'not_recommended';
+    blocker_if_any = 'formal_trial_count_below_minimum';
+    proceed_to_rtl_score_core_flag = 0;
+    minimum_passing_mode = 'none';
+    engineering_recommended_fixed_point_format = 'not_recommended';
+    mode_selection_reason = 'formal_trial_count_below_minimum';
+end
+combined = combined_int16_status_local(summary_tbl, cfg12);
+gap_flags = gap_stress_flags_local(score_gap_bins_tbl, best_info);
 pairs = { ...
     'step11_adapter_found_flag', adapter_info.step11_adapter_found_flag; ...
     'uses_step89_results_flag', 0; ...
     'formal_trial_count', formal_trial_count; ...
+    'min_formal_obs', cfg12.min_formal_obs; ...
     'quick_mode_flag', cfg12.quick_mode_flag; ...
+    'run_tag', cfg12.run_tag; ...
     'smoke_ranking_pass_flag', smoke_ranking_pass_flag; ...
     'smoke_topK_pass_flag', smoke_topK_pass_flag; ...
     'smoke_fixed_point_pass_flag', smoke_fixed_point_pass_flag; ...
@@ -1193,6 +1576,16 @@ pairs = { ...
     'best_fixed_point_overall_topK_preservation', best_info.overall_topK_preservation; ...
     'best_fixed_point_argmax_changed_reliable', best_info.argmax_changed_reliable; ...
     'best_fixed_point_score_gap_flip_reliable', best_info.score_gap_flip_reliable; ...
+    'combined_int16_formal_pass_flag', combined.formal_pass_flag; ...
+    'combined_int16_reliable_top1_preservation', combined.reliable_top1_preservation; ...
+    'combined_int16_reliable_topK_preservation', combined.reliable_topK_preservation; ...
+    'combined_int16_overall_topK_preservation', combined.overall_topK_preservation; ...
+    'combined_int16_argmax_changed_reliable', combined.argmax_changed_reliable; ...
+    'combined_int16_score_gap_flip_reliable', combined.score_gap_flip_reliable; ...
+    'combined_int16_blocker_if_any', combined.blocker_if_any; ...
+    'minimum_passing_mode', minimum_passing_mode; ...
+    'engineering_recommended_fixed_point_format', engineering_recommended_fixed_point_format; ...
+    'mode_selection_reason', mode_selection_reason; ...
     'ranking_pass_flag', ranking_pass_flag; ...
     'topK_pass_flag', topK_pass_flag; ...
     'fixed_point_pass_flag', fixed_point_pass_flag; ...
@@ -1201,10 +1594,91 @@ pairs = { ...
     'proceed_to_rtl_score_core_flag', proceed_to_rtl_score_core_flag; ...
     'proceed_to_rtl_score_core_smoke_flag', proceed_to_rtl_score_core_smoke_flag; ...
     'proceed_to_full_fpga_backend_flag', best_info.proceed_to_full_fpga_backend_flag; ...
+    'reliable_margin_instability_flag', gap_flags.reliable_margin_instability_flag; ...
+    'failures_limited_to_low_margin_cases', gap_flags.failures_limited_to_low_margin_cases; ...
+    'worst_gap_bin_for_recommended_mode', gap_flags.worst_gap_bin_for_recommended_mode; ...
     'cache_memory_MB_total_est', total_MB; ...
     'BRAM36_total_est', total_BRAM; ...
     'URAM288_total_est', total_URAM};
 keypoints_tbl = key_value_table_local(pairs);
+end
+
+function combined = combined_int16_status_local(summary_tbl, cfg12)
+combined = struct('formal_pass_flag', false, 'reliable_top1_preservation', NaN, ...
+    'reliable_topK_preservation', NaN, 'overall_topK_preservation', NaN, ...
+    'argmax_changed_reliable', NaN, 'score_gap_flip_reliable', NaN, ...
+    'blocker_if_any', 'combined_int16_not_evaluated');
+if isempty(summary_tbl) || height(summary_tbl) == 0
+    return;
+end
+idx = find(strcmp(summary_tbl.quant_mode, 'combined_int16'), 1);
+if isempty(idx)
+    return;
+end
+row = summary_tbl(idx, :);
+combined.formal_pass_flag = logical(row.fixed_point_pass_flag(1)) && ~cfg12.quick_mode_flag && row.num_trials(1) >= cfg12.min_formal_obs;
+combined.reliable_top1_preservation = row.reliable_top1_preservation_rate(1);
+combined.reliable_topK_preservation = row.reliable_topK_set_preservation_rate(1);
+combined.overall_topK_preservation = row.overall_topK_set_preservation_rate(1);
+combined.argmax_changed_reliable = row.argmax_changed_rate_on_reliable_margin(1);
+combined.score_gap_flip_reliable = row.reliable_score_gap_sign_flip_rate(1);
+if combined.formal_pass_flag
+    combined.blocker_if_any = 'none';
+elseif cfg12.quick_mode_flag
+    combined.blocker_if_any = 'formal_validation_not_run';
+elseif row.num_trials(1) < cfg12.min_formal_obs
+    combined.blocker_if_any = 'formal_trial_count_below_minimum';
+elseif isfinite(row.reliable_score_gap_sign_flip_rate(1)) && row.reliable_score_gap_sign_flip_rate(1) > 0
+    combined.blocker_if_any = 'score_gap_sign_flip';
+elseif isfinite(row.argmax_changed_rate_on_reliable_margin(1)) && row.argmax_changed_rate_on_reliable_margin(1) > 0.001
+    combined.blocker_if_any = 'reliable_argmax_changed';
+elseif isfinite(row.reliable_topK_miss_rate(1)) && row.reliable_topK_miss_rate(1) > 0.005
+    combined.blocker_if_any = 'reliable_topK_miss';
+elseif ~logical(row.ranking_pass_flag(1))
+    combined.blocker_if_any = 'ranking_not_closed';
+elseif ~logical(row.topK_pass_flag(1))
+    combined.blocker_if_any = 'topK_not_closed';
+else
+    combined.blocker_if_any = 'ml_score_ranking_or_topK_not_closed';
+end
+end
+
+function flags = gap_stress_flags_local(score_gap_bins_tbl, best_info)
+flags = struct('reliable_margin_instability_flag', 0, 'failures_limited_to_low_margin_cases', 0, ...
+    'worst_gap_bin_for_recommended_mode', 'not_available');
+if isempty(score_gap_bins_tbl) || height(score_gap_bins_tbl) == 0
+    return;
+end
+mode_name = best_info.engineering_recommended_fixed_point_format;
+if isempty(mode_name) || strcmp(mode_name, 'not_recommended')
+    mode_name = best_info.mode_name;
+end
+T = score_gap_bins_tbl(strcmp(score_gap_bins_tbl.quant_mode, mode_name), :);
+if isempty(T) || height(T) == 0
+    return;
+end
+rel = T(strcmp(T.gap_bin, 'gap_bin_reliable'), :);
+if ~isempty(rel) && height(rel) > 0
+    flags.reliable_margin_instability_flag = double((finite_or_zero_metric_local(rel.argmax_changed_rate(1)) > 0) || ...
+        (finite_or_zero_metric_local(rel.topK_miss_rate(1)) > 0) || ...
+        (finite_or_zero_metric_local(rel.score_gap_sign_flip_rate(1)) > 0));
+end
+failure_bins = T((finite_or_zero_metric_local(T.argmax_changed_rate) > 0) | ...
+    (finite_or_zero_metric_local(T.topK_miss_rate) > 0) | ...
+    (finite_or_zero_metric_local(T.score_gap_sign_flip_rate) > 0), :);
+if ~isempty(failure_bins) && height(failure_bins) > 0
+    low_names = {'gap_bin_very_weak', 'gap_bin_weak'};
+    flags.failures_limited_to_low_margin_cases = double(all(ismember(failure_bins.gap_bin, low_names)));
+end
+[~, idx] = max_or_nan_with_index_local(T.max_score_gap_rel_error);
+if idx <= height(T)
+    flags.worst_gap_bin_for_recommended_mode = char(T.gap_bin{idx});
+end
+end
+
+function y = finite_or_zero_metric_local(x)
+y = x;
+y(~isfinite(y)) = 0;
 end
 
 function worst_tbl = build_step12_worst_cases_local(trial_tbl)
@@ -1277,7 +1751,7 @@ recommendation_tbl = table({recommendation}, {rationale}, ...
     'proceed_to_rtl_score_core_flag', 'proceed_to_rtl_score_core_smoke_flag', 'proceed_to_full_fpga_backend_flag'});
 end
 
-function [trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl] = build_step12_blocker_outputs_local(cfg12, adapter_info)
+function [trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl] = build_step12_blocker_outputs_local(cfg12, adapter_info, modes)
 trial_tbl = struct2table(make_trial_row_template_local(), 'AsArray', true);
 trial_tbl(1, :) = [];
 summary_tbl = struct2table(make_summary_row_template_local(), 'AsArray', true);
@@ -1292,12 +1766,18 @@ bandwidth_tbl = struct2table(make_bandwidth_row_template_local(), 'AsArray', tru
 bandwidth_tbl(1, :) = [];
 worst_tbl = struct2table(make_worst_row_template_local(), 'AsArray', true);
 worst_tbl(1, :) = [];
+mode_selection_tbl = struct2table(make_mode_selection_row_template_local(), 'AsArray', true);
+mode_selection_tbl(1, :) = [];
+score_gap_bins_tbl = struct2table(make_gap_bin_row_template_local(), 'AsArray', true);
+score_gap_bins_tbl(1, :) = [];
 best_info = struct('mode_name', 'not_recommended', 'recommended_fixed_point_format', 'not_recommended', ...
     'ranking_pass_flag', false, 'topK_pass_flag', false, 'fixed_point_pass_flag', false, ...
     'blocker_if_any', 'step11_score_function_not_exposed', 'component_bits', 16, ...
     'proceed_to_rtl_score_core_flag', 0, 'proceed_to_full_fpga_backend_flag', 0, ...
     'reliable_top1_preservation', NaN, 'reliable_topK_preservation', NaN, ...
-    'overall_topK_preservation', NaN, 'argmax_changed_reliable', NaN, 'score_gap_flip_reliable', NaN);
+    'overall_topK_preservation', NaN, 'argmax_changed_reliable', NaN, 'score_gap_flip_reliable', NaN, ...
+    'minimum_passing_mode', 'none', 'engineering_recommended_fixed_point_format', 'not_recommended', ...
+    'mode_selection_reason', 'step11_adapter_not_available');
 if isfield(adapter_info, 'blocker_if_any') && ~isempty(adapter_info.blocker_if_any)
     best_info.blocker_if_any = adapter_info.blocker_if_any;
 end
@@ -1306,11 +1786,11 @@ storage_tbl = struct2table(storage_placeholder, 'AsArray', true);
 bandwidth_placeholder = make_bandwidth_row_local('adapter_not_available', 0, cfg12.topK_default, 0, 16, 1);
 bandwidth_placeholder.comment = 'Step11 score adapter not available; no bandwidth estimate generated';
 bandwidth_tbl = struct2table(bandwidth_placeholder, 'AsArray', true);
-keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, cfg12);
+keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12);
 recommendation_tbl = build_step12_recommendations_local(keypoints_tbl);
 end
 
-function write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl)
+function write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl)
 writetable(trial_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_trial.csv'));
 writetable(summary_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_summary.csv'));
 writetable(keypoints_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_keypoints.csv'), 'WriteVariableNames', false);
@@ -1320,6 +1800,8 @@ writetable(storage_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_stor
 writetable(bandwidth_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_bandwidth_estimate.csv'));
 writetable(worst_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_worst_cases.csv'));
 writetable(recommendation_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_recommendations.csv'));
+writetable(mode_selection_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_mode_selection.csv'));
+writetable(score_gap_bins_tbl, fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_score_gap_bins.csv'));
 end
 
 function adapter_info_light = make_adapter_info_light_local(adapter_info)
@@ -1492,6 +1974,338 @@ saveas(fig, path_out);
 close(fig);
 end
 
+function golden_manifest_path = export_step12_golden_vectors_local(obs, trial_tbl, keypoints_tbl, modes, cfg12)
+golden_manifest_path = '';
+if isempty(obs) || isempty(trial_tbl) || height(trial_tbl) == 0
+    return;
+end
+fixed_pass = logical(str2double(get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag')));
+if cfg12.quick_mode_flag || ~cfg12.export_golden_vectors_flag || ~fixed_pass
+    return;
+end
+recommended_mode = get_keypoint_value_local(keypoints_tbl, 'engineering_recommended_fixed_point_format');
+if isempty(recommended_mode) || strcmp(recommended_mode, 'not_recommended')
+    recommended_mode = get_keypoint_value_local(keypoints_tbl, 'recommended_fixed_point_format');
+end
+if isempty(recommended_mode) || strcmp(recommended_mode, 'not_recommended')
+    return;
+end
+
+golden_dir = fullfile(cfg12.result_dir, 'golden_vectors');
+if exist(golden_dir, 'dir') ~= 7
+    mkdir(golden_dir);
+end
+case_specs = select_golden_case_specs_local(trial_tbl, recommended_mode);
+if ~strcmp(recommended_mode, 'combined_int16')
+    extra = select_single_case_spec_local(trial_tbl, 'combined_int16', 'combined_int16_worst_case', 'score_gap_rel_error', true);
+    if ~isempty(extra)
+        case_specs(end + 1) = extra; %#ok<AGROW>
+    end
+end
+if isempty(case_specs)
+    return;
+end
+
+manifest_rows = {};
+case_count = 0;
+for iCase = 1:numel(case_specs)
+    spec = case_specs(iCase);
+    obs_idx = find([obs.trial_index] == spec.trial_index, 1);
+    if isempty(obs_idx)
+        continue;
+    end
+    mode = mode_by_name_local(modes, spec.quant_mode);
+    quant = run_step11_ml_score_adapter_local(obs(obs_idx), mode, cfg12);
+    case_count = case_count + 1;
+    case_name = sprintf('case_%04d', case_count);
+    case_dir = fullfile(golden_dir, case_name);
+    if exist(case_dir, 'dir') ~= 7
+        mkdir(case_dir);
+    end
+    subset = select_golden_candidate_subset_local(obs(obs_idx), quant, cfg12);
+    write_golden_case_local(case_dir, case_name, spec, obs(obs_idx), quant, subset, cfg12);
+    manifest_rows(end + 1, :) = {case_name, spec.case_role, spec.quant_mode, spec.trial_index, ...
+        spec.scenario_name, numel(subset), case_dir}; %#ok<AGROW>
+end
+
+golden_manifest_path = fullfile(cfg12.result_dir, 'step12_ml_fpga_boundary_golden_vector_manifest.md');
+fid = fopen(golden_manifest_path, 'w', 'n', 'UTF-8');
+if fid < 0
+    error('step12:GoldenManifestOpenFailed', 'Could not open golden vector manifest: %s', golden_manifest_path);
+end
+cleanup = onCleanup(@() fclose(fid));
+fprintf(fid, '# Step12 Golden Vector Manifest\n\n');
+fprintf(fid, '- Golden vectors are compact RTL score-core testbench evidence, not a full FPGA backend validation.\n');
+fprintf(fid, '- They cover the Step11 beamspace ML score core for the formal recommended fixed-point mode.\n');
+fprintf(fid, '- Full candidate streams are not exported by default and `golden_vectors_full/` is ignored by Git.\n');
+fprintf(fid, '- recommended fixed-point format: `%s`\n', recommended_mode);
+fprintf(fid, '- case count: %d\n\n', case_count);
+fprintf(fid, '| case | role | mode | trial | scenario | subset_candidates | path |\n');
+fprintf(fid, '| --- | --- | --- | --- | --- | --- | --- |\n');
+for idx = 1:size(manifest_rows, 1)
+    fprintf(fid, '| %s | %s | %s | %.0f | %s | %.0f | `%s` |\n', manifest_rows{idx, :});
+end
+clear cleanup;
+end
+
+function specs = select_golden_case_specs_local(trial_tbl, mode_name)
+specs = repmat(make_golden_case_spec_local(), 0, 1);
+specs = append_spec_from_filter_local(specs, trial_tbl, mode_name, 'best_reliable_case', ...
+    'candidate_score_rel_l2_error', false, @(T) T.reliable_margin_flag & ~T.argmax_changed_flag & T.topK_set_same_flag);
+specs = append_spec_from_filter_local(specs, trial_tbl, mode_name, 'worst_score_gap_rel_error_case', ...
+    'score_gap_rel_error', true, @(T) true(height(T), 1));
+specs = append_spec_from_filter_local(specs, trial_tbl, mode_name, 'smallest_reliable_margin_case', ...
+    'score_gap_norm_baseline', false, @(T) T.reliable_margin_flag);
+specs = append_spec_from_filter_local(specs, trial_tbl, mode_name, 'topK_boundary_case', ...
+    'topK_jaccard', false, @(T) true(height(T), 1));
+end
+
+function spec = select_single_case_spec_local(trial_tbl, mode_name, role, metric_name, largest)
+specs = append_spec_from_filter_local(repmat(make_golden_case_spec_local(), 0, 1), ...
+    trial_tbl, mode_name, role, metric_name, largest, @(T) true(height(T), 1));
+if isempty(specs)
+    spec = [];
+else
+    spec = specs(1);
+end
+end
+
+function specs = append_spec_from_filter_local(specs, trial_tbl, mode_name, role, metric_name, largest, filter_fn)
+T = trial_tbl(strcmp(trial_tbl.quant_mode, mode_name), :);
+if isempty(T) || height(T) == 0 || ~ismember(metric_name, T.Properties.VariableNames)
+    return;
+end
+mask = filter_fn(T);
+T = T(mask, :);
+if isempty(T) || height(T) == 0
+    return;
+end
+values = T.(metric_name);
+if largest
+    [value, idx] = max_or_nan_with_index_local(values);
+else
+    finite_mask = isfinite(values);
+    if ~any(finite_mask)
+        return;
+    end
+    values2 = values;
+    values2(~finite_mask) = Inf;
+    [value, idx] = min(values2);
+end
+if ~isfinite(value)
+    return;
+end
+spec = make_golden_case_spec_local();
+spec.case_role = role;
+spec.quant_mode = mode_name;
+spec.trial_index = T.trial_index(idx);
+spec.scenario_name = char(T.scenario_name{idx});
+spec.metric_name = metric_name;
+spec.metric_value = value;
+specs(end + 1, 1) = spec;
+end
+
+function spec = make_golden_case_spec_local()
+spec = struct('case_role', '', 'quant_mode', '', 'trial_index', NaN, ...
+    'scenario_name', '', 'metric_name', '', 'metric_value', NaN);
+end
+
+function subset = select_golden_candidate_subset_local(obs, quant, cfg12)
+K = min(cfg12.topK_default, numel(obs.score_baseline));
+base_top = extract_topk_local(obs.score_baseline, obs.candidate_ids, K, true);
+fixed_top = extract_topk_local(quant.score, obs.candidate_ids, K, true);
+[~, baseline_order] = sort(obs.score_baseline, 'descend');
+challenger_n = min(numel(baseline_order), max(2 * K, 32));
+score_diff = abs(double(quant.score(:)) - double(obs.score_baseline(:)));
+[~, diff_order] = sort(score_diff, 'descend');
+diff_n = min(numel(diff_order), max(K, 32));
+subset = unique([base_top.indices(:); fixed_top.indices(:); baseline_order(1:challenger_n); diff_order(1:diff_n)], 'stable');
+subset = subset(1:min(numel(subset), cfg12.golden_vector_limit));
+end
+
+function write_golden_case_local(case_dir, case_name, spec, obs, quant, subset, cfg12)
+manifest = key_value_table_local({ ...
+    'case_name', case_name; ...
+    'case_role', spec.case_role; ...
+    'quant_mode', spec.quant_mode; ...
+    'trial_index', spec.trial_index; ...
+    'scenario_name', spec.scenario_name; ...
+    'metric_name', spec.metric_name; ...
+    'metric_value', spec.metric_value; ...
+    'score_core_only_flag', 1; ...
+    'full_fpga_backend_validation_flag', 0; ...
+    'golden_vector_limit', cfg12.golden_vector_limit});
+writetable(manifest, fullfile(case_dir, 'case_manifest.csv'), 'WriteVariableNames', false);
+
+candidate_vars = intersect(obs.candidate_table.Properties.VariableNames, ...
+    {'candidate_index','candidate_id','az1','az2','el1','el2','el_center','el_sep','orientation','iAz1','iAz2','iEl1','iEl2'}, 'stable');
+candidate_min = obs.candidate_table(subset, candidate_vars);
+writetable(candidate_min, fullfile(case_dir, 'candidate_table_minimal.csv'));
+
+K = min(cfg12.topK_default, numel(obs.score_baseline));
+base_top = topk_table_for_export_local(obs.score_baseline, obs.candidate_ids, K, 'baseline');
+fixed_top = topk_table_for_export_local(quant.score, obs.candidate_ids, K, 'fixed');
+writetable(base_top, fullfile(case_dir, 'score_baseline_topK.csv'));
+writetable(fixed_top, fullfile(case_dir, 'score_fixed_topK.csv'));
+writetable(base_top(:, {'rank','candidate_index','candidate_id','score'}), fullfile(case_dir, 'expected_topK.csv'));
+writetable(qdiag_to_table_local(quant.qdiag), fullfile(case_dir, 'scale_metadata.csv'));
+writetable(complex_matrix_to_table_local(quant.Rz, 'Rz'), fullfile(case_dir, 'Rz_q.csv'));
+writetable(gpair_subset_to_table_local(obs, quant, subset), fullfile(case_dir, 'G_pair_subset_q.csv'));
+writetable(score_subset_to_table_local(obs, quant, subset), fullfile(case_dir, 'score_expected_subset.csv'));
+end
+
+function T = topk_table_for_export_local(score, candidate_ids, K, label)
+top = extract_topk_local(score, candidate_ids, K, true);
+rank = (1:numel(top.indices)).';
+candidate_index = top.indices(:);
+candidate_id = top.ids(:);
+score = top.scores(:);
+score_source = repmat({label}, numel(rank), 1);
+T = table(rank, candidate_index, candidate_id, score, score_source);
+end
+
+function T = qdiag_to_table_local(qdiag)
+names = {'W','Gcache','Z','Rz','score'};
+rows = cell(numel(names), 7);
+for idx = 1:numel(names)
+    q = qdiag.(names{idx});
+    rows(idx, :) = {q.name, q.bits, q.scale, q.clip_rate, q.overflow_rate, q.relative_error, q.max_abs};
+end
+T = cell2table(rows, 'VariableNames', {'object_name','bits','scale','clip_rate','overflow_rate','relative_error','max_abs'});
+end
+
+function T = complex_matrix_to_table_local(X, object_name)
+[rr, cc] = ndgrid(1:size(X, 1), 1:size(X, 2));
+object = repmat({object_name}, numel(X), 1);
+row = rr(:);
+col = cc(:);
+real_value = real(X(:));
+imag_value = imag(X(:));
+T = table(object, row, col, real_value, imag_value);
+end
+
+function T = gpair_subset_to_table_local(obs, quant, subset)
+rows = {};
+B = size(quant.G_use_grid, 1);
+for sIdx = 1:numel(subset)
+    cidx = subset(sIdx);
+    for slot = 1:2
+        if slot == 1
+            g = quant.G_use_grid(:, obs.candidate_table.iAz1(cidx), obs.candidate_table.iEl1(cidx));
+        else
+            g = quant.G_use_grid(:, obs.candidate_table.iAz2(cidx), obs.candidate_table.iEl2(cidx));
+        end
+        for b = 1:B
+            rows(end + 1, :) = {obs.candidate_table.candidate_index(cidx), slot, b, real(g(b)), imag(g(b))}; %#ok<AGROW>
+        end
+    end
+end
+T = cell2table(rows, 'VariableNames', {'candidate_index','vector_slot','beam_index','real_value','imag_value'});
+end
+
+function T = score_subset_to_table_local(obs, quant, subset)
+candidate_index = obs.candidate_table.candidate_index(subset);
+candidate_id = obs.candidate_ids(subset);
+score_baseline = obs.score_baseline(subset);
+score_fixed = quant.score(subset);
+score_abs_diff = abs(score_fixed - score_baseline);
+score_rel_diff = score_abs_diff ./ max(abs(score_baseline), eps);
+T = table(candidate_index, candidate_id, score_baseline, score_fixed, score_abs_diff, score_rel_diff);
+end
+
+function doc_path = write_step12_record_doc_v2_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path)
+doc_path = fullfile(cfg12.step_dir, '第12步_波束级ML_FPGA可行性边界验证记录.md');
+fid = fopen(doc_path, 'w', 'n', 'UTF-8');
+if fid < 0
+    error('step12:DocOpenFailed', 'Could not open doc: %s', doc_path);
+end
+cleanup = onCleanup(@() fclose(fid));
+fprintf(fid, '# 第12步 波束级ML FPGA可行性边界验证记录\n\n');
+fprintf(fid, '## 本轮目的\n\n');
+fprintf(fid, '本轮围绕第11.x beamspace ML 后端，验证有限字长对 score ranking consistency、topK preservation、score gap stability 以及 cache/storage/bandwidth 的影响。\n\n');
+fprintf(fid, '本步骤不是完整 FPGA RTL、不是 bit-true HDL 仿真、不是完整 FPGA backend 或下板验证结论，也不复用 Step8.9 的结果或 pass/fail 标准。\n\n');
+fprintf(fid, '## 第11.x adapter 来源\n\n');
+fprintf(fid, '- final 入口：`%s`\n', adapter_info.entry_function);
+fprintf(fid, '- score 函数：`%s`\n', adapter_info.score_function);
+fprintf(fid, '- candidate 范围：%s\n', adapter_info.candidate_scope);
+fprintf(fid, '- adapter found flag：%d\n', adapter_info.step11_adapter_found_flag);
+fprintf(fid, '- uses_step89_results_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'uses_step89_results_flag'));
+fprintf(fid, '- blocker：`%s`\n\n', get_keypoint_value_local(keypoints_tbl, 'blocker_if_any'));
+
+fprintf(fid, '## Formal / Quick 状态\n\n');
+fprintf(fid, '- run_tag：`%s`\n', cfg12.run_tag);
+fprintf(fid, '- quick_mode_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'quick_mode_flag'));
+fprintf(fid, '- formal_trial_count：%s\n', get_keypoint_value_local(keypoints_tbl, 'formal_trial_count'));
+fprintf(fid, '- min_formal_obs：%s\n', get_keypoint_value_local(keypoints_tbl, 'min_formal_obs'));
+fprintf(fid, '- reliable_margin_threshold：%s\n\n', get_keypoint_value_local(keypoints_tbl, 'reliable_margin_threshold'));
+if strcmp(cfg12.run_tag, 'pilot_min_fast_path') || strcmp(cfg12.run_tag, 'pilot_min_path')
+    fprintf(fid, '运行备注：本轮是较小的 formal-path pilot，用于验证 Step12 formal 输出链路。用户请求的 `pilot_tps10` 在当前交互执行窗口内超时，`formal_tps30` 未完成，因此本记录不构成正式 FPGA 可行性结论。\n\n');
+end
+
+fprintf(fid, '## Quantization Modes\n\n');
+fprintf(fid, '包含 double baseline、float32 diagnostic、W/G_cache/Z/Rz 单对象整数模式、combined_int16/int18/int24、mixed_Z16_G24_Rz24 等。float32_all 仅作诊断参考，不参与 fixed-point pass candidate。\n\n');
+
+fprintf(fid, '## Score Ranking / TopK Pass-Fail 标准\n\n');
+fprintf(fid, '正式 fixed-point pass/fail 只由 ML score ranking consistency 和 topK preservation 决定。policy/confidence/fallback/boundary 仅作为工程风险诊断。\n\n');
+fprintf(fid, '- ranking_pass_flag：reliable_top1_preservation_rate >= 0.999，reliable_score_gap_sign_flip_rate == 0，argmax_changed_rate_on_reliable_margin <= 0.001。\n');
+fprintf(fid, '- topK_pass_flag：reliable_topK_set_preservation_rate >= 0.995，overall_topK_set_preservation_rate >= 0.980，reliable_topK_miss_rate <= 0.005。\n');
+fprintf(fid, '- formal fixed_point_pass_flag 还要求 quick_mode_flag=0 且 formal_trial_count >= min_formal_obs。\n\n');
+
+fprintf(fid, '## 总体结果表\n\n');
+write_markdown_table_from_table_local(fid, summary_tbl, 16);
+fprintf(fid, '\n## Mode Selection\n\n');
+write_markdown_table_from_table_local(fid, mode_selection_tbl, 16);
+fprintf(fid, '\n## combined_int16 状态\n\n');
+fprintf(fid, '- combined_int16_formal_pass_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_formal_pass_flag'));
+fprintf(fid, '- combined_int16_blocker_if_any：`%s`\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_blocker_if_any'));
+fprintf(fid, '- combined_int16_reliable_top1_preservation：%s\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_reliable_top1_preservation'));
+fprintf(fid, '- combined_int16_reliable_topK_preservation：%s\n\n', get_keypoint_value_local(keypoints_tbl, 'combined_int16_reliable_topK_preservation'));
+
+fprintf(fid, '## Score Gap Stress Bins\n\n');
+write_markdown_table_from_table_local(fid, score_gap_bins_tbl, 20);
+fprintf(fid, '\n- reliable_margin_instability_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'reliable_margin_instability_flag'));
+fprintf(fid, '- failures_limited_to_low_margin_cases：%s\n', get_keypoint_value_local(keypoints_tbl, 'failures_limited_to_low_margin_cases'));
+fprintf(fid, '- worst_gap_bin_for_recommended_mode：`%s`\n\n', get_keypoint_value_local(keypoints_tbl, 'worst_gap_bin_for_recommended_mode'));
+
+fprintf(fid, '## Cache Storage 估算\n\n');
+write_markdown_table_from_table_local(fid, storage_tbl, 12);
+fprintf(fid, '\n## Bandwidth / Score Lane 估算\n\n');
+write_markdown_table_from_table_local(fid, bandwidth_tbl, 12);
+fprintf(fid, '\n## Worst Cases 总结\n\n');
+write_markdown_table_from_table_local(fid, worst_tbl, 12);
+fprintf(fid, '\n## Recommendation\n\n');
+write_markdown_table_from_table_local(fid, recommendation_tbl, 8);
+
+fprintf(fid, '\n## Golden Vectors\n\n');
+if ~isempty(golden_manifest_path)
+    fprintf(fid, '- exported：1\n');
+    fprintf(fid, '- manifest：`%s`\n', golden_manifest_path);
+else
+    fprintf(fid, '- exported：0\n');
+    fprintf(fid, '- reason：需要 formal fixed-point pass 且 `STEP12_EXPORT_GOLDEN_VECTORS=1`。\n');
+end
+
+fprintf(fid, '\n## 最终判断\n\n');
+fprintf(fid, '- minimum_passing_mode：`%s`\n', get_keypoint_value_local(keypoints_tbl, 'minimum_passing_mode'));
+fprintf(fid, '- engineering_recommended_fixed_point_format：`%s`\n', get_keypoint_value_local(keypoints_tbl, 'engineering_recommended_fixed_point_format'));
+fprintf(fid, '- fixed_point_pass_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag'));
+fprintf(fid, '- blocker_if_any：`%s`\n', get_keypoint_value_local(keypoints_tbl, 'blocker_if_any'));
+fprintf(fid, '- proceed_to_rtl_score_core_flag：%s\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_rtl_score_core_flag'));
+fprintf(fid, '- proceed_to_full_fpga_backend_flag：%s\n\n', get_keypoint_value_local(keypoints_tbl, 'proceed_to_full_fpga_backend_flag'));
+
+fprintf(fid, '## 下一步建议\n\n');
+if cfg12.quick_mode_flag
+    fprintf(fid, '本次为 quick smoke test。smoke_fixed_point_pass_flag 只说明 adapter、量化流程、score ranking/topK 统计和输出链路打通；formal fixed_point_pass_flag 仍为 0。下一步应先运行 formal validation，再决定是否进入 RTL score core prototype。\n');
+elseif startsWith(cfg12.run_tag, 'pilot')
+    fprintf(fid, '本次为 pilot formal-path run，用于检查运行时间、结果字段和 mode selection 链路；不作为论文正式结论。若字段稳定，下一步运行 formal_tps30。\n');
+elseif str2double(get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag')) == 1
+    fprintf(fid, 'formal ranking/topK 已对工程推荐 fixed-point mode 关闭。下一步只建议进入 RTL score core prototype；这仍不代表完整 FPGA backend 通过。\n');
+else
+    fprintf(fid, '不建议进入 RTL score core prototype。应先针对 blocker 继续扩大 formal 样本或调整 score-core 有限字长方案。\n');
+end
+clear cleanup;
+end
+
 function doc_path = write_step12_record_doc_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, worst_tbl)
 doc_path = fullfile(cfg12.step_dir, '第12步_波束级ML_FPGA可行性边界验证记录.md');
 fid = fopen(doc_path, 'w', 'n', 'UTF-8');
@@ -1652,6 +2466,56 @@ if isstruct(s) && isfield(s, field)
 end
 if isstring(value)
     value = char(value);
+end
+end
+
+function value = safe_input_field_local(input, field, fallback)
+value = fallback;
+if isstruct(input) && isfield(input, field)
+    value = input.(field);
+end
+end
+
+function value = nonempty_or_fallback_local(value, fallback)
+if isstring(value)
+    value = char(value);
+end
+if isempty(value)
+    value = fallback;
+end
+end
+
+function value = parse_env_scalar_local(name, default_value)
+raw = strtrim(getenv(name));
+if isempty(raw)
+    value = default_value;
+    return;
+end
+value = str2double(raw);
+if isnan(value)
+    value = default_value;
+end
+end
+
+function values = parse_env_numeric_list_local(name, default_values)
+raw = strtrim(getenv(name));
+if isempty(raw)
+    values = default_values;
+    return;
+end
+parts = regexp(raw, '[,;\s]+', 'split');
+values = [];
+for idx = 1:numel(parts)
+    if isempty(parts{idx})
+        continue;
+    end
+    v = str2double(parts{idx});
+    if isfinite(v)
+        values(end + 1) = v; %#ok<AGROW>
+    end
+end
+if isempty(values)
+    values = default_values;
 end
 end
 

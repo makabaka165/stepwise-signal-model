@@ -1,0 +1,15 @@
+quant_mode,is_fixed_candidate,is_recommendation_candidate,component_bits,formal_trial_count,ranking_pass_flag,topK_pass_flag,fixed_point_pass_flag,reliable_top1_preservation_rate,reliable_topK_set_preservation_rate,overall_topK_set_preservation_rate,reliable_topK_miss_rate,argmax_changed_rate_on_reliable_margin,reliable_score_gap_sign_flip_rate,max_candidate_score_rel_l2_error,max_score_gap_rel_error,max_clip_rate,max_overflow_rate,estimated_total_MB,estimated_BRAM36,estimated_URAM288,engineering_rank,selection_reason
+double_baseline,0,0,16,12,1,1,0,1,1,1,0,0,0,0,0,0,0,5.35227966308594,1218,153,NaN,not_fixed_candidate
+float32_all,0,0,16,12,1,1,0,1,1,1,0,0,0,7.40456333281836e-07,0.000486514664182594,0,0,5.35227966308594,1218,153,NaN,not_fixed_candidate
+W_int16_only,1,0,16,12,1,1,0,1,1,1,0,0,0,5.4402189351985e-07,2.5174885958855e-05,0,0,5.35227966308594,1218,153,NaN,formal_trial_count_below_minimum
+Gcache_int16_only,1,0,16,12,1,1,0,1,1,1,0,0,0,1.88279395799399e-05,0.00185252504574067,0,0,5.35227966308594,1218,153,NaN,formal_trial_count_below_minimum
+Z_int16_only,1,0,16,12,1,1,0,1,1,1,0,0,0,3.87221285690039e-06,0.000402014878259418,0,0,5.35227966308594,1218,153,NaN,formal_trial_count_below_minimum
+Rz_int18_only,1,0,18,12,1,1,0,1,1,1,0,0,0,4.7978339355648e-06,0.000378361958487239,0,0,6.02131462097168,1371,172,NaN,formal_trial_count_below_minimum
+combined_int16,1,1,16,12,1,1,0,1,1,1,0,0,0,3.14638671094331e-05,0.0181720978355982,0,0,5.35227966308594,1218,153,NaN,formal_trial_count_below_minimum
+combined_int18,1,1,18,12,1,1,0,1,1,1,0,0,0,7.79464759369092e-06,0.00592833620622964,0,0,6.02131462097168,1371,172,NaN,formal_trial_count_below_minimum
+combined_int24,1,1,24,12,1,1,0,1,1,1,0,0,0,1.17995289741524e-07,5.19644293577447e-05,0,0,8.02841949462891,1827,229,NaN,formal_trial_count_below_minimum
+mixed_Z16_G24_score_float,0,0,24,12,1,1,0,1,1,1,0,0,0,3.86923232809123e-06,0.000367323990527104,0,0,8.02841949462891,1827,229,NaN,not_fixed_candidate
+mixed_Z16_G24_Rz24,1,1,24,12,1,1,0,1,1,1,0,0,0,3.82753814668309e-06,0.000396010556519298,0,0,8.02841949462891,1827,229,NaN,formal_trial_count_below_minimum
+combined_int14,1,1,16,12,0,1,0,0.833333333333333,1,1,0,0.166666666666667,0,0.000114626329858308,0.0354613325094253,0,0,5.35227966308594,1218,153,NaN,formal_trial_count_below_minimum
+Gcache_int24_only,1,0,24,12,1,1,0,1,1,1,0,0,0,7.48610282917049e-08,3.24692320122648e-06,0,0,8.02841949462891,1827,229,NaN,formal_trial_count_below_minimum
+W_int18_G24_Z16,1,1,24,12,1,1,0,1,1,1,0,0,0,3.69233464990053e-06,0.000396096503889574,0,0,8.02841949462891,1827,229,NaN,formal_trial_count_below_minimum

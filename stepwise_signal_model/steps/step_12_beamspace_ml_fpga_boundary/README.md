@@ -54,7 +54,7 @@ Primary pass/fail is determined only by ML score ranking consistency and fixed-p
 - `overall_topK_set_preservation_rate >= 0.980`
 - `reliable_topK_miss_rate <= 0.005`
 
-`fixed_point_pass_flag = ranking_pass_flag AND topK_pass_flag`.
+Formal `fixed_point_pass_flag` additionally requires `quick_mode_flag = 0` and `formal_trial_count >= STEP12_MIN_FORMAL_OBS`.
 
 `float32_all` is only a diagnostic reference and is not a fixed-point pass candidate.
 
@@ -110,13 +110,62 @@ Formal mode omits `STEP12_QUICK_MODE=1` and uses:
 - `center_az_list = [0, 4, 8, 15]`
 - all Step12 scenarios
 - `STEP12_FORMAL_TRIALS_PER_SCENARIO`, default `30`
+- `STEP12_MIN_FORMAL_OBS`, default `300`
+
+Pilot and formal wrappers:
+
+```matlab
+run_step12_pilot_validation
+run_step12_formal_validation
+```
+
+`run_step12_pilot_validation` sets `STEP12_RUN_TAG=pilot_tps10`, `STEP12_FORMAL_TRIALS_PER_SCENARIO=10`, and `STEP12_MIN_FORMAL_OBS=100`.
+
+`run_step12_formal_validation` sets `STEP12_RUN_TAG=formal_tps30`, `STEP12_FORMAL_TRIALS_PER_SCENARIO=30`, and `STEP12_MIN_FORMAL_OBS=300`.
 
 For a shorter formal run, set for example:
 
 ```matlab
 setenv('STEP12_FORMAL_TRIALS_PER_SCENARIO','10')
+setenv('STEP12_FORMAL_SCENARIO_LIMIT','2')
+setenv('STEP12_RUN_TAG','pilot_custom')
 run_step12_beamspace_ml_fpga_boundary
 ```
+
+Formal environment variables:
+
+- `STEP12_FORMAL_TRIALS_PER_SCENARIO`: trials per scenario and center, default `30`.
+- `STEP12_FORMAL_CENTER_AZ_LIST`: comma-separated center azimuth list, default `0,4,8,15`.
+- `STEP12_FORMAL_SCENARIO_LIMIT`: optional scenario count cap; unset means all Step12 scenarios.
+- `STEP12_MIN_FORMAL_OBS`: minimum observation count required before formal pass can be asserted, default `300`.
+- `STEP12_RUN_TAG`: optional result subdirectory under `results_step12_beamspace_ml_fpga_boundary/`.
+- `STEP12_EXPORT_GOLDEN_VECTORS`: set to `1` to export compact RTL score-core golden vectors after a formal fixed-point pass.
+- `STEP12_GOLDEN_VECTOR_LIMIT`: maximum candidate subset per golden case, default `256`.
+- `STEP12_SAVE_FULL_MAT`: set to `1` to save the ignored local full MAT.
+- `STEP12_RUN_FULL_STEP11_BACKEND`: set to `1` to run the full Step11.7 backend for formal diagnostics; default formal mode uses the non-invasive Step12 score-core adapter with the same Step11 score objective.
+
+The current tracked pilot artifact `pilot_min_fast_path` is a formal-path smoke run with `formal_trial_count=12` and `blocker_if_any=formal_trial_count_below_minimum`. It is not a formal validation conclusion. The requested `pilot_tps10` was attempted but did not complete within the interactive execution window; `formal_tps30` was not run in this commit.
+
+## Mode Selection
+
+Step12 writes `step12_ml_fpga_boundary_mode_selection.csv`.
+
+- `combined_int16` is evaluated as a candidate. It is not forced as the final recommendation.
+- `minimum_passing_mode` is the lowest-cost fixed candidate that passes formal ranking/topK gates.
+- `engineering_recommended_fixed_point_format` is selected from formal ranking/topK preservation and resource estimates, preferring practical modes such as `combined_int16`, `combined_int18`, `mixed_Z16_G24_Rz24`, and `combined_int24`.
+
+Proceed to RTL score core prototype only when formal `fixed_point_pass_flag=1`. Proceeding to RTL score core does not imply full FPGA backend validation.
+
+## Score Gap Stress
+
+Step12 writes `step12_ml_fpga_boundary_score_gap_bins.csv` with bins:
+
+- `gap_bin_very_weak`: `score_gap_norm < 1e-5`
+- `gap_bin_weak`: `1e-5 <= score_gap_norm < 1e-4`
+- `gap_bin_transition`: `1e-4 <= score_gap_norm < 1e-3`
+- `gap_bin_reliable`: `score_gap_norm >= 1e-3`
+
+The keypoints include `reliable_margin_instability_flag`, `failures_limited_to_low_margin_cases`, and `worst_gap_bin_for_recommended_mode`.
 
 If a run is quick mode, `quick_mode_flag=1`; it is a smoke test and must not be written as a formal FPGA feasibility conclusion. In quick mode, the script writes `smoke_fixed_point_pass_flag` and `smoke_recommended_fixed_point_format`, while formal `fixed_point_pass_flag` stays `0`, `recommended_fixed_point_format` is `not_recommended_until_formal_validation`, and `blocker_if_any` is `formal_validation_not_run`.
 
@@ -144,6 +193,14 @@ CSV outputs:
 - `step12_ml_fpga_boundary_bandwidth_estimate.csv`
 - `step12_ml_fpga_boundary_worst_cases.csv`
 - `step12_ml_fpga_boundary_recommendations.csv`
+- `step12_ml_fpga_boundary_mode_selection.csv`
+- `step12_ml_fpga_boundary_score_gap_bins.csv`
+
+Golden vector outputs, when enabled after formal pass:
+
+- `step12_ml_fpga_boundary_golden_vector_manifest.md`
+- `golden_vectors/case_*/case_manifest.csv`
+- compact CSV files for candidate subset, topK scores, fixed/baseline expected scores, scales, `Rz_q`, and `G_pair_subset_q`
 
 Figures:
 

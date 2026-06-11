@@ -1,0 +1,12 @@
+[2026-06-11 15:51:12] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\run_step12_beamspace_ml_fpga_boundary
+[2026-06-11 15:51:12] Project directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model
+[2026-06-11 15:51:12] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\pilot_min_fast_path
+[2026-06-11 15:51:12] Run tag: pilot_min_fast_path
+[2026-06-11 15:51:12] Step12 starts
+[2026-06-11 15:51:12] Quick mode: 0
+[2026-06-11 15:51:12] Step11 adapter found: 1
+[2026-06-11 15:51:33] Loaded Step11 observations: 12
+[2026-06-11 15:53:09] Wrote light MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\pilot_min_fast_path\step12_ml_fpga_boundary_result_light.mat
+[2026-06-11 15:53:09] Full MAT not saved; set STEP12_SAVE_FULL_MAT=1 to regenerate locally.
+[2026-06-11 15:53:09] Wrote MAT manifest: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\pilot_min_fast_path\step12_ml_fpga_boundary_mat_manifest.md
+[2026-06-11 15:53:09] Wrote record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\第12步_波束级ML_FPGA可行性边界验证记录.md
