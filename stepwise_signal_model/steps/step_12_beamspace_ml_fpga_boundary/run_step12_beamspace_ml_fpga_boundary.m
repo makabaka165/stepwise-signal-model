@@ -28,6 +28,9 @@ if cfg12.aggregate_only_flag
     cfg12.formal_plan_complete_flag = aggregate_info.formal_plan_complete_flag;
     cfg12.chunks_detected = aggregate_info.chunks_detected;
     cfg12.chunks_completed = aggregate_info.chunks_completed;
+    cfg12.cache_full_MB_if_available = aggregate_info.cache_full_MB_if_available;
+    cfg12.cache_full_BRAM36_if_available = aggregate_info.cache_full_BRAM36_if_available;
+    cfg12.cache_full_URAM288_if_available = aggregate_info.cache_full_URAM288_if_available;
     keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12);
     worst_tbl = build_step12_worst_cases_local(trial_tbl);
     recommendation_tbl = build_step12_recommendations_local(keypoints_tbl);
@@ -226,6 +229,9 @@ cfg12.formal_plan_planned_obs = 0;
 cfg12.chunk_completed_obs_before = 0;
 cfg12.chunks_detected = 0;
 cfg12.chunks_completed = 0;
+cfg12.cache_full_MB_if_available = NaN;
+cfg12.cache_full_BRAM36_if_available = NaN;
+cfg12.cache_full_URAM288_if_available = NaN;
 cfg12.step11_entry = 'step11_7_final_cached_c05_beamspace_ml_backend';
 cfg12.step11_score_function = 'beamspace_dml_score';
 cfg12.step11_adapter_note = ['Step12 uses Step11.7 final backend/context for W, cache, Z, policy ', ...
@@ -1948,6 +1954,8 @@ aggregate_info.formal_plan_completed_obs = numel(completed_ids);
 aggregate_info.formal_plan_complete_flag = double(aggregate_info.formal_plan_completed_obs >= aggregate_info.formal_plan_total_obs && aggregate_info.formal_plan_total_obs > 0);
 aggregate_info.chunks_detected = numel(chunk_dirs);
 aggregate_info.chunks_completed = count_completed_chunks_local(chunk_dirs, {modes.name});
+[aggregate_info.cache_full_MB_if_available, aggregate_info.cache_full_BRAM36_if_available, ...
+    aggregate_info.cache_full_URAM288_if_available] = read_full_cache_estimate_from_chunks_local(chunk_dirs);
 end
 
 function T = read_and_concat_chunk_tables_local(chunk_dirs, file_name)
@@ -2118,6 +2126,50 @@ for idx = 1:numel(chunk_dirs)
 end
 end
 
+function [full_MB, full_BRAM, full_URAM] = read_full_cache_estimate_from_chunks_local(chunk_dirs)
+full_MB = NaN;
+full_BRAM = NaN;
+full_URAM = NaN;
+values_MB = [];
+values_BRAM = [];
+values_URAM = [];
+for idx = 1:numel(chunk_dirs)
+    p = fullfile(chunk_dirs(idx).folder, chunk_dirs(idx).name, 'step12_chunk_keypoints.csv');
+    if exist(p, 'file') ~= 2
+        continue;
+    end
+    K = readtable(p, 'ReadVariableNames', false, 'TextType', 'char');
+    if width(K) < 2
+        continue;
+    end
+    keys = K.Var1;
+    vals = K.Var2;
+    values_MB(end + 1) = key_numeric_or_nan_local(keys, vals, 'cache_memory_MB_total_est_full_if_available'); %#ok<AGROW>
+    values_BRAM(end + 1) = key_numeric_or_nan_local(keys, vals, 'BRAM36_total_est_full_if_available'); %#ok<AGROW>
+    values_URAM(end + 1) = key_numeric_or_nan_local(keys, vals, 'URAM288_total_est_full_if_available'); %#ok<AGROW>
+end
+full_MB = max_or_nan_local(values_MB);
+full_BRAM = max_or_nan_local(values_BRAM);
+full_URAM = max_or_nan_local(values_URAM);
+end
+
+function v = key_numeric_or_nan_local(keys, vals, key)
+v = NaN;
+idx = find(strcmp(keys, key), 1);
+if isempty(idx)
+    return;
+end
+raw = vals(idx);
+if iscell(vals)
+    raw = vals{idx};
+end
+if isnumeric(raw) || islogical(raw)
+    v = double(raw(1));
+else
+    v = str2double(char(raw));
+end
+end
+
 function profile_summary_tbl = build_step12_profile_summary_local(profile_tbl, cfg12)
 template = make_profile_summary_row_template_local();
 rows = repmat(template, 0, 1);
@@ -2194,9 +2246,10 @@ row.comment = 'score core estimate for Step11 controlled pair2d DML candidate sc
 end
 
 function keypoints_tbl = build_step12_keypoints_local(summary_tbl, storage_tbl, bandwidth_tbl, adapter_info, best_info, mode_selection_tbl, score_gap_bins_tbl, cfg12)
-total_MB = sum(storage_tbl.total_MB);
-total_BRAM = sum(storage_tbl.BRAM36_equivalent);
-total_URAM = sum(storage_tbl.URAM288_equivalent);
+working_MB = sum(storage_tbl.total_MB);
+working_BRAM = sum(storage_tbl.BRAM36_equivalent);
+working_URAM = sum(storage_tbl.URAM288_equivalent);
+[full_MB, full_BRAM, full_URAM, cache_scope] = derive_full_cache_estimate_local(storage_tbl, adapter_info, cfg12);
 formal_trial_count = 0;
 if ~cfg12.quick_mode_flag && height(summary_tbl) > 0
     formal_trial_count = max(summary_tbl.num_trials);
@@ -2294,10 +2347,39 @@ pairs = { ...
     'reliable_margin_instability_flag', gap_flags.reliable_margin_instability_flag; ...
     'failures_limited_to_low_margin_cases', gap_flags.failures_limited_to_low_margin_cases; ...
     'worst_gap_bin_for_recommended_mode', gap_flags.worst_gap_bin_for_recommended_mode; ...
-    'cache_memory_MB_total_est', total_MB; ...
-    'BRAM36_total_est', total_BRAM; ...
-    'URAM288_total_est', total_URAM};
+    'cache_estimate_scope', cache_scope; ...
+    'cache_memory_MB_total_est', working_MB; ...
+    'cache_memory_MB_total_est_working_set', working_MB; ...
+    'cache_memory_MB_total_est_full_if_available', full_MB; ...
+    'BRAM36_total_est', working_BRAM; ...
+    'BRAM36_total_est_working_set', working_BRAM; ...
+    'BRAM36_total_est_full_if_available', full_BRAM; ...
+    'URAM288_total_est', working_URAM; ...
+    'URAM288_total_est_working_set', working_URAM; ...
+    'URAM288_total_est_full_if_available', full_URAM};
 keypoints_tbl = key_value_table_local(pairs);
+end
+
+function [full_MB, full_BRAM, full_URAM, cache_scope] = derive_full_cache_estimate_local(storage_tbl, adapter_info, cfg12)
+full_MB = cfg12.cache_full_MB_if_available;
+full_BRAM = cfg12.cache_full_BRAM36_if_available;
+full_URAM = cfg12.cache_full_URAM288_if_available;
+cache_scope = 'working_set_or_candidate_subset';
+bits = 16;
+if ~isempty(storage_tbl) && height(storage_tbl) > 0 && ismember('component_bits', storage_tbl.Properties.VariableNames)
+    bits = max_or_nan_local(storage_tbl.component_bits);
+    if ~isfinite(bits) || bits <= 0
+        bits = 16;
+    end
+end
+if isfield(adapter_info, 'cache_memory_MB_reference') && isfinite(adapter_info.cache_memory_MB_reference)
+    full_MB = adapter_info.cache_memory_MB_reference * bits / 64;
+    full_BRAM = ceil(full_MB * 8 * 1024 * 1024 / 36864);
+    full_URAM = ceil(full_MB * 8 * 1024 * 1024 / 294912);
+    cache_scope = 'both_working_set_and_full_cache';
+elseif isfinite(full_MB)
+    cache_scope = 'both_working_set_and_full_cache';
+end
 end
 
 function combined = combined_int16_status_local(summary_tbl, cfg12)
@@ -3061,6 +3143,8 @@ if cfg12.quick_mode_flag
     fprintf(fid, '本次为 quick smoke test。smoke_fixed_point_pass_flag 仅说明 adapter、量化流程、score ranking/topK 统计和输出链路打通；formal fixed_point_pass_flag 仍为 0。\n\n');
 elseif startsWith(cfg12.run_tag, 'pilot') || contains(cfg12.run_tag, 'chunk_pilot')
     fprintf(fid, '本次为 pilot/chunk pilot，用于验证 formal chunk/resume/aggregate 流程和字段完整性，不作为 formal_tps30 的正式 FPGA 可行性结论。\n\n');
+elseif strcmp(cfg12.run_tag, 'formal_tps30') && str2double(get_keypoint_value_local(keypoints_tbl, 'formal_min_obs_satisfied_flag')) == 0
+    fprintf(fid, 'formal_tps30 still incomplete。本次 aggregate 尚未达到 STEP12_MIN_FORMAL_OBS，因此 formal conclusion not yet available，不能进入 RTL score core prototype。\n\n');
 end
 
 fprintf(fid, '## Chunked Formal Validation\n\n');
@@ -3095,6 +3179,15 @@ fprintf(fid, '- failures_limited_to_low_margin_cases: %s\n', get_keypoint_value_
 fprintf(fid, '- worst_gap_bin_for_recommended_mode: `%s`\n\n', get_keypoint_value_local(keypoints_tbl, 'worst_gap_bin_for_recommended_mode'));
 
 fprintf(fid, '## Cache Storage 估算\n\n');
+fprintf(fid, '- cache_estimate_scope: `%s`\n', get_keypoint_value_local(keypoints_tbl, 'cache_estimate_scope'));
+fprintf(fid, '- working-set cache estimate: %s MB, BRAM36=%s, URAM288=%s\n', ...
+    get_keypoint_value_local(keypoints_tbl, 'cache_memory_MB_total_est_working_set'), ...
+    get_keypoint_value_local(keypoints_tbl, 'BRAM36_total_est_working_set'), ...
+    get_keypoint_value_local(keypoints_tbl, 'URAM288_total_est_working_set'));
+fprintf(fid, '- full-cache estimate if available: %s MB, BRAM36=%s, URAM288=%s\n\n', ...
+    get_keypoint_value_local(keypoints_tbl, 'cache_memory_MB_total_est_full_if_available'), ...
+    get_keypoint_value_local(keypoints_tbl, 'BRAM36_total_est_full_if_available'), ...
+    get_keypoint_value_local(keypoints_tbl, 'URAM288_total_est_full_if_available'));
 write_markdown_table_from_table_local(fid, storage_tbl, 12);
 
 fprintf(fid, '\n## Bandwidth / Score Lane 估算\n\n');
@@ -3131,6 +3224,8 @@ if cfg12.quick_mode_flag
     fprintf(fid, '先运行 formal validation，再决定是否进入 RTL score core prototype。\n');
 elseif startsWith(cfg12.run_tag, 'pilot') || contains(cfg12.run_tag, 'chunk_pilot')
     fprintf(fid, '本次仅证明 chunk/resume/aggregate 路径可用。下一步继续按 formal_tps30 chunk plan 运行更多 chunks，并在 aggregate 后检查 formal_trial_count 是否达到 STEP12_MIN_FORMAL_OBS。\n');
+elseif strcmp(cfg12.run_tag, 'formal_tps30') && str2double(get_keypoint_value_local(keypoints_tbl, 'formal_min_obs_satisfied_flag')) == 0
+    fprintf(fid, 'formal_tps30 仍未完成最低正式样本量。下一步继续从 chunk 11 开始运行，直到 formal_plan_completed_obs >= 300 后再重新 aggregate 判定最低成本有限字长方案。\n');
 elseif str2double(get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag')) == 1
     fprintf(fid, 'formal ranking/topK gate 已对工程推荐 fixed-point mode 关闭。下一步只建议进入 RTL score core prototype；这仍不代表完整 FPGA backend 通过。\n');
 else

@@ -1,0 +1,8 @@
+object_name,num_complex,component_bits,bits_per_complex,total_bits,total_MB,BRAM36_equivalent,URAM288_equivalent,read_complex_per_candidate,read_bits_per_candidate,comment
+W,84,16,32,2688,0.0003204345703125,1,1,7,224,beamforming projection matrix W
+G_cache,4816,16,32,154112,0.01837158203125,5,1,14,448,Step11.6 canonical beamspace G cache
+Z_buffer,112,16,32,3584,0.00042724609375,1,1,7,224,beamspace snapshot buffer after Step11 whitening
+Rz_buffer,49,16,32,1568,0.000186920166015625,1,1,49,1568,Step11 score covariance uses unnormalized Z*Z'
+score_buffer,7353,16,32,235296,0.0280494689941406,7,1,0,32,real score values stored with conservative complex-slot accounting
+topK_buffer,10,16,32,320,3.814697265625e-05,1,1,0,64,topK candidate id plus score metadata estimate
+candidate_table_minimal,7353,16,32,235296,0.0280494689941406,7,1,0,128,az/el/sep/orientation/index metadata estimate

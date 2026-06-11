@@ -197,11 +197,11 @@ setenv('STEP12_QUICK_MODE','0')
 setenv('STEP12_FORMAL_TRIALS_PER_SCENARIO','30')
 setenv('STEP12_FORMAL_CENTER_AZ_LIST','0,4,8,15')
 setenv('STEP12_MIN_FORMAL_OBS','300')
-setenv('STEP12_TOTAL_CHUNKS','20')
+setenv('STEP12_TOTAL_CHUNKS','120')
 setenv('STEP12_MODE_SET','formal_core')
 setenv('STEP12_PROFILE_ENABLE','1')
 setenv('STEP12_RESUME_FROM_PARTIALS','1')
-setenv('STEP12_MAX_OBS_PER_RUN','30')
+setenv('STEP12_MAX_OBS_PER_RUN','10')
 
 setenv('STEP12_CHUNK_ID','1')
 run_step12_formal_chunk
@@ -217,7 +217,9 @@ Aggregate-only reports `formal_plan_total_obs`, `formal_plan_completed_obs`, `fo
 
 `pilot_min_fast_path` and any `chunk_pilot_*` run are traceable smoke/pilot artifacts only. They are not formal FPGA feasibility conclusions.
 
-The current tracked pilot artifact `pilot_min_fast_path` is a formal-path smoke run with `formal_trial_count=12` and `blocker_if_any=formal_trial_count_below_minimum`. It is not a formal validation conclusion. The requested `pilot_tps10` was attempted but did not complete within the interactive execution window; `formal_tps30` was not run in this commit.
+Cache estimates have explicit scope. `cache_memory_MB_total_est_working_set` is the compact working-set/candidate-subset estimate used by aggregate-only reports, while `cache_memory_MB_total_est_full_if_available` records the full canonical cache estimate when a chunk context exposes that reference. These two numbers are not the same hardware/storage path and should not be compared as if they were identical artifacts.
+
+The tracked `pilot_min_fast_path` and `chunk_pilot_tps3` artifacts are formal-path smoke runs only. The current `formal_tps30` progress artifact contains chunks 1-10, `formal_plan_completed_obs=100` out of `formal_plan_total_obs=1200`; it is still incomplete, below `STEP12_MIN_FORMAL_OBS=300`, and no formal conclusion is available yet.
 
 ## Mode Selection
 
