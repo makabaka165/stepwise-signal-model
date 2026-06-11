@@ -1,0 +1,17 @@
+[2026-06-11 19:13:35] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\run_step12_beamspace_ml_fpga_boundary
+[2026-06-11 19:13:35] Project directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model
+[2026-06-11 19:13:35] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\formal_tps30\chunks\chunk_025
+[2026-06-11 19:13:35] Run tag: formal_tps30
+[2026-06-11 19:13:35] Chunk: 25 / 120
+[2026-06-11 19:13:35] Step12 starts
+[2026-06-11 19:13:35] Quick mode: 0
+[2026-06-11 19:13:35] Chunked run: 1
+[2026-06-11 19:13:35] Aggregate only: 0
+[2026-06-11 19:13:35] Mode set: formal_core
+[2026-06-11 19:13:35] Score engine: loop_reference
+[2026-06-11 19:13:35] Step11 adapter found: 1
+[2026-06-11 19:14:03] Loaded Step11 observations: 10
+[2026-06-11 19:14:47] Wrote light MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\formal_tps30\chunks\chunk_025\step12_ml_fpga_boundary_result_light.mat
+[2026-06-11 19:14:47] Full MAT not saved; set STEP12_SAVE_FULL_MAT=1 to regenerate locally.
+[2026-06-11 19:14:47] Wrote MAT manifest: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\formal_tps30\chunks\chunk_025\step12_ml_fpga_boundary_mat_manifest.md
+[2026-06-11 19:14:47] Wrote record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\第12步_波束级ML_FPGA可行性边界验证记录.md

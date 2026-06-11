@@ -1,0 +1,10 @@
+stage_name,num_candidates,topK,G_vectors_per_candidate,G_complex_per_vector,Rz_dim,complex_read_per_candidate,bits_read_per_candidate,estimated_complex_mac_per_candidate,score_lanes,II_assumed,cycles_score_map,cycles_topK,cycles_total_est,throughput_candidate_per_cycle,comment
+coarse_stage,7353,10,2,7,7,63,2016,140,1,1,7353,25438,32791,1,score core estimate for Step11 controlled pair2d DML candidate scoring
+coarse_stage,7353,10,2,7,7,63,2016,140,4,1,1839,6360,8199,4,score core estimate for Step11 controlled pair2d DML candidate scoring
+coarse_stage,7353,10,2,7,7,63,2016,140,8,1,920,3180,4100,8,score core estimate for Step11 controlled pair2d DML candidate scoring
+fine_stage_typical_if_available,5147,10,2,7,7,63,2016,140,1,1,5147,17806,22953,1,score core estimate for Step11 controlled pair2d DML candidate scoring
+fine_stage_typical_if_available,5147,10,2,7,7,63,2016,140,4,1,1287,4452,5739,4,score core estimate for Step11 controlled pair2d DML candidate scoring
+fine_stage_typical_if_available,5147,10,2,7,7,63,2016,140,8,1,644,2226,2870,8,score core estimate for Step11 controlled pair2d DML candidate scoring
+worst_case,11030,10,2,7,7,63,2016,140,1,1,11030,38158,49188,1,score core estimate for Step11 controlled pair2d DML candidate scoring
+worst_case,11030,10,2,7,7,63,2016,140,4,1,2758,9540,12298,4,score core estimate for Step11 controlled pair2d DML candidate scoring
+worst_case,11030,10,2,7,7,63,2016,140,8,1,1379,4770,6149,8,score core estimate for Step11 controlled pair2d DML candidate scoring

@@ -38,7 +38,7 @@ if cfg12.aggregate_only_flag
     plot_paths = plot_step12_results_local(trial_tbl, summary_tbl, score_gap_tbl, topk_tbl, storage_tbl, bandwidth_tbl, cfg12);
     write_step12_tables_local(cfg12, trial_tbl, summary_tbl, keypoints_tbl, score_gap_tbl, topk_tbl, ...
         storage_tbl, bandwidth_tbl, worst_tbl, recommendation_tbl, mode_selection_tbl, score_gap_bins_tbl, profile_tbl, profile_summary_tbl);
-    golden_manifest_path = export_step12_golden_vectors_local(repmat(make_empty_obs_local(), 0, 1), trial_tbl, keypoints_tbl, modes, cfg12);
+    golden_manifest_path = export_step12_golden_vectors_from_aggregate_local(trial_tbl, keypoints_tbl, modes, cfg12);
     doc_path = write_step12_record_doc_clean_local(cfg12, adapter_info, summary_tbl, keypoints_tbl, storage_tbl, bandwidth_tbl, ...
         worst_tbl, mode_selection_tbl, score_gap_bins_tbl, recommendation_tbl, golden_manifest_path, profile_summary_tbl);
     adapter_info_light = make_adapter_info_light_local(adapter_info);
@@ -2938,6 +2938,69 @@ for idx = 1:size(manifest_rows, 1)
     fprintf(fid, '| %s | %s | %s | %.0f | %s | %.0f | `%s` |\n', manifest_rows{idx, :});
 end
 clear cleanup;
+end
+
+function golden_manifest_path = export_step12_golden_vectors_from_aggregate_local(trial_tbl, keypoints_tbl, modes, cfg12)
+golden_manifest_path = '';
+fixed_pass = logical(str2double(get_keypoint_value_local(keypoints_tbl, 'fixed_point_pass_flag')));
+if cfg12.quick_mode_flag || ~cfg12.export_golden_vectors_flag || ~fixed_pass || isempty(trial_tbl) || height(trial_tbl) == 0
+    return;
+end
+
+recommended_mode = get_keypoint_value_local(keypoints_tbl, 'engineering_recommended_fixed_point_format');
+if isempty(recommended_mode) || strcmp(recommended_mode, 'not_recommended')
+    recommended_mode = get_keypoint_value_local(keypoints_tbl, 'recommended_fixed_point_format');
+end
+if isempty(recommended_mode) || strcmp(recommended_mode, 'not_recommended')
+    return;
+end
+
+case_specs = select_golden_case_specs_local(trial_tbl, recommended_mode);
+if ~strcmp(recommended_mode, 'combined_int16')
+    extra = select_single_case_spec_local(trial_tbl, 'combined_int16', 'combined_int16_worst_case', 'score_gap_rel_error', true);
+    if ~isempty(extra)
+        case_specs(end + 1) = extra; %#ok<AGROW>
+    end
+end
+if isempty(case_specs)
+    return;
+end
+
+obs = rebuild_golden_observations_from_plan_local(case_specs, cfg12);
+golden_manifest_path = export_step12_golden_vectors_local(obs, trial_tbl, keypoints_tbl, modes, cfg12);
+end
+
+function obs = rebuild_golden_observations_from_plan_local(case_specs, cfg12)
+trial_indices = unique([case_specs.trial_index]);
+trial_indices = trial_indices(isfinite(trial_indices));
+obs = repmat(make_empty_obs_local(), 0, 1);
+if isempty(trial_indices)
+    return;
+end
+
+[context, context_metadata] = build_step11_7_runtime_context(cfg12.project_dir, cfg12.result_dir, 'DefaultCenterAz', 0);
+plan_tbl = build_step12_observation_plan_local(cfg12);
+scenarios_all = build_step12_scenarios_local();
+for idx = 1:numel(trial_indices)
+    plan_row = plan_tbl(plan_tbl.obs_global_index == trial_indices(idx), :);
+    if isempty(plan_row) || height(plan_row) == 0
+        continue;
+    end
+    plan = table_row_to_struct_local(plan_row(1, :));
+    scenario = scenarios_all(plan.scenario_index);
+    [input, truth, input_meta] = build_step11_7_frontend_like_input(context, scenario, plan.center_az, plan.trial_id, ...
+        'FrontendState', 'controlled_pair2d_candidate', 'L', context.L_default, ...
+        'CenterIndex', plan.center_index, 'ScenarioIndex', plan.scenario_index);
+    out = make_step12_backend_stub_local(input);
+    obs_now = build_step12_observation_local(plan.obs_global_index, scenario, plan.center_index, plan.scenario_index, plan.trial_id, ...
+        input, truth, input_meta, out, context, context_metadata, cfg12);
+    obs_now.obs_id = plan.obs_id;
+    obs_now.obs_global_index = plan.obs_global_index;
+    obs_now.chunk_id = plan.chunk_id_assigned;
+    obs_now.total_chunks = plan.total_chunks;
+    obs_now.run_tag = plan.run_tag;
+    obs(end + 1, 1) = obs_now; %#ok<AGROW>
+end
 end
 
 function specs = select_golden_case_specs_local(trial_tbl, mode_name)

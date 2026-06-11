@@ -1,0 +1,10 @@
+case_name,case_0003
+case_role,smallest_reliable_margin_case
+quant_mode,mixed_Z16_G24_Rz24
+trial_index,615
+scenario_name,easy_noncoherent
+metric_name,score_gap_norm_baseline
+metric_value,0.00108584817626
+score_core_only_flag,1
+full_fpga_backend_validation_flag,0
+golden_vector_limit,256
