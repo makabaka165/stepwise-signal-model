@@ -1,0 +1,9 @@
+[2026-06-11 11:17:30] Script: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\run_step12_beamspace_ml_fpga_boundary
+[2026-06-11 11:17:30] Project directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model
+[2026-06-11 11:17:30] Result directory: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary
+[2026-06-11 11:17:30] Step12 starts
+[2026-06-11 11:17:30] Quick mode: 1
+[2026-06-11 11:17:30] Step11 adapter found: 1
+[2026-06-11 11:17:42] Loaded Step11 observations: 2
+[2026-06-11 11:18:15] Wrote MAT: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\results_step12_beamspace_ml_fpga_boundary\step12_ml_fpga_boundary_result.mat
+[2026-06-11 11:18:15] Wrote record doc: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_12_beamspace_ml_fpga_boundary\第12步_波束级ML_FPGA可行性边界验证记录.md

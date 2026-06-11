@@ -62,11 +62,20 @@ Current Step positioning:
 | Step8.10 | negative unified model selection evidence |
 | Step9 | archived diagnostics / thesis interface notes |
 | Step10 | final thesis route |
+| Step12 | 第11.x波束级ML的FPGA可行性边界验证：fixed-point score ranking、topK preservation、score gap、cache/storage/bandwidth估算 |
 
 Step10 path:
 
 ```text
 steps/step_10_final_thesis_route/
 ```
+
+Step12 path:
+
+```text
+steps/step_12_beamspace_ml_fpga_boundary/run_step12_beamspace_ml_fpga_boundary.m
+```
+
+Step12 depends on the Step11.x beamspace ML backend and its `W`, `G_cache`, `Z`, `Rz`, score, topK, and policy fields. It does not reuse Step8.9 results or Step8.9 pass/fail standards.
 
 Step09 is no longer a backend tuning mainline.

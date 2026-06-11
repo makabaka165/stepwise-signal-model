@@ -666,5 +666,6 @@ Current Step positioning:
 - Step8.10: negative unified model selection evidence.
 - Step9: archived diagnostics and thesis-interface notes, not a final backend.
 - Step10: final thesis route, evidence tables, figure list, and defense materials.
+- Step12: 第 12 步针对第 11.x 波束级 ML 后端建立 FPGA/SoC 协同实现前的硬件可行性边界，重点验证有限字长下 score ranking 和 topK 保持率，并估算 cache 存储与访问复杂度。
 
 Do not continue Step09 backend tuning for the final thesis route. The next phase is thesis writing and figure preparation.
