@@ -667,5 +667,6 @@ Current Step positioning:
 - Step9: archived diagnostics and thesis-interface notes, not a final backend.
 - Step10: final thesis route, evidence tables, figure list, and defense materials.
 - Step12: 第 12 步针对第 11.x 波束级 ML 后端建立 FPGA/SoC 协同实现前的硬件可行性边界，重点验证有限字长下 score ranking 和 topK 保持率，并估算 cache 存储与访问复杂度。
+- Step13: FPGA/SoC 协同边界收束与 DBF 硬件实现方案；入口为 `steps/step_13_fpga_soc_dbf_boundary/run_step13_fpga_soc_dbf_boundary.m`。FPGA 做 `Z = W^H Y`，CPU/SoC 做 `Rz` / `G_cache` / 2D ML / topK / C05 / confidence / fallback。Step13 不修改 Step11.7 backend 默认行为，不是完整 FPGA backend，也不是 ML score core RTL 主线。
 
 Do not continue Step09 backend tuning for the final thesis route. The next phase is thesis writing and figure preparation.

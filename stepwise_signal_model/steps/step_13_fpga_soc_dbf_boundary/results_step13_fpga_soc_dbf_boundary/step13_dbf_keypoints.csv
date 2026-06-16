@@ -1,0 +1,9 @@
+metric,value
+quick_mode,true
+dbf_candidate_pass_flag,true
+recommended_modes,mixed_W18_Y16_Z24; mixed_W24_Y16_Z24
+recommended_rtl_architecture,beam_parallel_B_lanes
+step11_7_backend_default_changed,false
+formal_result_claimed,false
+N_input_channels,24
+B_output_beams,9

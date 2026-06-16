@@ -1,0 +1,16 @@
+field,owner,meaning
+frame_id,SoC,radar frame index
+detect_id,SoC,detection index
+N_input_channels,SoC,array/subarray channels
+B_output_beams,SoC,DBF beams
+L_snapshots,SoC,snapshot count
+W_format,SoC,DBF weight quantization
+Y_format,SoC,input sample quantization
+Z_format,FPGA,beamspace output quantization
+scale_w,FPGA,W scale
+scale_y,FPGA,Y scale
+scale_z,FPGA,Z scale
+clip_rate,FPGA,saturation clip ratio
+overflow_rate,FPGA,overflow indicator ratio
+Z_payload,FPGA,complex beamspace data
+valid_flag,FPGA,Z output valid

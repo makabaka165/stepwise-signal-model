@@ -63,6 +63,7 @@ Current Step positioning:
 | Step9 | archived diagnostics / thesis interface notes |
 | Step10 | final thesis route |
 | Step12 | 第11.x波束级ML的FPGA可行性边界验证：fixed-point score ranking、topK preservation、score gap、cache/storage/bandwidth估算 |
+| Step13 | FPGA/SoC 协同边界收束与 DBF 硬件实现方案；FPGA 做 `Z = W^H Y`，CPU/SoC 做 `Rz` / `G_cache` / 2D ML / topK / C05 / confidence / fallback。Step13 不修改 Step11.7 backend 默认行为，不是完整 FPGA backend，也不是 ML score core RTL 主线。 |
 
 Step10 path:
 
@@ -77,5 +78,13 @@ steps/step_12_beamspace_ml_fpga_boundary/run_step12_beamspace_ml_fpga_boundary.m
 ```
 
 Step12 depends on the Step11.x beamspace ML backend and its `W`, `G_cache`, `Z`, `Rz`, score, topK, and policy fields. It does not reuse Step8.9 results or Step8.9 pass/fail standards.
+
+Step13 path:
+
+```text
+steps/step_13_fpga_soc_dbf_boundary/run_step13_fpga_soc_dbf_boundary.m
+```
+
+Step13 is a DBF boundary and FPGA/SoC partition step. It keeps Step11.7 default backend behavior unchanged. It does not claim full FPGA backend closure or an ML score-core RTL mainline.
 
 Step09 is no longer a backend tuning mainline.

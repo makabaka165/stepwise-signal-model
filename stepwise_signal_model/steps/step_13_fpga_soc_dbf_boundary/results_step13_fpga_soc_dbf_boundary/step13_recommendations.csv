@@ -1,0 +1,4 @@
+preferred,reason
+mixed_W18_Y16_Z24,"Initial Step13 DBF candidate: modest W width, Y16 input, Z24 output"
+mixed_W24_Y16_Z24,"Higher-margin Step13 DBF candidate for W-sensitive scenes"
+beam_parallel_B_lanes,"Recommended future RTL DBF prototype architecture"
