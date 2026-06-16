@@ -149,3 +149,52 @@ setenv('STEP13_QUICK_MODE','1')
 setenv('STEP13_INPUT_SOURCE','step11_light')
 run_step13_fpga_soc_dbf_boundary
 ```
+
+## Step13.2 RTL golden-vector 与 accumulator smoke
+
+Step13.2 在 Step13.1 的 Step11-compatible DBF smoke 基础上，只新增
+`Z = W^H Y` 的 DBF accumulator-level RTL prototype 和 MATLAB golden-vector
+testbench。RTL 复乘公式明确使用 `conj(W) * Y`：
+
+```text
+p_re = w_re * y_re + w_im * y_im
+p_im = w_re * y_im - w_im * y_re
+```
+
+本轮新增内容：
+
+- `matlab_golden/`：生成 compact Step11-compatible golden vectors，并预留 RTL 输出比对脚本。
+- `rtl/`：`dbf_complex_mac.v`、`dbf_beam_accum_core.v`、`dbf_core_accum.v`。
+- `tb/`：手写 MAC testbench 与 compact golden accumulator testbench。
+- `sim/`：`run_iverilog_dbf_smoke.sh`。
+
+默认 golden-vector 配置：
+
+- `STEP13_INPUT_SOURCE = step11_light`
+- `STEP13_RTL_GOLDEN_MODE = mixed_W18_Y16_Z24`
+- `STEP13_RTL_GOLDEN_N_LIMIT = 64`
+- `STEP13_RTL_GOLDEN_B_LIMIT = 7`
+- `STEP13_RTL_GOLDEN_L_LIMIT = 4`
+
+完整 Step11-compatible 输入仍为 `N=2080, B=7, L=16`；RTL smoke 默认只导出
+`N=64, B=7, L=4` 的 compact slice，避免产生过大的 tracked artifact。当前
+accumulator width 规则为：
+
+```text
+ACC_BITS = W_BITS + Y_BITS + ceil(log2(N_LIMIT)) + 2
+full_ACC_BITS = W_BITS + Y_BITS + ceil(log2(2080)) + 2
+```
+
+本轮仍然不实现：
+
+- `Rz`
+- `G_cache`
+- 2D ML search
+- topK / C05 / confidence / fallback
+- 完整 FPGA backend
+- ML score-core RTL 主线
+
+Step13.2 的 RTL simulation smoke 即使通过，也只说明 compact raw accumulator
+与 MATLAB golden 一致；它不是 formal closure，不是 board validation，也不是
+完整 bit-true FPGA backend closure。后续 Step13.3 可继续推进 Z24
+shift/round/saturate 数据通路，或扩大 Step11-compatible golden coverage。

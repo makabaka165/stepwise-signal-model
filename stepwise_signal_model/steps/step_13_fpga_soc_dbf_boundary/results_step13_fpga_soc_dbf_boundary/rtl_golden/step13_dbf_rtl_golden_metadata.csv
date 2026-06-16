@@ -1,0 +1,25 @@
+metric,value
+input_source_requested,step11_light
+input_source_used,step11_light
+fallback_reason,
+W_method,greedy_combined_B7
+full_N_input_channels,2080
+full_B_output_beams,7
+full_L_snapshots,16
+golden_N_limit,64
+golden_B_limit,7
+golden_L_limit,4
+quant_mode,mixed_W18_Y16_Z24
+W_bits,18
+Y_bits,16
+Z_bits,24
+ACC_bits,42
+full_ACC_bits,48
+scale_w,3909131.2750898399
+scale_y,33201.479433286331
+clip_rate,0
+step11_adapter_found_flag,true
+step11_7_full_backend_called,false
+formal_result_claimed,false
+rtl_scope,raw accumulator for Z = W^H Y
+not_implemented_in_step13_2,Rz; G_cache; 2D ML search; topK; C05; confidence; fallback

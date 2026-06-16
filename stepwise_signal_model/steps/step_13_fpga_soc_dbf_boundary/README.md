@@ -158,6 +158,72 @@ For the Step11-compatible run, the recommended DBF candidates passed smoke:
 not mean formal closure, complete FPGA backend closure, or ML score-core RTL
 mainline completion.
 
+## Step13.2 RTL Prototype And Golden Vectors
+
+Step13.2 adds a compact DBF RTL prototype and MATLAB golden-vector smoke.
+The scope remains only:
+
+```text
+Z = W^H Y
+```
+
+The RTL multiply uses `conj(W) * Y`:
+
+```text
+p_re = w_re * y_re + w_im * y_im
+p_im = w_re * y_im - w_im * y_re
+```
+
+New folders:
+
+- `matlab_golden/`: compact Step11-compatible golden-vector generation and
+  RTL output comparison.
+- `rtl/`: Verilog-2001 accumulator-level DBF prototype.
+- `tb/`: self-checking Icarus-friendly testbenches.
+- `sim/`: `iverilog` smoke script.
+
+Default RTL golden settings:
+
+- `STEP13_INPUT_SOURCE = step11_light`
+- `STEP13_RTL_GOLDEN_MODE = mixed_W18_Y16_Z24`
+- `STEP13_RTL_GOLDEN_N_LIMIT = 64`
+- `STEP13_RTL_GOLDEN_B_LIMIT = 7`
+- `STEP13_RTL_GOLDEN_L_LIMIT = 4`
+
+The full Step11-compatible shape remains `N=2080`, `B=7`, `L=16`; the RTL
+smoke exports only a compact slice to keep artifacts small. The first RTL
+smoke checks raw accumulator bit equivalence. It does not implement Z24
+shift/round/saturate as a complete datapath requirement.
+
+Generate MATLAB golden vectors:
+
+```matlab
+run('setup_paths.m')
+cd('steps/step_13_fpga_soc_dbf_boundary/matlab_golden')
+setenv('STEP13_INPUT_SOURCE','step11_light')
+setenv('STEP13_RTL_GOLDEN_MODE','mixed_W18_Y16_Z24')
+setenv('STEP13_RTL_GOLDEN_N_LIMIT','64')
+setenv('STEP13_RTL_GOLDEN_L_LIMIT','4')
+generate_step13_dbf_rtl_golden
+```
+
+Run the RTL smoke from the Step13 directory when `iverilog` and `vvp` are
+available:
+
+```bash
+bash sim/run_iverilog_dbf_smoke.sh
+```
+
+Compare RTL output against MATLAB golden when simulation output exists:
+
+```matlab
+cd('matlab_golden')
+compare_step13_dbf_rtl_outputs
+```
+
+Step13.2 still does not run the Step11.7 full backend and does not change
+Step11.7 backend default behavior.
+
 ## Outputs
 
 Outputs are written to:
@@ -175,6 +241,15 @@ Expected CSV outputs:
 - `step13_fpga_soc_partition.csv`
 - `step13_interface_fields.csv`
 - `step13_recommendations.csv`
+- `rtl_golden/step13_dbf_rtl_golden_manifest.csv`
+- `rtl_golden/step13_dbf_rtl_golden_metadata.csv`
+- `rtl_golden/step13_dbf_rtl_golden_w_int.csv`
+- `rtl_golden/step13_dbf_rtl_golden_y_int.csv`
+- `rtl_golden/step13_dbf_rtl_golden_accum.csv`
+- `rtl_golden/step13_dbf_rtl_golden_vectors.vh`
+- `rtl_sim/dbf_core_accum_output.csv` when RTL simulation runs
+- `rtl_sim/step13_dbf_rtl_sim_summary.csv` when RTL simulation runs
+- `rtl_sim/step13_dbf_rtl_compare_summary.csv` when MATLAB compare runs
 
 Expected figures:
 
@@ -193,5 +268,7 @@ Step13 is not:
 - a complete 2D ML search hardware implementation
 - Step11.7 full backend RTL
 - complete C05 policy / confidence / fallback / boundary hardening in hardware
+- a formal proof of RTL equivalence
+- board validation or timing closure
 
 Quick/smoke results are not formal closure. Formal claims require a later, explicitly scoped validation pass.
