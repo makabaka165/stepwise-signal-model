@@ -209,6 +209,14 @@ closure，不是 synthesis closure，也不是 board validation。本轮没有�
 shift/round/saturate，没有实现 `Rz/G_cache/2D ML/topK/C05/confidence/fallback`，
 也没有修改 Step11.7 backend 默认行为。
 
+这里的“没有实现”不是 FPGA RTL 缺口，而是 Step13 FPGA/SoC 分工下的设计选择。
+`Rz`、`G_cache`、二维 ML 搜索、topK、C05 policy、confidence、boundary、
+fallback 保留在 CPU/SoC 侧的软件/控制层；FPGA 侧只推进 DBF：
+
+```text
+Z = W^H Y
+```
+
 ## Step13.2 RTL golden-vector 与 accumulator smoke
 
 Step13.2 在 Step13.1 的 Step11-compatible DBF smoke 基础上，只新增
@@ -252,6 +260,10 @@ full_ACC_BITS = W_BITS + Y_BITS + ceil(log2(2080)) + 2
 - topK / C05 / confidence / fallback
 - 完整 FPGA backend
 - ML score-core RTL 主线
+
+这些 CPU/SoC 侧模块并不是 Step13 FPGA RTL 待补功能。summary CSV 中
+`rz_gcache_ml_topk_c05_implemented=false` 的含义是“按分工不放在 FPGA 侧”，
+不是“项目工作缺失”。
 
 Step13.2 的 RTL simulation smoke 即使通过，也只说明 compact raw accumulator
 与 MATLAB golden 一致；它不是 formal closure，不是 board validation，也不是

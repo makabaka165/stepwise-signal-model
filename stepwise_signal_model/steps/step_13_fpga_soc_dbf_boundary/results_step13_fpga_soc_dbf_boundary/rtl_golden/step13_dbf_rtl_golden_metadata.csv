@@ -22,4 +22,6 @@ step11_adapter_found_flag,true
 step11_7_full_backend_called,false
 formal_result_claimed,false
 rtl_scope,raw accumulator for Z = W^H Y
-not_implemented_in_step13_2,Rz; G_cache; 2D ML search; topK; C05; confidence; fallback
+fpga_rtl_scope,DBF raw accumulator only: Z = W^H Y
+rz_gcache_ml_topk_c05_cpu_soc_responsibility,true
+outside_fpga_rtl_by_design,Rz; G_cache; 2D ML search; topK; C05; confidence; boundary; fallback

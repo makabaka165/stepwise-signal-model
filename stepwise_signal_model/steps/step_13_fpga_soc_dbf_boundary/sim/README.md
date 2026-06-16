@@ -42,6 +42,9 @@ It does not create or track waveform files by default.
 This smoke only validates the raw accumulator for `Z = W^H Y`. It does not
 implement Z24 shift/round/saturate, `Rz`, `G_cache`, 2D ML search, topK, C05,
 confidence, fallback, timing closure, board validation, or formal closure.
+`Rz/G_cache/2D ML/topK/C05/confidence/fallback` are intentionally outside the
+Step13 FPGA RTL scope and remain CPU/SoC responsibilities by design. Their
+absence from the RTL smoke is not missing project work.
 
 ## Vivado XSim
 

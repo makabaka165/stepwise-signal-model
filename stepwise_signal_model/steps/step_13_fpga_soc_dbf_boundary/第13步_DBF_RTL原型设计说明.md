@@ -64,6 +64,11 @@ exact match；不代表 formal closure、timing closure、synthesis closure、im
 closure 或 board validation。本轮仍不实现 Z24 shift/round/saturate，也不实现
 `Rz/G_cache/2D ML/topK/C05/confidence/fallback`。
 
+这里的“不实现”是 FPGA/SoC 分工选择，不是 Step13 FPGA RTL 的待补缺口。
+`Rz`、`G_cache`、二维 ML 搜索、topK、C05 policy、confidence、boundary、
+fallback 根据导师建议明确保留在 CPU/SoC 侧的软件/控制层职责。FPGA 侧当前
+只推进 DBF：`Z = W^H Y`。
+
 ## 目标边界
 
 Step13.2 只实现 DBF accumulator-level RTL prototype，目标公式为：
@@ -150,6 +155,10 @@ Step13.2 不实现：
 - 完整 FPGA backend
 - board validation
 - formal closure
+
+上述 `Rz/G_cache/2D ML/topK/C05/confidence/boundary/fallback` 并不是 FPGA
+RTL 后续要补齐的模块，而是 CPU/SoC 侧职责。Step13 FPGA RTL 的边界保持为
+DBF raw accumulator。
 
 本轮也不修改 Step11.7 backend 默认行为，不运行 Step11.7 full backend，不迁移或
 修改 `codex/step12-fpga-soc`。

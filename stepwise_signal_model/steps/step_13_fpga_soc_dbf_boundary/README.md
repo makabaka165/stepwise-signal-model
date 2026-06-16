@@ -36,6 +36,14 @@ FPGA does not own:
 - full 2D ML search
 - full C05 policy, confidence, fallback, or boundary hardening
 
+These are intentionally outside the Step13 FPGA RTL scope and remain
+CPU/SoC responsibilities by design. This is not missing FPGA project work;
+the FPGA-side RTL scope is DBF only:
+
+```text
+Z = W^H Y
+```
+
 CPU/SoC responsibilities:
 
 - receive FPGA output beamspace data `Z`
@@ -248,6 +256,9 @@ The current Step13.2a run in this environment recorded:
 - `accumulator_match_flag = false`
 
 No absolute local paths are written into tracked RTL simulation summaries.
+In summary CSVs, `rz_gcache_ml_topk_c05_implemented=false` means intentionally
+not FPGA-side, not missing project work; `Rz/G_cache/2D ML/topK/C05/confidence/
+fallback` remain CPU/SoC responsibilities by design.
 
 ## Step13.2b Vivado XSim Smoke
 
@@ -289,6 +300,9 @@ The current XSim run completed:
 
 This is still a smoke test only. It is not formal closure, timing closure,
 synthesis closure, implementation closure, or board validation.
+It also does not move `Rz/G_cache/2D ML/topK/C05/confidence/fallback` into
+FPGA RTL; those blocks are deliberately kept on the CPU/SoC software/control
+side while FPGA RTL stays focused on DBF `Z = W^H Y`.
 
 ## Outputs
 
@@ -337,4 +351,6 @@ Step13 is not:
 - a formal proof of RTL equivalence
 - board validation or timing closure
 
+The CPU/SoC-side items above are excluded from FPGA RTL by partition choice,
+not because the current RTL is waiting for those features to be filled in.
 Quick/smoke results are not formal closure. Formal claims require a later, explicitly scoped validation pass.

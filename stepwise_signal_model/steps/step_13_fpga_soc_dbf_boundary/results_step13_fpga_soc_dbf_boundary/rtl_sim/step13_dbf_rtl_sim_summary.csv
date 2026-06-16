@@ -10,4 +10,5 @@ formal_result_claimed,false
 scope,raw DBF accumulator Z = W^H Y
 z24_shift_round_saturate_implemented,false
 rz_gcache_ml_topk_c05_implemented,false
+rz_gcache_ml_topk_c05_cpu_soc_responsibility,true
 note,xsim_raw_accumulator_smoke_passed
