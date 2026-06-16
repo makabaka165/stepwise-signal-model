@@ -1,0 +1,14 @@
+*.jou
+*.log
+*.wdb
+*.vcd
+*.pb
+xsim.dir/
+.xsim/
+sim/*.pb
+sim/*.wdb
+sim/*.jou
+sim/*.log
+results_step13_fpga_soc_dbf_boundary/rtl_sim/*.wdb
+results_step13_fpga_soc_dbf_boundary/rtl_sim/*.vcd
+results_step13_fpga_soc_dbf_boundary/rtl_sim/xsim.dir/

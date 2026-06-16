@@ -29,6 +29,41 @@ summary 中不写本机绝对路径。若后续安装 `iverilog/vvp`，同一脚
 `tb_dbf_complex_mac.v` 与 `tb_dbf_core_accum.v`，再由 MATLAB compare 验证
 `RTL acc_re/acc_im == MATLAB golden acc_re/acc_im`。
 
+## Step13.2b Vivado XSim smoke 记录
+
+Step13.2b 改用 Vivado 2024.2 XSim 工具链运行已有 RTL smoke，不依赖
+`iverilog/vvp`。本轮仍只验证 raw accumulator：
+
+```text
+Z = W^H Y
+```
+
+新增入口：
+
+- `sim/run_xsim_dbf_smoke.tcl`
+- `sim/run_xsim_dbf_smoke.ps1`
+- `sim/run_xsim_dbf_smoke.bat`
+- `sim/xsim_run_all.tcl`
+
+当前环境实际结果：
+
+- `tool_xvlog_found = true`
+- `tool_xelab_found = true`
+- `tool_xsim_found = true`
+- `simulation_status = pass`
+- `dbf_complex_mac_smoke = pass`
+- `dbf_core_accum_smoke = pass`
+- `dbf_core_accum_output_csv_created = true`
+- MATLAB compare: `comparison_status = pass`
+- `accumulator_match_flag = true`
+- `missing_count = 0`
+- `mismatch_count = 0`
+
+该结果只说明 compact golden slice 的 RTL raw accumulator 与 MATLAB golden
+exact match；不代表 formal closure、timing closure、synthesis closure、implementation
+closure 或 board validation。本轮仍不实现 Z24 shift/round/saturate，也不实现
+`Rz/G_cache/2D ML/topK/C05/confidence/fallback`。
+
 ## 目标边界
 
 Step13.2 只实现 DBF accumulator-level RTL prototype，目标公式为：

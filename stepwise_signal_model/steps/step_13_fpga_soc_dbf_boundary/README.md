@@ -249,6 +249,47 @@ The current Step13.2a run in this environment recorded:
 
 No absolute local paths are written into tracked RTL simulation summaries.
 
+## Step13.2b Vivado XSim Smoke
+
+Step13.2b uses Vivado 2024.2 XSim as the RTL smoke toolchain. It keeps the
+same narrow validation scope: raw accumulator equality for `Z = W^H Y`.
+
+Run from the Step13 directory after launching Vivado Tcl Shell or loading
+Vivado `settings64.bat`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File sim/run_xsim_dbf_smoke.ps1
+```
+
+or:
+
+```cmd
+sim\run_xsim_dbf_smoke.bat
+```
+
+The underlying Vivado Tcl entry point is:
+
+```text
+sim/run_xsim_dbf_smoke.tcl
+```
+
+The current XSim run completed:
+
+- `tool_xvlog_found = true`
+- `tool_xelab_found = true`
+- `tool_xsim_found = true`
+- `simulation_status = pass`
+- `dbf_complex_mac_smoke = pass`
+- `dbf_core_accum_smoke = pass`
+- `dbf_core_accum_output_csv_created = true`
+- MATLAB compare: `comparison_status = pass`
+- `accumulator_match_flag = true`
+- `missing_count = 0`
+- `mismatch_count = 0`
+
+This is still a smoke test only. It is not formal closure, timing closure,
+synthesis closure, implementation closure, or board validation.
+
 ## Outputs
 
 Outputs are written to:

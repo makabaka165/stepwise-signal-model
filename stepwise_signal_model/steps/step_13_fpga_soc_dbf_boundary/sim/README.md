@@ -42,3 +42,42 @@ It does not create or track waveform files by default.
 This smoke only validates the raw accumulator for `Z = W^H Y`. It does not
 implement Z24 shift/round/saturate, `Rz`, `G_cache`, 2D ML search, topK, C05,
 confidence, fallback, timing closure, board validation, or formal closure.
+
+## Vivado XSim
+
+Step13.2b adds a Vivado XSim toolchain smoke:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File sim/run_xsim_dbf_smoke.ps1
+```
+
+or:
+
+```cmd
+sim\run_xsim_dbf_smoke.bat
+```
+
+These wrappers run:
+
+```text
+vivado -mode batch -source sim/run_xsim_dbf_smoke.tcl
+```
+
+after Vivado tools are available on `PATH`. The Tcl script compiles the RTL and
+testbenches with `xvlog`, elaborates with `xelab`, runs `xsim`, and writes:
+
+```text
+results_step13_fpga_soc_dbf_boundary/rtl_sim/dbf_core_accum_output.csv
+results_step13_fpga_soc_dbf_boundary/rtl_sim/step13_dbf_rtl_sim_summary.csv
+```
+
+Current XSim status in this environment:
+
+- `simulation_status=pass`
+- `dbf_complex_mac_smoke=pass`
+- `dbf_core_accum_smoke=pass`
+- `dbf_core_accum_output_csv_created=true`
+- MATLAB compare `comparison_status=pass`
+- `accumulator_match_flag=true`
+
+Generated `.jou`, `.log`, `.wdb`, `.pb`, and `xsim.dir/` files are ignored.

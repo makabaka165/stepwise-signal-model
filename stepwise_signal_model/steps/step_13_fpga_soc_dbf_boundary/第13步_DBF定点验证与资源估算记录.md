@@ -177,6 +177,38 @@ MATLAB compare 已运行，因 `dbf_core_accum_output.csv` 不存在而记录 un
 tracked result 中已清除本机绝对路径，仅保留相对路径。该状态不代表 RTL smoke
 通过，也不代表 formal closure、timing closure 或 board validation。
 
+## Step13.2b Vivado XSim 仿真结果
+
+本轮使用 Vivado 2024.2 XSim 工具链运行 Step13 DBF RTL accumulator smoke。
+新增入口：
+
+- `sim/run_xsim_dbf_smoke.tcl`
+- `sim/run_xsim_dbf_smoke.ps1`
+- `sim/run_xsim_dbf_smoke.bat`
+- `sim/xsim_run_all.tcl`
+
+实际运行结果：
+
+- `tool_xvlog_found = true`
+- `tool_xelab_found = true`
+- `tool_xsim_found = true`
+- `simulation_status = pass`
+- `dbf_complex_mac_smoke = pass`
+- `dbf_core_accum_smoke = pass`
+- `dbf_core_accum_output_csv_created = true`
+- `comparison_status = pass`
+- `accumulator_match_flag = true`
+- `golden_rows = 28`
+- `sim_rows = 28`
+- `missing_count = 0`
+- `mismatch_count = 0`
+
+该结果只验证 compact `N=64, B=7, L=4` golden slice 的 raw accumulator
+`Z = W^H Y` 与 MATLAB golden 完全一致。它不是 formal closure，不是 timing
+closure，不是 synthesis closure，也不是 board validation。本轮没有实现 Z24
+shift/round/saturate，没有实现 `Rz/G_cache/2D ML/topK/C05/confidence/fallback`，
+也没有修改 Step11.7 backend 默认行为。
+
 ## Step13.2 RTL golden-vector 与 accumulator smoke
 
 Step13.2 在 Step13.1 的 Step11-compatible DBF smoke 基础上，只新增

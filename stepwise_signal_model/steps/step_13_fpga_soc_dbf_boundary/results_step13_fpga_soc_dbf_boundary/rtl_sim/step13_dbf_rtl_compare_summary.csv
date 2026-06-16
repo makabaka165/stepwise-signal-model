@@ -1,10 +1,10 @@
 metric,value
-comparison_status,unavailable
+comparison_status,pass
 golden_rows,28
-sim_rows,0
-matched_rows,0
-missing_count,28
+sim_rows,28
+matched_rows,28
+missing_count,0
 mismatch_count,0
-accumulator_match_flag,false
+accumulator_match_flag,true
 formal_result_claimed,false
-note,missing simulation file: results_step13_fpga_soc_dbf_boundary/rtl_sim/dbf_core_accum_output.csv
+note,RTL accumulator output matches MATLAB golden exactly
