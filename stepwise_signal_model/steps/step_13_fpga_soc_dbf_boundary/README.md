@@ -214,6 +214,21 @@ available:
 bash sim/run_iverilog_dbf_smoke.sh
 ```
 
+On Windows, use either entry point from the Step13 directory or from `sim/`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File sim/run_iverilog_dbf_smoke.ps1
+```
+
+```cmd
+sim\run_iverilog_dbf_smoke.cmd
+```
+
+Step13.2a adds these Windows-friendly simulation entry points. They write
+`rtl_sim/step13_dbf_rtl_sim_summary.csv` even when `iverilog` or `vvp` is not
+available. In that case the recorded status is `simulation_status=unavailable`;
+it is not treated as a pass.
+
 Compare RTL output against MATLAB golden when simulation output exists:
 
 ```matlab
@@ -223,6 +238,16 @@ compare_step13_dbf_rtl_outputs
 
 Step13.2 still does not run the Step11.7 full backend and does not change
 Step11.7 backend default behavior.
+
+The current Step13.2a run in this environment recorded:
+
+- `tool_iverilog_found = false`
+- `tool_vvp_found = false`
+- `simulation_status = unavailable`
+- `comparison_status = unavailable`
+- `accumulator_match_flag = false`
+
+No absolute local paths are written into tracked RTL simulation summaries.
 
 ## Outputs
 

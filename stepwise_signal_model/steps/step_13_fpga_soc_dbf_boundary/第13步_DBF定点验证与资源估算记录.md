@@ -150,6 +150,33 @@ setenv('STEP13_INPUT_SOURCE','step11_light')
 run_step13_fpga_soc_dbf_boundary
 ```
 
+## Step13.2a 仿真工具链闭合记录
+
+本轮新增 Windows-friendly `iverilog` 入口：
+
+- `sim/run_iverilog_dbf_smoke.ps1`
+- `sim/run_iverilog_dbf_smoke.cmd`
+
+脚本会从 Step13 目录或 `sim/` 目录自动定位工程根目录，检查 `iverilog` 与 `vvp`，
+并写入小型 summary：
+
+```text
+results_step13_fpga_soc_dbf_boundary/rtl_sim/step13_dbf_rtl_sim_summary.csv
+```
+
+当前环境实际结果：
+
+- `simulation_status = unavailable`
+- `tool_iverilog_found = false`
+- `tool_vvp_found = false`
+- `dbf_core_accum_output_csv_generated = false`
+- `comparison_status = unavailable`
+- `accumulator_match_flag = false`
+
+MATLAB compare 已运行，因 `dbf_core_accum_output.csv` 不存在而记录 unavailable。
+tracked result 中已清除本机绝对路径，仅保留相对路径。该状态不代表 RTL smoke
+通过，也不代表 formal closure、timing closure 或 board validation。
+
 ## Step13.2 RTL golden-vector 与 accumulator smoke
 
 Step13.2 在 Step13.1 的 Step11-compatible DBF smoke 基础上，只新增

@@ -1,5 +1,34 @@
 # 第13步 DBF RTL原型设计说明
 
+## Step13.2a 仿真工具链闭合记录
+
+Step13.2a 的目标不是新增算法功能，而是补齐 Windows-friendly RTL smoke
+入口，让已有 raw accumulator testbench 可以在有 `iverilog/vvp` 的环境中直接运行。
+
+新增入口：
+
+- `sim/run_iverilog_dbf_smoke.ps1`
+- `sim/run_iverilog_dbf_smoke.cmd`
+
+脚本可从 Step13 目录或 `sim/` 目录启动，会自动定位 Step13 根目录，并写入：
+
+```text
+results_step13_fpga_soc_dbf_boundary/rtl_sim/step13_dbf_rtl_sim_summary.csv
+```
+
+当前环境检查结果：
+
+- `tool_iverilog_found = false`
+- `tool_vvp_found = false`
+- `simulation_status = unavailable`
+- `comparison_status = unavailable`
+- `accumulator_match_flag = false`
+
+这不是 RTL pass，也不是 formal closure；只是明确记录仿真工具不可用。tracked
+summary 中不写本机绝对路径。若后续安装 `iverilog/vvp`，同一脚本会编译并运行
+`tb_dbf_complex_mac.v` 与 `tb_dbf_core_accum.v`，再由 MATLAB compare 验证
+`RTL acc_re/acc_im == MATLAB golden acc_re/acc_im`。
+
 ## 目标边界
 
 Step13.2 只实现 DBF accumulator-level RTL prototype，目标公式为：

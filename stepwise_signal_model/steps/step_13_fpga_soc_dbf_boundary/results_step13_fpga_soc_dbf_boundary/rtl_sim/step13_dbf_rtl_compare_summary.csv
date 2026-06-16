@@ -7,4 +7,4 @@ missing_count,28
 mismatch_count,0
 accumulator_match_flag,false
 formal_result_claimed,false
-note,missing simulation file: E:\matlab_code\bishe_quanxi\stepwise_signal_model\steps\step_13_fpga_soc_dbf_boundary\results_step13_fpga_soc_dbf_boundary\rtl_sim\dbf_core_accum_output.csv
+note,missing simulation file: results_step13_fpga_soc_dbf_boundary/rtl_sim/dbf_core_accum_output.csv

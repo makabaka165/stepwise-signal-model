@@ -9,8 +9,12 @@ clc;
 scriptDir = fileparts(mfilename('fullpath'));
 stepDir = fileparts(scriptDir);
 resultsRoot = fullfile(stepDir, 'results_step13_fpga_soc_dbf_boundary');
-goldenPath = fullfile(resultsRoot, 'rtl_golden', 'step13_dbf_rtl_golden_accum.csv');
-simPath = fullfile(resultsRoot, 'rtl_sim', 'dbf_core_accum_output.csv');
+goldenRelPath = fullfile('results_step13_fpga_soc_dbf_boundary', 'rtl_golden', ...
+    'step13_dbf_rtl_golden_accum.csv');
+simRelPath = fullfile('results_step13_fpga_soc_dbf_boundary', 'rtl_sim', ...
+    'dbf_core_accum_output.csv');
+goldenPath = fullfile(stepDir, goldenRelPath);
+simPath = fullfile(stepDir, simRelPath);
 summaryPath = fullfile(resultsRoot, 'rtl_sim', 'step13_dbf_rtl_compare_summary.csv');
 if ~exist(fileparts(summaryPath), 'dir')
     mkdir(fileparts(summaryPath));
@@ -18,7 +22,7 @@ end
 
 if ~exist(goldenPath, 'file')
     local_write_summary(summaryPath, 'unavailable', 0, 0, 0, 0, 0, false, ...
-        sprintf('missing golden file: %s', goldenPath));
+        sprintf('missing golden file: %s', local_slash_path(goldenRelPath)));
     error('Step13:MissingRtlGolden', 'Missing MATLAB golden file: %s', goldenPath);
 end
 
@@ -27,8 +31,9 @@ goldenTbl = readtable(goldenPath);
 if ~exist(simPath, 'file')
     local_write_summary(summaryPath, 'unavailable', height(goldenTbl), 0, 0, ...
         height(goldenTbl), 0, false, ...
-        sprintf('missing simulation file: %s', simPath));
-    fprintf('Step13.2 RTL compare unavailable: missing simulation file %s\n', simPath);
+        sprintf('missing simulation file: %s', local_slash_path(simRelPath)));
+    fprintf('Step13.2 RTL compare unavailable: missing simulation file %s\n', ...
+        local_slash_path(simRelPath));
     return;
 end
 
@@ -87,4 +92,8 @@ if value
 else
     text = 'false';
 end
+end
+
+function text = local_slash_path(pathText)
+text = strrep(pathText, '\', '/');
 end

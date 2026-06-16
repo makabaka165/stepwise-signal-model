@@ -1,0 +1,10 @@
+metric,value
+simulation_status,unavailable
+tool_iverilog_found,false
+tool_vvp_found,false
+dbf_core_accum_output_csv_generated,false
+formal_result_claimed,false
+scope,raw DBF accumulator Z = W^H Y
+z24_shift_round_saturate_implemented,false
+rz_gcache_ml_topk_c05_implemented,false
+note,iverilog_or_vvp_not_available
