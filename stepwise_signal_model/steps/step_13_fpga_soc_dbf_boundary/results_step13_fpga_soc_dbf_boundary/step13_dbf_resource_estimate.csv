@@ -1,4 +1,4 @@
-architecture,N_input_channels,B_output_beams,L_snapshots,complex_multipliers_per_beam,complex_mac_count_per_snapshot,W_storage_bits,Y_input_bandwidth,Z_output_bandwidth,accumulator_width,latency_estimate,throughput_estimate,BRAM_rough_estimate,URAM_rough_estimate,DSP_rough_estimate
-one_complex_mac_lane,24,9,16,1,216,7776,768,432,24,220,0.00462962962962963,2,0,3
-beam_parallel_B_lanes,24,9,16,9,216,7776,768,432,24,28,0.0416666666666667,2,0,27
-full_BxN_parallel,24,9,16,216,216,7776,768,432,24,5,1,2,0,648
+architecture,clock_Hz,cycles_per_snapshot_est,throughput_snapshots_per_sec_est,Y_input_bits_per_snapshot,Z_output_bits_per_snapshot,Y_input_MBps_at_clock,Z_output_MBps_at_clock,W_storage_bits,accumulator_width_est,complex_mac_count_per_snapshot,complex_lanes,DSP_rough_estimate,BRAM36_rough_estimate,URAM288_rough_estimate,N_input_channels,B_output_beams,L_snapshots
+one_complex_mac_lane,200000000,14564,13732.4910738808,66560,336,114.254325734688,0.576764625102994,524160,48,14560,1,3,16,2,2080,7,16
+beam_parallel_B_lanes,200000000,2084,95969.2898272553,66560,336,798.464491362764,4.03071017274472,524160,48,14560,7,21,16,2,2080,7,16
+full_BxN_parallel,200000000,5,40000000,66560,336,332800,1680,524160,48,14560,14560,43680,16,2,2080,7,16

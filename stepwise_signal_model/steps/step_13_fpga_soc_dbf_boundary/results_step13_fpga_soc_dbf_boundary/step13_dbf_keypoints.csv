@@ -1,9 +1,21 @@
 metric,value
-quick_mode,true
-dbf_candidate_pass_flag,true
-recommended_modes,mixed_W18_Y16_Z24; mixed_W24_Y16_Z24
-recommended_rtl_architecture,beam_parallel_B_lanes
+input_source_requested,step11_light
+input_source_used,step11_light
+fallback_reason,
+step11_adapter_found_flag,true
+step11_7_full_backend_called,false
+step11_context_builder_used,false
+g_cache_context_created_for_software_reference_only,false
 step11_7_backend_default_changed,false
 formal_result_claimed,false
-N_input_channels,24
-B_output_beams,9
+dbf_step11_compatible_smoke_pass_flag,true
+recommended_modes,mixed_W18_Y16_Z24; mixed_W24_Y16_Z24
+recommended_rtl_architecture,beam_parallel_B_lanes
+N_input_channels,2080
+B_output_beams,7
+L_snapshots,16
+W_method,greedy_combined_B7
+beam_parallel_B_lanes_DSP_rough_estimate,21
+beam_parallel_B_lanes_throughput_snapshots_per_sec_est,95969.3
+beam_parallel_B_lanes_Y_input_MBps_at_clock,798.464
+beam_parallel_B_lanes_Z_output_MBps_at_clock,4.03071
