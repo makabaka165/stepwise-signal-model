@@ -95,3 +95,9 @@ Step14.5:
 Step14.0 and Step14.1 do not perform board validation. They also do not create
 Block Design, instantiate AXI DMA, generate bitstreams, or claim a complete
 FPGA backend.
+
+## Step14.1 Notes
+
+Step14.1 adds pure RTL/XSim AXI4-Stream data-path loop closure, including source BFM, replaceable W ROM provider, DBF AXIS datapath, Z serializer, sink scoreboard, CSV export, MATLAB compare, protocol error checks, output backpressure stability checks, and two consecutive frames without reset.
+
+Step14.1 pass is the gate before Step14.2 IP Packager work. Even when it passes, proceed_to_dma_reference_design_flag, proceed_to_board_validation_flag, and proceed_to_full_fpga_backend_flag remain false.

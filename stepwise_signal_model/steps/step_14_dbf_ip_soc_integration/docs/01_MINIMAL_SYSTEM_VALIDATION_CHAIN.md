@@ -69,3 +69,7 @@ Step13 arithmetic core. It does not prove:
 - board timing
 - bitstream validity
 - complete FPGA backend closure
+
+## Step14.1 Implementation Notes
+
+The first implementation contains dbf_w_provider_rom, dbf_axis_datapath, dbf_axis_z_serializer, dbf_axis_system_top, and tb_dbf_axis_system_top. The testbench records only the two good-path frame outputs in step14_1_axis_output.csv; malformed protocol cases validate sticky status bits and do not contribute to the golden-output CSV.

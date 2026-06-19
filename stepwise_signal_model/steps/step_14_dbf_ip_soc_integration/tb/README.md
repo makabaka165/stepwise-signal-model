@@ -1,11 +1,3 @@
-# Testbench Placeholder
+# Testbench
 
-This directory is reserved for future Step14 self-checking testbenches.
-
-The first intended testbench chain is:
-
-```text
-AXIS Y source BFM -> DBF AXIS wrapper -> AXIS Z sink/scoreboard
-```
-
-Current Step14.0 does not add testbench code or run simulation.
+This directory contains the Step14.1 self-checking XSim testbench. It checks normal frame output, input gaps, output backpressure, two consecutive frames, ready lockout, beam order, early TLAST, missing TLAST, and bad TKEEP.

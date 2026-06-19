@@ -1,7 +1,3 @@
-# Simulation Placeholder
+# Simulation
 
-This directory is reserved for future XSim or lightweight RTL simulation entry
-points.
-
-Current Step14.0 does not run Vivado, XSim, Icarus, MATLAB, or any generated
-simulation flow.
+This directory contains Step14.1 Vivado XSim wrappers. If XSim tools are unavailable, the PowerShell and bat wrappers write an unavailable summary rather than a false pass. This simulation is not DMA, PS, Block Design, board validation, bitstream, or formal closure.

@@ -82,3 +82,7 @@ Future work may replace the ROM provider without changing the DBF datapath:
 
 The replacement boundary is the W provider interface, not the Step13 arithmetic
 core.
+
+## Step14.1 W ROM Files
+
+Step14.1 generates 14 W ROM files: step14_1_w_re_b0.mem through step14_1_w_re_b6.mem and step14_1_w_im_b0.mem through step14_1_w_im_b6.mem. Each file has 2080 rows of fixed-width 5-hex-character two's-complement W18 values readable by $readmemh.

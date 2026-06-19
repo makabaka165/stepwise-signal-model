@@ -1,0 +1,12 @@
+metric,value
+step14_1_axis_system_pass_flag,false
+proceed_to_custom_ip_packaging_flag,false
+proceed_to_dma_reference_design_flag,false
+proceed_to_board_validation_flag,false
+proceed_to_full_fpga_backend_flag,false
+formal_result_claimed,false
+dma_validation_flag,false
+ps_validation_flag,false
+board_validation_flag,false
+custom_ip_packaged_flag,false
+blocker,xsim_unavailable_or_sim_output_missing

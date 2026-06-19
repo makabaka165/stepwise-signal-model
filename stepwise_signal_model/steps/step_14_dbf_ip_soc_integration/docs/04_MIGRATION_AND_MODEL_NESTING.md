@@ -65,3 +65,7 @@ Step14.0 and Step14.1 do not make a board-validation claim. They also do not
 claim a complete FPGA backend. The first claim is only that a portable AXIS
 system boundary can drive the closed Step13 DBF core and compare Z against
 MATLAB golden output.
+
+## Step14.1 Migration Boundary
+
+Step14.1 keeps dbf_axis_system_top free of DMA, PS, AXI-Lite, Block Design, FIFO IP, ILA, and board clock IP. Future IP Packager or user-model nesting should wrap this top rather than changing the Step13 arithmetic core.

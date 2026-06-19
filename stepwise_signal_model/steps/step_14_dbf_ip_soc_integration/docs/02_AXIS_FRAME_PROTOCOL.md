@@ -137,3 +137,7 @@ Version one does not define:
 - `TUSER`
 - DMA descriptor metadata
 - packet side-channel policy
+
+## Step14.1 Protocol Error Policy
+
+The Step14.1 datapath reports malformed AXIS input without changing the fixed internal 2080-sample arithmetic frame: status_early_tlast, status_missing_tlast, status_bad_tkeep, and status_protocol_error. The internal DBF frame boundary is always element_index == 2079.

@@ -121,3 +121,25 @@ Step14.0 does not create or run:
 - bitstream, DCP, XSA, HWH, or large artifacts
 - board validation
 - complete FPGA backend closure
+
+## Step14.1 RTL/XSim AXI4-Stream Smoke
+
+Step14.1 implements the first pure RTL AXI4-Stream DBF system data path:
+
+```text
+Step11-compatible Y/W vectors
+-> AXI4-Stream Y source BFM
+-> replaceable W ROM provider
+-> DBF AXI datapath
+-> Step13 B=7 DBF arithmetic core
+-> AXI4-Stream Z serializer
+-> AXI4-Stream sink/scoreboard
+-> CSV
+-> MATLAB golden comparison
+```
+
+The W provider, input source, and output sink are intentionally replaceable. The Step13 arithmetic RTL remains the source of truth and is referenced by XSim through relative paths; it is not copied into Step14.
+
+This smoke checks AXI handshaking, fixed 2080-sample frame boundaries, W/Y alignment, B=7 Z serialization order, output backpressure stability, two consecutive frames without reset, and protocol error reporting for early TLAST, missing TLAST, and bad TKEEP.
+
+Step14.1 is not DMA, PS, DDR, Block Design, IP Packager, board validation, bitstream generation, full FPGA backend closure, or formal closure. CPU/SoC ML modules remain outside FPGA RTL.

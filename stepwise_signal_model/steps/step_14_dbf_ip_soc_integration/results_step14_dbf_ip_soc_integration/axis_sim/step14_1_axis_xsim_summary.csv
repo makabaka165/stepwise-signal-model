@@ -1,0 +1,13 @@
+metric,value
+tool_xvlog_found,false
+tool_xelab_found,false
+tool_xsim_found,false
+compile_status,unavailable
+elaboration_status,unavailable
+simulation_status,unavailable
+tb_summary_created,false
+axis_output_csv_created,false
+formal_result_claimed,false
+dma_validation_flag,false
+ps_validation_flag,false
+board_validation_flag,false

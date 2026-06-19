@@ -1,7 +1,3 @@
-# MATLAB Vector Placeholder
+# MATLAB Vectors
 
-This directory is reserved for future small Step11-compatible Y/W/Z vector
-exports and comparison helpers.
-
-Current Step14.0 does not generate MATLAB vectors. Large `.mem`, `.mat`, or
-generated result artifacts are intentionally not added.
+This directory contains Step14.1 vector and compare scripts. The generator reads only Step13.4 full-N golden CSV files and writes small Step14.1 AXIS replay vectors, W ROM .mem files, expected Z, metadata, and a manifest under results_step14_dbf_ip_soc_integration/axis_vectors/.
