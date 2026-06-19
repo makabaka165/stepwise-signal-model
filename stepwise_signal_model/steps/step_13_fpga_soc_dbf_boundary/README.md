@@ -304,6 +304,56 @@ It also does not move `Rz/G_cache/2D ML/topK/C05/confidence/fallback` into
 FPGA RTL; those blocks are deliberately kept on the CPU/SoC software/control
 side while FPGA RTL stays focused on DBF `Z = W^H Y`.
 
+## Step13.3 Z24 Output Datapath Smoke
+
+Step13.3 adds the FPGA-side DBF output datapath after the raw accumulator:
+
+```text
+ACC raw accumulator -> shift -> round -> saturate -> signed int24 Z output
+```
+
+This is still only the FPGA DBF scope. It does not implement `Rz`,
+`G_cache`, 2D ML search, topK, C05 policy, confidence, boundary, fallback,
+or a complete FPGA backend. Those remain CPU/SoC responsibilities by design.
+
+The Z24 quantizer uses an engineering shift-based fixed-point rule, not a
+runtime floating-point divide:
+
+```text
+rounded_abs = (abs(acc) + 2^(SHIFT_BITS-1)) >> SHIFT_BITS
+rounded     = sign(acc) ? -rounded_abs : rounded_abs
+z_out       = saturate_signed_int24(rounded)
+```
+
+`clip_flag` and `overflow_flag` are asserted together when the rounded value
+is outside the signed int24 range. The current compact Step11-compatible
+golden run auto-selected `Z_shift_bits = 12`; this is a validation strategy,
+not the final hardware scaling policy.
+
+Current Step13.3 run:
+
+- `input_source_used = step11_light`
+- `W_method = greedy_combined_B7`
+- compact golden: `N=64`, `B=7`, `L=4`
+- full reference shape: `N=2080`, `B=7`, `L=16`
+- `quant_mode = mixed_W18_Y16_Z24`
+- `Z_bits = 24`
+- `Z_shift_bits = 12`
+- `Z_shift_auto_selected = true`
+- clip/overflow count in the compact Z24 golden = 0
+- Vivado XSim `simulation_status = pass`
+- `dbf_complex_mac_smoke = pass`
+- `dbf_core_accum_smoke = pass`
+- `dbf_z24_quantizer_smoke = pass`
+- `dbf_core_z24_smoke = pass`
+- MATLAB compare `comparison_status = pass`
+- `accumulator_match_flag = true`
+- `z24_match_flag = true`
+- `formal_result_claimed = false`
+
+Step13.3 is not formal closure, timing closure, synthesis closure,
+implementation closure, or board validation.
+
 ## Outputs
 
 Outputs are written to:
@@ -326,8 +376,10 @@ Expected CSV outputs:
 - `rtl_golden/step13_dbf_rtl_golden_w_int.csv`
 - `rtl_golden/step13_dbf_rtl_golden_y_int.csv`
 - `rtl_golden/step13_dbf_rtl_golden_accum.csv`
+- `rtl_golden/step13_dbf_rtl_golden_z24.csv`
 - `rtl_golden/step13_dbf_rtl_golden_vectors.vh`
 - `rtl_sim/dbf_core_accum_output.csv` when RTL simulation runs
+- `rtl_sim/dbf_core_z24_output.csv` when RTL simulation runs
 - `rtl_sim/step13_dbf_rtl_sim_summary.csv` when RTL simulation runs
 - `rtl_sim/step13_dbf_rtl_compare_summary.csv` when MATLAB compare runs
 

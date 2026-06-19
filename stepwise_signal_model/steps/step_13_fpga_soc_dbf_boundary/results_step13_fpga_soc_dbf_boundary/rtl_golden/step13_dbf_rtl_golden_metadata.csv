@@ -15,13 +15,18 @@ Y_bits,16
 Z_bits,24
 ACC_bits,42
 full_ACC_bits,48
+Z_shift_bits,12
+Z_shift_auto_selected,true
+z24_rounding_mode,symmetric_round_to_nearest_abs_add_half_then_shift
+z24_saturation_mode,signed_saturate_to_int24_range
+z24_reference_generated,true
 scale_w,3909131.2750898399
 scale_y,33201.479433286331
 clip_rate,0
 step11_adapter_found_flag,true
 step11_7_full_backend_called,false
+step11_7_backend_default_changed,false
 formal_result_claimed,false
-rtl_scope,raw accumulator for Z = W^H Y
-fpga_rtl_scope,DBF raw accumulator only: Z = W^H Y
+fpga_rtl_scope,DBF raw accumulator plus Z24 shift-round-saturate output datapath
 rz_gcache_ml_topk_c05_cpu_soc_responsibility,true
 outside_fpga_rtl_by_design,Rz; G_cache; 2D ML search; topK; C05; confidence; boundary; fallback

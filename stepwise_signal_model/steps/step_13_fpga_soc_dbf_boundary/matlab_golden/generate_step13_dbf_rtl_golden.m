@@ -1,8 +1,8 @@
-% Generate compact MATLAB golden vectors for the Step13.2 DBF RTL smoke.
+% Generate compact MATLAB golden vectors for the Step13 DBF RTL smoke.
 %
-% Scope: raw accumulator validation for Z = W^H Y only. This script does not
-% call the Step11.7 full backend and does not implement Rz, G_cache, 2D ML
-% search, topK, C05, confidence, or fallback logic.
+% Scope: DBF validation for Z = W^H Y only. This script does not call the
+% Step11.7 full backend and does not implement Rz, G_cache, 2D ML search,
+% topK, C05, confidence, boundary, or fallback logic.
 
 clearvars;
 clc;
@@ -66,30 +66,40 @@ Yq = YqFull(1:goldenN, 1:goldenL);
 [accRe, accIm] = local_accumulate_conj_w_y(Wq, Yq);
 ACC_BITS = W_BITS + Y_BITS + ceil(log2(goldenN)) + 2;
 full_ACC_BITS = W_BITS + Y_BITS + ceil(log2(fullN)) + 2;
+[Z_SHIFT_BITS, zShiftAutoSelected] = local_resolve_z_shift_bits(accRe, accIm, Z_BITS);
+[zRe, clipRe, overflowRe] = local_quantize_z24_from_acc(accRe, Z_BITS, Z_SHIFT_BITS);
+[zIm, clipIm, overflowIm] = local_quantize_z24_from_acc(accIm, Z_BITS, Z_SHIFT_BITS);
 
 manifestPath = fullfile(resultsDir, 'step13_dbf_rtl_golden_manifest.csv');
 metadataPath = fullfile(resultsDir, 'step13_dbf_rtl_golden_metadata.csv');
 wPath = fullfile(resultsDir, 'step13_dbf_rtl_golden_w_int.csv');
 yPath = fullfile(resultsDir, 'step13_dbf_rtl_golden_y_int.csv');
 accPath = fullfile(resultsDir, 'step13_dbf_rtl_golden_accum.csv');
+z24Path = fullfile(resultsDir, 'step13_dbf_rtl_golden_z24.csv');
 vhPath = fullfile(resultsDir, 'step13_dbf_rtl_golden_vectors.vh');
 
 local_write_manifest(manifestPath, resultsDir);
 local_write_metadata(metadataPath, inputSourceRequested, inputInfo, quantMode, ...
     fullN, fullB, fullL, goldenN, goldenB, goldenL, W_BITS, Y_BITS, ...
-    Z_BITS, ACC_BITS, full_ACC_BITS, scaleW, scaleY, max(clipW, clipY));
+    Z_BITS, ACC_BITS, full_ACC_BITS, scaleW, scaleY, max(clipW, clipY), ...
+    Z_SHIFT_BITS, zShiftAutoSelected);
 local_write_w_csv(wPath, Wq);
 local_write_y_csv(yPath, Yq);
 local_write_accum_csv(accPath, accRe, accIm);
-local_write_vectors_vh(vhPath, Wq, Yq, accRe, accIm, W_BITS, Y_BITS, ACC_BITS);
+local_write_z24_csv(z24Path, accRe, accIm, zRe, zIm, clipRe, clipIm, ...
+    overflowRe, overflowIm, Z_SHIFT_BITS);
+local_write_vectors_vh(vhPath, Wq, Yq, accRe, accIm, zRe, zIm, clipRe, ...
+    clipIm, overflowRe, overflowIm, W_BITS, Y_BITS, ACC_BITS, Z_BITS, Z_SHIFT_BITS);
 
-fprintf('Step13.2 RTL golden generated in: %s\n', resultsDir);
+fprintf('Step13.3 RTL golden generated in: %s\n', resultsDir);
 fprintf('input_source_used=%s fallback_reason=%s W_method=%s\n', ...
     inputInfo.input_source_used, inputInfo.fallback_reason, inputInfo.W_method);
 fprintf('full_N=%d full_B=%d full_L=%d golden_N=%d golden_B=%d golden_L=%d quant_mode=%s\n', ...
     fullN, fullB, fullL, goldenN, goldenB, goldenL, quantMode);
 fprintf('W_BITS=%d Y_BITS=%d ACC_BITS=%d full_ACC_BITS=%d scale_w=%.17g scale_y=%.17g\n', ...
     W_BITS, Y_BITS, ACC_BITS, full_ACC_BITS, scaleW, scaleY);
+fprintf('Z_BITS=%d Z_SHIFT_BITS=%d Z_shift_auto_selected=%s\n', ...
+    Z_BITS, Z_SHIFT_BITS, local_bool_text(zShiftAutoSelected));
 
 function local_add_required_paths(repoRoot)
 addpath(repoRoot);
@@ -110,6 +120,25 @@ end
 value = str2double(raw);
 if ~isfinite(value) || value <= 0 || floor(value) ~= value
     error('Step13:InvalidEnvInteger', '%s must be a positive integer.', name);
+end
+end
+
+function [shiftBits, autoSelected] = local_resolve_z_shift_bits(accRe, accIm, zBits)
+raw = strtrim(getenv('STEP13_RTL_Z_SHIFT_BITS'));
+autoSelected = isempty(raw);
+if ~autoSelected
+    shiftBits = str2double(raw);
+    if ~isfinite(shiftBits) || shiftBits < 0 || floor(shiftBits) ~= shiftBits
+        error('Step13:InvalidZShiftBits', 'STEP13_RTL_Z_SHIFT_BITS must be a nonnegative integer.');
+    end
+    return;
+end
+
+maxAbsAcc = max(abs([accRe(:); accIm(:)]));
+maxZ = 2^(zBits - 1) - 1;
+shiftBits = 0;
+while local_round_abs_shift(maxAbsAcc, shiftBits) > maxZ
+    shiftBits = shiftBits + 1;
 end
 end
 
@@ -264,18 +293,38 @@ for b = 1:B
 end
 end
 
+function [z, clipFlag, overflowFlag] = local_quantize_z24_from_acc(acc, zBits, shiftBits)
+maxZ = 2^(zBits - 1) - 1;
+minZ = -2^(zBits - 1);
+roundedAbs = local_round_abs_shift(abs(acc), shiftBits);
+rounded = sign(acc) .* roundedAbs;
+overflowFlag = rounded > maxZ | rounded < minZ;
+z = min(max(rounded, minZ), maxZ);
+clipFlag = overflowFlag;
+end
+
+function y = local_round_abs_shift(x, shiftBits)
+if shiftBits == 0
+    y = x;
+else
+    y = floor((x + 2^(shiftBits - 1)) / 2^shiftBits);
+end
+end
+
 function local_write_manifest(pathName, resultsDir)
 file_name = { ...
     'step13_dbf_rtl_golden_metadata.csv'; ...
     'step13_dbf_rtl_golden_w_int.csv'; ...
     'step13_dbf_rtl_golden_y_int.csv'; ...
     'step13_dbf_rtl_golden_accum.csv'; ...
+    'step13_dbf_rtl_golden_z24.csv'; ...
     'step13_dbf_rtl_golden_vectors.vh'};
 role = { ...
     'key value metadata'; ...
     'quantized W integer slice'; ...
     'quantized Y integer slice'; ...
     'raw integer accumulator golden'; ...
+    'shift-round-saturate Z24 golden'; ...
     'Verilog include for RTL testbench'};
 directory = repmat({resultsDir}, numel(file_name), 1);
 tbl = table(file_name, role, directory);
@@ -284,26 +333,35 @@ end
 
 function local_write_metadata(pathName, inputSourceRequested, inputInfo, quantMode, ...
     fullN, fullB, fullL, goldenN, goldenB, goldenL, W_BITS, Y_BITS, Z_BITS, ...
-    ACC_BITS, full_ACC_BITS, scaleW, scaleY, clipRate)
+    ACC_BITS, full_ACC_BITS, scaleW, scaleY, clipRate, Z_SHIFT_BITS, ...
+    zShiftAutoSelected)
 metric = { ...
     'input_source_requested'; 'input_source_used'; 'fallback_reason'; 'W_method'; ...
     'full_N_input_channels'; 'full_B_output_beams'; 'full_L_snapshots'; ...
     'golden_N_limit'; 'golden_B_limit'; 'golden_L_limit'; 'quant_mode'; ...
     'W_bits'; 'Y_bits'; 'Z_bits'; 'ACC_bits'; 'full_ACC_bits'; ...
+    'Z_shift_bits'; 'Z_shift_auto_selected'; 'z24_rounding_mode'; ...
+    'z24_saturation_mode'; 'z24_reference_generated'; ...
     'scale_w'; 'scale_y'; 'clip_rate'; 'step11_adapter_found_flag'; ...
-    'step11_7_full_backend_called'; 'formal_result_claimed'; ...
-    'rtl_scope'; 'not_implemented_in_step13_2'};
+    'step11_7_full_backend_called'; 'step11_7_backend_default_changed'; ...
+    'formal_result_claimed'; 'fpga_rtl_scope'; ...
+    'rz_gcache_ml_topk_c05_cpu_soc_responsibility'; ...
+    'outside_fpga_rtl_by_design'};
 value = { ...
     inputSourceRequested; inputInfo.input_source_used; inputInfo.fallback_reason; ...
     inputInfo.W_method; sprintf('%d', fullN); sprintf('%d', fullB); sprintf('%d', fullL); ...
     sprintf('%d', goldenN); sprintf('%d', goldenB); sprintf('%d', goldenL); quantMode; ...
     sprintf('%d', W_BITS); sprintf('%d', Y_BITS); sprintf('%d', Z_BITS); ...
-    sprintf('%d', ACC_BITS); sprintf('%d', full_ACC_BITS); sprintf('%.17g', scaleW); ...
+    sprintf('%d', ACC_BITS); sprintf('%d', full_ACC_BITS); ...
+    sprintf('%d', Z_SHIFT_BITS); local_bool_text(zShiftAutoSelected); ...
+    'symmetric_round_to_nearest_abs_add_half_then_shift'; ...
+    'signed_saturate_to_int24_range'; 'true'; sprintf('%.17g', scaleW); ...
     sprintf('%.17g', scaleY); sprintf('%.17g', clipRate); ...
     local_bool_text(inputInfo.step11_adapter_found_flag); ...
-    local_bool_text(inputInfo.step11_7_full_backend_called); 'false'; ...
-    'raw accumulator for Z = W^H Y'; ...
-    'Rz; G_cache; 2D ML search; topK; C05; confidence; fallback'};
+    local_bool_text(inputInfo.step11_7_full_backend_called); 'false'; 'false'; ...
+    'DBF raw accumulator plus Z24 shift-round-saturate output datapath'; ...
+    'true'; ...
+    'Rz; G_cache; 2D ML search; topK; C05; confidence; boundary; fallback'};
 tbl = table(metric, value);
 writetable(tbl, pathName);
 end
@@ -371,7 +429,45 @@ tbl = table(b_index, l_index, acc_re, acc_im);
 writetable(tbl, pathName);
 end
 
-function local_write_vectors_vh(pathName, Wq, Yq, accRe, accIm, W_BITS, Y_BITS, ACC_BITS)
+function local_write_z24_csv(pathName, accRe, accIm, zRe, zIm, clipRe, clipIm, ...
+    overflowRe, overflowIm, shiftBits)
+B = size(accRe, 1);
+L = size(accRe, 2);
+b_index = zeros(B * L, 1);
+l_index = zeros(B * L, 1);
+acc_re = zeros(B * L, 1);
+acc_im = zeros(B * L, 1);
+z_re = zeros(B * L, 1);
+z_im = zeros(B * L, 1);
+clip_re = zeros(B * L, 1);
+clip_im = zeros(B * L, 1);
+overflow_re = zeros(B * L, 1);
+overflow_im = zeros(B * L, 1);
+shift_bits = repmat(shiftBits, B * L, 1);
+row = 0;
+for l = 1:L
+    for b = 1:B
+        row = row + 1;
+        b_index(row) = b - 1;
+        l_index(row) = l - 1;
+        acc_re(row) = accRe(b, l);
+        acc_im(row) = accIm(b, l);
+        z_re(row) = zRe(b, l);
+        z_im(row) = zIm(b, l);
+        clip_re(row) = double(clipRe(b, l));
+        clip_im(row) = double(clipIm(b, l));
+        overflow_re(row) = double(overflowRe(b, l));
+        overflow_im(row) = double(overflowIm(b, l));
+    end
+end
+tbl = table(b_index, l_index, acc_re, acc_im, z_re, z_im, clip_re, clip_im, ...
+    overflow_re, overflow_im, shift_bits);
+writetable(tbl, pathName);
+end
+
+function local_write_vectors_vh(pathName, Wq, Yq, accRe, accIm, zRe, zIm, ...
+    clipRe, clipIm, overflowRe, overflowIm, W_BITS, Y_BITS, ACC_BITS, Z_BITS, ...
+    Z_SHIFT_BITS)
 N = size(Wq, 1);
 B = size(Wq, 2);
 L = size(Yq, 2);
@@ -381,20 +477,26 @@ if fid < 0
 end
 cleanupObj = onCleanup(@() fclose(fid));
 
-fprintf(fid, '`ifndef STEP13_DBF_RTL_GOLDEN_VH\n');
-fprintf(fid, '`define STEP13_DBF_RTL_GOLDEN_VH\n\n');
 fprintf(fid, 'localparam integer STEP13_GOLDEN_N = %d;\n', N);
 fprintf(fid, 'localparam integer STEP13_GOLDEN_B = %d;\n', B);
 fprintf(fid, 'localparam integer STEP13_GOLDEN_L = %d;\n', L);
 fprintf(fid, 'localparam integer STEP13_GOLDEN_W_BITS = %d;\n', W_BITS);
 fprintf(fid, 'localparam integer STEP13_GOLDEN_Y_BITS = %d;\n', Y_BITS);
-fprintf(fid, 'localparam integer STEP13_GOLDEN_ACC_BITS = %d;\n\n', ACC_BITS);
+fprintf(fid, 'localparam integer STEP13_GOLDEN_ACC_BITS = %d;\n', ACC_BITS);
+fprintf(fid, 'localparam integer STEP13_GOLDEN_Z_BITS = %d;\n', Z_BITS);
+fprintf(fid, 'localparam integer STEP13_GOLDEN_Z_SHIFT_BITS = %d;\n\n', Z_SHIFT_BITS);
 fprintf(fid, 'reg signed [STEP13_GOLDEN_W_BITS-1:0] step13_golden_w_re [0:STEP13_GOLDEN_N*STEP13_GOLDEN_B-1];\n');
 fprintf(fid, 'reg signed [STEP13_GOLDEN_W_BITS-1:0] step13_golden_w_im [0:STEP13_GOLDEN_N*STEP13_GOLDEN_B-1];\n');
 fprintf(fid, 'reg signed [STEP13_GOLDEN_Y_BITS-1:0] step13_golden_y_re [0:STEP13_GOLDEN_N*STEP13_GOLDEN_L-1];\n');
 fprintf(fid, 'reg signed [STEP13_GOLDEN_Y_BITS-1:0] step13_golden_y_im [0:STEP13_GOLDEN_N*STEP13_GOLDEN_L-1];\n');
 fprintf(fid, 'reg signed [STEP13_GOLDEN_ACC_BITS-1:0] step13_golden_acc_re [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
-fprintf(fid, 'reg signed [STEP13_GOLDEN_ACC_BITS-1:0] step13_golden_acc_im [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n\n');
+fprintf(fid, 'reg signed [STEP13_GOLDEN_ACC_BITS-1:0] step13_golden_acc_im [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
+fprintf(fid, 'reg signed [STEP13_GOLDEN_Z_BITS-1:0] step13_golden_z_re [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
+fprintf(fid, 'reg signed [STEP13_GOLDEN_Z_BITS-1:0] step13_golden_z_im [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
+fprintf(fid, 'reg step13_golden_clip_re [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
+fprintf(fid, 'reg step13_golden_clip_im [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
+fprintf(fid, 'reg step13_golden_overflow_re [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n');
+fprintf(fid, 'reg step13_golden_overflow_im [0:STEP13_GOLDEN_B*STEP13_GOLDEN_L-1];\n\n');
 fprintf(fid, 'initial begin\n');
 for b = 1:B
     for n = 1:N
@@ -415,10 +517,15 @@ for l = 1:L
         idx = (l - 1) * B + (b - 1);
         fprintf(fid, '  step13_golden_acc_re[%d] = %s;\n', idx, local_verilog_signed_literal(ACC_BITS, accRe(b, l)));
         fprintf(fid, '  step13_golden_acc_im[%d] = %s;\n', idx, local_verilog_signed_literal(ACC_BITS, accIm(b, l)));
+        fprintf(fid, '  step13_golden_z_re[%d] = %s;\n', idx, local_verilog_signed_literal(Z_BITS, zRe(b, l)));
+        fprintf(fid, '  step13_golden_z_im[%d] = %s;\n', idx, local_verilog_signed_literal(Z_BITS, zIm(b, l)));
+        fprintf(fid, '  step13_golden_clip_re[%d] = 1''b%d;\n', idx, double(clipRe(b, l)));
+        fprintf(fid, '  step13_golden_clip_im[%d] = 1''b%d;\n', idx, double(clipIm(b, l)));
+        fprintf(fid, '  step13_golden_overflow_re[%d] = 1''b%d;\n', idx, double(overflowRe(b, l)));
+        fprintf(fid, '  step13_golden_overflow_im[%d] = 1''b%d;\n', idx, double(overflowIm(b, l)));
     end
 end
-fprintf(fid, 'end\n\n');
-fprintf(fid, '`endif\n');
+fprintf(fid, 'end\n');
 end
 
 function text = local_verilog_signed_literal(bits, value)

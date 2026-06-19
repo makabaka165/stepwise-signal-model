@@ -217,6 +217,66 @@ fallback 保留在 CPU/SoC 侧的软件/控制层；FPGA 侧只推进 DBF：
 Z = W^H Y
 ```
 
+## Step13.3 Z24 output datapath 仿真结果
+
+本轮在 Step13.2b 已通过的 raw accumulator 基础上，新增 FPGA DBF Z24 输出
+数据通路：
+
+```text
+ACC raw accumulator -> shift -> round -> saturate -> signed int24 Z output
+```
+
+Z24 采用硬件友好的移位量化规则，不在 RTL 运行时使用任意浮点 scale 除法：
+
+```text
+rounded_abs = (abs(acc) + 2^(SHIFT_BITS-1)) >> SHIFT_BITS
+rounded     = sign(acc) ? -rounded_abs : rounded_abs
+z_out       = saturate_signed_int24(rounded)
+```
+
+当前真实运行配置：
+
+- `input_source_used = step11_light`
+- `W_method = greedy_combined_B7`
+- `quant_mode = mixed_W18_Y16_Z24`
+- compact golden: `N=64, B=7, L=4`
+- full reference shape: `N=2080, B=7, L=16`
+- `W_bits = 18`
+- `Y_bits = 16`
+- `Z_bits = 24`
+- `ACC_bits = 42`
+- `full_ACC_bits = 48`
+- `Z_shift_bits = 12`
+- `Z_shift_auto_selected = true`
+- compact Z24 golden 的 clip/overflow 计数为 0
+
+Vivado XSim 结果：
+
+- `simulation_status = pass`
+- `overall_simulation_status = pass`
+- `dbf_complex_mac_smoke = pass`
+- `dbf_core_accum_smoke = pass`
+- `dbf_z24_quantizer_smoke = pass`
+- `dbf_core_z24_smoke = pass`
+- `dbf_core_accum_output_csv_created = true`
+- `dbf_core_z24_output_csv_created = true`
+
+MATLAB compare 结果：
+
+- `comparison_status = pass`
+- `accumulator_match_flag = true`
+- `z24_match_flag = true`
+- `accumulator_missing_count = 0`
+- `accumulator_mismatch_count = 0`
+- `z24_missing_count = 0`
+- `z24_mismatch_count = 0`
+- `formal_result_claimed = false`
+
+这仍然不是 formal closure，不是 timing closure，不是 synthesis closure，不是
+implementation closure，也不是 board validation。`Rz/G_cache/2D
+ML/topK/C05/confidence/boundary/fallback` 仍然不是 FPGA RTL 待补功能，而是
+CPU/SoC 侧职责；FPGA 侧当前只推进 DBF `Z = W^H Y` 及其 Z24 输出数据通路。
+
 ## Step13.2 RTL golden-vector 与 accumulator smoke
 
 Step13.2 在 Step13.1 的 Step11-compatible DBF smoke 基础上，只新增
@@ -267,5 +327,5 @@ full_ACC_BITS = W_BITS + Y_BITS + ceil(log2(2080)) + 2
 
 Step13.2 的 RTL simulation smoke 即使通过，也只说明 compact raw accumulator
 与 MATLAB golden 一致；它不是 formal closure，不是 board validation，也不是
-完整 bit-true FPGA backend closure。后续 Step13.3 可继续推进 Z24
-shift/round/saturate 数据通路，或扩大 Step11-compatible golden coverage。
+完整 bit-true FPGA backend closure。Step13.3 已继续推进 Z24 shift/round/saturate
+数据通路；后续可扩大 Step11-compatible golden coverage 或进入更并行的 DBF 原型。

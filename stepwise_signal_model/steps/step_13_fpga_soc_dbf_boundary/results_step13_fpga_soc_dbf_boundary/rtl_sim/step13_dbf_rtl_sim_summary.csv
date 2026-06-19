@@ -1,14 +1,20 @@
 metric,value
 simulation_status,pass
+overall_simulation_status,pass
 tool_xvlog_found,true
 tool_xelab_found,true
 tool_xsim_found,true
 dbf_complex_mac_smoke,pass
 dbf_core_accum_smoke,pass
+dbf_z24_quantizer_smoke,pass
+dbf_core_z24_smoke,pass
+raw_accumulator_status,pass
+z24_quantizer_status,pass
 dbf_core_accum_output_csv_created,true
+dbf_core_z24_output_csv_created,true
 formal_result_claimed,false
-scope,raw DBF accumulator Z = W^H Y
-z24_shift_round_saturate_implemented,false
+scope,DBF accumulator plus Z24 shift-round-saturate output datapath
+z24_shift_round_saturate_implemented,true
 rz_gcache_ml_topk_c05_implemented,false
 rz_gcache_ml_topk_c05_cpu_soc_responsibility,true
-note,xsim_raw_accumulator_smoke_passed
+note,xsim_raw_accumulator_and_z24_smoke_passed

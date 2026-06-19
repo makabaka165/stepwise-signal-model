@@ -26,16 +26,23 @@ function Write-XsimSummary {
     $lines = @(
         "metric,value",
         "simulation_status,$Status",
+        "overall_simulation_status,$Status",
         "tool_xvlog_found,$($XvlogFound.ToString().ToLower())",
         "tool_xelab_found,$($XelabFound.ToString().ToLower())",
         "tool_xsim_found,$($XsimFound.ToString().ToLower())",
         "dbf_complex_mac_smoke,not_run",
         "dbf_core_accum_smoke,not_run",
+        "dbf_z24_quantizer_smoke,not_run",
+        "dbf_core_z24_smoke,not_run",
+        "raw_accumulator_status,not_run",
+        "z24_quantizer_status,not_run",
         "dbf_core_accum_output_csv_created,false",
+        "dbf_core_z24_output_csv_created,false",
         "formal_result_claimed,false",
-        "scope,raw DBF accumulator Z = W^H Y",
-        "z24_shift_round_saturate_implemented,false",
+        "scope,DBF accumulator plus Z24 shift-round-saturate output datapath",
+        "z24_shift_round_saturate_implemented,true",
         "rz_gcache_ml_topk_c05_implemented,false",
+        "rz_gcache_ml_topk_c05_cpu_soc_responsibility,true",
         "note,$Note"
     )
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $summaryPath) | Out-Null
@@ -87,5 +94,4 @@ if ($exitCode -ne 0) {
     exit $exitCode
 }
 
-Write-Host "Step13.2b Vivado xsim DBF smoke completed."
-
+Write-Host "Step13.3 Vivado xsim DBF smoke completed."

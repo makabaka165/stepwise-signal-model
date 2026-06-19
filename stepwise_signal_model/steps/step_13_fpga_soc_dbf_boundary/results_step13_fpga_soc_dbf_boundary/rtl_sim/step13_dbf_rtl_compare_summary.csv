@@ -1,10 +1,21 @@
 metric,value
 comparison_status,pass
+accumulator_golden_rows,28
+accumulator_sim_rows,28
+accumulator_matched_rows,28
+accumulator_missing_count,0
+accumulator_mismatch_count,0
+accumulator_match_flag,true
 golden_rows,28
 sim_rows,28
 matched_rows,28
 missing_count,0
 mismatch_count,0
-accumulator_match_flag,true
+z24_golden_rows,28
+z24_sim_rows,28
+z24_matched_rows,28
+z24_missing_count,0
+z24_mismatch_count,0
+z24_match_flag,true
 formal_result_claimed,false
-note,RTL accumulator output matches MATLAB golden exactly
+note,RTL raw accumulator and Z24 output match MATLAB golden exactly

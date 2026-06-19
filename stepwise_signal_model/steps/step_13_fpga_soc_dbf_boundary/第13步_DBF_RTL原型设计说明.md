@@ -69,9 +69,57 @@ closure 或 board validation。本轮仍不实现 Z24 shift/round/saturate，也
 fallback 根据导师建议明确保留在 CPU/SoC 侧的软件/控制层职责。FPGA 侧当前
 只推进 DBF：`Z = W^H Y`。
 
+## Step13.3 Z24 output datapath 记录
+
+Step13.3 在已经通过 Vivado XSim 的 raw accumulator 基础上，新增 FPGA DBF
+输出数据通路：
+
+```text
+ACC raw accumulator -> shift -> round -> saturate -> signed int24 Z output
+```
+
+当前 Z24 量化规则是工程可实现的 shift-based fixed-point rule，不是 RTL 运行时
+浮点除法：
+
+```text
+rounded_abs = (abs(acc) + 2^(SHIFT_BITS-1)) >> SHIFT_BITS
+rounded     = sign(acc) ? -rounded_abs : rounded_abs
+z_out       = saturate_signed_int24(rounded)
+```
+
+当前 compact Step11-compatible golden 自动选择：
+
+- `Z_bits = 24`
+- `Z_shift_bits = 12`
+- `Z_shift_auto_selected = true`
+- `z24_rounding_mode = symmetric_round_to_nearest_abs_add_half_then_shift`
+- `z24_saturation_mode = signed_saturate_to_int24_range`
+
+实际运行结果：
+
+- compact golden: `N=64, B=7, L=4`
+- full reference shape: `N=2080, B=7, L=16`
+- `W_method = greedy_combined_B7`
+- `quant_mode = mixed_W18_Y16_Z24`
+- `dbf_complex_mac_smoke = pass`
+- `dbf_core_accum_smoke = pass`
+- `dbf_z24_quantizer_smoke = pass`
+- `dbf_core_z24_smoke = pass`
+- MATLAB compare: `comparison_status = pass`
+- `accumulator_match_flag = true`
+- `z24_match_flag = true`
+- `z24_missing_count = 0`
+- `z24_mismatch_count = 0`
+- compact Z24 golden 的 clip/overflow 计数为 0
+
+Step13.3 仍然只属于 FPGA DBF output datapath，不实现 `Rz/G_cache/2D
+ML/topK/C05/confidence/boundary/fallback`。这些模块不是 FPGA RTL 待补缺口，
+而是 CPU/SoC 侧的软件/控制层职责。本轮也不代表 formal closure、timing
+closure、synthesis closure、implementation closure 或 board validation。
+
 ## 目标边界
 
-Step13.2 只实现 DBF accumulator-level RTL prototype，目标公式为：
+Step13.3 的 RTL 范围仍然只围绕 DBF datapath，目标公式为：
 
 ```text
 Z = W^H Y
@@ -91,6 +139,8 @@ p_im = w_re * y_im - w_im * y_re
 - `rtl/dbf_complex_mac.v`：组合逻辑复乘，验证 `conj(W) * Y`。
 - `rtl/dbf_beam_accum_core.v`：单 beam、单 snapshot 的流式累加器。
 - `rtl/dbf_core_accum.v`：第一版薄 wrapper，复用一个 accumulator lane。
+- `rtl/dbf_z24_quantizer.v`：对 raw accumulator 做 shift / round / saturate，
+  输出 signed int24 `Z` 与 clip/overflow flags。
 
 第一版选择的是可复用单 lane 原型，而不是最终全并行 `B x N` datapath。这样
 可以先把数学符号、定点整数输入、accumulator bit-true 行为对齐，再进入更复杂
@@ -116,8 +166,7 @@ slice，避免 tracked artifact 过大。当前默认量化：
 - `ACC_BITS = W_BITS + Y_BITS + ceil(log2(N_LIMIT)) + 2`
 - `full_ACC_BITS = W_BITS + Y_BITS + ceil(log2(2080)) + 2`
 
-本轮 golden 以 raw accumulator 为主，不把 Z24 shift / round / saturate 写成
-第一版 RTL 的必选数据通路。
+当前 golden 同时输出 raw accumulator 与 Z24 shift / round / saturate reference。
 
 ## 验证方式
 
@@ -127,6 +176,7 @@ accumulator 比对，输出：
 
 ```text
 results_step13_fpga_soc_dbf_boundary/rtl_sim/dbf_core_accum_output.csv
+results_step13_fpga_soc_dbf_boundary/rtl_sim/dbf_core_z24_output.csv
 ```
 
 如果 `iverilog` 和 `vvp` 可用，可在 Step13 目录运行：
@@ -165,9 +215,8 @@ DBF raw accumulator。
 
 ## 下一步建议
 
-Step13.3 可以在当前 raw accumulator smoke 通过的基础上继续推进：
+Step13.3 已补齐 Z24 shift / round / saturate smoke。后续可以继续推进：
 
-- Z24 shift / round / saturate 数据通路；
 - 更大 `N/L` 的 Step11-compatible golden coverage；
 - 从单 accumulator lane 过渡到 `beam_parallel_B_lanes` 原型；
 - 后续再评估 Vivado synthesis / timing / resource 报告。

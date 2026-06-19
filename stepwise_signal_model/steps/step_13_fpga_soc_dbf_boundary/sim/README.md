@@ -39,9 +39,16 @@ with `simulation_status=unavailable`, `formal_result_claimed=false`, and
 
 It does not create or track waveform files by default.
 
-This smoke only validates the raw accumulator for `Z = W^H Y`. It does not
-implement Z24 shift/round/saturate, `Rz`, `G_cache`, 2D ML search, topK, C05,
-confidence, fallback, timing closure, board validation, or formal closure.
+The historical Step13.2 smoke only validated the raw accumulator for
+`Z = W^H Y`. Step13.3 adds the DBF Z24 output datapath smoke:
+
+```text
+ACC raw accumulator -> shift -> round -> saturate -> signed int24 Z output
+```
+
+It still does not implement `Rz`, `G_cache`, 2D ML search, topK, C05,
+confidence, boundary, fallback, timing closure, board validation, or formal
+closure.
 `Rz/G_cache/2D ML/topK/C05/confidence/fallback` are intentionally outside the
 Step13 FPGA RTL scope and remain CPU/SoC responsibilities by design. Their
 absence from the RTL smoke is not missing project work.
@@ -74,13 +81,20 @@ results_step13_fpga_soc_dbf_boundary/rtl_sim/dbf_core_accum_output.csv
 results_step13_fpga_soc_dbf_boundary/rtl_sim/step13_dbf_rtl_sim_summary.csv
 ```
 
-Current XSim status in this environment:
+Current Step13.3 XSim status in this environment:
 
 - `simulation_status=pass`
 - `dbf_complex_mac_smoke=pass`
 - `dbf_core_accum_smoke=pass`
+- `dbf_z24_quantizer_smoke=pass`
+- `dbf_core_z24_smoke=pass`
 - `dbf_core_accum_output_csv_created=true`
+- `dbf_core_z24_output_csv_created=true`
 - MATLAB compare `comparison_status=pass`
 - `accumulator_match_flag=true`
+- `z24_match_flag=true`
+- `Z_shift_bits=12`
+- compact golden `N=64, B=7, L=4`
+- full reference shape `N=2080, B=7, L=16`
 
 Generated `.jou`, `.log`, `.wdb`, `.pb`, and `xsim.dir/` files are ignored.
