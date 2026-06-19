@@ -64,6 +64,7 @@ Current Step positioning:
 | Step10 | final thesis route |
 | Step12 | 第11.x波束级ML的FPGA可行性边界验证：fixed-point score ranking、topK preservation、score gap、cache/storage/bandwidth估算 |
 | Step13 | FPGA/SoC 协同边界收束与 DBF 硬件实现方案；FPGA 做 `Z = W^H Y`，CPU/SoC 做 `Rz` / `G_cache` / 2D ML / topK / C05 / confidence / fallback。Step13 不修改 Step11.7 backend 默认行为，不是完整 FPGA backend，也不是 ML score core RTL 主线。 |
+| Step14 | DBF IP 封装为 FPGA/SoC 数据通路集成，当前先建立 AXI4-Stream 系统验证框架。Step14 继承 Step13 已闭合 DBF arithmetic core，不声明 DMA 已跑通、板级验证已完成、完整 FPGA backend、CPU ML 已迁移或 bitstream 已生成。 |
 
 Step10 path:
 
@@ -86,5 +87,18 @@ steps/step_13_fpga_soc_dbf_boundary/run_step13_fpga_soc_dbf_boundary.m
 ```
 
 Step13 is a DBF boundary and FPGA/SoC partition step. It keeps Step11.7 default backend behavior unchanged. It does not claim full FPGA backend closure or an ML score-core RTL mainline.
+
+Step14 path:
+
+```text
+steps/step_14_dbf_ip_soc_integration/
+```
+
+Step14 is the DBF IP packaging and FPGA/SoC data-path integration framework.
+The current status is AXI4-Stream system-validation framework setup only. It
+inherits Step13 `W18 / Y16 / ACC48 / Z24`, `engineering_Z_shift_bits = 20`,
+`N = 2080`, `B = 7`, and `Z = W^H Y`; it does not reopen DBF math, word
+lengths, or the fixed shift. It does not claim board validation, DMA completion,
+complete FPGA backend closure, CPU ML migration, or bitstream generation.
 
 Step09 is no longer a backend tuning mainline.

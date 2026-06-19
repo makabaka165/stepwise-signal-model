@@ -668,5 +668,34 @@ Current Step positioning:
 - Step10: final thesis route, evidence tables, figure list, and defense materials.
 - Step12: 第 12 步针对第 11.x 波束级 ML 后端建立 FPGA/SoC 协同实现前的硬件可行性边界，重点验证有限字长下 score ranking 和 topK 保持率，并估算 cache 存储与访问复杂度。
 - Step13: FPGA/SoC 协同边界收束与 DBF 硬件实现方案；入口为 `steps/step_13_fpga_soc_dbf_boundary/run_step13_fpga_soc_dbf_boundary.m`。FPGA 做 `Z = W^H Y`，CPU/SoC 做 `Rz` / `G_cache` / 2D ML / topK / C05 / confidence / fallback。Step13 不修改 Step11.7 backend 默认行为，不是完整 FPGA backend，也不是 ML score core RTL 主线。
+- Step14: DBF IP 封装为 FPGA/SoC 数据通路集成，当前先建立 AXI4-Stream 系统验证框架；入口目录为 `steps/step_14_dbf_ip_soc_integration/`。Step14 继承 Step13 已闭合的 DBF arithmetic core，不重新修改 DBF 数学、位宽或 fixed shift；当前没有 board validation，没有 DMA/PS/Block Design，也不声明完整 FPGA backend。
 
-Do not continue Step09 backend tuning for the final thesis route. The next phase is thesis writing and figure preparation.
+Do not continue Step09 backend tuning for the final thesis route. Step14 extends
+the FPGA/SoC implementation boundary as a separate DBF IP integration framework.
+
+## Step14 DBF IP / SoC Integration Framework
+
+Step14 wraps the closed Step13 DBF arithmetic boundary for FPGA/SoC data-path
+integration. The first milestone is an AXI4-Stream system validation framework:
+
+```text
+MATLAB Step11-compatible Y/W vectors
+-> AXI4-Stream Y replay source BFM
+-> W ROM/provider model
+-> DBF AXI wrapper
+-> Step13 B=7 DBF core
+-> AXI4-Stream Z serializer
+-> AXI4-Stream sink/scoreboard
+-> CSV
+-> MATLAB golden comparison
+```
+
+Current Step14 status:
+
+- uses ordinary branch development from `codex/step13-fpga-soc`
+- creates only framework and protocol documents
+- keeps Step13 as the DBF arithmetic source of truth
+- keeps Step11.7 backend default behavior unchanged
+- does not implement AXI RTL in Step14.0
+- does not create DMA, PS software, Block Design, IP, bitstream, or board validation
+- does not move CPU/SoC ML modules into FPGA RTL
