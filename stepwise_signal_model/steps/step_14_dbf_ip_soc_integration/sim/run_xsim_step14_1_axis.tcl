@@ -24,6 +24,23 @@ proc write_xsim_summary {path compile_status elaboration_status simulation_statu
     close $fh
 }
 
+proc tb_pass_flag {} {
+    set tb_summary_path "results_step14_dbf_ip_soc_integration/axis_sim/step14_1_axis_tb_summary.csv"
+    if {![file exists $tb_summary_path]} {
+        return 0
+    }
+
+    set fh [open $tb_summary_path "r"]
+    set pass 0
+    while {[gets $fh line] >= 0} {
+        if {$line eq "axis_tb_pass_flag,true"} {
+            set pass 1
+        }
+    }
+    close $fh
+    return $pass
+}
+
 set files [list \
     "../step_13_fpga_soc_dbf_boundary/rtl/dbf_complex_mac.v" \
     "../step_13_fpga_soc_dbf_boundary/rtl/dbf_beam_accum_core.v" \
@@ -38,7 +55,7 @@ set files [list \
 ]
 
 set compile_status "pass"
-if {[catch {eval xvlog -sv $files} err]} {
+if {[catch {exec xvlog -sv {*}$files} err]} {
     puts $err
     set compile_status "fail"
     write_xsim_summary $summary_path $compile_status "not_run" "not_run"
@@ -46,7 +63,7 @@ if {[catch {eval xvlog -sv $files} err]} {
 }
 
 set elaboration_status "pass"
-if {[catch {xelab tb_dbf_axis_system_top -debug typical -s step14_1_axis_sim} err]} {
+if {[catch {exec xelab tb_dbf_axis_system_top -debug typical -s step14_1_axis_sim} err]} {
     puts $err
     set elaboration_status "fail"
     write_xsim_summary $summary_path $compile_status $elaboration_status "not_run"
@@ -54,12 +71,16 @@ if {[catch {xelab tb_dbf_axis_system_top -debug typical -s step14_1_axis_sim} er
 }
 
 set simulation_status "pass"
-if {[catch {xsim step14_1_axis_sim -tclbatch sim/xsim_step14_1_run_all.tcl} err]} {
+if {[catch {exec xsim step14_1_axis_sim -tclbatch sim/xsim_step14_1_run_all.tcl} err]} {
     puts $err
     set simulation_status "fail"
 }
 
 write_xsim_summary $summary_path $compile_status $elaboration_status $simulation_status
 if {$simulation_status ne "pass"} {
+    exit 1
+}
+if {![tb_pass_flag]} {
+    write_xsim_summary $summary_path $compile_status $elaboration_status "fail"
     exit 1
 }

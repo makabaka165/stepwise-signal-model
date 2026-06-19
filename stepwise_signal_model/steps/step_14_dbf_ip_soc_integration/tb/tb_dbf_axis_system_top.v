@@ -4,6 +4,7 @@ module tb_dbf_axis_system_top;
 
     localparam integer N_ELEMS = 2080;
     localparam integer B_BEAMS = 7;
+    localparam integer ADDR_BITS = 12;
     localparam integer TOTAL_Y = N_ELEMS * 2;
     localparam integer TOTAL_Z = B_BEAMS * 2;
     localparam integer TIMEOUT_CYCLES = 2000000;
@@ -153,6 +154,7 @@ module tb_dbf_axis_system_top;
         reset_dut();
         run_good_case_a();
         run_good_case_b();
+        repeat (2) @(posedge aclk);
         two_consecutive_frames_pass = (status_frame_count == 32'd2);
         normal_frame_pass = (expected_mismatch_count == 0 && tkeep_fail_count == 0 &&
             tlast_fail_count == 0 && beam_order_fail_count == 0 && actual_output_rows == 14);
@@ -219,6 +221,7 @@ module tb_dbf_axis_system_top;
             ready_lockout_active = 0;
             aresetn = 1'b0;
             repeat (8) @(posedge aclk);
+            @(negedge aclk);
             aresetn = 1'b1;
             repeat (2) @(posedge aclk);
         end
@@ -230,7 +233,9 @@ module tb_dbf_axis_system_top;
         input integer force_early_last;
         input integer force_missing_last;
         input [3:0] keep_value;
+        integer accepted;
         begin
+            @(negedge aclk);
             s_axis_y_tdata = y_mem[mem_index];
             s_axis_y_tkeep = keep_value;
             s_axis_y_tlast = (element_index == (N_ELEMS-1));
@@ -241,16 +246,17 @@ module tb_dbf_axis_system_top;
                 s_axis_y_tlast = 1'b0;
             end
             s_axis_y_tvalid = 1'b1;
-            while (!s_axis_y_tready) begin
+
+            accepted = 0;
+            while (!accepted) begin
                 @(posedge aclk);
+                if (s_axis_y_tready) begin
+                    accepted = 1;
+                end
             end
-            @(posedge aclk);
             if (element_index == (N_ELEMS-1)) begin
                 ready_lockout_active = 1;
             end
-            s_axis_y_tvalid = 1'b0;
-            s_axis_y_tlast = 1'b0;
-            s_axis_y_tkeep = 4'hF;
         end
     endtask
 
@@ -263,6 +269,8 @@ module tb_dbf_axis_system_top;
         integer n;
         integer accepted_count;
         integer bad_keep_now;
+        reg [ADDR_BITS-1:0] gap_element_index_before;
+        reg [ADDR_BITS-1:0] gap_w_req_index_before;
         begin
             accepted_count = 0;
             for (n = 0; n < N_ELEMS; n = n + 1) begin
@@ -274,11 +282,25 @@ module tb_dbf_axis_system_top;
                     if (s_axis_y_tready !== 1'b1) begin
                         input_gap_pass = 1'b0;
                     end
+                    @(negedge aclk);
                     s_axis_y_tvalid = 1'b0;
                     s_axis_y_tlast = 1'b0;
+                    s_axis_y_tkeep = 4'hF;
+                    gap_element_index_before = debug_element_index;
+                    gap_w_req_index_before = debug_w_req_index;
                     @(posedge aclk);
+                    if (debug_sample_accept !== 1'b0 ||
+                            debug_element_index !== gap_element_index_before ||
+                            debug_w_req_index !== gap_w_req_index_before) begin
+                        input_gap_pass = 1'b0;
+                    end
                 end
             end
+            @(negedge aclk);
+            s_axis_y_tvalid = 1'b0;
+            s_axis_y_tlast = 1'b0;
+            s_axis_y_tkeep = 4'hF;
+            s_axis_y_tdata = 32'd0;
         end
     endtask
 
@@ -306,6 +328,7 @@ module tb_dbf_axis_system_top;
         integer stall_count;
         begin
             beam = 0;
+            @(negedge aclk);
             m_axis_z_tready = 1'b1;
             while (beam < B_BEAMS) begin
                 @(posedge aclk);
@@ -313,28 +336,28 @@ module tb_dbf_axis_system_top;
                     ready_lockout_violation_count = ready_lockout_violation_count + 1;
                 end
 
-                if (m_axis_z_tvalid && !m_axis_z_tready) begin
-                    stable_data = m_axis_z_tdata;
-                    stable_keep = m_axis_z_tkeep;
-                    stable_last = m_axis_z_tlast;
-                    for (stall_count = 0; stall_count < 3; stall_count = stall_count + 1) begin
-                        @(posedge aclk);
-                        if (ready_lockout_active && s_axis_y_tready) begin
-                            ready_lockout_violation_count = ready_lockout_violation_count + 1;
-                        end
-                        if (m_axis_z_tdata !== stable_data || m_axis_z_tkeep !== stable_keep ||
-                                m_axis_z_tlast !== stable_last) begin
-                            backpressure_stability_fail_count = backpressure_stability_fail_count + 1;
-                        end
-                    end
-                    m_axis_z_tready = 1'b1;
-                end
-
                 if (m_axis_z_tvalid && m_axis_z_tready) begin
                     check_and_log_output(frame_index, beam, expected_base + beam);
                     beam = beam + 1;
                     if (enable_backpressure && (beam == 2 || beam == 5)) begin
+                        @(negedge aclk);
                         m_axis_z_tready = 1'b0;
+                        stable_data = m_axis_z_tdata;
+                        stable_keep = m_axis_z_tkeep;
+                        stable_last = m_axis_z_tlast;
+                        for (stall_count = 0; stall_count < 3; stall_count = stall_count + 1) begin
+                            @(posedge aclk);
+                            if (ready_lockout_active && s_axis_y_tready) begin
+                                ready_lockout_violation_count = ready_lockout_violation_count + 1;
+                            end
+                            if (m_axis_z_tvalid !== 1'b1 || m_axis_z_tdata !== stable_data ||
+                                    m_axis_z_tkeep !== stable_keep ||
+                                    m_axis_z_tlast !== stable_last) begin
+                                backpressure_stability_fail_count = backpressure_stability_fail_count + 1;
+                            end
+                        end
+                        @(negedge aclk);
+                        m_axis_z_tready = 1'b1;
                     end
                     if (beam == B_BEAMS) begin
                         ready_lockout_active = 0;
