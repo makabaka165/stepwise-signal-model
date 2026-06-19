@@ -37,3 +37,28 @@ This is not a complete FPGA backend. It does not implement `Rz`, `G_cache`,
 closure. Those functions remain CPU/SoC-side responsibilities by design. The
 current smoke checks raw accumulator equivalence and Z24 output equivalence
 against MATLAB compact golden vectors.
+
+## Step13.4 Full-N Reference Tops
+
+Step13.4 adds synthesizable Verilog-2001 reference tops for the final FPGA DBF
+engineering boundary:
+
+- `dbf_core_z24.v`: one DBF lane with ACC48 raw accumulator plus Z24 output.
+- `dbf_core_z24_bparallel.v`: B-lane beam-parallel wrapper. Lane 0 is packed
+  in the least-significant bus slice, `bus[0 +: WIDTH]`.
+- `dbf_core_z24_ref_top.v`: fixed W18/Y16/ACC48/Z24 single-lane OOC synthesis
+  top.
+- `dbf_core_z24_b7_ref_top.v`: fixed B=7 beam-parallel OOC synthesis top.
+- `step13_4_shift_params.vh`: generated engineering shift parameter. Current
+  value is `STEP13_4_ENGINEERING_Z_SHIFT_BITS = 20`.
+
+The closed datapath is still only FPGA DBF:
+
+```text
+Y stream -> W input/read -> conj(W)*Y -> full-N accumulation -> fixed shift
+-> symmetric rounding -> signed int24 saturation -> Z output + clip/overflow flags
+```
+
+Vivado OOC synthesis on reference part `xc7z020clg400-1` reports 4 DSP per
+complex lane and 28 DSP for the B=7 top. This is post-synthesis OOC evidence,
+not implementation or board closure.

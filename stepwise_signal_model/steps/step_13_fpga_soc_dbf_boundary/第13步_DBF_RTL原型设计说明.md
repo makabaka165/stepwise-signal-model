@@ -1,5 +1,48 @@
 # 第13步 DBF RTL原型设计说明
 
+## Step13.4 full-N DBF RTL 收束
+
+Step13.4 新增并验证 full-N / ACC48 / Z24 DBF 数据通路：
+
+```text
+Y stream -> W input/read -> conj(W)*Y -> full-N accumulation -> fixed shift
+-> symmetric rounding -> signed int24 saturation -> Z output + clip/overflow flags
+```
+
+新增 RTL：
+
+- `rtl/dbf_core_z24.v`
+- `rtl/dbf_core_z24_bparallel.v`
+- `rtl/dbf_core_z24_ref_top.v`
+- `rtl/dbf_core_z24_b7_ref_top.v`
+- `rtl/step13_4_shift_params.vh`
+
+新增 testbench：
+
+- `tb/tb_dbf_core_z24_fulln_b7.v`
+
+当前 full-N XSim 结果：
+
+- `N=2080`
+- `B=7`
+- `L=2`
+- `ACC_BITS=48`
+- `Z_BITS=24`
+- `SHIFT_BITS=20`
+- no-gap frame = `pass`
+- valid-gap frame = `pass`
+- `accumulator_match_flag = true`
+- `z24_match_flag = true`
+- missing / mismatch count = `0 / 0`
+- clip / overflow count = `0 / 0`
+
+Vivado OOC synthesis 在 reference part `xc7z020clg400-1` 上通过：single lane
+为 `487 LUT / 193 FF / 4 DSP / WNS 1.675 ns`，B=7 parallel 为
+`3376 LUT / 1345 FF / 28 DSP / WNS 1.675 ns`。
+
+以上是 FPGA DBF engineering feasibility 证据，不是 formal proof、bitstream、
+implementation closure 或 board validation。
+
 ## Step13.2a 仿真工具链闭合记录
 
 Step13.2a 的目标不是新增算法功能，而是补齐 Windows-friendly RTL smoke

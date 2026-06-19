@@ -1,5 +1,70 @@
 # 第13步 DBF定点验证与资源估算记录
 
+## Step13.4 fixed-shift / full-N / OOC synthesis 记录
+
+Step13.4 使用完整 Step11-compatible 工程数据做 fixed-shift sweep：
+
+- planned observations = `84`
+- completed observations = `84`
+- `W_method = greedy_combined_B7`
+- sweep shape = `N=2080, B=7, L=16`
+- primary format = `mixed_W18_Y16_Z24`
+- fallback format = `mixed_W24_Y16_Z24`
+- selected `engineering_Z_shift_bits = 20`
+- minimum observed headroom bits = `1`
+- global clip count = `0`
+- global overflow count = `0`
+- worst `Z_rel_l2_error = 4.6644661874251108e-05`
+- worst `beam_power_rel_error = 1.3554578191520584e-05`
+- worst `Z_cov_Rz_rel_error = 2.0234182961274521e-05`
+- minimum top/rank preservation metrics = `1`
+
+Full-N RTL golden and XSim use:
+
+- `N=2080`
+- `B=7`
+- `L=2`
+- `ACC_BITS=48`
+- `Z_BITS=24`
+- `SHIFT_BITS=20`
+
+Vivado XSim and MATLAB compare results:
+
+- compact raw accumulator smoke = `pass`
+- compact Z24 smoke = `pass`
+- full-N no-gap frame = `pass`
+- full-N valid-gap frame = `pass`
+- `accumulator_match_flag = true`
+- `z24_match_flag = true`
+- `clip_overflow_match_flag = true`
+- missing / mismatch count = `0 / 0`
+- full-N clip / overflow count = `0 / 0`
+
+Vivado 2024.2 OOC synthesis result on reference part `xc7z020clg400-1`:
+
+| Top | LUT | FF | DSP | BRAM36 | URAM | WNS ns |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| single lane | 487 | 193 | 4 | 0 | 0 | 1.675 |
+| B=7 parallel | 3376 | 1345 | 28 | 0 | 0 | 1.675 |
+
+旧 rough estimate 中 B=7 parallel 约为 `21` DSP；Vivado OOC 实际结果为 `28` DSP，
+即当前 RTL 每个 complex lane 实际映射为 `4` DSP。该资源结果来自 OOC synthesis，
+不能写成最终目标板卡资源结论。
+
+当前 flags：
+
+- `fixed_shift_policy_pass_flag = true`
+- `fulln_functional_pass_flag = true`
+- `ooc_synthesis_pass_flag = true`
+- `timing_200MHz_met_flag = true`
+- `step13_engineering_closure_flag = true`
+- `formal_result_claimed = false`
+- `implementation_closure_claimed = false`
+- `board_validation_flag = false`
+
+Step13.4 只覆盖 FPGA DBF engineering feasibility，不覆盖完整 FPGA backend、
+board validation、formal proof 或 CPU/SoC ML software integration。
+
 ## 当前运行状态
 
 本文件记录 Step13 MATLAB quick/smoke 运行情况。quick/smoke 只验证 DBF 边界：

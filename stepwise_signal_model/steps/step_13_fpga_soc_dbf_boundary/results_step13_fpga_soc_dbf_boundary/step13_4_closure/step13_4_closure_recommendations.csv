@@ -1,0 +1,6 @@
+metric,value
+recommended_next_action,"prepare_dbf_ip_integration_plan_with_board_specific_constraints"
+proceed_to_dbf_ip_integration_flag,"true"
+proceed_to_full_fpga_backend_flag,"0"
+proceed_to_board_validation_flag,"0"
+note,"Step13 closure only covers FPGA DBF engineering feasibility, not full backend, board validation, or CPU/SoC ML integration."

@@ -98,3 +98,41 @@ Current Step13.3 XSim status in this environment:
 - full reference shape `N=2080, B=7, L=16`
 
 Generated `.jou`, `.log`, `.wdb`, `.pb`, and `xsim.dir/` files are ignored.
+
+## Step13.4 Full-N XSim
+
+Step13.4 adds a full-N Vivado XSim smoke:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File sim/run_xsim_step13_4_fulln.ps1
+```
+
+or:
+
+```cmd
+sim\run_xsim_step13_4_fulln.bat
+```
+
+The Tcl entry point is `sim/run_xsim_step13_4_fulln.tcl`. It keeps the compact
+raw accumulator and compact Z24 smoke, then runs the full-N B=7 testbench.
+
+Current status:
+
+- `compact_raw_accumulator_status=pass`
+- `compact_z24_status=pass`
+- `fulln_N=2080`, `fulln_B=7`, `fulln_L=2`
+- `fulln_ACC_bits=48`, `fulln_Z_bits=24`
+- `engineering_Z_shift_bits=20`
+- no-gap frame: `pass`
+- valid-gap frame: `pass`
+- `fulln_accumulator_match_flag=true`
+- `fulln_z24_match_flag=true`
+- `fulln_missing_count=0`
+- `fulln_mismatch_count=0`
+- `fulln_clip_count=0`
+- `fulln_overflow_count=0`
+- `simulation_status=pass`
+- `formal_result_claimed=false`
+
+This smoke is not formal proof, timing closure, implementation closure, or
+board validation.

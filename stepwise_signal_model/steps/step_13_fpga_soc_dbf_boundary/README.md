@@ -354,6 +354,51 @@ Current Step13.3 run:
 Step13.3 is not formal closure, timing closure, synthesis closure,
 implementation closure, or board validation.
 
+## Step13.4 Engineering Boundary Closure
+
+Step13.4 closes the FPGA DBF engineering boundary around the full datapath:
+
+```text
+Y stream -> W input/read -> conj(W)*Y -> full-N accumulation -> fixed shift
+-> symmetric rounding -> signed int24 saturation -> Z output + clip/overflow flags
+```
+
+Current closure evidence:
+
+- Step11-compatible full-data shift sweep: `84` observations completed.
+- `W_method = greedy_combined_B7`
+- `N=2080`, `B=7`, sweep `L=16`, full-N RTL smoke `L=2`
+- recommended format: `mixed_W18_Y16_Z24`
+- fallback format: `mixed_W24_Y16_Z24`
+- `ACC_BITS=48`, `Z_BITS=24`
+- `engineering_Z_shift_bits=20`
+- minimum observed headroom bits: `1`
+- global clip / overflow count: `0 / 0`
+- full-N ACC48 and Z24 XSim output matches MATLAB golden exactly.
+- Vivado OOC synthesis passes for both single-lane and B=7 beam-parallel
+  reference tops.
+
+Vivado 2024.2 OOC synthesis used reference part `xc7z020clg400-1`
+(`reference_device_only=true`):
+
+| Top | LUT | FF | DSP | BRAM36 | URAM | WNS ns |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| single lane | 487 | 193 | 4 | 0 | 0 | 1.675 |
+| B=7 parallel | 3376 | 1345 | 28 | 0 | 0 | 1.675 |
+
+The 200 MHz value is a post-synthesis OOC estimate on a reference device. It
+is not implementation closure, board timing closure, bitstream generation, or
+final target-board resource characterization.
+
+Step13.4 sets `step13_engineering_closure_flag=true` and
+`proceed_to_dbf_ip_integration_flag=true`, while keeping
+`proceed_to_full_fpga_backend_flag=0` and `proceed_to_board_validation_flag=0`.
+`formal_result_claimed=false`.
+
+`Rz/G_cache/2D ML/topK/C05/confidence/boundary/fallback` remain CPU/SoC
+responsibilities by design. They are intentionally outside the Step13 FPGA RTL
+scope and are not missing FPGA modules.
+
 ## Outputs
 
 Outputs are written to:
@@ -382,6 +427,13 @@ Expected CSV outputs:
 - `rtl_sim/dbf_core_z24_output.csv` when RTL simulation runs
 - `rtl_sim/step13_dbf_rtl_sim_summary.csv` when RTL simulation runs
 - `rtl_sim/step13_dbf_rtl_compare_summary.csv` when MATLAB compare runs
+- `rtl_fulln/step13_4_fulln_metadata.csv`
+- `rtl_fulln/step13_4_fulln_z24.csv`
+- `rtl_fulln_sim/step13_4_fulln_xsim_summary.csv`
+- `rtl_fulln_sim/step13_4_fulln_compare_summary.csv`
+- `step13_4_shift_policy/step13_4_shift_keypoints.csv`
+- `synth/step13_4_ooc_synthesis_summary.csv`
+- `step13_4_closure/step13_4_closure_keypoints.csv`
 
 Expected figures:
 

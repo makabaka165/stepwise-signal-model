@@ -1,0 +1,3 @@
+architecture,LUT,FF,DSP,BRAM18,BRAM36,URAM,WNS_ns,timing_met_flag,synthesis_status,note
+single_lane,487,193,4,0,0,0,1.675,true,pass,post_synthesis_ooc_only
+b7_parallel,3376,1345,28,0,0,0,1.675,true,pass,post_synthesis_ooc_only

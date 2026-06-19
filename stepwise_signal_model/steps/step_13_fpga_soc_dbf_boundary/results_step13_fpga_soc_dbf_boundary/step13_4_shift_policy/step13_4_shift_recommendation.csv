@@ -1,0 +1,10 @@
+metric,value
+fixed_shift_policy_pass_flag,"true"
+engineering_Z_shift_bits,"20"
+selection_rule,"smallest passing shift with zero clip/overflow, numeric gates, and headroom"
+blocker_if_any,""
+worst_case_observation_id,"12"
+worst_case_center_az,"0"
+worst_case_scenario,"weak_secondary"
+worst_case_trial,"3"
+worst_case_seed,"20264622"

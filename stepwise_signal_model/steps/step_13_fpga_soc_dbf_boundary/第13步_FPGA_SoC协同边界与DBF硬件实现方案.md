@@ -1,5 +1,36 @@
 # 第13步 FPGA/SoC协同边界与DBF硬件实现方案
 
+## Step13.4最终边界
+
+Step13.4 后，FPGA 侧最终收束为 DBF 数据通路：
+
+```text
+Y stream -> W input/read -> conj(W)*Y -> full-N accumulation -> fixed shift
+-> symmetric rounding -> signed int24 saturation -> Z output + clip/overflow flags
+```
+
+推荐工程格式：
+
+- recommended: `mixed_W18_Y16_Z24`
+- fallback: `mixed_W24_Y16_Z24`
+- `ACC_BITS=48`
+- `Z_BITS=24`
+- `engineering_Z_shift_bits=20`
+
+CPU/SoC 侧继续负责 `Rz/G_cache/2D ML/topK/C05/confidence/boundary/fallback`。
+这些模块不是 FPGA RTL 待补功能，而是按分工保留在 CPU/SoC 软件/控制层。
+
+当前 flags：
+
+- `fixed_shift_policy_pass_flag=true`
+- `fulln_functional_pass_flag=true`
+- `ooc_synthesis_pass_flag=true`
+- `timing_200MHz_met_flag=true`
+- `step13_engineering_closure_flag=true`
+- `formal_result_claimed=false`
+- `proceed_to_full_fpga_backend_flag=0`
+- `proceed_to_board_validation_flag=0`
+
 ## 工程背景
 
 Step13用于把论文工程实现边界从“算法可行性”推进到“FPGA/SoC分工可实现”。本步骤主线是 FPGA/SoC 协同边界收束与 FPGA DBF 硬件实现方案，不是完整 ML 后端硬件化。

@@ -1,0 +1,20 @@
+localparam integer STEP13_4_FULLN_N = 2080;
+localparam integer STEP13_4_FULLN_B = 7;
+localparam integer STEP13_4_FULLN_L = 2;
+localparam integer STEP13_4_FULLN_W_BITS = 18;
+localparam integer STEP13_4_FULLN_Y_BITS = 16;
+localparam integer STEP13_4_FULLN_ACC_BITS = 48;
+localparam integer STEP13_4_FULLN_Z_BITS = 24;
+localparam integer STEP13_4_FULLN_Z_SHIFT_BITS = 20;
+`define STEP13_4_FULLN_W_RE_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_w_re.mem"
+`define STEP13_4_FULLN_W_IM_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_w_im.mem"
+`define STEP13_4_FULLN_Y_RE_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_y_re.mem"
+`define STEP13_4_FULLN_Y_IM_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_y_im.mem"
+`define STEP13_4_FULLN_ACC_RE_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_acc_re.mem"
+`define STEP13_4_FULLN_ACC_IM_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_acc_im.mem"
+`define STEP13_4_FULLN_Z_RE_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_z_re.mem"
+`define STEP13_4_FULLN_Z_IM_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_z_im.mem"
+`define STEP13_4_FULLN_CLIP_RE_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_clip_re.mem"
+`define STEP13_4_FULLN_CLIP_IM_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_clip_im.mem"
+`define STEP13_4_FULLN_OVERFLOW_RE_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_overflow_re.mem"
+`define STEP13_4_FULLN_OVERFLOW_IM_MEM "results_step13_fpga_soc_dbf_boundary/rtl_fulln/step13_4_fulln_overflow_im.mem"

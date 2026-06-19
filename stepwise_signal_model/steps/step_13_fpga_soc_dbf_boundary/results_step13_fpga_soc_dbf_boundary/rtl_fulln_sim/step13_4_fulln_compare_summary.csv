@@ -1,0 +1,16 @@
+metric,value
+comparison_status,pass
+expected_rows,14
+sim_rows,14
+matched_rows,14
+missing_count,0
+accumulator_mismatch_count,0
+z24_mismatch_count,0
+flag_mismatch_count,0
+mismatch_count,0
+accumulator_match_flag,true
+z24_match_flag,true
+clip_overflow_match_flag,true
+fulln_functional_pass_flag,true
+formal_result_claimed,false
+note,full-N ACC48 and Z24 RTL output matches MATLAB golden exactly

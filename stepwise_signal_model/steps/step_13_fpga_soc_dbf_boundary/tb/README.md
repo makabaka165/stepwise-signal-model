@@ -47,3 +47,28 @@ ACC raw accumulator -> shift -> round -> saturate -> signed int24 Z output
 It does not implement `Rz`, `G_cache`, 2D ML search, topK, C05, confidence,
 boundary, fallback, or a complete FPGA backend. Those remain CPU/SoC
 responsibilities by design.
+
+## Step13.4 Full-N Testbench
+
+Step13.4 adds `tb_dbf_core_z24_fulln_b7.v`, a self-checking Vivado XSim
+testbench for the B=7 beam-parallel full-N DBF top.
+
+It reads MATLAB-generated `.mem` files for `N=2080`, `B=7`, `L=2`,
+`ACC_BITS=48`, `Z_BITS=24`, and `SHIFT_BITS=20`. The testbench runs two
+frames:
+
+- frame 0: no valid gaps
+- frame 1: deterministic valid gaps after every 257 valid elements
+
+It checks `acc_re`, `acc_im`, `z_re`, `z_im`, clip flags, and overflow flags
+for every beam. The expected pass line is:
+
+```text
+PASS: tb_dbf_core_z24_fulln_b7 N=2080 B=7 L=2 SHIFT=20
+```
+
+The output CSV is:
+
+```text
+results_step13_fpga_soc_dbf_boundary/rtl_fulln_sim/dbf_core_z24_fulln_output.csv
+```
