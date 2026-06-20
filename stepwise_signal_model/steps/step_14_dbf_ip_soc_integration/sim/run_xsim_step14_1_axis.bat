@@ -19,7 +19,7 @@ if errorlevel 1 (
     exit /b %ERRORLEVEL%
 )
 
-call xelab tb_dbf_axis_system_top -debug typical -s step14_1_axis_sim
+call xelab tb_dbf_axis_system_top -debug typical -L xpm -s step14_1_axis_sim
 if errorlevel 1 (
     call :write_summary true true true pass fail not_run
     exit /b %ERRORLEVEL%

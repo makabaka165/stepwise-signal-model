@@ -90,7 +90,7 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-& $xelabCmd.Source tb_dbf_axis_system_top -debug typical -s step14_1_axis_sim
+& $xelabCmd.Source tb_dbf_axis_system_top -debug typical -L xpm -s step14_1_axis_sim
 if ($LASTEXITCODE -ne 0) {
     Write-XsimSummary -CompileStatus "pass" -ElaborationStatus "fail" -SimulationStatus "not_run"
     exit $LASTEXITCODE

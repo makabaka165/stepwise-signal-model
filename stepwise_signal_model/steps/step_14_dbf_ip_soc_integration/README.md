@@ -94,6 +94,7 @@ step_14_dbf_ip_soc_integration/
     03_W_MEMORY_AND_COEFFICIENT_LAYOUT.md
     04_MIGRATION_AND_MODEL_NESTING.md
     05_STEP13_REUSE_RULES.md
+    06_CUSTOM_IP_PACKAGING.md
   rtl/
   tb/
   sim/
@@ -143,3 +144,54 @@ The W provider, input source, and output sink are intentionally replaceable. The
 This smoke checks AXI handshaking, fixed 2080-sample frame boundaries, W/Y alignment, B=7 Z serialization order, output backpressure stability, two consecutive frames without reset, and protocol error reporting for early TLAST, missing TLAST, and bad TKEEP.
 
 Step14.1 is not DMA, PS, DDR, Block Design, IP Packager, board validation, bitstream generation, full FPGA backend closure, or formal closure. CPU/SoC ML modules remain outside FPGA RTL.
+
+## Step14.2 Vivado Custom IP Packaging
+
+Step14.2 packages the closed Step14.1 AXI data path as a Vivado Custom IP:
+
+```text
+Step13 arithmetic RTL
++ Step14 AXIS RTL
++ 14 Step14.1 W ROM .mem files
+-> ip_repo/dbf_axis_ip_1_0/component.xml
+-> Vivado IP Catalog
+-> create_ip / generate_target
+-> packaged-IP XSim regression
+-> MATLAB exact compare
+-> packaged-IP OOC synthesis
+```
+
+Fixed IP identity:
+
+```text
+VLNV = user.org:radar:dbf_axis:1.0
+display_name = Step14 DBF AXI Stream
+part = xc7z020clg400-1 reference device
+```
+
+The packaged IP explicitly declares `S_AXIS_Y`, `M_AXIS_Z`, `ACLK`, and
+active-low `ARESETN`. The staged IP contains 10 HDL files and 14 W ROM memory
+files. The package is self-contained under `ip_repo/dbf_axis_ip_1_0/`, while
+source-of-truth RTL remains Step13/Step14 source files and the package script
+regenerates the staging tree.
+
+Step14.2 validation results:
+
+- IP integrity: pass, 0 errors, 0 warnings.
+- IP Catalog registration, `create_ip`, and `generate_target`: pass.
+- Packaged-IP XSim: pass.
+- MATLAB exact compare: expected/actual/matched rows = 14/14/14.
+- OOC synthesis: pass on `xc7z020clg400-1`.
+- Resource estimate: LUT 3594, FF 1810, DSP 28, BRAM18 0, BRAM36 28, URAM 0,
+  distributed RAM 0.
+- W memory resource inference: true.
+- 200 MHz post-synthesis timing estimate: not met, WNS = -8.586 ns.
+
+`step14_2_custom_ip_pass_flag=true` because packaging, catalog, packaged XSim,
+exact compare, OOC synthesis, and W memory inference all pass. However
+`proceed_to_reference_bd_design_flag=false` because the 200 MHz timing estimate
+is not met. Target-board DMA, board validation, full FPGA backend closure, and
+formal closure remain false.
+
+Step14.2 still does not create DMA, PS, DDR, Block Design, bitstream, XSA, HWH,
+software drivers, board validation, or a complete FPGA backend.

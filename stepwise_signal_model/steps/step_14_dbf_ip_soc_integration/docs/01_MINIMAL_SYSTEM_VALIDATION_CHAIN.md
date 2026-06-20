@@ -73,3 +73,22 @@ Step13 arithmetic core. It does not prove:
 ## Step14.1 Implementation Notes
 
 The first implementation contains dbf_w_provider_rom, dbf_axis_datapath, dbf_axis_z_serializer, dbf_axis_system_top, and tb_dbf_axis_system_top. The testbench records only the two good-path frame outputs in step14_1_axis_output.csv; malformed protocol cases validate sticky status bits and do not contribute to the golden-output CSV.
+
+## Step14.2 Packaged-IP Regression
+
+Step14.2 reuses the Step14.1 vectors and expected Z CSV. It instantiates the
+Vivado-generated `dbf_axis_0` module rather than the raw `dbf_axis_system_top`
+and repeats the good-path interface regression:
+
+- frame 0: continuous 2080-beat Y input and always-ready Z sink.
+- frame 1: input valid gaps every 257 accepted samples.
+- output backpressure: 3-cycle stalls on beam 2 and beam 5.
+- stable `TDATA`, `TKEEP`, and `TLAST` during backpressure.
+- two frames without reset.
+- beam order 0 through 6.
+- final `status_frame_count=2` and no protocol error.
+
+The packaged-IP output CSV has 14 rows and matches the Step14.1 expected Z
+exactly by `frame_index + beam_id`. This regression still does not prove DMA,
+PS, DDR, Block Design, board timing, bitstream validity, or full FPGA backend
+closure.

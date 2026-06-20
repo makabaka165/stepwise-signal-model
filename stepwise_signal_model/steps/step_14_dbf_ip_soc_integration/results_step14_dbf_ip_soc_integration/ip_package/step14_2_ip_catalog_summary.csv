@@ -1,0 +1,11 @@
+metric,value
+ip_catalog_registration_pass_flag,true
+ipdef_count,1
+ipdef_vlnv,user.org:radar:dbf_axis:1.0
+create_ip_pass_flag,true
+generate_target_pass_flag,true
+generated_module_name,dbf_axis_0
+simulation_target_generated_flag,true
+synthesis_target_generated_flag,true
+formal_result_claimed,false
+blocker_if_any,

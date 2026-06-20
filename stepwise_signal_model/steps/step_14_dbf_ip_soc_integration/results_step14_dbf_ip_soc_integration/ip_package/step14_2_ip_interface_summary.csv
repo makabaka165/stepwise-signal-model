@@ -1,0 +1,25 @@
+interface,mode,bus_type,abstraction,parameter,value,logical_port,physical_port
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TDATA,s_axis_y_tdata
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TKEEP,s_axis_y_tkeep
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TLAST,s_axis_y_tlast
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TVALID,s_axis_y_tvalid
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TREADY,s_axis_y_tready
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,TDATA_NUM_BYTES,4,,
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,HAS_TKEEP,1,,
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,HAS_TLAST,1,,
+S_AXIS_Y,slave,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,HAS_TREADY,1,,
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TDATA,m_axis_z_tdata
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TKEEP,m_axis_z_tkeep
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TLAST,m_axis_z_tlast
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TVALID,m_axis_z_tvalid
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,,, TREADY,m_axis_z_tready
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,TDATA_NUM_BYTES,8,,
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,HAS_TKEEP,1,,
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,HAS_TLAST,1,,
+M_AXIS_Z,master,xilinx.com:interface:axis:1.0,xilinx.com:interface:axis_rtl:1.0,HAS_TREADY,1,,
+ACLK,slave,xilinx.com:signal:clock:1.0,xilinx.com:signal:clock_rtl:1.0,,, CLK,aclk
+ACLK,slave,xilinx.com:signal:clock:1.0,xilinx.com:signal:clock_rtl:1.0,ASSOCIATED_BUSIF,S_AXIS_Y:M_AXIS_Z,,
+ACLK,slave,xilinx.com:signal:clock:1.0,xilinx.com:signal:clock_rtl:1.0,ASSOCIATED_RESET,ARESETN,,
+ACLK,slave,xilinx.com:signal:clock:1.0,xilinx.com:signal:clock_rtl:1.0,FREQ_HZ,200000000,,
+ARESETN,slave,xilinx.com:signal:reset:1.0,xilinx.com:signal:reset_rtl:1.0,,, RST,aresetn
+ARESETN,slave,xilinx.com:signal:reset:1.0,xilinx.com:signal:reset_rtl:1.0,POLARITY,ACTIVE_LOW,,

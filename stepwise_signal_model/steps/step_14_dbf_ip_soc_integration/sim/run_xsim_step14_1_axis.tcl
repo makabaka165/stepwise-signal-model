@@ -63,7 +63,7 @@ if {[catch {exec xvlog -sv {*}$files} err]} {
 }
 
 set elaboration_status "pass"
-if {[catch {exec xelab tb_dbf_axis_system_top -debug typical -s step14_1_axis_sim} err]} {
+if {[catch {exec xelab tb_dbf_axis_system_top -debug typical -L xpm -s step14_1_axis_sim} err]} {
     puts $err
     set elaboration_status "fail"
     write_xsim_summary $summary_path $compile_status $elaboration_status "not_run"

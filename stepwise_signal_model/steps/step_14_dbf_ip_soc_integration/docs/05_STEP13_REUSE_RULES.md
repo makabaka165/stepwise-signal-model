@@ -44,6 +44,11 @@ During the later IP Packager stage, scripts may copy stable RTL into a temporary
 staging/IP directory. Do not manually maintain two drifting copies of the DBF
 arithmetic RTL.
 
+Step14.2 follows that rule by regenerating `ip_repo/dbf_axis_ip_1_0/` from
+`vivado/package_dbf_axis_ip.tcl`. The staged IP contains Step13 arithmetic RTL
+copies for Vivado IP self-containment only. The authoritative Step13 RTL remains
+in `../step_13_fpga_soc_dbf_boundary/rtl/` and was not modified.
+
 ## Step11.7 Boundary
 
 Step14 does not change Step11.7 backend default behavior. Step11-compatible

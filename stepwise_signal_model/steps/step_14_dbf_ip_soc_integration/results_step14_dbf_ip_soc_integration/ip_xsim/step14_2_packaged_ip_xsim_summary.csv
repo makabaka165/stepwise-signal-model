@@ -1,0 +1,16 @@
+metric,value
+tool_vivado_found,true
+tool_xvlog_found,true
+tool_xelab_found,true
+tool_xsim_found,true
+ip_catalog_registration_pass_flag,true
+create_ip_pass_flag,true
+generate_simulation_target_pass_flag,true
+compile_status,pass
+elaboration_status,pass
+simulation_status,pass
+packaged_ip_tb_summary_created,true
+packaged_ip_output_csv_created,true
+packaged_ip_xsim_pass_flag,true
+formal_result_claimed,false
+blocker_if_any,
