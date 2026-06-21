@@ -63,3 +63,26 @@ blocker_if_any=post_route_timing_200MHz_not_met
 
 The flow writes no bitstream, XSA, HWH, PS, DMA, AXI-Lite, SmartConnect, board
 target, or full backend claim.
+
+## Step14.3b Reference BD Timing Closure
+
+`vivado/reference_bd_timing/` contains the timing-closure flow for the
+Step14.3a Reference BD.
+
+Run the strategy sweep:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File vivado/reference_bd_timing/run_reference_bd_strategy_sweep.ps1
+```
+
+Run the full closure wrapper:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File vivado/reference_bd_timing/run_reference_bd_timing_closure.ps1
+```
+
+The closure wrapper performs Phase A implementation strategy sweep on the same
+RTL/IP/BD and then runs an independent clean rerun of the best strategy when the
+sweep reaches `WNS >= 0.100 ns`. It does not generate a bitstream and does not
+create PS, DMA, AXI-Lite, SmartConnect, XSA, HWH, board constraints, or CPU
+software artifacts.

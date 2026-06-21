@@ -1,0 +1,9 @@
+strategy_name,get_strategies_command_available,discovered_by_get_strategies
+Performance_Explore,false,false
+Performance_ExplorePostRoutePhysOpt,false,false
+Performance_Retiming,false,false
+Performance_NetDelay_high,false,false
+Performance_ExtraTimingOpt,false,false
+Performance_RefinePlacement,false,false
+Performance_WLBlockPlacement,false,false
+Performance_WLBlockPlacementFanoutOpt,false,false

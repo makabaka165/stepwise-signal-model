@@ -1,0 +1,1157 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
+| Date         : Sun Jun 21 13:40:10 2026
+| Host         : Aurora running 64-bit major release  (build 9200)
+| Command      : report_timing -file <STEP14_DIR>/results_step14_dbf_ip_soc_integration/reference_bd_timing/strategy_4_timing_paths.rpt -max_paths 20 -nworst 1
+| Design       : dbf_reference_bd_wrapper
+| Device       : 7z020-clg400
+| Speed File   : -1  PRODUCTION 1.12 2019-11-22
+| Design State : Routed
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.205ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_re_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.513ns  (logic 2.252ns (49.897%)  route 2.261ns (50.103%))
+  Logic Levels:           12  (CARRY4=11 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/aclk
+    SLICE_X9Y28          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_re_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X9Y28          FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_re_q_reg[47]/Q
+                         net (fo=48, routed)          2.252     3.681    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/Q[47]
+    SLICE_X9Y17          LUT2 (Prop_lut2_I0_O)        0.124     3.805 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1[19]_i_21/O
+                         net (fo=1, routed)           0.000     3.805    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1[19]_i_21_n_0
+    SLICE_X9Y17          CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     4.337 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_12__9/CO[3]
+                         net (fo=1, routed)           0.000     4.337    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_12__9_n_0
+    SLICE_X9Y18          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.451 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_7__9/CO[3]
+                         net (fo=1, routed)           0.000     4.451    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_7__9_n_0
+    SLICE_X9Y19          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.565 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_2__9/CO[3]
+                         net (fo=1, routed)           0.000     4.565    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_2__9_n_0
+    SLICE_X9Y20          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.679 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     4.679    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_1__9_n_0
+    SLICE_X9Y21          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.793 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[23]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     4.793    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[23]_i_1__9_n_0
+    SLICE_X9Y22          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.907 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[27]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     4.907    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[27]_i_1__9_n_0
+    SLICE_X9Y23          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.021 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[31]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.021    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[31]_i_1__9_n_0
+    SLICE_X9Y24          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.135 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[35]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.009     5.144    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[35]_i_1__9_n_0
+    SLICE_X9Y25          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.258 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[39]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.258    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[39]_i_1__9_n_0
+    SLICE_X9Y26          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.372 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[43]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.372    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[43]_i_1__9_n_0
+    SLICE_X9Y27          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.486 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.486    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]_i_1__9_n_0
+    SLICE_X9Y27          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/aclk
+    SLICE_X9Y27          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X9Y27          FDRE (Setup_fdre_C_D)       -0.198     5.691    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]
+  -------------------------------------------------------------------
+                         required time                          5.691    
+                         arrival time                          -5.486    
+  -------------------------------------------------------------------
+                         slack                                  0.205    
+
+Slack (MET) :             0.225ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_im_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.493ns  (logic 2.218ns (49.370%)  route 2.275ns (50.630%))
+  Logic Levels:           11  (CARRY4=10 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/aclk
+    SLICE_X6Y25          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_im_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y25          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_im_q_reg[47]/Q
+                         net (fo=48, routed)          2.266     3.757    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/Q[47]
+    SLICE_X7Y16          LUT2 (Prop_lut2_I0_O)        0.124     3.881 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1[19]_i_15/O
+                         net (fo=1, routed)           0.000     3.881    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1[19]_i_15_n_0
+    SLICE_X7Y16          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550     4.431 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_7__10/CO[3]
+                         net (fo=1, routed)           0.000     4.431    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_7__10_n_0
+    SLICE_X7Y17          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.545 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_2__10/CO[3]
+                         net (fo=1, routed)           0.000     4.545    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_2__10_n_0
+    SLICE_X7Y18          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.659 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     4.659    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_1__10_n_0
+    SLICE_X7Y19          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.773 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[23]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     4.773    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[23]_i_1__10_n_0
+    SLICE_X7Y20          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.887 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[27]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     4.887    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[27]_i_1__10_n_0
+    SLICE_X7Y21          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.001 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[31]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.001    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[31]_i_1__10_n_0
+    SLICE_X7Y22          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.115 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[35]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.115    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[35]_i_1__10_n_0
+    SLICE_X7Y23          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.229 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[39]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.229    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[39]_i_1__10_n_0
+    SLICE_X7Y24          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.343 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[43]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.009     5.352    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[43]_i_1__10_n_0
+    SLICE_X7Y25          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.466 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.466    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]_i_1__10_n_0
+    SLICE_X7Y25          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/aclk
+    SLICE_X7Y25          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X7Y25          FDRE (Setup_fdre_C_D)       -0.198     5.691    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]
+  -------------------------------------------------------------------
+                         required time                          5.691    
+                         arrival time                          -5.466    
+  -------------------------------------------------------------------
+                         slack                                  0.225    
+
+Slack (MET) :             0.235ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_w_provider/u_re3/u_main_sprom/xpm_memory_base_inst/gen_rd_a.gen_rd_a_synth_template.gen_rf_narrow_reg.douta_reg_reg/CLKARDCLK
+                            (rising edge-triggered cell RAMB36E1 clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_accum/u_mac/wr_yi_s1_reg/A[15]
+                            (rising edge-triggered cell DSP48E1 clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.319ns  (logic 2.578ns (59.685%)  route 1.741ns (40.315%))
+  Logic Levels:           1  (LUT4=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_w_provider/u_re3/u_main_sprom/xpm_memory_base_inst/clka
+    RAMB36_X1Y5          RAMB36E1                                     r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_w_provider/u_re3/u_main_sprom/xpm_memory_base_inst/gen_rd_a.gen_rd_a_synth_template.gen_rf_narrow_reg.douta_reg_reg/CLKARDCLK
+  -------------------------------------------------------------------    -------------------
+    RAMB36_X1Y5          RAMB36E1 (Prop_ramb36e1_CLKARDCLK_DOADO[15])
+                                                      2.454     3.427 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_w_provider/u_re3/u_main_sprom/xpm_memory_base_inst/gen_rd_a.gen_rd_a_synth_template.gen_rf_narrow_reg.douta_reg_reg/DOADO[15]
+                         net (fo=1, routed)           1.069     4.496    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_w_provider/main_dout_9[15]
+    SLICE_X20Y25         LUT4 (Prop_lut4_I1_O)        0.124     4.620 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_w_provider/wr_yr_s1_reg_i_3__2/O
+                         net (fo=2, routed)           0.673     5.292    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_accum/u_mac/w_re_bus[15]
+    DSP48_X1Y11          DSP48E1                                      r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_accum/u_mac/wr_yi_s1_reg/A[15]
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_accum/u_mac/aclk
+    DSP48_X1Y11          DSP48E1                                      r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_accum/u_mac/wr_yi_s1_reg/CLK
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    DSP48_X1Y11          DSP48E1 (Setup_dsp48e1_CLK_A[15])
+                                                     -0.362     5.527    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_accum/u_mac/wr_yi_s1_reg
+  -------------------------------------------------------------------
+                         required time                          5.527    
+                         arrival time                          -5.292    
+  -------------------------------------------------------------------
+                         slack                                  0.235    
+
+Slack (MET) :             0.244ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/acc_im_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[47]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.522ns  (logic 2.071ns (45.802%)  route 2.451ns (54.198%))
+  Logic Levels:           11  (CARRY4=10 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/aclk
+    SLICE_X12Y43         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/acc_im_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X12Y43         FDRE (Prop_fdre_C_Q)         0.518     1.491 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/acc_im_q_reg[47]/Q
+                         net (fo=48, routed)          2.451     3.942    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/Q[47]
+    SLICE_X10Y32         LUT2 (Prop_lut2_I0_O)        0.124     4.066 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1[19]_i_13/O
+                         net (fo=1, routed)           0.000     4.066    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1[19]_i_13_n_0
+    SLICE_X10Y32         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.376     4.442 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[19]_i_7__12/CO[3]
+                         net (fo=1, routed)           0.000     4.442    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[19]_i_7__12_n_0
+    SLICE_X10Y33         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.559 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[19]_i_2__12/CO[3]
+                         net (fo=1, routed)           0.000     4.559    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[19]_i_2__12_n_0
+    SLICE_X10Y34         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.676 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[19]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     4.676    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[19]_i_1__12_n_0
+    SLICE_X10Y35         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.793 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[23]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     4.793    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[23]_i_1__12_n_0
+    SLICE_X10Y36         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.910 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[27]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     4.910    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[27]_i_1__12_n_0
+    SLICE_X10Y37         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.027 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[31]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     5.027    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[31]_i_1__12_n_0
+    SLICE_X10Y38         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.144 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[35]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     5.144    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[35]_i_1__12_n_0
+    SLICE_X10Y39         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.261 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[39]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     5.261    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[39]_i_1__12_n_0
+    SLICE_X10Y40         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.378 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[43]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     5.378    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[43]_i_1__12_n_0
+    SLICE_X10Y41         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.495 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[47]_i_1__12/CO[3]
+                         net (fo=1, routed)           0.000     5.495    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[47]_i_1__12_n_0
+    SLICE_X10Y41         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[47]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/aclk
+    SLICE_X10Y41         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[47]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X10Y41         FDRE (Setup_fdre_C_D)       -0.150     5.739    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_im/abs_s1_reg[47]
+  -------------------------------------------------------------------
+                         required time                          5.739    
+                         arrival time                          -5.495    
+  -------------------------------------------------------------------
+                         slack                                  0.244    
+
+Slack (MET) :             0.245ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_re_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[45]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.733ns  (logic 2.472ns (52.226%)  route 2.261ns (47.774%))
+  Logic Levels:           12  (CARRY4=11 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/aclk
+    SLICE_X9Y28          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_re_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X9Y28          FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_re_q_reg[47]/Q
+                         net (fo=48, routed)          2.252     3.681    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/Q[47]
+    SLICE_X9Y17          LUT2 (Prop_lut2_I0_O)        0.124     3.805 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1[19]_i_21/O
+                         net (fo=1, routed)           0.000     3.805    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1[19]_i_21_n_0
+    SLICE_X9Y17          CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.532     4.337 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_12__9/CO[3]
+                         net (fo=1, routed)           0.000     4.337    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_12__9_n_0
+    SLICE_X9Y18          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.451 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_7__9/CO[3]
+                         net (fo=1, routed)           0.000     4.451    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_7__9_n_0
+    SLICE_X9Y19          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.565 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_2__9/CO[3]
+                         net (fo=1, routed)           0.000     4.565    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_2__9_n_0
+    SLICE_X9Y20          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.679 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     4.679    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[19]_i_1__9_n_0
+    SLICE_X9Y21          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.793 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[23]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     4.793    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[23]_i_1__9_n_0
+    SLICE_X9Y22          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.907 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[27]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     4.907    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[27]_i_1__9_n_0
+    SLICE_X9Y23          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.021 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[31]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.021    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[31]_i_1__9_n_0
+    SLICE_X9Y24          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.135 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[35]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.009     5.144    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[35]_i_1__9_n_0
+    SLICE_X9Y25          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.258 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[39]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.258    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[39]_i_1__9_n_0
+    SLICE_X9Y26          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.372 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[43]_i_1__9/CO[3]
+                         net (fo=1, routed)           0.000     5.372    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[43]_i_1__9_n_0
+    SLICE_X9Y27          CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334     5.706 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]_i_1__9/O[1]
+                         net (fo=1, routed)           0.000     5.706    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[47]_i_1__9_n_6
+    SLICE_X9Y27          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[45]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/aclk
+    SLICE_X9Y27          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[45]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X9Y27          FDRE (Setup_fdre_C_D)        0.062     5.951    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_s1_reg[45]
+  -------------------------------------------------------------------
+                         required time                          5.951    
+                         arrival time                          -5.706    
+  -------------------------------------------------------------------
+                         slack                                  0.245    
+
+Slack (MET) :             0.247ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/acc_re_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[47]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.471ns  (logic 2.578ns (57.654%)  route 1.893ns (42.346%))
+  Logic Levels:           13  (CARRY4=12 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/aclk
+    SLICE_X16Y31         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/acc_re_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X16Y31         FDRE (Prop_fdre_C_Q)         0.478     1.451 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/acc_re_q_reg[47]/Q
+                         net (fo=48, routed)          1.893     3.344    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/Q[47]
+    SLICE_X21Y25         LUT2 (Prop_lut2_I0_O)        0.296     3.640 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1[19]_i_24/O
+                         net (fo=1, routed)           0.000     3.640    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1[19]_i_24_n_0
+    SLICE_X21Y25         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550     4.190 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_17__5/CO[3]
+                         net (fo=1, routed)           0.000     4.190    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_17__5_n_0
+    SLICE_X21Y26         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.304 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_12__5/CO[3]
+                         net (fo=1, routed)           0.000     4.304    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_12__5_n_0
+    SLICE_X21Y27         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.418 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_7__5/CO[3]
+                         net (fo=1, routed)           0.000     4.418    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_7__5_n_0
+    SLICE_X21Y28         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.532 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_2__5/CO[3]
+                         net (fo=1, routed)           0.000     4.532    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_2__5_n_0
+    SLICE_X21Y29         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.646 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     4.646    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[19]_i_1__5_n_0
+    SLICE_X21Y30         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.760 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[23]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     4.760    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[23]_i_1__5_n_0
+    SLICE_X21Y31         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.874 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[27]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     4.874    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[27]_i_1__5_n_0
+    SLICE_X21Y32         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.988 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[31]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     4.988    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[31]_i_1__5_n_0
+    SLICE_X21Y33         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.102 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[35]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     5.102    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[35]_i_1__5_n_0
+    SLICE_X21Y34         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.216 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[39]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     5.216    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[39]_i_1__5_n_0
+    SLICE_X21Y35         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.330 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[43]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     5.330    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[43]_i_1__5_n_0
+    SLICE_X21Y36         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.444 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[47]_i_1__5/CO[3]
+                         net (fo=1, routed)           0.000     5.444    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[47]_i_1__5_n_0
+    SLICE_X21Y36         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[47]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/aclk
+    SLICE_X21Y36         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[47]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X21Y36         FDRE (Setup_fdre_C_D)       -0.198     5.691    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[3].u_lane/u_quant_re/abs_s1_reg[47]
+  -------------------------------------------------------------------
+                         required time                          5.691    
+                         arrival time                          -5.444    
+  -------------------------------------------------------------------
+                         slack                                  0.247    
+
+Slack (MET) :             0.252ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[0].u_lane/u_quant_im/clip_pos_s4_reg/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.459ns  (logic 0.456ns (10.226%)  route 4.003ns (89.774%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         4.003     5.432    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[0].u_lane/u_quant_im/valid_s3
+    SLICE_X29Y20         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[0].u_lane/u_quant_im/clip_pos_s4_reg/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[0].u_lane/u_quant_im/aclk
+    SLICE_X29Y20         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[0].u_lane/u_quant_im/clip_pos_s4_reg/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X29Y20         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[0].u_lane/u_quant_im/clip_pos_s4_reg
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.432    
+  -------------------------------------------------------------------
+                         slack                                  0.252    
+
+Slack (MET) :             0.252ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[21]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.459ns  (logic 0.456ns (10.226%)  route 4.003ns (89.774%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         4.003     5.432    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X29Y20         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[21]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X29Y20         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[21]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X29Y20         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[21]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.432    
+  -------------------------------------------------------------------
+                         slack                                  0.252    
+
+Slack (MET) :             0.265ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_im_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[45]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.713ns  (logic 2.438ns (51.734%)  route 2.275ns (48.266%))
+  Logic Levels:           11  (CARRY4=10 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/aclk
+    SLICE_X6Y25          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_im_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X6Y25          FDRE (Prop_fdre_C_Q)         0.518     1.491 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/acc_im_q_reg[47]/Q
+                         net (fo=48, routed)          2.266     3.757    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/Q[47]
+    SLICE_X7Y16          LUT2 (Prop_lut2_I0_O)        0.124     3.881 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1[19]_i_15/O
+                         net (fo=1, routed)           0.000     3.881    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1[19]_i_15_n_0
+    SLICE_X7Y16          CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.550     4.431 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_7__10/CO[3]
+                         net (fo=1, routed)           0.000     4.431    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_7__10_n_0
+    SLICE_X7Y17          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.545 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_2__10/CO[3]
+                         net (fo=1, routed)           0.000     4.545    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_2__10_n_0
+    SLICE_X7Y18          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.659 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     4.659    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[19]_i_1__10_n_0
+    SLICE_X7Y19          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.773 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[23]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     4.773    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[23]_i_1__10_n_0
+    SLICE_X7Y20          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     4.887 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[27]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     4.887    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[27]_i_1__10_n_0
+    SLICE_X7Y21          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.001 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[31]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.001    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[31]_i_1__10_n_0
+    SLICE_X7Y22          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.115 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[35]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.115    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[35]_i_1__10_n_0
+    SLICE_X7Y23          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.229 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[39]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.000     5.229    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[39]_i_1__10_n_0
+    SLICE_X7Y24          CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.114     5.343 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[43]_i_1__10/CO[3]
+                         net (fo=1, routed)           0.009     5.352    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[43]_i_1__10_n_0
+    SLICE_X7Y25          CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.334     5.686 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]_i_1__10/O[1]
+                         net (fo=1, routed)           0.000     5.686    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[47]_i_1__10_n_6
+    SLICE_X7Y25          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[45]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/aclk
+    SLICE_X7Y25          FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[45]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X7Y25          FDRE (Setup_fdre_C_D)        0.062     5.951    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_s1_reg[45]
+  -------------------------------------------------------------------
+                         required time                          5.951    
+                         arrival time                          -5.686    
+  -------------------------------------------------------------------
+                         slack                                  0.265    
+
+Slack (MET) :             0.266ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/acc_re_q_reg[47]/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[47]/D
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.500ns  (logic 2.146ns (47.689%)  route 2.354ns (52.311%))
+  Logic Levels:           11  (CARRY4=10 LUT2=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/aclk
+    SLICE_X13Y44         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/acc_re_q_reg[47]/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X13Y44         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/acc_re_q_reg[47]/Q
+                         net (fo=48, routed)          2.354     3.783    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/Q[47]
+    SLICE_X14Y34         LUT2 (Prop_lut2_I0_O)        0.124     3.907 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1[19]_i_16/O
+                         net (fo=1, routed)           0.000     3.907    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1[19]_i_16_n_0
+    SLICE_X14Y34         CARRY4 (Prop_carry4_S[0]_CO[3])
+                                                      0.513     4.420 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[19]_i_7__11/CO[3]
+                         net (fo=1, routed)           0.000     4.420    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[19]_i_7__11_n_0
+    SLICE_X14Y35         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.537 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[19]_i_2__11/CO[3]
+                         net (fo=1, routed)           0.000     4.537    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[19]_i_2__11_n_0
+    SLICE_X14Y36         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.654 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[19]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     4.654    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[19]_i_1__11_n_0
+    SLICE_X14Y37         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.771 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[23]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     4.771    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[23]_i_1__11_n_0
+    SLICE_X14Y38         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     4.888 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[27]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     4.888    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[27]_i_1__11_n_0
+    SLICE_X14Y39         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.005 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[31]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     5.005    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[31]_i_1__11_n_0
+    SLICE_X14Y40         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.122 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[35]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     5.122    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[35]_i_1__11_n_0
+    SLICE_X14Y41         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.239 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[39]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     5.239    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[39]_i_1__11_n_0
+    SLICE_X14Y42         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.356 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[43]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     5.356    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[43]_i_1__11_n_0
+    SLICE_X14Y43         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.117     5.473 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[47]_i_1__11/CO[3]
+                         net (fo=1, routed)           0.000     5.473    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[47]_i_1__11_n_0
+    SLICE_X14Y43         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[47]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X14Y43         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[47]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X14Y43         FDRE (Setup_fdre_C_D)       -0.150     5.739    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/abs_s1_reg[47]
+  -------------------------------------------------------------------
+                         required time                          5.739    
+                         arrival time                          -5.473    
+  -------------------------------------------------------------------
+                         slack                                  0.266    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[20]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[20]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[20]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[20]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[21]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[21]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[21]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[21]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[22]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[22]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[22]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[22]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[23]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[23]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[23]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/neg_word_s4_reg[23]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[18]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[18]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[18]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[18]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[20]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[20]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[20]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[20]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[22]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[22]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[22]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[22]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.278ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[23]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.433ns  (logic 0.456ns (10.286%)  route 3.977ns (89.714%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X29Y38         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X29Y38         FDRE (Prop_fdre_C_Q)         0.456     1.429 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s3_reg/Q
+                         net (fo=715, routed)         3.977     5.406    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/valid_s3
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[23]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/aclk
+    SLICE_X24Y19         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[23]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X24Y19         FDRE (Setup_fdre_C_CE)      -0.205     5.684    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[4].u_lane/u_quant_im/pos_word_s4_reg[23]
+  -------------------------------------------------------------------
+                         required time                          5.684    
+                         arrival time                          -5.406    
+  -------------------------------------------------------------------
+                         slack                                  0.278    
+
+Slack (MET) :             0.280ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s2_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_lower_s3_reg[18]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.467ns  (logic 0.518ns (11.595%)  route 3.949ns (88.405%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X38Y41         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s2_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X38Y41         FDRE (Prop_fdre_C_Q)         0.518     1.491 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s2_reg/Q
+                         net (fo=379, routed)         3.949     5.440    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/valid_s2
+    SLICE_X14Y24         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_lower_s3_reg[18]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/aclk
+    SLICE_X14Y24         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_lower_s3_reg[18]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X14Y24         FDRE (Setup_fdre_C_CE)      -0.169     5.720    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_im/abs_lower_s3_reg[18]
+  -------------------------------------------------------------------
+                         required time                          5.720    
+                         arrival time                          -5.440    
+  -------------------------------------------------------------------
+                         slack                                  0.280    
+
+Slack (MET) :             0.280ns  (required time - arrival time)
+  Source:                 dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s2_reg/C
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Destination:            dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_lower_s3_reg[15]/CE
+                            (rising edge-triggered cell FDRE clocked by aclk  {rise@0.000ns fall@2.500ns period=5.000ns})
+  Path Group:             aclk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            5.000ns  (aclk rise@5.000ns - aclk rise@0.000ns)
+  Data Path Delay:        4.467ns  (logic 0.518ns (11.595%)  route 3.949ns (88.405%))
+  Logic Levels:           0  
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 5.924 - 5.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock aclk rise edge)       0.000     0.000 r  
+                                                      0.000     0.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.973     0.973    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/aclk
+    SLICE_X38Y41         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s2_reg/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X38Y41         FDRE (Prop_fdre_C_Q)         0.518     1.491 r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[6].u_lane/u_quant_re/valid_s2_reg/Q
+                         net (fo=379, routed)         3.949     5.440    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/valid_s2
+    SLICE_X14Y24         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_lower_s3_reg[15]/CE
+  -------------------------------------------------------------------    -------------------
+
+                         (clock aclk rise edge)       5.000     5.000 r  
+                                                      0.000     5.000 r  aclk (IN)
+                         net (fo=5092, unset)         0.924     5.924    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/aclk
+    SLICE_X14Y24         FDRE                                         r  dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_lower_s3_reg[15]/C
+                         clock pessimism              0.000     5.924    
+                         clock uncertainty           -0.035     5.889    
+    SLICE_X14Y24         FDRE (Setup_fdre_C_CE)      -0.169     5.720    dbf_reference_bd_i/dbf_axis_0/inst/u_system/u_datapath/u_core/gen_lane[5].u_lane/u_quant_re/abs_lower_s3_reg[15]
+  -------------------------------------------------------------------
+                         required time                          5.720    
+                         arrival time                          -5.440    
+  -------------------------------------------------------------------
+                         slack                                  0.280    
+
+
+
+

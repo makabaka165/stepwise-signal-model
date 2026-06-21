@@ -14,6 +14,14 @@ proc set_cfg_if_exists {cell prop value} {
     return 0
 }
 
+proc set_bd_prop_if_exists {obj prop value} {
+    if {[llength [list_property $obj $prop]] > 0} {
+        set_property $prop $value $obj
+        return [get_property $prop $obj]
+    }
+    return "unavailable"
+}
+
 proc connect_pin_if_exists {net pin_path} {
     set pin [get_bd_pins -quiet $pin_path]
     if {[llength $pin] == 1} {
@@ -86,6 +94,15 @@ set_property CONFIG.TDATA_NUM_BYTES 8 $m_axis_z
 set_property CONFIG.HAS_TKEEP 1 $m_axis_z
 set_property CONFIG.HAS_TLAST 1 $m_axis_z
 connect_bd_intf_net [get_bd_intf_pins axis_out_fifo_0/M_AXIS] $m_axis_z
+
+set ::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_BUSIF [set_bd_prop_if_exists $aclk CONFIG.ASSOCIATED_BUSIF S_AXIS_Y:M_AXIS_Z]
+set ::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_RESET [set_bd_prop_if_exists $aclk CONFIG.ASSOCIATED_RESET aresetn]
+if {[info exists ::STEP14_REFBD_CLOCK_HZ]} {
+    set ::STEP14_REFBD_EXTERNAL_CLOCK_FREQ_HZ [set_bd_prop_if_exists $aclk CONFIG.FREQ_HZ $::STEP14_REFBD_CLOCK_HZ]
+} else {
+    set ::STEP14_REFBD_EXTERNAL_CLOCK_FREQ_HZ [set_bd_prop_if_exists $aclk CONFIG.FREQ_HZ 200000000]
+}
+set ::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATION_PASS [expr {$::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_BUSIF eq "S_AXIS_Y:M_AXIS_Z" && $::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_RESET eq "aresetn"}]
 
 make_scalar_out dbf_status_busy dbf_axis_0/status_busy
 make_scalar_out dbf_status_frame_count dbf_axis_0/status_frame_count

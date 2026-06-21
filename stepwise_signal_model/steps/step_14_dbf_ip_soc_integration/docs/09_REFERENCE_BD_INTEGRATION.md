@@ -114,3 +114,35 @@ blocker_if_any=post_route_timing_200MHz_not_met
 The functional Reference BD evidence is useful and retained, but it is not a
 platform freeze, DMA validation, PS validation, board validation, bitstream
 claim, implementation closure claim, or formal closure claim.
+
+## Step14.3b Timing Closure Handoff
+
+Step14.3b consumes the Step14.3a functional evidence and closes only the
+post-route 200 MHz timing blocker. It first runs an implementation strategy
+sweep on the exact same Reference BD:
+
+```text
+same RTL
+same Custom IP VLNV user.org:radar:dbf_axis:1.0
+same S_AXIS_Y -> FIFO -> dbf_axis_0 -> FIFO -> M_AXIS_Z topology
+same input FIFO depth 64
+same output FIFO depth 16
+same 200 MHz clock
+same legal XDC constraints
+```
+
+The Step14.3b gate requires `WNS >= 0.100 ns`, not merely nonnegative WNS. If
+the strategy sweep and clean best-strategy rerun both meet that margin, no DBF
+RTL change, Custom IP repackaging, or pipeline latency change is made.
+
+Reference BD external clock metadata is now explicitly recorded when supported:
+
+```text
+ASSOCIATED_BUSIF = S_AXIS_Y:M_AXIS_Z
+ASSOCIATED_RESET = aresetn
+FREQ_HZ = 200000000
+```
+
+This remains a board-independent reference-device timing closure. It is not a
+target-board DMA design, PS integration, bitstream, XSA/HWH, or full FPGA
+backend claim.

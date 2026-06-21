@@ -1,0 +1,6 @@
+metric,value
+TIMING_18_count,153
+methodology_error_count,0
+methodology_critical_warning_count,0
+unexpected_methodology_violation_count,0
+reference_methodology_expected_only_flag,true

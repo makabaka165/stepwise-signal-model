@@ -277,8 +277,14 @@ if {$ip_catalog_registration_pass_flag} {
         foreach wf $wrapper_files { add_files -norecurse $wf }
         update_compile_order -fileset sources_1
         set bd_wrapper_generated_flag [expr {[llength $wrapper_files] > 0}]
+        set external_clock_associated_busif [expr {[info exists ::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_BUSIF] ? $::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_BUSIF : "unavailable"}]
+        set external_clock_associated_reset [expr {[info exists ::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_RESET] ? $::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATED_RESET : "unavailable"}]
+        set external_clock_association_pass_flag [expr {[info exists ::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATION_PASS] && $::STEP14_REFBD_EXTERNAL_CLOCK_ASSOCIATION_PASS}]
     }
 }
+if {![info exists external_clock_associated_busif]} { set external_clock_associated_busif "unavailable" }
+if {![info exists external_clock_associated_reset]} { set external_clock_associated_reset "unavailable" }
+if {![info exists external_clock_association_pass_flag]} { set external_clock_association_pass_flag false }
 
 write_pairs [file join $result_dir "step14_3a_bd_structure_summary.csv"] [list \
     [list vivado_version [version -short]] \
@@ -296,6 +302,9 @@ write_pairs [file join $result_dir "step14_3a_bd_structure_summary.csv"] [list \
     [list bd_wrapper_generated_flag [bool_str $bd_wrapper_generated_flag]] \
     [list actual_cells $actual_cells] \
     [list forbidden_auto_cell_count $forbidden_auto_cell_count] \
+    [list external_clock_associated_busif $external_clock_associated_busif] \
+    [list external_clock_associated_reset $external_clock_associated_reset] \
+    [list external_clock_association_pass_flag [bool_str $external_clock_association_pass_flag]] \
     [list reference_bd_structure_pass_flag [bool_str $reference_bd_structure_pass_flag]] \
     [list bitstream_generated_flag false] \
     [list xsa_generated_flag false] \

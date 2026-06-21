@@ -1,0 +1,16 @@
+metric,value
+best_strategy_name,Performance_NetDelay_high
+best_run_name,strategy_4_Performance_NetDelay_high
+best_WNS_ns,0.205
+best_TNS_ns,0.000
+best_setup_failing_endpoints,0
+best_WHS_ns,0.093
+best_hold_failing_endpoints,0
+best_timing_met_flag,true
+best_timing_margin_pass_flag,true
+phase_a_strategy_sweep_pass_flag,true
+phase_a_strategy_count,9
+get_strategies_command_available,false
+external_clock_associated_busif,S_AXIS_Y:M_AXIS_Z
+external_clock_associated_reset,aresetn
+external_clock_association_pass_flag,true

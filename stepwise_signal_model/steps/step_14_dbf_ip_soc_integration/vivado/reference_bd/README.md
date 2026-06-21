@@ -48,3 +48,18 @@ blocker_if_any=post_route_timing_200MHz_not_met
 Because 200 MHz post-route timing is not met, Step14.3a does not proceed to
 platform freeze, DMA reference design, board validation, or full FPGA backend
 closure.
+
+## Step14.3b Follow-Up
+
+Step14.3b keeps this Reference BD topology fixed and closes the 200 MHz timing
+blocker through `vivado/reference_bd_timing/`. The first phase is a Vivado
+implementation strategy sweep using the same `dbf_axis_0` Custom IP cell,
+FIFO depths, 200 MHz clock, and XDC constraints. Only if no strategy reaches
+`WNS >= 0.100 ns` is a local DBF operand input pipeline stage allowed.
+
+The Reference BD clock port now records `S_AXIS_Y:M_AXIS_Z` association,
+`aresetn` association, and `FREQ_HZ=200000000` when supported by Vivado.
+
+Step14.3b remains board-independent and still does not instantiate PS, DMA,
+DDR, AXI-Lite, SmartConnect, ILA, board clocking, bitstream, XSA, HWH, or CPU
+software.

@@ -84,6 +84,9 @@ Step14.3:
 
 - Step14.3a board-independent Reference Block Design using the packaged Custom
   IP `user.org:radar:dbf_axis:1.0`
+- Step14.3b Reference BD 200 MHz post-route timing closure with an
+  implementation strategy sweep first, and RTL operand pipelining only if the
+  sweep cannot reach engineering margin
 - later AXI DMA DDR replay reference design only after the Reference BD timing
   gate is closed
 
@@ -171,3 +174,35 @@ proceed_to_full_fpga_backend_flag=false
 formal_result_claimed=false
 blocker_if_any=post_route_timing_200MHz_not_met
 ```
+
+## Step14.3b Notes
+
+Step14.3b keeps the Step14.3a Reference BD functional evidence and targets only
+the 200 MHz post-route timing blocker. Phase A uses the same RTL, Custom IP
+VLNV, Reference BD topology, FIFO sizes, clock period, and constraints while
+sweeping Vivado implementation strategies. The final engineering margin is
+stricter than simple timing met:
+
+```text
+timing_met_flag:
+  WNS >= 0
+  TNS == 0
+  setup failing endpoints == 0
+  hold failing endpoints == 0
+
+timing_margin_pass_flag:
+  WNS >= 0.100 ns
+  TNS == 0
+  setup failing endpoints == 0
+  hold failing endpoints == 0
+```
+
+If Phase A sweep and a clean best-strategy rerun both meet the margin, Phase B
+is skipped and no RTL or package content changes are made. If Phase A cannot
+meet the margin, Phase B may add only one local operand input pipeline stage in
+the pipelined complex MAC, with unchanged DBF math, widths, W coefficients,
+AXI4-Stream protocol, and throughput.
+
+Step14.3b remains board-independent. It does not add PS, DMA, DDR, AXI-Lite,
+SmartConnect, ILA, board constraints, bitstream, XSA/HWH, CPU software, CPU ML
+RTL, full FPGA backend, or formal closure.

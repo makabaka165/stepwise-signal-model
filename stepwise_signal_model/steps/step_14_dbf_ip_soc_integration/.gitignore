@@ -32,7 +32,10 @@ vivado/project/
 vivado/work/
 vivado/reference_bd/work/
 vivado/reference_bd/project/
+vivado/reference_bd_timing/work/
 vivado/work/step14_3a_reference_bd/
+vivado/work/step14_3b_strategy_sweep/
+vivado/work/step14_3b_timing_closure/
 vivado/*.jou
 vivado/*.log
 results_step14_dbf_ip_soc_integration/vivado_work/
@@ -55,3 +58,15 @@ results_step14_dbf_ip_soc_integration/ip_synth/*.log
 results_step14_dbf_ip_soc_integration/reference_bd/*.dcp
 results_step14_dbf_ip_soc_integration/reference_bd/*.wdb
 results_step14_dbf_ip_soc_integration/reference_bd/*.vcd
+results_step14_dbf_ip_soc_integration/reference_bd_timing/*.dcp
+results_step14_dbf_ip_soc_integration/reference_bd_timing/*.wdb
+results_step14_dbf_ip_soc_integration/reference_bd_timing/*.vcd
+results_step14_dbf_ip_soc_integration/reference_bd_timing/*.bit
+results_step14_dbf_ip_soc_integration/reference_bd_timing/*.xsa
+results_step14_dbf_ip_soc_integration/reference_bd_timing/*.hwh
+results_step14_dbf_ip_soc_integration/reference_bd_timing/strategy_*_*.rpt
+results_step14_dbf_ip_soc_integration/reference_bd_timing/step14_3b_clean_rerun_*.rpt
+results_step14_dbf_ip_soc_integration/reference_bd_timing/step14_3b_baseline_drc.rpt
+results_step14_dbf_ip_soc_integration/reference_bd_timing/step14_3b_baseline_methodology.rpt
+results_step14_dbf_ip_soc_integration/reference_bd_timing/step14_3b_baseline_timing_paths.rpt
+results_step14_dbf_ip_soc_integration/reference_bd_timing/step14_3b_baseline_utilization.rpt

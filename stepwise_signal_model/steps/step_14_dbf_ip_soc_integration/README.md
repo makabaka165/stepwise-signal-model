@@ -77,7 +77,9 @@ This chain does not use DMA and does not depend on real hardware.
 - Step14.2: Vivado custom IP packaging.
 - Step14.2a: custom IP 200 MHz timing and W ROM resource optimization.
 - Step14.2b: Custom IP provenance, status semantics, and directed hardening.
-- Step14.3: AXI DMA DDR replay reference design.
+- Step14.3a: board-independent Reference Block Design integration.
+- Step14.3b: Reference BD 200 MHz post-route timing closure.
+- Step14.3c+: AXI DMA DDR replay reference design only after platform-freeze gate.
 - Step14.4: CPU/SoC loopback software plus Z golden comparison.
 - Step14.5: connect to CPU/SoC ML software.
 
@@ -99,6 +101,8 @@ step_14_dbf_ip_soc_integration/
     06_CUSTOM_IP_PACKAGING.md
     07_TIMING_AND_W_MEMORY_OPTIMIZATION.md
     08_STATUS_AND_AUDIT_HARDENING.md
+    09_REFERENCE_BD_INTEGRATION.md
+    10_REFERENCE_BD_TIMING_CLOSURE.md
   rtl/
   tb/
   sim/
@@ -300,3 +304,31 @@ blocker_if_any=post_route_timing_200MHz_not_met
 The Reference BD functional chain is validated, but the 200 MHz post-route
 timing gate is not closed. This is not a DMA, PS, board, bitstream, or full FPGA
 backend claim.
+
+## Step14.3b Reference BD Timing Closure
+
+Step14.3b closes the Step14.3a 200 MHz post-route timing blocker using a
+two-phase rule:
+
+- Phase A: implementation strategy sweep on the same RTL, Custom IP, Reference
+  BD topology, FIFO sizes, 200 MHz clock, and XDC constraints.
+- Phase B: a single local DBF complex-MAC operand input pipeline stage only if
+  Phase A cannot reach `WNS >= 0.100 ns`.
+
+Phase A does not modify DBF math, AXI4-Stream protocol, Custom IP VLNV,
+component packaging, W coefficients, FIFO parameters, or clock target. If Phase
+A sweep and independent clean rerun both satisfy the 0.100 ns margin, Phase B is
+not triggered and no RTL/package refresh is performed.
+
+Step14.3b also records external clock metadata for the Reference BD:
+
+```text
+CONFIG.ASSOCIATED_BUSIF = S_AXIS_Y:M_AXIS_Z
+CONFIG.ASSOCIATED_RESET = aresetn
+CONFIG.FREQ_HZ = 200000000
+```
+
+The final Step14.3b gate requires Step14.2b hardening, Step14.3a functional
+evidence, expected-only methodology classification, routed setup/hold timing,
+and `WNS >= 0.100 ns`. It still does not create DMA, PS, AXI-Lite, bitstream,
+XSA, HWH, board validation, full FPGA backend, or formal closure claims.

@@ -1,0 +1,16 @@
+metric,value
+baseline_post_route_LUT,2097
+baseline_post_route_FF,5112
+baseline_post_route_DSP,42
+baseline_post_route_BRAM18,1
+baseline_post_route_BRAM36,16
+baseline_post_route_WNS_ns,-0.076
+final_post_route_LUT,2096
+final_post_route_FF,5031
+final_post_route_DSP,42
+final_post_route_BRAM18,1
+final_post_route_BRAM36,16
+final_post_route_WNS_ns,0.205
+operand_pipeline_added_flag,false
+operand_pipeline_extra_latency_cycles,0
+input_throughput_samples_per_cycle,1
