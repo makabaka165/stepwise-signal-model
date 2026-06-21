@@ -53,6 +53,11 @@ module tb_dbf_axis_system_top;
     integer tkeep_fail_count;
     integer tlast_fail_count;
     integer timeout_flag;
+    integer busy_low_after_reset_fail_count;
+    integer busy_high_from_first_y_accept_fail_count;
+    integer busy_high_during_drain_fail_count;
+    integer busy_high_during_output_backpressure_fail_count;
+    integer busy_low_after_final_z_accept_fail_count;
 
     reg normal_frame_pass;
     reg input_gap_pass;
@@ -65,6 +70,12 @@ module tb_dbf_axis_system_top;
     reg missing_tlast_detected;
     reg bad_tkeep_detected;
     reg protocol_cases_pass;
+    reg busy_low_after_reset;
+    reg busy_high_from_first_y_accept;
+    reg busy_high_during_drain;
+    reg busy_high_during_output_backpressure;
+    reg busy_low_after_final_z_accept;
+    reg status_busy_semantics_pass;
     reg axis_tb_pass_flag;
 
     reg [63:0] stable_data;
@@ -162,17 +173,19 @@ module tb_dbf_axis_system_top;
         input_ready_lockout_pass = (ready_lockout_violation_count == 0);
         beam_order_pass = (beam_order_fail_count == 0);
         output_backpressure_pass = backpressure_stability_pass;
+        update_busy_flags();
 
         run_early_tlast_case();
         run_missing_tlast_case();
         run_bad_tkeep_case();
         protocol_cases_pass = early_tlast_detected && missing_tlast_detected && bad_tkeep_detected;
+        update_busy_flags();
 
         axis_tb_pass_flag = normal_frame_pass && input_gap_pass && output_backpressure_pass &&
             backpressure_stability_pass && two_consecutive_frames_pass &&
             input_ready_lockout_pass && beam_order_pass && early_tlast_detected &&
             missing_tlast_detected && bad_tkeep_detected && protocol_cases_pass &&
-            (timeout_flag == 0);
+            status_busy_semantics_pass && (timeout_flag == 0);
 
         write_summary();
         if (axis_tb_pass_flag) begin
@@ -196,6 +209,11 @@ module tb_dbf_axis_system_top;
             tkeep_fail_count = 0;
             tlast_fail_count = 0;
             timeout_flag = 0;
+            busy_low_after_reset_fail_count = 0;
+            busy_high_from_first_y_accept_fail_count = 0;
+            busy_high_during_drain_fail_count = 0;
+            busy_high_during_output_backpressure_fail_count = 0;
+            busy_low_after_final_z_accept_fail_count = 0;
             normal_frame_pass = 0;
             input_gap_pass = 0;
             output_backpressure_pass = 0;
@@ -207,6 +225,12 @@ module tb_dbf_axis_system_top;
             missing_tlast_detected = 0;
             bad_tkeep_detected = 0;
             protocol_cases_pass = 0;
+            busy_low_after_reset = 0;
+            busy_high_from_first_y_accept = 0;
+            busy_high_during_drain = 0;
+            busy_high_during_output_backpressure = 0;
+            busy_low_after_final_z_accept = 0;
+            status_busy_semantics_pass = 0;
             axis_tb_pass_flag = 0;
         end
     endtask
@@ -221,9 +245,15 @@ module tb_dbf_axis_system_top;
             ready_lockout_active = 0;
             aresetn = 1'b0;
             repeat (8) @(posedge aclk);
+            if (status_busy !== 1'b0) begin
+                busy_low_after_reset_fail_count = busy_low_after_reset_fail_count + 1;
+            end
             @(negedge aclk);
             aresetn = 1'b1;
             repeat (2) @(posedge aclk);
+            if (status_busy !== 1'b0) begin
+                busy_low_after_reset_fail_count = busy_low_after_reset_fail_count + 1;
+            end
         end
     endtask
 
@@ -253,6 +283,10 @@ module tb_dbf_axis_system_top;
                 if (s_axis_y_tready) begin
                     accepted = 1;
                 end
+            end
+            #1;
+            if (status_busy !== 1'b1) begin
+                busy_high_from_first_y_accept_fail_count = busy_high_from_first_y_accept_fail_count + 1;
             end
             if (element_index == (N_ELEMS-1)) begin
                 ready_lockout_active = 1;
@@ -335,6 +369,9 @@ module tb_dbf_axis_system_top;
                 if (ready_lockout_active && s_axis_y_tready) begin
                     ready_lockout_violation_count = ready_lockout_violation_count + 1;
                 end
+                if (ready_lockout_active && !m_axis_z_tvalid && status_busy !== 1'b1) begin
+                    busy_high_during_drain_fail_count = busy_high_during_drain_fail_count + 1;
+                end
 
                 if (m_axis_z_tvalid && m_axis_z_tready) begin
                     check_and_log_output(frame_index, beam, expected_base + beam);
@@ -350,6 +387,10 @@ module tb_dbf_axis_system_top;
                             if (ready_lockout_active && s_axis_y_tready) begin
                                 ready_lockout_violation_count = ready_lockout_violation_count + 1;
                             end
+                            if (status_busy !== 1'b1) begin
+                                busy_high_during_output_backpressure_fail_count =
+                                    busy_high_during_output_backpressure_fail_count + 1;
+                            end
                             if (m_axis_z_tvalid !== 1'b1 || m_axis_z_tdata !== stable_data ||
                                     m_axis_z_tkeep !== stable_keep ||
                                     m_axis_z_tlast !== stable_last) begin
@@ -362,6 +403,11 @@ module tb_dbf_axis_system_top;
                     if (beam == B_BEAMS) begin
                         ready_lockout_active = 0;
                         m_axis_z_tready = 1'b1;
+                        @(negedge aclk);
+                        if (status_busy !== 1'b0) begin
+                            busy_low_after_final_z_accept_fail_count =
+                                busy_low_after_final_z_accept_fail_count + 1;
+                        end
                     end
                 end
             end
@@ -454,8 +500,23 @@ module tb_dbf_axis_system_top;
         end
     endtask
 
+    task update_busy_flags;
+        begin
+            busy_low_after_reset = (busy_low_after_reset_fail_count == 0);
+            busy_high_from_first_y_accept = (busy_high_from_first_y_accept_fail_count == 0);
+            busy_high_during_drain = (busy_high_during_drain_fail_count == 0);
+            busy_high_during_output_backpressure =
+                (busy_high_during_output_backpressure_fail_count == 0);
+            busy_low_after_final_z_accept = (busy_low_after_final_z_accept_fail_count == 0);
+            status_busy_semantics_pass = busy_low_after_reset &&
+                busy_high_from_first_y_accept && busy_high_during_drain &&
+                busy_high_during_output_backpressure && busy_low_after_final_z_accept;
+        end
+    endtask
+
     task write_summary;
         begin
+            update_busy_flags();
             $fwrite(summary_csv, "metric,value\n");
             write_metric("normal_frame_pass", normal_frame_pass);
             write_metric("input_gap_pass", input_gap_pass);
@@ -468,6 +529,12 @@ module tb_dbf_axis_system_top;
             write_metric("missing_tlast_detected", missing_tlast_detected);
             write_metric("bad_tkeep_detected", bad_tkeep_detected);
             write_metric("protocol_cases_pass", protocol_cases_pass);
+            write_metric("busy_low_after_reset", busy_low_after_reset);
+            write_metric("busy_high_from_first_y_accept", busy_high_from_first_y_accept);
+            write_metric("busy_high_during_drain", busy_high_during_drain);
+            write_metric("busy_high_during_output_backpressure", busy_high_during_output_backpressure);
+            write_metric("busy_low_after_final_z_accept", busy_low_after_final_z_accept);
+            write_metric("status_busy_semantics_pass", status_busy_semantics_pass);
             $fwrite(summary_csv, "expected_output_rows,14\n");
             $fwrite(summary_csv, "actual_output_rows,%0d\n", actual_output_rows);
             write_metric("timeout_flag", timeout_flag);

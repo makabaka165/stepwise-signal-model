@@ -120,3 +120,29 @@ hwh_generated_flag=false
 
 Step14.2a allows the next reference Block Design stage to start. It does not
 claim DMA, PS, DDR, board execution, implementation closure, or formal closure.
+
+## Step14.2b Hardening Addendum
+
+Step14.2b adds no new datapath feature. It hardens status semantics and audit
+evidence before the later reference Block Design stage:
+
+- `status_busy_semantics_pass` must be true for baseline, optimized raw top, and
+  packaged-IP regressions.
+- `w_provider_boundary_pass` checks split ROM addresses 0, 2047, 2048, 2079,
+  invalid 2080, request gaps, and back-to-back main/tail requests.
+- `quantizer_pipe_equivalence_pass` checks Step14 pipelined quantization against
+  Step13 for directed boundaries and 1000 deterministic random ACC48 inputs.
+- `drc_parser_consistency_pass_flag` requires DRC summary-table counts to match
+  detail headings.
+- `package_content_integrity_pass_flag` requires all copied HDL/MEM files to be
+  nonempty and source/package SHA256-identical.
+
+The corrected DRC warning counts are:
+
+```text
+baseline:  DPIP-1=42, DPOP-1=28, DPOP-2=28, ZPS7-1=1
+optimized: DPIP-1=0,  DPOP-1=14, DPOP-2=0,  ZPS7-1=1
+```
+
+`step14_2b_hardening_pass_flag` is the gate for
+`proceed_to_reference_bd_design_flag`.

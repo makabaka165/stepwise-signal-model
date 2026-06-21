@@ -10,6 +10,10 @@ if (-not $vivado) {
         cmd /c "call `"$settings`" && vivado -mode batch -source vivado/package_dbf_axis_ip.tcl"
         exit $LASTEXITCODE
     }
+    if (Test-Path "E:\Xilinx\Vivado\2024.2\settings64.bat") {
+        cmd /c "call `"E:\Xilinx\Vivado\2024.2\settings64.bat`" && vivado -mode batch -source vivado/package_dbf_axis_ip.tcl"
+        exit $LASTEXITCODE
+    }
     $resultDir = Join-Path $step14Dir "results_step14_dbf_ip_soc_integration\ip_package"
     New-Item -ItemType Directory -Force -Path $resultDir | Out-Null
     @(
@@ -31,6 +35,11 @@ if (-not $vivado) {
         "reset_polarity_pass_flag,false",
         "packaged_hdl_file_count,0",
         "packaged_w_mem_file_count,0",
+        "package_content_integrity_pass_flag,false",
+        "package_nonempty_file_check_pass_flag,false",
+        "package_source_packaged_hash_match_flag,false",
+        "source_base_commit,unavailable",
+        "source_worktree_dirty,true",
         "absolute_path_scan_pass_flag,false",
         "formal_result_claimed,false",
         "blocker_if_any,vivado_unavailable"

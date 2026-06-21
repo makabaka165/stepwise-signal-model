@@ -15,12 +15,16 @@ The `.bat` wrappers provide the same flow for `cmd.exe`.
 `package_dbf_axis_ip.tcl` rebuilds `ip_repo/dbf_axis_ip_1_0/`, stages the
 optimized Step14 HDL and 28 split W ROM `.mem` files, creates `component.xml`,
 declares `S_AXIS_Y`, `M_AXIS_Z`, `ACLK`, `ARESETN`, runs IP integrity, and
-writes package summaries.
+writes package summaries. Step14.2b package provenance records source/package
+size and SHA256 for every staged HDL/MEM file and fails on nonempty-file hash or
+content mismatches.
 
 `validate_dbf_axis_ip.tcl` registers the generated repository, checks
 `user.org:radar:dbf_axis:1.0`, runs `create_ip` and `generate_target`, executes
 packaged-IP XSim, and runs OOC synthesis for the reference part
-`xc7z020clg400-1`.
+`xc7z020clg400-1`. Step14.2b parses DRC counts from the summary table and
+cross-checks detail headings; optimized counts should be DPIP-1=0, DPOP-1=14,
+DPOP-2=0, ZPS7-1=1.
 
 Current Step14.2a reference result:
 

@@ -145,6 +145,33 @@ proc count_regex {text pattern} {
     return [regexp -all -nocase $pattern $text]
 }
 
+proc parse_drc_table_count {text rule} {
+    set pattern [format {^\|[ \t]*%s[ \t]*\|[^|]*\|[^|]*\|[ \t]*([0-9]+)[ \t]*\|} $rule]
+    foreach line [split $text "\n"] {
+        if {[regexp -nocase $pattern $line -> value]} {
+            return $value
+        }
+    }
+    return 0
+}
+
+proc parse_drc_detail_count {text rule} {
+    set pattern [format {^%s#[0-9]+[ \t]+} $rule]
+    return [regexp -all -line -nocase $pattern $text]
+}
+
+proc parse_drc_rule_counts {text} {
+    set result {}
+    foreach rule {DPIP-1 DPOP-1 DPOP-2 ZPS7-1} {
+        set table_count [parse_drc_table_count $text $rule]
+        set detail_count [parse_drc_detail_count $text $rule]
+        lappend result $rule $table_count
+        lappend result "${rule},detail" $detail_count
+        lappend result "${rule},consistent" [expr {$table_count == $detail_count}]
+    }
+    return $result
+}
+
 proc parse_timing_detail {text key default_value} {
     foreach line [split $text "\n"] {
         if {$key eq "source" && [regexp -nocase {Source:[ \t]+([^ \t]+)} $line -> value]} {
@@ -421,6 +448,11 @@ set dpip_1_count 0
 set dpop_1_count 0
 set dpop_2_count 0
 set zps7_1_count 0
+set dpip_1_detail_count 0
+set dpop_1_detail_count 0
+set dpop_2_detail_count 0
+set zps7_1_detail_count 0
+set drc_parser_consistency_pass_flag false
 set bram36_equiv 0
 set w_memory_resource_optimization_pass_flag false
 set timing_validates_advertised_clock_flag false
@@ -473,10 +505,16 @@ if {$create_ip_pass_flag && $generate_target_pass_flag} {
         set worst_path_destination [parse_timing_detail $timing_detail_report "destination" "NA"]
         set worst_path_data_delay_ns [parse_timing_detail $timing_detail_report "data_delay" "NA"]
         set worst_path_logic_levels [parse_timing_detail $timing_detail_report "logic_levels" "NA"]
-        set dpip_1_count [count_regex $drc_text {DPIP-1}]
-        set dpop_1_count [count_regex $drc_text {DPOP-1}]
-        set dpop_2_count [count_regex $drc_text {DPOP-2}]
-        set zps7_1_count [count_regex $drc_text {ZPS7-1}]
+        array set drc_counts [parse_drc_rule_counts $drc_text]
+        set dpip_1_count $drc_counts(DPIP-1)
+        set dpip_1_detail_count $drc_counts(DPIP-1,detail)
+        set dpop_1_count $drc_counts(DPOP-1)
+        set dpop_1_detail_count $drc_counts(DPOP-1,detail)
+        set dpop_2_count $drc_counts(DPOP-2)
+        set dpop_2_detail_count $drc_counts(DPOP-2,detail)
+        set zps7_1_count $drc_counts(ZPS7-1)
+        set zps7_1_detail_count $drc_counts(ZPS7-1,detail)
+        set drc_parser_consistency_pass_flag [expr {$drc_counts(DPIP-1,consistent) && $drc_counts(DPOP-1,consistent) && $drc_counts(DPOP-2,consistent) && $drc_counts(ZPS7-1,consistent)}]
         if {$wns ne "NA"} {
             set timing_met [expr {double($wns) >= 0.0}]
         }
@@ -518,6 +556,11 @@ write_pairs [file join $synth_result_dir "step14_2a_drc_warning_summary.csv"] [l
     [list DPOP_1_count $dpop_1_count] \
     [list DPOP_2_count $dpop_2_count] \
     [list ZPS7_1_count $zps7_1_count] \
+    [list DPIP_1_detail_count $dpip_1_detail_count] \
+    [list DPOP_1_detail_count $dpop_1_detail_count] \
+    [list DPOP_2_detail_count $dpop_2_detail_count] \
+    [list ZPS7_1_detail_count $zps7_1_detail_count] \
+    [list drc_parser_consistency_pass_flag [bool_str $drc_parser_consistency_pass_flag]] \
     [list zps7_1_expected_warning true] \
     [list formal_result_claimed false] \
 ]

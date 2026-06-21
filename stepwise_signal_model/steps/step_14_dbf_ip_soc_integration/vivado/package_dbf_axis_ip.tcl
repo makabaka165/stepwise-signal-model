@@ -61,33 +61,64 @@ proc sha256_file {path} {
     return [string trim $hash]
 }
 
-proc copy_and_record {repo_root source_path packaged_path role commit manifest_var package_manifest_var} {
+proc copy_and_record {repo_root source_path packaged_path role base_commit dirty_flag manifest_var package_manifest_var} {
+    global package_content_integrity_pass_flag
+    global package_nonempty_file_check_pass_flag
+    global package_source_packaged_hash_match_flag
     upvar $manifest_var manifest
     upvar $package_manifest_var package_manifest
+    set source_path [file normalize $source_path]
+    set packaged_path [file normalize $packaged_path]
+    if {![file exists $source_path]} {
+        set package_content_integrity_pass_flag false
+        error "Missing package source: $source_path"
+    }
+    set source_size [file size $source_path]
+    if {($role ne "metadata") && $source_size <= 0} {
+        set package_nonempty_file_check_pass_flag false
+        set package_content_integrity_pass_flag false
+        error "Refusing to package empty source file: $source_path"
+    }
+    set source_sha [sha256_file $source_path]
+    if {$source_size > 0 && $source_sha eq "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"} {
+        set package_nonempty_file_check_pass_flag false
+        set package_content_integrity_pass_flag false
+        error "Non-empty source reported empty SHA256: $source_path"
+    }
     set dst_dir [file dirname $packaged_path]
     file mkdir $dst_dir
     file copy -force $source_path $packaged_path
+    set packaged_size [file size $packaged_path]
+    set packaged_sha [sha256_file $packaged_path]
+    set content_match [expr {$source_size == $packaged_size && $source_sha eq $packaged_sha}]
+    if {!$content_match} {
+        set package_source_packaged_hash_match_flag false
+        set package_content_integrity_pass_flag false
+    }
     set src_rel [rel_to $repo_root $source_path]
     set pkg_rel [rel_to [file dirname [file dirname $packaged_path]] $packaged_path]
-    set sha [sha256_file $source_path]
-    lappend manifest [list $src_rel $pkg_rel $role $commit $sha]
-    lappend package_manifest [list $pkg_rel $role $sha]
+    set row [list $src_rel $pkg_rel $role $base_commit $dirty_flag $source_size $packaged_size $source_sha $packaged_sha [bool_str $content_match]]
+    lappend manifest $row
+    lappend package_manifest $row
+    if {!$content_match} {
+        error "Packaged content mismatch: $source_path -> $packaged_path"
+    }
 }
 
 proc write_source_manifest {path rows} {
     set fh [open $path "w"]
-    puts $fh "source_path,packaged_path,role,source_git_commit,sha256"
+    puts $fh "source_path,packaged_path,role,source_base_commit,source_worktree_dirty,source_size_bytes,packaged_size_bytes,source_sha256,packaged_sha256,content_match"
     foreach row $rows {
-        puts $fh "[lindex $row 0],[lindex $row 1],[lindex $row 2],[lindex $row 3],[lindex $row 4]"
+        puts $fh "[join $row ,]"
     }
     close $fh
 }
 
 proc write_package_manifest {path rows} {
     set fh [open $path "w"]
-    puts $fh "packaged_path,role,sha256"
+    puts $fh "source_path,packaged_path,role,source_base_commit,source_worktree_dirty,source_size_bytes,packaged_size_bytes,source_sha256,packaged_sha256,content_match"
     foreach row $rows {
-        puts $fh "[lindex $row 0],[lindex $row 1],[lindex $row 2]"
+        puts $fh "[join $row ,]"
     }
     close $fh
 }
@@ -214,6 +245,11 @@ if {!$part_ok} {
         [list advertised_clock_MHz 200] \
         [list packaged_hdl_file_count 0] \
         [list packaged_w_mem_file_count 0] \
+        [list package_content_integrity_pass_flag false] \
+        [list package_nonempty_file_check_pass_flag false] \
+        [list package_source_packaged_hash_match_flag false] \
+        [list source_base_commit unavailable] \
+        [list source_worktree_dirty true] \
         [list absolute_path_scan_pass_flag false] \
         [list formal_result_claimed false] \
         [list blocker_if_any $blocker_if_any] \
@@ -221,13 +257,19 @@ if {!$part_ok} {
     error $blocker_if_any
 }
 
+set source_base_commit [string trim [exec git -C $repo_root rev-parse --short HEAD]]
+set source_status [string trim [exec git -C $repo_root status --short -- $step14_dir]]
+set source_worktree_dirty [expr {$source_status ne ""}]
+set package_content_integrity_pass_flag true
+set package_nonempty_file_check_pass_flag true
+set package_source_packaged_hash_match_flag true
+
 safe_rebuild_dir $step14_dir $ip_root "dbf_axis_ip_1_0"
 safe_rebuild_dir $step14_dir $work_dir "step14_2a_package"
 file mkdir [file join $ip_root "hdl"]
 file mkdir [file join $ip_root "data"]
 file mkdir [file join $ip_root "xgui"]
 
-set git_commit [string trim [exec git -C $repo_root rev-parse --short HEAD]]
 set source_manifest {}
 set package_manifest {}
 
@@ -251,16 +293,16 @@ set step14_files [list \
     dbf_axis_ip_top.v \
 ]
 foreach f $step13_files {
-    copy_and_record $repo_root [file join $step13_dir $f] [file join $ip_root "hdl" $f] "step13_arithmetic_rtl" $git_commit source_manifest package_manifest
+    copy_and_record $repo_root [file join $step13_dir $f] [file join $ip_root "hdl" $f] "step13_arithmetic_rtl" $source_base_commit [bool_str $source_worktree_dirty] source_manifest package_manifest
 }
 foreach f $step14_files {
-    copy_and_record $repo_root [file join $step14_rtl_dir $f] [file join $ip_root "hdl" $f] "step14_axis_rtl" $git_commit source_manifest package_manifest
+    copy_and_record $repo_root [file join $step14_rtl_dir $f] [file join $ip_root "hdl" $f] "step14_axis_rtl" $source_base_commit [bool_str $source_worktree_dirty] source_manifest package_manifest
 }
 for {set b 0} {$b < 7} {incr b} {
     foreach part {re im} {
         foreach seg {main tail} {
             set f [format "step14_1_w_%s_b%d_%s.mem" $part $b $seg]
-            copy_and_record $repo_root [file join $split_vec_dir $f] [file join $ip_root "data" $f] "step14_2a_split_w_rom_mem" $git_commit source_manifest package_manifest
+            copy_and_record $repo_root [file join $split_vec_dir $f] [file join $ip_root "data" $f] "step14_2a_split_w_rom_mem" $source_base_commit [bool_str $source_worktree_dirty] source_manifest package_manifest
         }
     }
 }
@@ -346,6 +388,9 @@ set absolute_path_scan_pass_flag [scan_absolute_paths $scan_files $repo_root]
 if {!$absolute_path_scan_pass_flag && $blocker_if_any eq ""} {
     set blocker_if_any "absolute_path_found_in_packaged_metadata"
 }
+if {!$package_content_integrity_pass_flag && $blocker_if_any eq ""} {
+    set blocker_if_any "package_content_integrity_failed"
+}
 if {!$ip_package_integrity_pass_flag && $blocker_if_any eq ""} {
     set blocker_if_any "ip_package_integrity_failed"
 }
@@ -370,6 +415,11 @@ set package_summary [list \
     [list advertised_clock_MHz 200] \
     [list packaged_hdl_file_count [llength $hdl_files]] \
     [list packaged_w_mem_file_count [llength $mem_files]] \
+    [list package_content_integrity_pass_flag [bool_str $package_content_integrity_pass_flag]] \
+    [list package_nonempty_file_check_pass_flag [bool_str $package_nonempty_file_check_pass_flag]] \
+    [list package_source_packaged_hash_match_flag [bool_str $package_source_packaged_hash_match_flag]] \
+    [list source_base_commit $source_base_commit] \
+    [list source_worktree_dirty [bool_str $source_worktree_dirty]] \
     [list absolute_path_scan_pass_flag [bool_str $absolute_path_scan_pass_flag]] \
     [list formal_result_claimed false] \
     [list blocker_if_any $blocker_if_any] \
@@ -394,14 +444,14 @@ foreach if_name {S_AXIS_Y M_AXIS_Z ACLK ARESETN} {
 close $if_fh
 
 set mf_fh [open [file join $result_dir "step14_2_ip_file_manifest.csv"] "w"]
-puts $mf_fh "packaged_path,role,sha256"
+puts $mf_fh "source_path,packaged_path,role,source_base_commit,source_worktree_dirty,source_size_bytes,packaged_size_bytes,source_sha256,packaged_sha256,content_match"
 foreach row $package_manifest {
-    puts $mf_fh "[lindex $row 0],[lindex $row 1],[lindex $row 2]"
+    puts $mf_fh "[join $row ,]"
 }
 close $mf_fh
 
 close_project
 
-if {!$ip_package_integrity_pass_flag || !$absolute_path_scan_pass_flag || !$component_xml_created} {
+if {!$ip_package_integrity_pass_flag || !$absolute_path_scan_pass_flag || !$component_xml_created || !$package_content_integrity_pass_flag} {
     error "Step14.2 package failed: $blocker_if_any"
 }

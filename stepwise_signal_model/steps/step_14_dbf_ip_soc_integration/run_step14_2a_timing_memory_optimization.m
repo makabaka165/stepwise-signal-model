@@ -6,8 +6,10 @@ step14Dir = fileparts(mfilename('fullpath'));
 matlabVectorDir = fullfile(step14Dir, 'matlab_vectors');
 outRoot = fullfile(step14Dir, 'results_step14_dbf_ip_soc_integration');
 axisCompareDir = fullfile(outRoot, 'axis_compare');
+axisSimDir = fullfile(outRoot, 'axis_sim');
 splitDir = fullfile(outRoot, 'axis_vectors', 'w_split');
 optSimDir = fullfile(outRoot, 'axis_opt_sim');
+hardeningDir = fullfile(outRoot, 'hardening');
 pkgDir = fullfile(outRoot, 'ip_package');
 xsimDir = fullfile(outRoot, 'ip_xsim');
 synthDir = fullfile(outRoot, 'ip_synth');
@@ -19,11 +21,15 @@ end
 addpath(matlabVectorDir);
 
 step14_1 = readMaybe(fullfile(axisCompareDir, 'step14_1_axis_keypoints.csv'));
+baselineTbSummary = readMaybe(fullfile(axisSimDir, 'step14_1_axis_tb_summary.csv'));
 splitSummary = readMaybe(fullfile(splitDir, 'step14_2a_w_split_summary.csv'));
 optRawSummary = readMaybe(fullfile(optSimDir, 'step14_2a_opt_axis_tb_summary.csv'));
+wProviderSummary = readMaybe(fullfile(hardeningDir, 'step14_2b_w_provider_boundary_summary.csv'));
+quantizerSummary = readMaybe(fullfile(hardeningDir, 'step14_2b_quantizer_equiv_summary.csv'));
 packageSummary = readMaybe(fullfile(pkgDir, 'step14_2_ip_package_summary.csv'));
 catalogSummary = readMaybe(fullfile(pkgDir, 'step14_2_ip_catalog_summary.csv'));
 xsimSummary = readMaybe(fullfile(xsimDir, 'step14_2_packaged_ip_xsim_summary.csv'));
+packagedTbSummary = readMaybe(fullfile(xsimDir, 'step14_2_packaged_ip_tb_summary.csv'));
 oocSummary = readMaybe(fullfile(synthDir, 'step14_2a_optimized_ip_ooc_summary.csv'));
 drcSummary = readMaybe(fullfile(synthDir, 'step14_2a_drc_warning_summary.csv'));
 resourceSummary = readMaybe(fullfile(synthDir, 'step14_2a_resource_comparison.csv'));
@@ -38,21 +44,33 @@ end
 compareSummary = readMaybe(fullfile(cmpDir, 'step14_2a_optimized_ip_compare_summary.csv'));
 
 step14_1_pass = isTrueMetric(step14_1, 'step14_1_axis_system_pass_flag');
+baselineStatusBusyPass = isTrueMetric(baselineTbSummary, 'status_busy_semantics_pass');
 wSplitPass = isTrueMetric(splitSummary, 'w_split_vector_pass_flag');
 optRawPass = isTrueMetric(optRawSummary, 'optimized_raw_top_xsim_pass_flag');
+optStatusBusyPass = isTrueMetric(optRawSummary, 'status_busy_semantics_pass');
+wProviderBoundaryPass = isTrueMetric(wProviderSummary, 'w_provider_boundary_pass');
+quantizerEquivPass = isTrueMetric(quantizerSummary, 'quantizer_pipe_equivalence_pass');
 packagePass = isTrueMetric(packageSummary, 'ip_package_integrity_pass_flag');
+packageContentPass = isTrueMetric(packageSummary, 'package_content_integrity_pass_flag');
+packageNonemptyPass = isTrueMetric(packageSummary, 'package_nonempty_file_check_pass_flag');
+packageHashPass = isTrueMetric(packageSummary, 'package_source_packaged_hash_match_flag');
 catalogPass = isTrueMetric(catalogSummary, 'ip_catalog_registration_pass_flag');
 createPass = isTrueMetric(catalogSummary, 'create_ip_pass_flag');
 generatePass = isTrueMetric(catalogSummary, 'generate_target_pass_flag');
 packagedXsimPass = isTrueMetric(xsimSummary, 'packaged_ip_xsim_pass_flag');
+packagedStatusBusyPass = isTrueMetric(packagedTbSummary, 'status_busy_semantics_pass');
 packagedOutputMatch = isTrueMetric(compareSummary, 'packaged_ip_output_match_flag');
 packagedComparePass = isTrueMetric(compareSummary, 'packaged_ip_compare_pass_flag');
+drcParserConsistencyPass = isTrueMetric(drcSummary, 'drc_parser_consistency_pass_flag');
 synthPass = strcmpi(getMetric(oocSummary, 'packaged_ip_ooc_synthesis_status', 'fail'), 'pass');
 wMemoryInferred = isTrueMetric(oocSummary, 'w_memory_inferred_flag');
 wMemoryResourcePass = isTrueMetric(oocSummary, 'w_memory_resource_optimization_pass_flag');
 timingPass = isTrueMetric(oocSummary, 'timing_200MHz_met_flag');
 timingAdvertisedPass = isTrueMetric(oocSummary, 'timing_validates_advertised_clock_flag');
 customIpPackaged = packagePass && catalogPass;
+statusBusySemanticsPass = baselineStatusBusyPass && optStatusBusyPass && packagedStatusBusyPass;
+baselineAxisRegressionPass = step14_1_pass && baselineStatusBusyPass;
+packagedIpExactComparePass = packagedOutputMatch && packagedComparePass;
 
 step14_2_packaging_functional_pass = packagePass && catalogPass && createPass && ...
     generatePass && packagedXsimPass && packagedComparePass && synthPass && wMemoryInferred;
@@ -61,6 +79,11 @@ step14_2a_pass = step14_1_pass && wSplitPass && optRawPass && packagePass && ...
     catalogPass && createPass && generatePass && packagedXsimPass && ...
     packagedOutputMatch && synthPass && wMemoryInferred && ...
     wMemoryResourcePass && timingPass && timingAdvertisedPass;
+
+step14_2b_hardening_pass = statusBusySemanticsPass && wProviderBoundaryPass && ...
+    quantizerEquivPass && drcParserConsistencyPass && packageContentPass && ...
+    baselineAxisRegressionPass && optRawPass && packagedXsimPass && ...
+    packagedIpExactComparePass && timingPass;
 
 blocker = getMetric(oocSummary, 'blocker_if_any', '');
 if isempty(blocker) && ~wMemoryResourcePass
@@ -72,6 +95,9 @@ end
 if isempty(blocker) && ~step14_2a_pass
     blocker = 'step14_2a_validation_failed';
 end
+if isempty(blocker) && ~step14_2b_hardening_pass
+    blocker = 'step14_2b_hardening_validation_failed';
+end
 
 timingFollowup = 'none';
 if ~timingPass
@@ -81,11 +107,19 @@ end
 keypoints = {
     'step14_1_axis_system_pass_flag', boolStr(step14_1_pass);
     'step14_2_packaging_functional_pass_flag', boolStr(step14_2_packaging_functional_pass);
+    'status_busy_semantics_pass', boolStr(statusBusySemanticsPass);
+    'baseline_status_busy_semantics_pass', boolStr(baselineStatusBusyPass);
+    'optimized_status_busy_semantics_pass', boolStr(optStatusBusyPass);
+    'packaged_status_busy_semantics_pass', boolStr(packagedStatusBusyPass);
+    'baseline_axis_regression_pass', boolStr(baselineAxisRegressionPass);
     'w_split_vector_pass_flag', boolStr(wSplitPass);
     'w_split_reconstruction_match_flag', getMetric(splitSummary, 'w_split_reconstruction_match_flag', 'false');
+    'w_provider_boundary_pass', boolStr(wProviderBoundaryPass);
+    'quantizer_pipe_equivalence_pass', boolStr(quantizerEquivPass);
     'optimized_raw_top_xsim_pass_flag', boolStr(optRawPass);
     'packaged_ip_xsim_pass_flag', boolStr(packagedXsimPass);
     'packaged_ip_output_match_flag', boolStr(packagedOutputMatch);
+    'packaged_ip_exact_compare_pass', boolStr(packagedIpExactComparePass);
     'expected_rows', getMetric(compareSummary, 'expected_rows', '0');
     'actual_rows', getMetric(compareSummary, 'actual_rows', '0');
     'matched_rows', getMetric(compareSummary, 'matched_rows', '0');
@@ -113,8 +147,15 @@ keypoints = {
     'DPOP_1_count', getMetric(drcSummary, 'DPOP_1_count', '0');
     'DPOP_2_count', getMetric(drcSummary, 'DPOP_2_count', '0');
     'ZPS7_1_count', getMetric(drcSummary, 'ZPS7_1_count', '0');
+    'drc_parser_consistency_pass_flag', boolStr(drcParserConsistencyPass);
+    'package_content_integrity_pass_flag', boolStr(packageContentPass);
+    'package_nonempty_file_check_pass_flag', boolStr(packageNonemptyPass);
+    'package_source_packaged_hash_match_flag', boolStr(packageHashPass);
+    'source_base_commit', getMetric(packageSummary, 'source_base_commit', 'unavailable');
+    'source_worktree_dirty', getMetric(packageSummary, 'source_worktree_dirty', 'true');
     'step14_2a_optimization_pass_flag', boolStr(step14_2a_pass);
-    'proceed_to_reference_bd_design_flag', boolStr(step14_2a_pass);
+    'step14_2b_hardening_pass_flag', boolStr(step14_2b_hardening_pass);
+    'proceed_to_reference_bd_design_flag', boolStr(step14_2b_hardening_pass);
     'proceed_to_target_board_dma_flag', 'false';
     'proceed_to_board_validation_flag', 'false';
     'proceed_to_full_fpga_backend_flag', 'false';

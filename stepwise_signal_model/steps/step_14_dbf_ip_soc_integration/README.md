@@ -76,6 +76,7 @@ This chain does not use DMA and does not depend on real hardware.
 - Step14.1: pure RTL/XSim AXI4-Stream data-path loop closure.
 - Step14.2: Vivado custom IP packaging.
 - Step14.2a: custom IP 200 MHz timing and W ROM resource optimization.
+- Step14.2b: Custom IP provenance, status semantics, and directed hardening.
 - Step14.3: AXI DMA DDR replay reference design.
 - Step14.4: CPU/SoC loopback software plus Z golden comparison.
 - Step14.5: connect to CPU/SoC ML software.
@@ -97,6 +98,7 @@ step_14_dbf_ip_soc_integration/
     05_STEP13_REUSE_RULES.md
     06_CUSTOM_IP_PACKAGING.md
     07_TIMING_AND_W_MEMORY_OPTIMIZATION.md
+    08_STATUS_AND_AUDIT_HARDENING.md
   rtl/
   tb/
   sim/
@@ -137,6 +139,27 @@ formal_result_claimed=false
 
 The current framework intentionally contains no DMA, PS, Block Design,
 bitstream, XSA, HWH, board validation, or full FPGA backend claim.
+
+## Current Step14.2b Hardening
+
+Step14.2b strengthens Step14.2a without changing DBF mathematics or AXI4-Stream
+protocols:
+
+- `status_busy` now remains high from the first accepted Y beat through DRAIN,
+  TX, and output backpressure, then drops after the final Z beat is accepted.
+- Raw baseline, optimized raw top, and packaged-IP TBs record five busy
+  semantic checks in their summary CSVs.
+- `dbf_w_provider_rom_opt` response validity/data are range-aligned to the
+  registered one-cycle request.
+- New directed XSim tests cover split W ROM boundary addresses and pipelined
+  quantizer equivalence against Step13.
+- DRC counts are parsed from the summary table and cross-checked against detail
+  headings; expected counts are baseline 42/28/28/1 and optimized 0/14/0/1 for
+  DPIP-1/DPOP-1/DPOP-2/ZPS7-1.
+- Package manifests now record source/package size and SHA256 provenance.
+
+Step14.2b still contains no DMA, PS, Block Design, AXI-Lite, bitstream, board
+validation, implementation closure claim, or formal closure claim.
 
 ## What This Step Is Not
 
