@@ -1,0 +1,14 @@
+metric,value
+tool_vivado_found,true
+compile_status,pass
+elaboration_status,pass
+simulation_status,pass
+tb_summary_created,true
+case_a_output_csv_created,true
+case_b_output_csv_created,true
+reference_bd_xsim_pass_flag,true
+formal_result_claimed,false
+dma_validation_flag,false
+ps_validation_flag,false
+board_validation_flag,false
+blocker_if_any,

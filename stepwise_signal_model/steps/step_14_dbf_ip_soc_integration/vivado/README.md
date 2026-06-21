@@ -39,3 +39,27 @@ timing_200MHz_met_flag=true
 Generated Vivado work directories are ignored by Git. The flow does not create
 Block Design, DMA, PS, bitstream, DCP for tracking, XSA, HWH, or board
 validation artifacts.
+
+## Step14.3a Reference BD
+
+`vivado/reference_bd/` contains the board-independent Reference BD flow. It
+registers `ip_repo/dbf_axis_ip_1_0`, creates `dbf_axis_0` as
+`user.org:radar:dbf_axis:1.0`, inserts AXIS input/output FIFOs, runs BD-level
+XSim, then runs OOC synthesis and route for `xc7z020clg400-1`.
+
+Current result:
+
+```text
+reference_bd_xsim_pass_flag=true
+reference_bd_compare_pass_flag=true
+synthesis_status=pass
+route_completed_flag=true
+post_route_timing_200MHz_met_flag=false
+WNS_ns=-0.076
+TNS_ns=-0.079
+failing_endpoints=2
+blocker_if_any=post_route_timing_200MHz_not_met
+```
+
+The flow writes no bitstream, XSA, HWH, PS, DMA, AXI-Lite, SmartConnect, board
+target, or full backend claim.

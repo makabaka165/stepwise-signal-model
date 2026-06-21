@@ -1,0 +1,17 @@
+metric,value
+external_clock_port,aclk
+external_reset_port,aresetn
+external_s_axis_interface,S_AXIS_Y
+external_m_axis_interface,M_AXIS_Z
+input_fifo_cell,axis_in_fifo_0
+input_fifo_actual_config,TDATA_NUM_BYTES=4;FIFO_DEPTH=64;HAS_TKEEP=1;HAS_TLAST=1;IS_ACLK_ASYNC=0
+dbf_ip_cell,dbf_axis_0
+output_fifo_cell,axis_out_fifo_0
+output_fifo_actual_config,TDATA_NUM_BYTES=8;FIFO_DEPTH=16;HAS_TKEEP=1;HAS_TLAST=1;IS_ACLK_ASYNC=0
+status_busy_scope,dbf_custom_ip_frame_activity_only_not_fifo_occupancy
+axi_dma_present_flag,false
+zynq_ps_present_flag,false
+axi_lite_present_flag,false
+block_design_uses_custom_ip_catalog_flag,true
+module_reference_used_flag,false
+formal_result_claimed,false

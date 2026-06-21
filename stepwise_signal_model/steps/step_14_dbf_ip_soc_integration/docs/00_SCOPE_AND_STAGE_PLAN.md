@@ -82,8 +82,10 @@ Step14.2:
 
 Step14.3:
 
-- AXI DMA DDR replay reference design
-- DMA is introduced only after the pure AXIS loop is closed
+- Step14.3a board-independent Reference Block Design using the packaged Custom
+  IP `user.org:radar:dbf_axis:1.0`
+- later AXI DMA DDR replay reference design only after the Reference BD timing
+  gate is closed
 
 Step14.4:
 
@@ -127,3 +129,45 @@ The 200 MHz OOC timing estimate is not met (`WNS_ns=-8.586`), so
 `proceed_to_reference_bd_design_flag=false`. DMA, PS, Block Design, bitstream,
 board validation, full FPGA backend, and formal closure remain outside the
 current completed scope.
+
+## Step14.3a Notes
+
+Step14.3a creates a minimal Reference BD:
+
+```text
+S_AXIS_Y
+-> axis_in_fifo_0
+-> dbf_axis_0 (user.org:radar:dbf_axis:1.0)
+-> axis_out_fifo_0
+-> M_AXIS_Z
+```
+
+The BD uses the packaged Custom IP cell and does not use Module Reference. It
+does not instantiate PS, DMA, DDR, AXI-Lite, SmartConnect, board clock IP, or a
+bitstream flow. It is a reference-device-only integration check for
+`xc7z020clg400-1`.
+
+Step14.3a functional checks pass: BD validate, wrapper generation, BD-level
+XSim, Case A exact compare, Case B FIFO/backpressure stress, synthesis, route
+completion, and expected-only DRC warning classification. The post-route 200 MHz
+timing gate is not met:
+
+```text
+WNS_ns=-0.076
+TNS_ns=-0.079
+setup_failing_endpoints=2
+WHS_ns=0.096
+hold_failing_endpoints=0
+```
+
+Therefore:
+
+```text
+step14_3a_reference_bd_pass_flag=false
+proceed_to_platform_freeze_flag=false
+proceed_to_target_board_dma_flag=false
+proceed_to_board_validation_flag=false
+proceed_to_full_fpga_backend_flag=false
+formal_result_claimed=false
+blocker_if_any=post_route_timing_200MHz_not_met
+```

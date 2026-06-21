@@ -1,0 +1,17 @@
+metric,value
+DRC_error_count,0
+DRC_critical_warning_count,0
+DRC_warning_count,34
+ZPS7_1_count,1
+UCIO_1_count,0
+NSTD_1_count,0
+DPIP_1_count,19
+DPOP_1_count,14
+allowed_reference_warning_rules,ZPS7-1;UCIO-1;NSTD-1;DPOP-1
+unexpected_drc_error_count,0
+reference_expected_drc_only_flag,true
+drc_reference_design_pass_flag,true
+bitstream_generated_flag,false
+formal_result_claimed,false
+board_validation_flag,false
+blocker_if_any,post_route_timing_200MHz_not_met

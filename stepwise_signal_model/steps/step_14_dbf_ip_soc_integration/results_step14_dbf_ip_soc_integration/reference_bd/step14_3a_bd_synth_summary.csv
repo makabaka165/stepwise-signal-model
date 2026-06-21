@@ -1,0 +1,8 @@
+metric,value
+synthesis_status,pass
+top,dbf_reference_bd_wrapper
+bitstream_generated_flag,false
+xsa_generated_flag,false
+hwh_generated_flag,false
+formal_result_claimed,false
+blocker_if_any,post_route_timing_200MHz_not_met

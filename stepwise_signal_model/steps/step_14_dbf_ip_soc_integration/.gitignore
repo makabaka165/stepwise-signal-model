@@ -10,6 +10,8 @@
 *.xsa
 *.hwh
 *.xpr
+*.bd
+*.bxml
 
 .Xil/
 .cache/
@@ -28,6 +30,9 @@ webtalk.log
 build/
 vivado/project/
 vivado/work/
+vivado/reference_bd/work/
+vivado/reference_bd/project/
+vivado/work/step14_3a_reference_bd/
 vivado/*.jou
 vivado/*.log
 results_step14_dbf_ip_soc_integration/vivado_work/
@@ -47,3 +52,6 @@ results_step14_dbf_ip_soc_integration/ip_xsim/xsim.dir/
 results_step14_dbf_ip_soc_integration/ip_synth/*.dcp
 results_step14_dbf_ip_soc_integration/ip_synth/*.jou
 results_step14_dbf_ip_soc_integration/ip_synth/*.log
+results_step14_dbf_ip_soc_integration/reference_bd/*.dcp
+results_step14_dbf_ip_soc_integration/reference_bd/*.wdb
+results_step14_dbf_ip_soc_integration/reference_bd/*.vcd

@@ -29,3 +29,14 @@ Step14.2b adds:
 
 These write summaries under
 `results_step14_dbf_ip_soc_integration/hardening/`.
+
+`tb_dbf_reference_bd.v` is the Step14.3a Reference BD regression. It instantiates
+the Vivado-generated `dbf_reference_bd_wrapper`, drives the external BD
+`S_AXIS_Y`, consumes `M_AXIS_Z`, and checks:
+
+- Case A: two frames, exact 14-row output compare.
+- Case B: four-frame FIFO/backpressure stress, exact 28-row output compare.
+- Beam order, TLAST/TKEEP, output stability under backpressure, and status.
+
+The current Reference BD TB passes and writes summaries under
+`results_step14_dbf_ip_soc_integration/reference_bd/`.

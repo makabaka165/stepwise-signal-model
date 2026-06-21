@@ -69,3 +69,26 @@ MATLAB golden output.
 ## Step14.1 Migration Boundary
 
 Step14.1 keeps dbf_axis_system_top free of DMA, PS, AXI-Lite, Block Design, FIFO IP, ILA, and board clock IP. Future IP Packager or user-model nesting should wrap this top rather than changing the Step13 arithmetic core.
+
+## Step14.3a Reference BD Boundary
+
+Step14.3a wraps the packaged Custom IP in a minimal IP Integrator design:
+
+```text
+S_AXIS_Y
+-> axis_in_fifo_0
+-> dbf_axis_0 (user.org:radar:dbf_axis:1.0)
+-> axis_out_fifo_0
+-> M_AXIS_Z
+```
+
+This stage proves the Custom IP can be nested as a BD IP cell and can pass
+AXIS functional regression with FIFO buffering. It still keeps PS, DMA, DDR,
+AXI-Lite, SmartConnect, board clocks, bitstream, XSA, HWH, and CPU ML outside
+the design. The `dbf_status_busy` signal remains the DBF Custom IP frame
+activity status; it is not a global FIFO occupancy or whole-BD busy signal.
+
+The Step14.3a Reference BD currently has a functional pass but a 200 MHz
+post-route setup timing blocker on the reference device. Later migration stages
+must not start from it as a platform-freeze point until
+`post_route_timing_200MHz_met_flag=true`.

@@ -29,3 +29,13 @@ The MATLAB scripts do not invoke Vivado. Run the Vivado package/validate
 wrappers first, then run `run_step14_2_custom_ip_validation.m` or
 `run_step14_2a_timing_memory_optimization.m` from the Step14 directory to
 aggregate compare results and keypoints.
+
+Step14.3a:
+
+- `compare_step14_3a_reference_bd_outputs.m` compares Reference BD Case A and
+  Case B CSV outputs against the Step14.1 expected Z CSV.
+- `run_step14_3a_reference_bd_validation.m` aggregates Reference BD structure,
+  XSim, synthesis, route, DRC, compare, and final gate keypoints.
+
+Current compare status is pass, but the final Step14.3a gate is false because
+`post_route_timing_200MHz_met_flag=false`.

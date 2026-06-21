@@ -104,6 +104,7 @@ step_14_dbf_ip_soc_integration/
   sim/
   matlab_vectors/
   vivado/
+    reference_bd/
   ip_repo/
   software/
   constraints/
@@ -247,3 +248,55 @@ formal closure remain false.
 
 Step14.2 still does not create DMA, PS, DDR, Block Design, bitstream, XSA, HWH,
 software drivers, board validation, or a complete FPGA backend.
+
+## Step14.3a Reference Block Design Integration
+
+Step14.3a introduces the first board-independent Vivado Block Design around the
+already packaged Custom IP. It uses the fixed VLNV `user.org:radar:dbf_axis:1.0`
+as an IP Integrator cell, not a Module Reference:
+
+```text
+S_AXIS_Y
+-> axis_in_fifo_0
+-> dbf_axis_0 (user.org:radar:dbf_axis:1.0)
+-> axis_out_fifo_0
+-> M_AXIS_Z
+```
+
+The reference BD exposes only `aclk`, active-low `aresetn`, `S_AXIS_Y`,
+`M_AXIS_Z`, and DBF status outputs. It intentionally contains no Zynq PS, AXI
+DMA, DDR, AXI-Lite, SmartConnect, bitstream, XSA, HWH, board target, or CPU ML
+integration.
+
+Current Step14.3a evidence:
+
+- Vivado version: 2024.2.
+- Reference part: `xc7z020clg400-1`, `reference_device_only=true`.
+- BD validate and wrapper generation: pass.
+- Reference BD XSim: pass.
+- Case A exact compare: 14/14 rows matched.
+- Case B FIFO/backpressure stress exact compare: 28/28 rows matched.
+- Synthesis: pass.
+- Route completed: true.
+- Post-route resources: LUT 2097, FF 5112, DSP 42, BRAM18 1, BRAM36 16.
+- Post-route timing at 200 MHz: not met, `WNS_ns=-0.076`, `TNS_ns=-0.079`,
+  setup failing endpoints = 2.
+- Hold timing: met, `WHS_ns=0.096`, hold failing endpoints = 0.
+- DRC: error 0, critical warning 0, warning 34; expected reference warnings
+  only, unexpected DRC error count = 0.
+
+The final Step14.3a gate is therefore:
+
+```text
+step14_3a_reference_bd_pass_flag=false
+proceed_to_platform_freeze_flag=false
+proceed_to_target_board_dma_flag=false
+proceed_to_board_validation_flag=false
+proceed_to_full_fpga_backend_flag=false
+formal_result_claimed=false
+blocker_if_any=post_route_timing_200MHz_not_met
+```
+
+The Reference BD functional chain is validated, but the 200 MHz post-route
+timing gate is not closed. This is not a DMA, PS, board, bitstream, or full FPGA
+backend claim.
