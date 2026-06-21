@@ -8,8 +8,8 @@ clock_period_ns,5.000
 advertised_aclk_Hz,200000000
 advertised_clock_MHz,200
 packaged_ip_ooc_synthesis_status,pass
-LUT,2155
-FF,4695
+LUT,2059
+FF,4696
 DSP,42
 BRAM18,0
 BRAM36,14

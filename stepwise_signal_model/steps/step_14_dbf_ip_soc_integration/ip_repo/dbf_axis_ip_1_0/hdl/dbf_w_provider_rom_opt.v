@@ -44,6 +44,7 @@ module dbf_w_provider_rom_opt #(
 );
 
     wire in_range;
+    reg rsp_in_range_q;
     wire signed [W_BITS-1:0] w_re0;
     wire signed [W_BITS-1:0] w_im0;
     wire signed [W_BITS-1:0] w_re1;
@@ -65,39 +66,41 @@ module dbf_w_provider_rom_opt #(
     always @(posedge clk) begin
         if (rst) begin
             rsp_valid <= 1'b0;
+            rsp_in_range_q <= 1'b0;
         end else begin
-            rsp_valid <= req_valid;
+            rsp_valid <= req_valid && in_range;
+            rsp_in_range_q <= req_valid && in_range;
         end
     end
 
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B0_MAIN_FILE), .TAIL_FILE(W_RE_B0_TAIL_FILE)) u_re0 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re0));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B0_MAIN_FILE), .TAIL_FILE(W_IM_B0_TAIL_FILE)) u_im0 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im0));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B1_MAIN_FILE), .TAIL_FILE(W_RE_B1_TAIL_FILE)) u_re1 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re1));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B1_MAIN_FILE), .TAIL_FILE(W_IM_B1_TAIL_FILE)) u_im1 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im1));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B2_MAIN_FILE), .TAIL_FILE(W_RE_B2_TAIL_FILE)) u_re2 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re2));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B2_MAIN_FILE), .TAIL_FILE(W_IM_B2_TAIL_FILE)) u_im2 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im2));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B3_MAIN_FILE), .TAIL_FILE(W_RE_B3_TAIL_FILE)) u_re3 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re3));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B3_MAIN_FILE), .TAIL_FILE(W_IM_B3_TAIL_FILE)) u_im3 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im3));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B4_MAIN_FILE), .TAIL_FILE(W_RE_B4_TAIL_FILE)) u_re4 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re4));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B4_MAIN_FILE), .TAIL_FILE(W_IM_B4_TAIL_FILE)) u_im4 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im4));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B5_MAIN_FILE), .TAIL_FILE(W_RE_B5_TAIL_FILE)) u_re5 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re5));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B5_MAIN_FILE), .TAIL_FILE(W_IM_B5_TAIL_FILE)) u_im5 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im5));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B6_MAIN_FILE), .TAIL_FILE(W_RE_B6_TAIL_FILE)) u_re6 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_re6));
-    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B6_MAIN_FILE), .TAIL_FILE(W_IM_B6_TAIL_FILE)) u_im6 (.clk(clk), .rst(rst), .rd_en(req_valid), .addr(req_index), .rd_data(w_im6));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B0_MAIN_FILE), .TAIL_FILE(W_RE_B0_TAIL_FILE)) u_re0 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re0));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B0_MAIN_FILE), .TAIL_FILE(W_IM_B0_TAIL_FILE)) u_im0 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im0));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B1_MAIN_FILE), .TAIL_FILE(W_RE_B1_TAIL_FILE)) u_re1 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re1));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B1_MAIN_FILE), .TAIL_FILE(W_IM_B1_TAIL_FILE)) u_im1 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im1));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B2_MAIN_FILE), .TAIL_FILE(W_RE_B2_TAIL_FILE)) u_re2 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re2));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B2_MAIN_FILE), .TAIL_FILE(W_IM_B2_TAIL_FILE)) u_im2 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im2));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B3_MAIN_FILE), .TAIL_FILE(W_RE_B3_TAIL_FILE)) u_re3 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re3));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B3_MAIN_FILE), .TAIL_FILE(W_IM_B3_TAIL_FILE)) u_im3 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im3));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B4_MAIN_FILE), .TAIL_FILE(W_RE_B4_TAIL_FILE)) u_re4 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re4));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B4_MAIN_FILE), .TAIL_FILE(W_IM_B4_TAIL_FILE)) u_im4 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im4));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B5_MAIN_FILE), .TAIL_FILE(W_RE_B5_TAIL_FILE)) u_re5 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re5));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B5_MAIN_FILE), .TAIL_FILE(W_IM_B5_TAIL_FILE)) u_im5 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im5));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_RE_B6_MAIN_FILE), .TAIL_FILE(W_RE_B6_TAIL_FILE)) u_re6 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_re6));
+    dbf_w_rom18_split #(.W_BITS(W_BITS), .ADDR_BITS(ADDR_BITS), .MAIN_FILE(W_IM_B6_MAIN_FILE), .TAIL_FILE(W_IM_B6_TAIL_FILE)) u_im6 (.clk(clk), .rst(rst), .rd_en(req_valid && in_range), .addr(req_index), .rd_data(w_im6));
 
-    assign w_re_bus[0*W_BITS +: W_BITS] = in_range ? w_re0 : {W_BITS{1'b0}};
-    assign w_im_bus[0*W_BITS +: W_BITS] = in_range ? w_im0 : {W_BITS{1'b0}};
-    assign w_re_bus[1*W_BITS +: W_BITS] = in_range ? w_re1 : {W_BITS{1'b0}};
-    assign w_im_bus[1*W_BITS +: W_BITS] = in_range ? w_im1 : {W_BITS{1'b0}};
-    assign w_re_bus[2*W_BITS +: W_BITS] = in_range ? w_re2 : {W_BITS{1'b0}};
-    assign w_im_bus[2*W_BITS +: W_BITS] = in_range ? w_im2 : {W_BITS{1'b0}};
-    assign w_re_bus[3*W_BITS +: W_BITS] = in_range ? w_re3 : {W_BITS{1'b0}};
-    assign w_im_bus[3*W_BITS +: W_BITS] = in_range ? w_im3 : {W_BITS{1'b0}};
-    assign w_re_bus[4*W_BITS +: W_BITS] = in_range ? w_re4 : {W_BITS{1'b0}};
-    assign w_im_bus[4*W_BITS +: W_BITS] = in_range ? w_im4 : {W_BITS{1'b0}};
-    assign w_re_bus[5*W_BITS +: W_BITS] = in_range ? w_re5 : {W_BITS{1'b0}};
-    assign w_im_bus[5*W_BITS +: W_BITS] = in_range ? w_im5 : {W_BITS{1'b0}};
-    assign w_re_bus[6*W_BITS +: W_BITS] = in_range ? w_re6 : {W_BITS{1'b0}};
-    assign w_im_bus[6*W_BITS +: W_BITS] = in_range ? w_im6 : {W_BITS{1'b0}};
+    assign w_re_bus[0*W_BITS +: W_BITS] = rsp_in_range_q ? w_re0 : {W_BITS{1'b0}};
+    assign w_im_bus[0*W_BITS +: W_BITS] = rsp_in_range_q ? w_im0 : {W_BITS{1'b0}};
+    assign w_re_bus[1*W_BITS +: W_BITS] = rsp_in_range_q ? w_re1 : {W_BITS{1'b0}};
+    assign w_im_bus[1*W_BITS +: W_BITS] = rsp_in_range_q ? w_im1 : {W_BITS{1'b0}};
+    assign w_re_bus[2*W_BITS +: W_BITS] = rsp_in_range_q ? w_re2 : {W_BITS{1'b0}};
+    assign w_im_bus[2*W_BITS +: W_BITS] = rsp_in_range_q ? w_im2 : {W_BITS{1'b0}};
+    assign w_re_bus[3*W_BITS +: W_BITS] = rsp_in_range_q ? w_re3 : {W_BITS{1'b0}};
+    assign w_im_bus[3*W_BITS +: W_BITS] = rsp_in_range_q ? w_im3 : {W_BITS{1'b0}};
+    assign w_re_bus[4*W_BITS +: W_BITS] = rsp_in_range_q ? w_re4 : {W_BITS{1'b0}};
+    assign w_im_bus[4*W_BITS +: W_BITS] = rsp_in_range_q ? w_im4 : {W_BITS{1'b0}};
+    assign w_re_bus[5*W_BITS +: W_BITS] = rsp_in_range_q ? w_re5 : {W_BITS{1'b0}};
+    assign w_im_bus[5*W_BITS +: W_BITS] = rsp_in_range_q ? w_im5 : {W_BITS{1'b0}};
+    assign w_re_bus[6*W_BITS +: W_BITS] = rsp_in_range_q ? w_re6 : {W_BITS{1'b0}};
+    assign w_im_bus[6*W_BITS +: W_BITS] = rsp_in_range_q ? w_im6 : {W_BITS{1'b0}};
 
 endmodule

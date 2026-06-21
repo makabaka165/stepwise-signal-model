@@ -18,6 +18,11 @@ advertised_aclk_Hz,200000000
 advertised_clock_MHz,200
 packaged_hdl_file_count,11
 packaged_w_mem_file_count,28
+package_content_integrity_pass_flag,true
+package_nonempty_file_check_pass_flag,true
+package_source_packaged_hash_match_flag,true
+source_base_commit,1812da9
+source_worktree_dirty,false
 absolute_path_scan_pass_flag,true
 formal_result_claimed,false
 blocker_if_any,

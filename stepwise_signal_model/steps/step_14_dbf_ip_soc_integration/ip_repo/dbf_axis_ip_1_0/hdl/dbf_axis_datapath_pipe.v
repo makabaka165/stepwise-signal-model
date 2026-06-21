@@ -54,6 +54,8 @@ module dbf_axis_datapath_pipe #(
     reg [ADDR_BITS-1:0] element_index;
     wire expected_last;
     wire sample_accept;
+    wire final_z_accept;
+    reg frame_active;
 
     reg pipe_y_valid;
     reg pipe_expected_last;
@@ -86,7 +88,8 @@ module dbf_axis_datapath_pipe #(
     assign w_req_index = element_index;
     assign core_in_valid = pipe_y_valid && w_rsp_valid;
     assign core_in_last = pipe_expected_last;
-    assign status_busy = (state != ST_RX) || serializer_busy;
+    assign final_z_accept = m_axis_z_tvalid && m_axis_z_tready && m_axis_z_tlast;
+    assign status_busy = frame_active || (state != ST_RX) || serializer_busy;
     assign debug_element_index = element_index;
     assign debug_w_req_index = w_req_index;
     assign debug_sample_accept = sample_accept;
@@ -151,6 +154,7 @@ module dbf_axis_datapath_pipe #(
             pipe_y_re <= {Y_BITS{1'b0}};
             pipe_y_im <= {Y_BITS{1'b0}};
             serializer_load_valid <= 1'b0;
+            frame_active <= 1'b0;
             status_frame_count <= 32'd0;
             status_protocol_error <= 1'b0;
             status_early_tlast <= 1'b0;
@@ -163,6 +167,7 @@ module dbf_axis_datapath_pipe #(
             pipe_y_valid <= sample_accept;
 
             if (sample_accept) begin
+                frame_active <= 1'b1;
                 pipe_y_re <= s_axis_y_tdata[15:0];
                 pipe_y_im <= s_axis_y_tdata[31:16];
                 pipe_expected_last <= expected_last;
@@ -210,9 +215,10 @@ module dbf_axis_datapath_pipe #(
                     end
                 end
                 ST_TX: begin
-                    if (serializer_done_pulse) begin
+                    if (final_z_accept || serializer_done_pulse) begin
                         status_frame_count <= status_frame_count + 32'd1;
                         element_index <= {ADDR_BITS{1'b0}};
+                        frame_active <= 1'b0;
                         state <= ST_RX;
                     end
                 end

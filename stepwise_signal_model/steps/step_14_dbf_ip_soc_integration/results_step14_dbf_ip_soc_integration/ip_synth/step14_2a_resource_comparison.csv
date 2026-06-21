@@ -1,8 +1,8 @@
 metric,value
 old_LUT,3594
-new_LUT,2155
+new_LUT,2059
 old_FF,1810
-new_FF,4695
+new_FF,4696
 old_DSP,28
 new_DSP,42
 old_BRAM18,0

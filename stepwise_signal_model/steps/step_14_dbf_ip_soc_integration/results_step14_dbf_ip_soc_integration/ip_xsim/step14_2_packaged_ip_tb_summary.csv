@@ -6,6 +6,12 @@ packaged_ip_backpressure_stability_pass,true
 packaged_ip_two_frame_pass,true
 packaged_ip_beam_order_pass,true
 packaged_ip_status_pass,true
+busy_low_after_reset,true
+busy_high_from_first_y_accept,true
+busy_high_during_drain,true
+busy_high_during_output_backpressure,true
+busy_low_after_final_z_accept,true
+status_busy_semantics_pass,true
 expected_output_rows,14
 actual_output_rows,14
 timeout_flag,false

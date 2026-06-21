@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2024 Advanced Micro Devices, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2024.2 (win64) Build 5239630 Fri Nov 08 22:35:27 MST 2024
-| Date         : Sun Jun 21 09:09:46 2026
+| Date         : Sun Jun 21 10:04:06 2026
 | Host         : Aurora running 64-bit major release  (build 9200)
 | Command      : report_drc -file <STEP14_DIR>/results_step14_dbf_ip_soc_integration/ip_synth/packaged_ip_drc_optimized.rpt
 | Design       : dbf_axis_0
