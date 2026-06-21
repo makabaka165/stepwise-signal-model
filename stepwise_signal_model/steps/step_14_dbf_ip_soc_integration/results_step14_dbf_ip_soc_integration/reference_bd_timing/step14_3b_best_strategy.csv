@@ -1,6 +1,8 @@
 metric,value
 best_strategy_name,Performance_NetDelay_high
 best_run_name,strategy_4_Performance_NetDelay_high
+best_implementation_stop_step,route_design
+best_post_route_phys_opt_executed_flag,false
 best_WNS_ns,0.205
 best_TNS_ns,0.000
 best_setup_failing_endpoints,0

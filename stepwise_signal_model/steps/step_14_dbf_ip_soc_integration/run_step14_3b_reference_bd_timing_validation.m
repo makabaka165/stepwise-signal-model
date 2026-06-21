@@ -6,6 +6,9 @@ outRoot = fullfile(step14Dir, 'results_step14_dbf_ip_soc_integration');
 timingDir = fullfile(outRoot, 'reference_bd_timing');
 bdDir = fullfile(outRoot, 'reference_bd');
 ipCompareDir = fullfile(outRoot, 'ip_compare');
+axisCompareDir = fullfile(outRoot, 'axis_compare');
+axisOptSimDir = fullfile(outRoot, 'axis_opt_sim');
+ipXsimDir = fullfile(outRoot, 'ip_xsim');
 if ~exist(timingDir, 'dir')
     mkdir(timingDir);
 end
@@ -16,6 +19,12 @@ best = readKeyValueCsv(fullfile(timingDir, 'step14_3b_best_strategy.csv'));
 clean = readKeyValueCsv(fullfile(timingDir, 'step14_3b_best_strategy_clean_rerun_summary.csv'));
 drc = readKeyValueCsv(fullfile(timingDir, 'step14_3b_best_drc_summary.csv'));
 methodology = readKeyValueCsv(fullfile(timingDir, 'step14_3b_best_methodology_summary.csv'));
+baselineAxis = readKeyValueCsv(fullfile(axisCompareDir, 'step14_1_axis_compare_summary.csv'));
+optimizedRawTb = readKeyValueCsv(fullfile(axisOptSimDir, 'step14_2a_opt_axis_tb_summary.csv'));
+optimizedRawXsim = readKeyValueCsv(fullfile(axisOptSimDir, 'step14_2a_opt_axis_xsim_summary.csv'));
+packagedIpTb = readKeyValueCsv(fullfile(ipXsimDir, 'step14_2_packaged_ip_tb_summary.csv'));
+packagedIpXsim = readKeyValueCsv(fullfile(ipXsimDir, 'step14_2_packaged_ip_xsim_summary.csv'));
+packagedIpCompare = readKeyValueCsv(fullfile(ipCompareDir, 'step14_2_packaged_ip_compare_summary.csv'));
 
 step14_2b_pass = isTrueMetric(step14_2b, 'step14_2b_hardening_pass_flag');
 functional_pass = isTrueMetric(step14_3a, 'reference_bd_structure_pass_flag') && ...
@@ -33,7 +42,33 @@ phaseASweepPass = isTrueMetric(best, 'phase_a_strategy_sweep_pass_flag');
 phaseACleanPass = isTrueMetric(clean, 'phase_a_clean_rerun_pass_flag');
 phaseBRequired = isTrueMetric(clean, 'phase_b_required_flag') || (~phaseASweepPass && phaseAFound);
 operandPipelineAdded = false;
-macEquiv = ~phaseBRequired;
+macEquivApplicable = phaseBRequired || operandPipelineAdded;
+macEquivStatus = 'not_applicable';
+macEquivGatePass = true;
+if macEquivApplicable
+    macEquivSummary = readKeyValueCsv(fullfile(timingDir, 'step14_3b_mac_pipe_equiv_summary.csv'));
+    macEquivGatePass = isTrueMetric(macEquivSummary, 'mac_pipe_equivalence_pass_flag');
+    if macEquivGatePass
+        macEquivStatus = 'pass';
+    else
+        macEquivStatus = 'missing_or_fail';
+    end
+end
+
+baselineAxisPass = isTrueMetric(baselineAxis, 'step14_1_axis_system_pass_flag') && ...
+    isTrueMetric(baselineAxis, 'axis_output_match_flag') && ...
+    isTrueMetric(baselineAxis, 'axis_tb_pass_flag');
+optimizedRawTopPass = isTrueMetric(optimizedRawTb, 'optimized_raw_top_xsim_pass_flag') && ...
+    isTrueMetric(optimizedRawXsim, 'compile_status') && ...
+    isTrueMetric(optimizedRawXsim, 'elaboration_status') && ...
+    isTrueMetric(optimizedRawXsim, 'simulation_status');
+packagedIpXsimPass = isTrueMetric(packagedIpTb, 'packaged_ip_tb_pass_flag') && ...
+    isTrueMetric(packagedIpXsim, 'packaged_ip_xsim_pass_flag') && ...
+    isTrueMetric(packagedIpXsim, 'compile_status') && ...
+    isTrueMetric(packagedIpXsim, 'elaboration_status') && ...
+    isTrueMetric(packagedIpXsim, 'simulation_status');
+packagedIpExactComparePass = isTrueMetric(packagedIpCompare, 'packaged_ip_compare_pass_flag') && ...
+    isTrueMetric(packagedIpCompare, 'packaged_ip_output_match_flag');
 
 finalWns = metricValue(clean, 'final_WNS_ns', metricValue(best, 'best_WNS_ns', 'NA'));
 finalTns = metricValue(clean, 'final_TNS_ns', metricValue(best, 'best_TNS_ns', 'NA'));
@@ -48,7 +83,9 @@ timingMarginPass = numericAtLeast(finalWns, 0.100) && numericZero(finalTns) && .
 
 externalClockPass = isTrueMetric(best, 'external_clock_association_pass_flag');
 methodologyExpectedOnly = isTrueMetric(methodology, 'reference_methodology_expected_only_flag');
-phaseAllRegressionPass = phaseASweepPass && phaseACleanPass && ~phaseBRequired;
+phaseAllRegressionPass = phaseASweepPass && phaseACleanPass && ~phaseBRequired && ...
+    macEquivGatePass && baselineAxisPass && optimizedRawTopPass && ...
+    packagedIpXsimPass && packagedIpExactComparePass;
 
 closureFlag = step14_2b_pass && functional_pass && externalClockPass && ...
     methodologyExpectedOnly && phaseAllRegressionPass && postRouteTimingPass && timingMarginPass;
@@ -61,6 +98,11 @@ if ~closureFlag
         ~phaseAFound, 'phase_a_strategy_sweep_missing'; ...
         phaseAFound && ~phaseASweepPass, 'phase_a_strategy_sweep_margin_not_met'; ...
         phaseASweepPass && ~phaseACleanPass, 'phase_a_clean_rerun_margin_not_met'; ...
+        macEquivApplicable && ~macEquivGatePass, 'mac_pipe_equivalence_missing_or_false'; ...
+        ~baselineAxisPass, 'baseline_axis_regression_missing_or_false'; ...
+        ~optimizedRawTopPass, 'optimized_raw_top_xsim_missing_or_false'; ...
+        ~packagedIpXsimPass, 'packaged_ip_xsim_missing_or_false'; ...
+        ~packagedIpExactComparePass, 'packaged_ip_exact_compare_missing_or_false'; ...
         ~externalClockPass, 'external_clock_association_failed'; ...
         ~methodologyExpectedOnly, 'unexpected_methodology_violation'; ...
         ~postRouteTimingPass, 'post_route_timing_not_met'; ...
@@ -73,12 +115,16 @@ keypoints = {
     'phase_a_strategy_count', metricValue(best, 'phase_a_strategy_count', '0');
     'phase_a_strategy_sweep_pass_flag', boolStr(phaseASweepPass);
     'phase_a_best_strategy', metricValue(best, 'best_strategy_name', 'NA');
+    'phase_a_best_implementation_stop_step', metricValue(best, 'best_implementation_stop_step', 'NA');
+    'phase_a_best_post_route_phys_opt_executed_flag', metricValue(best, 'best_post_route_phys_opt_executed_flag', 'NA');
     'phase_a_best_WNS_ns', metricValue(best, 'best_WNS_ns', 'NA');
     'phase_a_clean_rerun_pass_flag', boolStr(phaseACleanPass);
     'phase_b_required_flag', boolStr(phaseBRequired);
     'operand_pipeline_added_flag', boolStr(operandPipelineAdded);
     'operand_pipeline_extra_latency_cycles', '0';
-    'mac_pipe_equivalence_pass_flag', boolStr(macEquiv);
+    'mac_pipe_equivalence_applicable_flag', boolStr(macEquivApplicable);
+    'mac_pipe_equivalence_status', macEquivStatus;
+    'mac_pipe_equivalence_gate_pass_flag', boolStr(macEquivGatePass);
     'input_throughput_samples_per_cycle', '1';
     'baseline_WNS_ns', '-0.076';
     'baseline_TNS_ns', '-0.079';
@@ -106,10 +152,10 @@ keypoints = {
     'unexpected_methodology_violation_count', metricValue(methodology, 'unexpected_methodology_violation_count', 'NA');
     'external_clock_association_pass_flag', boolStr(externalClockPass);
     'reference_methodology_expected_only_flag', boolStr(methodologyExpectedOnly);
-    'baseline_axis_regression_pass_flag', 'true';
-    'optimized_raw_top_xsim_pass_flag', boolStr(step14_2b_pass);
-    'packaged_ip_xsim_pass_flag', boolStr(step14_2b_pass);
-    'packaged_ip_exact_compare_pass_flag', boolStr(step14_2b_pass);
+    'baseline_axis_regression_pass_flag', boolStr(baselineAxisPass);
+    'optimized_raw_top_xsim_pass_flag', boolStr(optimizedRawTopPass);
+    'packaged_ip_xsim_pass_flag', boolStr(packagedIpXsimPass);
+    'packaged_ip_exact_compare_pass_flag', boolStr(packagedIpExactComparePass);
     'reference_bd_xsim_pass_flag', boolStr(isTrueMetric(step14_3a, 'reference_bd_xsim_pass_flag'));
     'reference_bd_exact_compare_pass_flag', boolStr(isTrueMetric(step14_3a, 'reference_bd_compare_pass_flag'));
     'step14_3b_post_route_timing_pass_flag', boolStr(postRouteTimingPass);

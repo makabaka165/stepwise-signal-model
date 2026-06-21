@@ -54,6 +54,13 @@ synthesized Reference BD netlist. It includes the Step14.3a baseline strategy
 and Vivado-supported performance strategies discovered on the installed Vivado
 2024.2 toolchain.
 
+Each sweep run is launched with `-to_step route_design`. The CSV therefore
+records `implementation_stop_step=route_design` and
+`post_route_phys_opt_executed_flag` for each row. A strategy name such as
+`Performance_ExplorePostRoutePhysOpt` means the Vivado strategy was accepted by
+the implementation run, not that a separate post-route phys-opt step was
+completed in this sweep.
+
 The sweep writes:
 
 ```text
@@ -106,11 +113,15 @@ that strategy also met the 200 MHz margin:
 ```text
 phase_a_strategy_count = 9
 phase_a_best_strategy = Performance_NetDelay_high
+phase_a_best_implementation_stop_step = route_design
+phase_a_best_post_route_phys_opt_executed_flag = false
 phase_a_best_WNS_ns = 0.205
 phase_a_clean_rerun_pass_flag = true
 phase_b_required_flag = false
 operand_pipeline_added_flag = false
 operand_pipeline_extra_latency_cycles = 0
+mac_pipe_equivalence_applicable_flag = false
+mac_pipe_equivalence_status = not_applicable
 input_throughput_samples_per_cycle = 1
 final_WNS_ns = 0.205
 final_TNS_ns = 0.000
@@ -125,7 +136,14 @@ final_BRAM36 = 16
 ```
 
 Because Phase A closed timing with margin, Phase B was not triggered and no
-operand input pipeline was added.
+operand input pipeline was added. The MAC pipeline equivalence test is therefore
+not applicable for this artifact set; its gate status records that the missing
+test is non-blocking only because Phase B was not required.
+
+The final aggregator reads regression evidence from the original result CSVs:
+Step14.1 AXIS compare, optimized raw-top XSim summaries, packaged-IP XSim
+summaries, and packaged-IP exact compare. These flags are no longer inferred
+from the Step14.2b aggregate gate alone.
 
 ## External Clock Metadata
 

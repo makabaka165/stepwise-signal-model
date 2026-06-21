@@ -223,6 +223,8 @@ proc create_impl_run_safe {run_name parent_run} {
 
 proc launch_and_collect_run {run_name strategy_label strategy_exact result_dir step14_dir wrapper_top copy_prefix} {
     set run_obj [get_runs $run_name]
+    set implementation_stop_step "route_design"
+    set post_route_phys_opt_executed 0
     set run_status "not_run"
     set route_completed 0
     if {[catch {
@@ -234,6 +236,10 @@ proc launch_and_collect_run {run_name strategy_label strategy_exact result_dir s
         puts "Implementation run $run_name failed: $run_err"
     } else {
         set run_status [get_property STATUS $run_obj]
+    }
+    if {[string first "phys_opt_design (Post-Route)" $run_status] >= 0 &&
+        [string first "Not started" $run_status] < 0} {
+        set post_route_phys_opt_executed 1
     }
 
     set routed_dcp [file join [get_property DIRECTORY $run_obj] "${wrapper_top}_routed.dcp"]
@@ -314,6 +320,8 @@ proc launch_and_collect_run {run_name strategy_label strategy_exact result_dir s
         strategy_name $strategy_label \
         vivado_strategy_exact_name $strategy_exact \
         run_name $run_name \
+        implementation_stop_step $implementation_stop_step \
+        post_route_phys_opt_executed_flag [bool_str $post_route_phys_opt_executed] \
         run_status $run_status \
         route_completed_flag [bool_str $route_completed] \
         WNS_ns $wns \
@@ -457,6 +465,7 @@ foreach strategy $available {
 
 set headers {
     strategy_name vivado_strategy_exact_name run_name run_status route_completed_flag
+    implementation_stop_step post_route_phys_opt_executed_flag
     WNS_ns TNS_ns setup_failing_endpoints WHS_ns hold_failing_endpoints WPWS_ns
     LUT FF DSP BRAM18 BRAM36 URAM
     worst_path_source worst_path_destination worst_path_data_delay_ns worst_path_logic_levels
@@ -547,6 +556,8 @@ set phase_a_pass [expr {[dict get $best timing_margin_pass_flag] eq "true"}]
 write_pairs [file join $result_dir "step14_3b_best_strategy.csv"] [list \
     [list best_strategy_name $best_strategy] \
     [list best_run_name $best_run] \
+    [list best_implementation_stop_step [dict get $best implementation_stop_step]] \
+    [list best_post_route_phys_opt_executed_flag [dict get $best post_route_phys_opt_executed_flag]] \
     [list best_WNS_ns [dict get $best WNS_ns]] \
     [list best_TNS_ns [dict get $best TNS_ns]] \
     [list best_setup_failing_endpoints [dict get $best setup_failing_endpoints]] \

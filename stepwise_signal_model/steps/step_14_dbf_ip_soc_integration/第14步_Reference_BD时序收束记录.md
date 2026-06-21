@@ -87,6 +87,8 @@ results_step14_dbf_ip_soc_integration/reference_bd_timing/
 ```text
 phase_a_strategy_count = 9
 best_strategy = Performance_NetDelay_high
+best_implementation_stop_step = route_design
+best_post_route_phys_opt_executed_flag = false
 best_WNS_ns = 0.205
 best_TNS_ns = 0.000
 best_setup_failing_endpoints = 0
@@ -94,6 +96,11 @@ best_WHS_ns = 0.093
 best_hold_failing_endpoints = 0
 phase_a_strategy_sweep_pass_flag = true
 ```
+
+本轮 sweep 统一使用 `launch_runs ... -to_step route_design`。因此
+`Performance_ExplorePostRoutePhysOpt` 这一行表示 Vivado 接受该 implementation
+strategy 并完成 route，不表示额外的 post-route phys-opt step 已完整执行。CSV 中用
+`implementation_stop_step` 和 `post_route_phys_opt_executed_flag` 显式记录该边界。
 
 独立 clean rerun 结果：
 
@@ -114,8 +121,13 @@ phase_b_required_flag = false
 operand_pipeline_added_flag = false
 operand_pipeline_extra_latency_cycles = 0
 input_throughput_samples_per_cycle = 1
-mac_pipe_equivalence_pass_flag = true
+mac_pipe_equivalence_applicable_flag = false
+mac_pipe_equivalence_status = not_applicable
+mac_pipe_equivalence_gate_pass_flag = true
 ```
+
+这里的 MAC equivalence gate pass 只表示 Phase B 未触发时“不适用且不阻塞”，不是
+`tb_dbf_complex_mac_pipe_equiv` 已运行通过。
 
 ## 资源
 
@@ -159,7 +171,8 @@ reference_methodology_expected_only_flag = true
 
 ## 回归证据
 
-Step14.3b 没有修改 DBF RTL，因此继续沿用 Step14.2b/Step14.3a 已通过的功能证据：
+Step14.3b 没有修改 DBF RTL。最终聚合脚本逐项读取原始 CSV，而不是用 Step14.2b
+总 gate 代替所有子项：
 
 ```text
 step14_2b_hardening_pass_flag = true
