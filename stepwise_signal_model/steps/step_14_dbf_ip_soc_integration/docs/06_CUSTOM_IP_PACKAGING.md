@@ -8,13 +8,19 @@ It does not change the DBF arithmetic, frame protocol, or CPU/SoC partition.
 The generated IP staging tree is rebuilt by `vivado/package_dbf_axis_ip.tcl`.
 Do not manually edit staged HDL under `ip_repo/dbf_axis_ip_1_0/hdl/`.
 
-Source inputs:
+Step14.2 baseline source inputs:
 
 - Step13 arithmetic RTL: `dbf_complex_mac.v`, `dbf_beam_accum_core.v`,
   `dbf_z24_quantizer.v`, `dbf_core_z24.v`, `dbf_core_z24_bparallel.v`.
 - Step14 AXIS RTL: `dbf_w_provider_rom.v`, `dbf_axis_z_serializer.v`,
   `dbf_axis_datapath.v`, `dbf_axis_system_top.v`, `dbf_axis_ip_top.v`.
 - Step14.1 W ROM data: 14 beam-separated `.mem` files.
+
+Step14.2a rebuilds the same IP identity with optimized Step14 RTL:
+
+- Pipelined MAC, accumulator wrapper, and Z24 quantizer equivalent.
+- Split W ROM provider using 28 main/tail `.mem` files.
+- `dbf_axis_ip_top.v` wrapping `dbf_axis_system_top_opt`.
 
 The package does not include Y replay vectors or Z expected vectors. Those stay
 in the validation results area and are used only by testbenches and MATLAB
@@ -78,7 +84,7 @@ Validation writes:
 - `results_step14_dbf_ip_soc_integration/ip_synth/`
 - `results_step14_dbf_ip_soc_integration/ip_compare/`
 
-## Current Result
+## Step14.2 Baseline Result
 
 Step14.2 currently passes the custom-IP gate:
 
@@ -110,9 +116,51 @@ WNS_ns = -8.586
 timing_200MHz_met_flag = false
 ```
 
-The custom IP is package/catalog/simulation/synthesis valid, but the 200 MHz
-post-synthesis timing estimate is not met. Therefore
-`proceed_to_reference_bd_design_flag=false`.
+The baseline custom IP is package/catalog/simulation/synthesis valid, but the
+200 MHz post-synthesis timing estimate is not met. Step14.2a closes this
+follow-up.
+
+## Step14.2a Optimized Result
+
+The optimized Custom IP keeps the same VLNV and passes the Step14.2a gate:
+
+- Packaged HDL files: 11.
+- Packaged W ROM files: 28.
+- Packaged-IP XSim: pass.
+- MATLAB exact compare: pass, 14 expected, 14 actual, 14 matched.
+- W split reconstruction: pass.
+- OOC synthesis: pass.
+- W memory inferred: true.
+- W memory resource gate: pass, `BRAM36_equiv=14.000`.
+- Advertised clock: `ACLK FREQ_HZ=200000000`.
+- 200 MHz timing estimate: pass, `WNS_ns=0.377`, `TNS_ns=0.000`,
+  failing endpoints = 0.
+
+Reference optimized result:
+
+```text
+part = xc7z020clg400-1
+LUT = 2155
+FF = 4695
+DSP = 42
+BRAM18 = 0
+BRAM36 = 14
+BRAM36_equiv = 14.000
+WNS_ns = 0.377
+TNS_ns = 0.000
+failing_endpoints = 0
+timing_200MHz_met_flag = true
+```
+
+Therefore:
+
+```text
+step14_2a_optimization_pass_flag=true
+proceed_to_reference_bd_design_flag=true
+proceed_to_target_board_dma_flag=false
+proceed_to_board_validation_flag=false
+proceed_to_full_fpga_backend_flag=false
+```
 
 ## Explicit Non-Claims
 

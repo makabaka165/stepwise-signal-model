@@ -1,0 +1,7 @@
+metric,value
+DPIP_1_count,0
+DPOP_1_count,15
+DPOP_2_count,0
+ZPS7_1_count,2
+zps7_1_expected_warning,true
+formal_result_claimed,false

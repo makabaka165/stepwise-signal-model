@@ -1,0 +1,12 @@
+metric,value
+optimized_raw_normal_frame_pass,true
+optimized_raw_input_gap_pass,true
+optimized_raw_backpressure_pass,true
+optimized_raw_two_frame_pass,true
+optimized_raw_beam_order_pass,true
+optimized_raw_status_pass,true
+expected_output_rows,14
+actual_output_rows,14
+timeout_flag,false
+optimized_raw_top_xsim_pass_flag,true
+formal_result_claimed,false

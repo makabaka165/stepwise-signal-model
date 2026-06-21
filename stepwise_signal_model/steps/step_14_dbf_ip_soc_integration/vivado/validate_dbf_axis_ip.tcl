@@ -1,7 +1,7 @@
 set script_dir [file dirname [file normalize [info script]]]
 set step14_dir [file normalize [file join $script_dir ".."]]
 set ip_repo_dir [file normalize [file join $step14_dir "ip_repo"]]
-set work_dir [file normalize [file join $step14_dir "vivado" "work" "step14_2_validate"]]
+set work_dir [file normalize [file join $step14_dir "vivado" "work" "step14_2a_validate"]]
 set pkg_result_dir [file normalize [file join $step14_dir "results_step14_dbf_ip_soc_integration" "ip_package"]]
 set xsim_result_dir [file normalize [file join $step14_dir "results_step14_dbf_ip_soc_integration" "ip_xsim"]]
 set synth_result_dir [file normalize [file join $step14_dir "results_step14_dbf_ip_soc_integration" "ip_synth"]]
@@ -102,6 +102,61 @@ proc parse_wns {text default_value} {
             continue
         }
         if {$seen_header && [regexp {^[ \t\|]*(-?[0-9]+(\.[0-9]+)?)[ \t]+-?[0-9]+(\.[0-9]+)?} $line -> value frac tail_frac]} {
+            return $value
+        }
+    }
+    return $default_value
+}
+
+proc parse_tns {text default_value} {
+    foreach line [split $text "\n"] {
+        if {[regexp -nocase {Total Negative Slack[ \t]+(-?[0-9]+(\.[0-9]+)?)ns} $line -> value frac]} {
+            return $value
+        }
+    }
+    set seen_header 0
+    foreach line [split $text "\n"] {
+        if {[regexp {WNS\(ns\).*TNS\(ns\).*TNS Failing Endpoints} $line]} {
+            set seen_header 1
+            continue
+        }
+        if {$seen_header && [regexp {^[ \t\|]*-?[0-9]+(\.[0-9]+)?[ \t]+(-?[0-9]+(\.[0-9]+)?)} $line -> frac value tail_frac]} {
+            return $value
+        }
+    }
+    return $default_value
+}
+
+proc parse_failing_endpoints {text default_value} {
+    set seen_header 0
+    foreach line [split $text "\n"] {
+        if {[regexp {WNS\(ns\).*TNS\(ns\).*TNS Failing Endpoints} $line]} {
+            set seen_header 1
+            continue
+        }
+        if {$seen_header && [regexp {^[ \t\|]*-?[0-9]+(\.[0-9]+)?[ \t]+-?[0-9]+(\.[0-9]+)?[ \t]+([0-9]+)} $line -> f1 f2 value]} {
+            return $value
+        }
+    }
+    return $default_value
+}
+
+proc count_regex {text pattern} {
+    return [regexp -all -nocase $pattern $text]
+}
+
+proc parse_timing_detail {text key default_value} {
+    foreach line [split $text "\n"] {
+        if {$key eq "source" && [regexp -nocase {Source:[ \t]+([^ \t]+)} $line -> value]} {
+            return $value
+        }
+        if {$key eq "destination" && [regexp -nocase {Destination:[ \t]+([^ \t]+)} $line -> value]} {
+            return $value
+        }
+        if {$key eq "data_delay" && [regexp -nocase {Data Path Delay:[ \t]+([0-9]+(\.[0-9]+)?)} $line -> value frac]} {
+            return $value
+        }
+        if {$key eq "logic_levels" && [regexp -nocase {Logic Levels:[ \t]+([0-9]+)} $line -> value]} {
             return $value
         }
     }
@@ -229,8 +284,8 @@ if {[llength [get_parts -quiet $fpga_part]] != 1} {
     error $blocker_if_any
 }
 
-safe_rebuild_dir $step14_dir $work_dir "step14_2_validate"
-create_project step14_2_validate $work_dir -part $fpga_part -force
+safe_rebuild_dir $step14_dir $work_dir "step14_2a_validate"
+create_project step14_2a_validate $work_dir -part $fpga_part -force
 set_property ip_repo_paths $ip_repo_dir [current_project]
 update_ip_catalog
 
@@ -356,6 +411,19 @@ set bram36 0
 set uram 0
 set distributed_ram 0
 set wns "NA"
+set tns "NA"
+set failing_endpoints 0
+set worst_path_source "NA"
+set worst_path_destination "NA"
+set worst_path_data_delay_ns "NA"
+set worst_path_logic_levels "NA"
+set dpip_1_count 0
+set dpop_1_count 0
+set dpop_2_count 0
+set zps7_1_count 0
+set bram36_equiv 0
+set w_memory_resource_optimization_pass_flag false
+set timing_validates_advertised_clock_flag false
 set timing_met false
 set w_memory_inferred_flag false
 
@@ -371,18 +439,20 @@ if {$create_ip_pass_flag && $generate_target_pass_flag} {
     } else {
         set synth_status "pass"
         create_clock -period $clock_period_ns -name aclk [get_ports aclk]
-        set util_report [file join $synth_result_dir "packaged_ip_utilization.rpt"]
-        set timing_report [file join $synth_result_dir "packaged_ip_timing_summary.rpt"]
-        set drc_report [file join $synth_result_dir "packaged_ip_drc.rpt"]
+        set util_report [file join $synth_result_dir "packaged_ip_utilization_optimized.rpt"]
+        set timing_report [file join $synth_result_dir "packaged_ip_timing_summary_optimized.rpt"]
+        set drc_report [file join $synth_result_dir "packaged_ip_drc_optimized.rpt"]
         report_utilization -file $util_report
         report_timing_summary -file $timing_report
         report_drc -file $drc_report
+        set timing_detail_report [report_timing -max_paths 1 -return_string]
         scrub_step14_abs_path $util_report $step14_dir
         scrub_step14_abs_path $timing_report $step14_dir
         scrub_step14_abs_path $drc_report $step14_dir
 
         set util_text [report_utilization -return_string]
         set timing_text [report_timing_summary -return_string]
+        set drc_text [report_drc -return_string]
         set lut [parse_table_used $util_text [list {CLB LUTs} {Slice LUTs}] 0]
         set ff [parse_table_used $util_text [list {CLB Registers} {Slice Registers}] 0]
         set dsp [parse_table_used $util_text [list {DSPs} {DSP48E1} {DSP48E2}] 0]
@@ -397,18 +467,114 @@ if {$create_ip_pass_flag && $generate_target_pass_flag} {
         set uram [parse_table_used $util_text [list {URAM}] 0]
         set distributed_ram [parse_table_used $util_text [list {Distributed RAM} {LUT as Memory} {LUTRAM}] 0]
         set wns [parse_wns $timing_text NA]
+        set tns [parse_tns $timing_text NA]
+        set failing_endpoints [parse_failing_endpoints $timing_text 0]
+        set worst_path_source [parse_timing_detail $timing_detail_report "source" "NA"]
+        set worst_path_destination [parse_timing_detail $timing_detail_report "destination" "NA"]
+        set worst_path_data_delay_ns [parse_timing_detail $timing_detail_report "data_delay" "NA"]
+        set worst_path_logic_levels [parse_timing_detail $timing_detail_report "logic_levels" "NA"]
+        set dpip_1_count [count_regex $drc_text {DPIP-1}]
+        set dpop_1_count [count_regex $drc_text {DPOP-1}]
+        set dpop_2_count [count_regex $drc_text {DPOP-2}]
+        set zps7_1_count [count_regex $drc_text {ZPS7-1}]
         if {$wns ne "NA"} {
             set timing_met [expr {double($wns) >= 0.0}]
         }
+        set timing_validates_advertised_clock_flag $timing_met
+        set bram36_equiv [expr {double($bram36) + double($bram18) / 2.0}]
         set w_memory_inferred_flag [expr {double($bram18) > 0.0 || double($bram36) > 0.0 || double($uram) > 0.0 || double($distributed_ram) > 0.0}]
+        set w_memory_resource_optimization_pass_flag [expr {$w_memory_inferred_flag && $bram36_equiv <= 16.0}]
         if {!$w_memory_inferred_flag && $blocker_if_any eq ""} {
             set blocker_if_any "w_rom_not_inferred_as_memory_resource"
+        }
+        if {!$w_memory_resource_optimization_pass_flag && $blocker_if_any eq ""} {
+            set blocker_if_any "w_rom_bram36_equivalent_above_16"
+        }
+        if {!$timing_met && $blocker_if_any eq ""} {
+            set blocker_if_any "timing_200MHz_not_met"
         }
     }
 }
 write_synth_summary [file join $synth_result_dir "step14_2_packaged_ip_ooc_synthesis_summary.csv"] \
     $synth_status $lut $ff $dsp $bram18 $bram36 $uram $distributed_ram $wns \
     $timing_met $w_memory_inferred_flag $blocker_if_any
+
+write_pairs [file join $synth_result_dir "step14_2a_timing_path_summary.csv"] [list \
+    [list clock_MHz $clock_mhz] \
+    [list clock_period_ns [format %.3f $clock_period_ns]] \
+    [list WNS_ns $wns] \
+    [list TNS_ns $tns] \
+    [list failing_endpoints $failing_endpoints] \
+    [list timing_200MHz_met_flag [bool_str $timing_met]] \
+    [list worst_path_source $worst_path_source] \
+    [list worst_path_destination $worst_path_destination] \
+    [list worst_path_data_delay_ns $worst_path_data_delay_ns] \
+    [list worst_path_logic_levels $worst_path_logic_levels] \
+    [list formal_result_claimed false] \
+]
+
+write_pairs [file join $synth_result_dir "step14_2a_drc_warning_summary.csv"] [list \
+    [list DPIP_1_count $dpip_1_count] \
+    [list DPOP_1_count $dpop_1_count] \
+    [list DPOP_2_count $dpop_2_count] \
+    [list ZPS7_1_count $zps7_1_count] \
+    [list zps7_1_expected_warning true] \
+    [list formal_result_claimed false] \
+]
+
+write_pairs [file join $synth_result_dir "step14_2a_resource_comparison.csv"] [list \
+    [list old_LUT 3594] \
+    [list new_LUT $lut] \
+    [list old_FF 1810] \
+    [list new_FF $ff] \
+    [list old_DSP 28] \
+    [list new_DSP $dsp] \
+    [list old_BRAM18 0] \
+    [list new_BRAM18 $bram18] \
+    [list old_BRAM36 28] \
+    [list new_BRAM36 $bram36] \
+    [list old_BRAM36_equiv 28] \
+    [list new_BRAM36_equiv [format %.3f $bram36_equiv]] \
+    [list old_WNS_ns -8.586] \
+    [list new_WNS_ns $wns] \
+    [list w_memory_resource_optimization_pass_flag [bool_str $w_memory_resource_optimization_pass_flag]] \
+    [list formal_result_claimed false] \
+]
+
+write_pairs [file join $synth_result_dir "step14_2a_optimized_ip_ooc_summary.csv"] [list \
+    [list vivado_version $vivado_version] \
+    [list fpga_part $fpga_part] \
+    [list fpga_part_source $fpga_part_source] \
+    [list reference_device_only $reference_device_only] \
+    [list clock_MHz $clock_mhz] \
+    [list clock_period_ns [format %.3f $clock_period_ns]] \
+    [list advertised_aclk_Hz 200000000] \
+    [list advertised_clock_MHz 200] \
+    [list packaged_ip_ooc_synthesis_status $synth_status] \
+    [list LUT $lut] \
+    [list FF $ff] \
+    [list DSP $dsp] \
+    [list BRAM18 $bram18] \
+    [list BRAM36 $bram36] \
+    [list BRAM36_equiv [format %.3f $bram36_equiv]] \
+    [list URAM $uram] \
+    [list distributed_RAM $distributed_ram] \
+    [list WNS_ns $wns] \
+    [list TNS_ns $tns] \
+    [list failing_endpoints $failing_endpoints] \
+    [list timing_200MHz_met_flag [bool_str $timing_met]] \
+    [list timing_validates_advertised_clock_flag [bool_str $timing_validates_advertised_clock_flag]] \
+    [list worst_path_source $worst_path_source] \
+    [list worst_path_destination $worst_path_destination] \
+    [list worst_path_data_delay_ns $worst_path_data_delay_ns] \
+    [list worst_path_logic_levels $worst_path_logic_levels] \
+    [list w_memory_inferred_flag [bool_str $w_memory_inferred_flag]] \
+    [list w_memory_resource_optimization_pass_flag [bool_str $w_memory_resource_optimization_pass_flag]] \
+    [list formal_result_claimed false] \
+    [list implementation_closure_claimed false] \
+    [list board_validation_flag false] \
+    [list blocker_if_any $blocker_if_any] \
+]
 
 close_project
 

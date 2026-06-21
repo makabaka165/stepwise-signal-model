@@ -3,6 +3,20 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $step14Dir = Resolve-Path (Join-Path $scriptDir "..")
 Set-Location $step14Dir
 
+if ($env:VIVADO_SETTINGS64 -and (Test-Path $env:VIVADO_SETTINGS64)) {
+    cmd /c "call `"$env:VIVADO_SETTINGS64`" && set" | ForEach-Object {
+        if ($_ -match "^(.*?)=(.*)$") {
+            Set-Item -Path "env:$($matches[1])" -Value $matches[2]
+        }
+    }
+} elseif (Test-Path "E:\Xilinx\Vivado\2024.2\settings64.bat") {
+    cmd /c "call `"E:\Xilinx\Vivado\2024.2\settings64.bat`" && set" | ForEach-Object {
+        if ($_ -match "^(.*?)=(.*)$") {
+            Set-Item -Path "env:$($matches[1])" -Value $matches[2]
+        }
+    }
+}
+
 $simDir = Join-Path $step14Dir "results_step14_dbf_ip_soc_integration\axis_sim"
 New-Item -ItemType Directory -Force -Path $simDir | Out-Null
 $summaryPath = Join-Path $simDir "step14_1_axis_xsim_summary.csv"

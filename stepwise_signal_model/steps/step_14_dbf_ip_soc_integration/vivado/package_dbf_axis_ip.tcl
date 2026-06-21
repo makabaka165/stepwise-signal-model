@@ -2,7 +2,7 @@ set script_dir [file dirname [file normalize [info script]]]
 set step14_dir [file normalize [file join $script_dir ".."]]
 set repo_root [file normalize [file join $step14_dir ".." ".."]]
 set ip_root [file normalize [file join $step14_dir "ip_repo" "dbf_axis_ip_1_0"]]
-set work_dir [file normalize [file join $step14_dir "vivado" "work" "step14_2_package"]]
+set work_dir [file normalize [file join $step14_dir "vivado" "work" "step14_2a_package"]]
 set result_dir [file normalize [file join $step14_dir "results_step14_dbf_ip_soc_integration" "ip_package"]]
 file mkdir $result_dir
 
@@ -210,6 +210,8 @@ if {!$part_ok} {
         [list aresetn_recognized_flag false] \
         [list axis_clock_association_pass_flag false] \
         [list reset_polarity_pass_flag false] \
+        [list advertised_aclk_Hz 200000000] \
+        [list advertised_clock_MHz 200] \
         [list packaged_hdl_file_count 0] \
         [list packaged_w_mem_file_count 0] \
         [list absolute_path_scan_pass_flag false] \
@@ -220,7 +222,7 @@ if {!$part_ok} {
 }
 
 safe_rebuild_dir $step14_dir $ip_root "dbf_axis_ip_1_0"
-safe_rebuild_dir $step14_dir $work_dir "step14_2_package"
+safe_rebuild_dir $step14_dir $work_dir "step14_2a_package"
 file mkdir [file join $ip_root "hdl"]
 file mkdir [file join $ip_root "data"]
 file mkdir [file join $ip_root "xgui"]
@@ -232,19 +234,20 @@ set package_manifest {}
 set step13_dir [file normalize [file join $step14_dir ".." "step_13_fpga_soc_dbf_boundary" "rtl"]]
 set step14_rtl_dir [file normalize [file join $step14_dir "rtl"]]
 set vec_dir [file normalize [file join $step14_dir "results_step14_dbf_ip_soc_integration" "axis_vectors"]]
+set split_vec_dir [file normalize [file join $vec_dir "w_split"]]
 
-set step13_files [list \
-    dbf_complex_mac.v \
-    dbf_beam_accum_core.v \
-    dbf_z24_quantizer.v \
-    dbf_core_z24.v \
-    dbf_core_z24_bparallel.v \
-]
+set step13_files [list]
 set step14_files [list \
-    dbf_w_provider_rom.v \
+    dbf_complex_mac_pipe.v \
+    dbf_beam_accum_core_pipe.v \
+    dbf_z24_quantizer_pipe.v \
+    dbf_core_z24_pipe.v \
+    dbf_core_z24_bparallel_pipe.v \
+    dbf_w_rom18_split.v \
+    dbf_w_provider_rom_opt.v \
     dbf_axis_z_serializer.v \
-    dbf_axis_datapath.v \
-    dbf_axis_system_top.v \
+    dbf_axis_datapath_pipe.v \
+    dbf_axis_system_top_opt.v \
     dbf_axis_ip_top.v \
 ]
 foreach f $step13_files {
@@ -255,8 +258,10 @@ foreach f $step14_files {
 }
 for {set b 0} {$b < 7} {incr b} {
     foreach part {re im} {
-        set f [format "step14_1_w_%s_b%d.mem" $part $b]
-        copy_and_record $repo_root [file join $vec_dir $f] [file join $ip_root "data" $f] "step14_w_rom_mem" $git_commit source_manifest package_manifest
+        foreach seg {main tail} {
+            set f [format "step14_1_w_%s_b%d_%s.mem" $part $b $seg]
+            copy_and_record $repo_root [file join $split_vec_dir $f] [file join $ip_root "data" $f] "step14_2a_split_w_rom_mem" $git_commit source_manifest package_manifest
+        }
     }
 }
 write_source_manifest [file join $ip_root "source_manifest.csv"] $source_manifest
@@ -265,7 +270,7 @@ write_package_manifest [file join $ip_root "package_manifest.csv"] $package_mani
 set hdl_files [glob -nocomplain [file join $ip_root "hdl" "*.v"]]
 set mem_files [glob -nocomplain [file join $ip_root "data" "*.mem"]]
 
-create_project step14_2_package $work_dir -part $fpga_part -force
+create_project step14_2a_package $work_dir -part $fpga_part -force
 add_files -norecurse $hdl_files
 add_files -norecurse $mem_files
 set_property file_type {Memory Initialization Files} [get_files *.mem]
@@ -361,6 +366,8 @@ set package_summary [list \
     [list aresetn_recognized_flag [bool_str $aresetn_recognized_flag]] \
     [list axis_clock_association_pass_flag [bool_str $axis_clock_association_pass_flag]] \
     [list reset_polarity_pass_flag [bool_str $reset_polarity_pass_flag]] \
+    [list advertised_aclk_Hz 200000000] \
+    [list advertised_clock_MHz 200] \
     [list packaged_hdl_file_count [llength $hdl_files]] \
     [list packaged_w_mem_file_count [llength $mem_files]] \
     [list absolute_path_scan_pass_flag [bool_str $absolute_path_scan_pass_flag]] \

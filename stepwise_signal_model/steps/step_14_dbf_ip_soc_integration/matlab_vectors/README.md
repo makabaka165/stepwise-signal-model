@@ -17,6 +17,15 @@ Step14.2:
 - It aligns by `frame_index + beam_id` and checks TDATA, Z values, clip flags,
   overflow flags, TLAST, row count, duplicate rows, missing rows, and beam order.
 
+Step14.2a:
+
+- `generate_step14_2a_w_split_mem.m` splits the 14 Step14.1 W ROM files into 28
+  main/tail files and verifies reconstruction.
+- `compare_step14_2a_optimized_ip_outputs.m` compares the optimized packaged-IP
+  output against the Step14.1 expected Z CSV and aggregates timing/resource
+  gates.
+
 The MATLAB scripts do not invoke Vivado. Run the Vivado package/validate
-wrappers first, then run `run_step14_2_custom_ip_validation.m` from the Step14
-directory to aggregate compare results and keypoints.
+wrappers first, then run `run_step14_2_custom_ip_validation.m` or
+`run_step14_2a_timing_memory_optimization.m` from the Step14 directory to
+aggregate compare results and keypoints.

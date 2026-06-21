@@ -14,8 +14,10 @@ aclk_recognized_flag,true
 aresetn_recognized_flag,true
 axis_clock_association_pass_flag,true
 reset_polarity_pass_flag,true
-packaged_hdl_file_count,10
-packaged_w_mem_file_count,14
+advertised_aclk_Hz,200000000
+advertised_clock_MHz,200
+packaged_hdl_file_count,11
+packaged_w_mem_file_count,28
 absolute_path_scan_pass_flag,true
 formal_result_claimed,false
 blocker_if_any,

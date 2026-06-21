@@ -1,0 +1,8 @@
+metric,value
+source_mem_file_count,14
+split_mem_file_count,28
+main_rows_per_file,2048
+tail_rows_per_file,32
+w_split_reconstruction_match_flag,true
+w_split_vector_pass_flag,true
+formal_result_claimed,false

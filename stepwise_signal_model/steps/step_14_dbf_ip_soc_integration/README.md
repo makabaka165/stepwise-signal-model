@@ -75,6 +75,7 @@ This chain does not use DMA and does not depend on real hardware.
 - Step14.0: directory and protocol freeze.
 - Step14.1: pure RTL/XSim AXI4-Stream data-path loop closure.
 - Step14.2: Vivado custom IP packaging.
+- Step14.2a: custom IP 200 MHz timing and W ROM resource optimization.
 - Step14.3: AXI DMA DDR replay reference design.
 - Step14.4: CPU/SoC loopback software plus Z golden comparison.
 - Step14.5: connect to CPU/SoC ML software.
@@ -95,6 +96,7 @@ step_14_dbf_ip_soc_integration/
     04_MIGRATION_AND_MODEL_NESTING.md
     05_STEP13_REUSE_RULES.md
     06_CUSTOM_IP_PACKAGING.md
+    07_TIMING_AND_W_MEMORY_OPTIMIZATION.md
   rtl/
   tb/
   sim/
@@ -106,8 +108,35 @@ step_14_dbf_ip_soc_integration/
   results_step14_dbf_ip_soc_integration/
 ```
 
-The current framework intentionally contains no board validation and makes no
-full FPGA backend claim.
+## Current Step14.2a Result
+
+Step14.2a keeps the Step14.2 Custom IP identity and replaces the internal
+implementation with a timing/resource optimized equivalent:
+
+- Pipelined complex MAC and ACC-to-Z quantization.
+- Split W ROM layout: 2048-row XPM block ROM main segment plus 32-row tail.
+- 28 packaged W `.mem` files: real/imag, beam 0..6, main/tail.
+- Packaged HDL files: 11 Step14 RTL files.
+- Packaged-IP XSim: pass.
+- MATLAB exact compare: pass, 14/14 rows matched.
+- OOC synthesis on reference `xc7z020clg400-1`: pass.
+- 200 MHz timing estimate: pass, `WNS_ns=0.377`, `TNS_ns=0.000`,
+  failing endpoints = 0.
+- W memory resources: `BRAM36_equiv=14.000`, reduced from 28.
+
+The current Step14.2a gate sets:
+
+```text
+step14_2a_optimization_pass_flag=true
+proceed_to_reference_bd_design_flag=true
+proceed_to_target_board_dma_flag=false
+proceed_to_board_validation_flag=false
+proceed_to_full_fpga_backend_flag=false
+formal_result_claimed=false
+```
+
+The current framework intentionally contains no DMA, PS, Block Design,
+bitstream, XSA, HWH, board validation, or full FPGA backend claim.
 
 ## What This Step Is Not
 

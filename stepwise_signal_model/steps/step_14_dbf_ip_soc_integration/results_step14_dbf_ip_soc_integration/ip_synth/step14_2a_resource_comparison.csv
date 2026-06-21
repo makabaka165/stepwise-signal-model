@@ -1,0 +1,17 @@
+metric,value
+old_LUT,3594
+new_LUT,2155
+old_FF,1810
+new_FF,4695
+old_DSP,28
+new_DSP,42
+old_BRAM18,0
+new_BRAM18,0
+old_BRAM36,28
+new_BRAM36,14
+old_BRAM36_equiv,28
+new_BRAM36_equiv,14.000
+old_WNS_ns,-8.586
+new_WNS_ns,0.377
+w_memory_resource_optimization_pass_flag,true
+formal_result_claimed,false

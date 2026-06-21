@@ -1,8 +1,8 @@
 `timescale 1ns/1ps
 
-// Step14.2 packaged IP top.
-// This module only fixes the Step14.1 AXIS DBF system parameters and W ROM
-// filenames for Vivado IP Packager. It does not alter the datapath behavior.
+// Step14.2a packaged IP top.
+// This module fixes the Step14 AXIS DBF parameters and split W ROM filenames
+// for Vivado IP Packager while using the optimized pipelined implementation.
 module dbf_axis_ip_top (
     input  wire        aclk,
     input  wire        aresetn,
@@ -33,7 +33,7 @@ module dbf_axis_ip_top (
     wire [11:0] debug_w_req_index_unused;
     wire        debug_sample_accept_unused;
 
-    dbf_axis_system_top #(
+    dbf_axis_system_top_opt #(
         .N_ELEMS(2080),
         .B_BEAMS(7),
         .W_BITS(18),
@@ -42,20 +42,34 @@ module dbf_axis_ip_top (
         .Z_BITS(24),
         .SHIFT_BITS(20),
         .ADDR_BITS(12),
-        .W_RE_B0_FILE("step14_1_w_re_b0.mem"),
-        .W_IM_B0_FILE("step14_1_w_im_b0.mem"),
-        .W_RE_B1_FILE("step14_1_w_re_b1.mem"),
-        .W_IM_B1_FILE("step14_1_w_im_b1.mem"),
-        .W_RE_B2_FILE("step14_1_w_re_b2.mem"),
-        .W_IM_B2_FILE("step14_1_w_im_b2.mem"),
-        .W_RE_B3_FILE("step14_1_w_re_b3.mem"),
-        .W_IM_B3_FILE("step14_1_w_im_b3.mem"),
-        .W_RE_B4_FILE("step14_1_w_re_b4.mem"),
-        .W_IM_B4_FILE("step14_1_w_im_b4.mem"),
-        .W_RE_B5_FILE("step14_1_w_re_b5.mem"),
-        .W_IM_B5_FILE("step14_1_w_im_b5.mem"),
-        .W_RE_B6_FILE("step14_1_w_re_b6.mem"),
-        .W_IM_B6_FILE("step14_1_w_im_b6.mem")
+        .W_RE_B0_MAIN_FILE("step14_1_w_re_b0_main.mem"),
+        .W_RE_B0_TAIL_FILE("step14_1_w_re_b0_tail.mem"),
+        .W_IM_B0_MAIN_FILE("step14_1_w_im_b0_main.mem"),
+        .W_IM_B0_TAIL_FILE("step14_1_w_im_b0_tail.mem"),
+        .W_RE_B1_MAIN_FILE("step14_1_w_re_b1_main.mem"),
+        .W_RE_B1_TAIL_FILE("step14_1_w_re_b1_tail.mem"),
+        .W_IM_B1_MAIN_FILE("step14_1_w_im_b1_main.mem"),
+        .W_IM_B1_TAIL_FILE("step14_1_w_im_b1_tail.mem"),
+        .W_RE_B2_MAIN_FILE("step14_1_w_re_b2_main.mem"),
+        .W_RE_B2_TAIL_FILE("step14_1_w_re_b2_tail.mem"),
+        .W_IM_B2_MAIN_FILE("step14_1_w_im_b2_main.mem"),
+        .W_IM_B2_TAIL_FILE("step14_1_w_im_b2_tail.mem"),
+        .W_RE_B3_MAIN_FILE("step14_1_w_re_b3_main.mem"),
+        .W_RE_B3_TAIL_FILE("step14_1_w_re_b3_tail.mem"),
+        .W_IM_B3_MAIN_FILE("step14_1_w_im_b3_main.mem"),
+        .W_IM_B3_TAIL_FILE("step14_1_w_im_b3_tail.mem"),
+        .W_RE_B4_MAIN_FILE("step14_1_w_re_b4_main.mem"),
+        .W_RE_B4_TAIL_FILE("step14_1_w_re_b4_tail.mem"),
+        .W_IM_B4_MAIN_FILE("step14_1_w_im_b4_main.mem"),
+        .W_IM_B4_TAIL_FILE("step14_1_w_im_b4_tail.mem"),
+        .W_RE_B5_MAIN_FILE("step14_1_w_re_b5_main.mem"),
+        .W_RE_B5_TAIL_FILE("step14_1_w_re_b5_tail.mem"),
+        .W_IM_B5_MAIN_FILE("step14_1_w_im_b5_main.mem"),
+        .W_IM_B5_TAIL_FILE("step14_1_w_im_b5_tail.mem"),
+        .W_RE_B6_MAIN_FILE("step14_1_w_re_b6_main.mem"),
+        .W_RE_B6_TAIL_FILE("step14_1_w_re_b6_tail.mem"),
+        .W_IM_B6_MAIN_FILE("step14_1_w_im_b6_main.mem"),
+        .W_IM_B6_TAIL_FILE("step14_1_w_im_b6_tail.mem")
     ) u_system (
         .aclk(aclk),
         .aresetn(aresetn),

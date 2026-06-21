@@ -13,16 +13,28 @@ Step14.2 adds:
 
 - `dbf_axis_ip_top.v`
 
-`dbf_axis_ip_top` is the Vivado Custom IP top. It wraps
-`dbf_axis_system_top`, fixes the Step14 parameters, binds the 14 basename W ROM
+Step14.2a optimized RTL adds:
+
+- `dbf_complex_mac_pipe.v`
+- `dbf_beam_accum_core_pipe.v`
+- `dbf_z24_quantizer_pipe.v`
+- `dbf_core_z24_pipe.v`
+- `dbf_core_z24_bparallel_pipe.v`
+- `dbf_w_rom18_split.v`
+- `dbf_w_provider_rom_opt.v`
+- `dbf_axis_datapath_pipe.v`
+- `dbf_axis_system_top_opt.v`
+
+`dbf_axis_ip_top` is the Vivado Custom IP top. It wraps the optimized
+`dbf_axis_system_top_opt`, fixes the Step14 parameters, binds the 28 split W ROM
 files, exposes `S_AXIS_Y` and `M_AXIS_Z`, and preserves discrete status outputs.
 It does not instantiate DMA, PS, AXI-Lite, FIFO IP, ILA, Clocking Wizard, or
 Block Design logic.
 
-The W provider now uses XPM single-port ROM instances so OOC synthesis infers
-memory resources. The current reference-device synthesis maps the 14 W ROMs to
-BRAM36 resources.
+The optimized W provider uses XPM single-port ROM instances for each 2048-row
+main segment plus distributed 32-row tails. The current reference-device
+synthesis maps W storage to 14 BRAM36 equivalents.
 
-Step13 arithmetic RTL remains the source of truth. It is referenced directly in
-Step14.1 XSim and copied only into the Step14.2 generated IP staging tree for
-Vivado IP self-containment.
+Step13 arithmetic RTL remains the baseline source of truth and is not modified.
+The Step14.2a pipelined quantizer is an integration-local timing equivalent and
+is verified by raw-top XSim, packaged-IP XSim, and MATLAB exact compare.

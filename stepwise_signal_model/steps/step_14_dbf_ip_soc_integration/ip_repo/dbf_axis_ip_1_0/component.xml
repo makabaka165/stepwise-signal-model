@@ -204,7 +204,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>1cc9c28c</spirit:value>
+            <spirit:value>d94b5059</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -220,7 +220,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>1cc9c28c</spirit:value>
+            <spirit:value>d94b5059</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -545,11 +545,11 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/dbf_axis_datapath.v</spirit:name>
+        <spirit:name>hdl/dbf_axis_datapath_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_axis_system_top.v</spirit:name>
+        <spirit:name>hdl/dbf_axis_system_top_opt.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -557,99 +557,159 @@
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_beam_accum_core.v</spirit:name>
+        <spirit:name>hdl/dbf_beam_accum_core_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_complex_mac.v</spirit:name>
+        <spirit:name>hdl/dbf_complex_mac_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_core_z24.v</spirit:name>
+        <spirit:name>hdl/dbf_core_z24_bparallel_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_core_z24_bparallel.v</spirit:name>
+        <spirit:name>hdl/dbf_core_z24_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_w_provider_rom.v</spirit:name>
+        <spirit:name>hdl/dbf_w_provider_rom_opt.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_z24_quantizer.v</spirit:name>
+        <spirit:name>hdl/dbf_w_rom18_split.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b0.mem</spirit:name>
+        <spirit:name>hdl/dbf_z24_quantizer_pipe.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_im_b0_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b1.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b0_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b2.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b1_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b3.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b1_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b4.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b2_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b5.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b2_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b6.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b3_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b0.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b3_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b1.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b4_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b2.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b4_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b3.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b5_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b4.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b5_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b5.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b6_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b6.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b6_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b0_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b0_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b1_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b1_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b2_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b2_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b3_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b3_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b4_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b4_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b5_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b5_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b6_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b6_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>hdl/dbf_axis_ip_top.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_90c2aaac</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_c66cf345</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>hdl/dbf_axis_datapath.v</spirit:name>
+        <spirit:name>hdl/dbf_axis_datapath_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_axis_system_top.v</spirit:name>
+        <spirit:name>hdl/dbf_axis_system_top_opt.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -657,83 +717,143 @@
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_beam_accum_core.v</spirit:name>
+        <spirit:name>hdl/dbf_beam_accum_core_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_complex_mac.v</spirit:name>
+        <spirit:name>hdl/dbf_complex_mac_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_core_z24.v</spirit:name>
+        <spirit:name>hdl/dbf_core_z24_bparallel_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_core_z24_bparallel.v</spirit:name>
+        <spirit:name>hdl/dbf_core_z24_pipe.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_w_provider_rom.v</spirit:name>
+        <spirit:name>hdl/dbf_w_provider_rom_opt.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>hdl/dbf_z24_quantizer.v</spirit:name>
+        <spirit:name>hdl/dbf_w_rom18_split.v</spirit:name>
         <spirit:fileType>verilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b0.mem</spirit:name>
+        <spirit:name>hdl/dbf_z24_quantizer_pipe.v</spirit:name>
+        <spirit:fileType>verilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_im_b0_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b1.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b0_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b2.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b1_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b3.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b1_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b4.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b2_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b5.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b2_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_im_b6.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b3_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b0.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b3_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b1.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b4_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b2.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b4_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b3.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b5_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b4.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b5_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b5.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b6_main.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>data/step14_1_w_re_b6.mem</spirit:name>
+        <spirit:name>data/step14_1_w_im_b6_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b0_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b0_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b1_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b1_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b2_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b2_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b3_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b3_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b4_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b4_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b5_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b5_tail.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b6_main.mem</spirit:name>
+        <spirit:userFileType>mif</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>data/step14_1_w_re_b6_tail.mem</spirit:name>
         <spirit:userFileType>mif</spirit:userFileType>
       </spirit:file>
       <spirit:file>
@@ -775,12 +895,12 @@
         <xilinx:xpmLibrary>XPM_MEMORY</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
       <xilinx:coreRevision>1</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-06-20T13:18:37Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2026-06-21T01:08:02Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2024.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="20f75be9"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="2c2f9334"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="73642da6"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="bf12c2bc"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="60da9ea7"/>
     </xilinx:packagingInfo>

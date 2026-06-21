@@ -1,6 +1,6 @@
 # IP Repository
 
-This directory contains the generated Step14.2 Vivado Custom IP repository.
+This directory contains the generated Step14.2a Vivado Custom IP repository.
 
 Current IP:
 
@@ -15,8 +15,8 @@ to rebuild the package; do not manually maintain staged HDL copies.
 Tracked package contents:
 
 - `component.xml`
-- `hdl/` with 5 Step13 arithmetic RTL files and 5 Step14 AXIS/IP RTL files
-- `data/` with 14 Step14.1 W ROM `.mem` files
+- `hdl/` with 11 optimized Step14 AXIS/IP RTL files
+- `data/` with 28 Step14.2a split W ROM `.mem` files
 - `xgui/`
 - `source_manifest.csv`
 - `package_manifest.csv`

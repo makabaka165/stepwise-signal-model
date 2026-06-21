@@ -1,0 +1,10 @@
+metric,value
+tool_xvlog_found,true
+tool_xelab_found,true
+tool_xsim_found,true
+compile_status,pass
+elaboration_status,pass
+simulation_status,pass
+tb_summary_created,true
+axis_output_csv_created,true
+formal_result_claimed,false

@@ -1,0 +1,15 @@
+source_base,source_rows,main_rows,tail_rows,reconstruction_match,file_pass
+step14_1_w_re_b0,2080,2048,32,true,true
+step14_1_w_im_b0,2080,2048,32,true,true
+step14_1_w_re_b1,2080,2048,32,true,true
+step14_1_w_im_b1,2080,2048,32,true,true
+step14_1_w_re_b2,2080,2048,32,true,true
+step14_1_w_im_b2,2080,2048,32,true,true
+step14_1_w_re_b3,2080,2048,32,true,true
+step14_1_w_im_b3,2080,2048,32,true,true
+step14_1_w_re_b4,2080,2048,32,true,true
+step14_1_w_im_b4,2080,2048,32,true,true
+step14_1_w_re_b5,2080,2048,32,true,true
+step14_1_w_im_b5,2080,2048,32,true,true
+step14_1_w_re_b6,2080,2048,32,true,true
+step14_1_w_im_b6,2080,2048,32,true,true
